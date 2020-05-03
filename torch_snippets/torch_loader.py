@@ -1,3 +1,4 @@
+'v1.15'
 __all__ = ['torch','nn','np','F','Dataset','DataLoader','optim','Report']
 
 import torch
@@ -29,8 +30,9 @@ class Report:
                 self.logged.append(k)
         self.report_metrics(pos, **metrics)
 
-    def plot(self):
-        for k in self.logged:
+    def plot(self, keys:list=None):
+    	keys = self.logged if keys is None else keys
+        for k in keys:
             xs, ys = list(zip(*getattr(self,k)))
             plt.plot(xs, ys, label=k)
         plt.grid(True)
