@@ -1,4 +1,4 @@
-__all__ = ['torch','nn','F','Dataset','DataLoader','optim','Report']
+__all__ = ['torch','nn','np','F','Dataset','DataLoader','optim','Report']
 
 import torch
 import torch.nn as nn
