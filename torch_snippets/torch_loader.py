@@ -1,4 +1,4 @@
-'v0.14'
+'v0.14.0'
 __all__ = ['torch','nn','np','F','Dataset','DataLoader','optim','Report']
 
 import torch
@@ -31,7 +31,7 @@ class Report:
         self.report_metrics(pos, **metrics)
 
     def plot(self, keys:list=None):
-    	keys = self.logged if keys is None else keys
+        keys = self.logged if keys is None else keys
         for k in keys:
             xs, ys = list(zip(*getattr(self,k)))
             plt.plot(xs, ys, label=k)
