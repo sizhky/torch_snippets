@@ -1,5 +1,7 @@
 # torch utilities for recording metrics and plotting
 ```python
+from torch_snippets import Report
+
 n_epochs = 5
 log = Report(n_epochs)
 
