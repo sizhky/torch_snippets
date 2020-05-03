@@ -33,6 +33,7 @@ log.plot() # plot everything that has been recorded
 
 ```python
 print(log.logged) # get logged metric names
+# ['train_loss', 'train_acc', 'val_loss', 'val_acc']
 log.plot(['train_acc','val_acc']) # selectively plot metrics
 ```
 ![](assets/avgs1.png)
