@@ -19,7 +19,12 @@ for epoch in range(n_epochs):
         pos = (epoch + (ix+1)/N) # a float between 0 - n_epochs
         log.record(pos=pos, val_loss=batch_loss, end='\r') # impersistent log
     log.report_avgs(epoch+1) # persist the report
-log.plot() # plot everything that has been recorded
+
 ```
 
-![](demo.gif)
+![](assets/demo.gif)
+
+```python
+log.plot() # plot everything that has been recorded
+```
+![](assets/avgs.png)
