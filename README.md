@@ -28,3 +28,17 @@ for epoch in range(n_epochs):
 log.plot() # plot everything that has been recorded
 ```
 ![](assets/avgs.png)
+
+## Install
+pip install torch_snippets
+
+## Usage
+```python
+from torch_snippets import *
+log = Record(n_epochs) # number of epochs to be trained
+log.record(pos, **kwargs) # where each kwarg is a float and 
+# pos is the current position in training a float between 0 and n_epochs
+log.report_avgs(epoch+1) # avgs of all metrics logged between `epoch` and `epoch+1`
+```
+#### Note
+use `log.record(..., end='\r')` for a temporary log which will be overwritten
