@@ -31,6 +31,12 @@ log.plot() # plot everything that has been recorded
 ```
 ![](assets/avgs.png)
 
+```python
+print(log.logged) # get logged metric names
+log.plot(['train_acc','val_acc']) # selectively plot metrics
+```
+![](assets/avgs1.png)
+
 ## Features
 * No need to preinitialize empty lists
 * Automatically stores metrics as collection of key words
