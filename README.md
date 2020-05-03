@@ -29,7 +29,7 @@ for epoch in range(n_epochs):
 ```python
 log.plot() # plot everything that has been recorded
 ```
-![](assets/avgs.png)
+![](assets/avgs0.png)
 
 ```python
 print(log.logged) # get logged metric names
