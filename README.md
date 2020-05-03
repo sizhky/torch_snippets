@@ -1,4 +1,4 @@
-## torch utilities for recording metrics and plotting
+# torch utilities for recording metrics and plotting
 ```python
 n_epochs = 5
 log = Report(n_epochs)
@@ -28,6 +28,14 @@ for epoch in range(n_epochs):
 log.plot() # plot everything that has been recorded
 ```
 ![](assets/avgs.png)
+
+## Features
+* No need to preinitialize empty lists
+* Automatically stores metrics as collection of key words
+* Auto calculates time remaining
+* Auto calculates average of all metrics in an epoch
+* Persistent vs Transient logging using python's `\r` magic with print
+* Plot entire training history with one command
 
 ## Install
 pip install torch_snippets
