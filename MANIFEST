@@ -2,4 +2,5 @@
 setup.cfg
 setup.py
 torch_snippets/__init__.py
+torch_snippets/loader.py
 torch_snippets/torch_loader.py
