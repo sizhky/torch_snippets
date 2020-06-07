@@ -52,7 +52,7 @@ class Report:
     def plot(self, keys:[list,str]=None, smooth=0, ax=None):
         _show = True if ax is None else False
         if ax is None:
-        	sz = 8,6
+            sz = 8,6
             fig, ax = plt.subplots(figsize=kwargs.get('figsize', sz))
 
         keys = self.logged if keys is None else keys
