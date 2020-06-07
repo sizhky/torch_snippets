@@ -6,7 +6,7 @@ n_epochs = 5
 log = Report(n_epochs)
 
 for epoch in range(n_epochs):
-    train_epoch_losses, train_epoch_accuracies = [], []
+    # No need to --> train_epoch_losses, train_epoch_accuracies = [], []
     N = len(trn_dl)
     for ix, batch in enumerate(iter(trn_dl)):
         ...
