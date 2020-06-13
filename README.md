@@ -29,29 +29,26 @@ for epoch in range(n_epochs):
 * Auto calculates time remaining
 * No need to preinitialize empty lists
 * Automatically stores metrics as collection of key words
-* Persistent vs Transient logging (use `end='\r'`)
+* Persistent vs Transient logging (use `end='\r'`)  
 ```python
 >>> print(log.logged) # get logged metric names
 # ['train_loss', 'train_acc', 'val_loss', 'val_acc']
 >>> log.plot() # plot all the logged metrics
 ```
+
+
 * Auto calculates average of all metrics in an epoch
-* Plot entire training history with one command
+* Plot entire training history with one command  
 ![](assets/avgs0.png)
 
-```python
 
-# selectively plot logged metrics
-# >>> log.plot(['train_acc','val_acc'])
-# or even better use regex
+* selectively plot logged metrics using regex
+```python
 >>> log.plot('*_loss')
+# or you can list out the metrics that need plotting
+# >>> log.plot(['train_acc','val_acc'])
 ```
 ![](assets/avgs1.png)
-
-### Features
-
-
-
 
 ## Auxiliary Functions
 You can simple functions that are overloaded to take simple inputs and perform repetitive tasks that usually take a few lines to write
