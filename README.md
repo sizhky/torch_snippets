@@ -51,11 +51,13 @@ for epoch in range(n_epochs):
 ![](assets/avgs1.png)
 
 ## Auxiliary Functions
-You can simple functions that are overloaded to take simple inputs and perform repetitive tasks that usually take a few lines to write
+There are simple functions that are overloaded to take inputs and perform repetitive tasks that usually take a few lines to write
 #### Images
-`show`, `inspect`, `Glob`, `read`,`loaddill`,`dumpdill`,`stem`
+`show`, `inspect`, `Glob`, `read`
 #### FilePaths
 `stem`, `Glob`, `parent`, `name`
+#### Dump and load python objects
+`loaddill`,`dumpdill`
 #### Misc 
 `Tqdm`, `Timer`, `randint`, `unique`, `diff` and many more
 #### Pytorch Modules
@@ -67,9 +69,6 @@ pip install torch_snippets
 
 ## Usage
 ```python
-from torch_snippets import *
-log = Record(n_epochs) # number of epochs to be trained
-log.record(pos, **kwargs) # where each kwarg is a float and 
-# pos is the current position in training a float between 0 and n_epochs
-log.report_avgs(epoch+1) # avgs of all metrics logged between `epoch` and `epoch+1`
+import pytorch_snippets
+dir(pytorch_snippets)
 ```
