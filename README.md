@@ -59,13 +59,15 @@ There are simple functions that are overloaded to take inputs and perform repeti
 #### Dump and load python objects
 `loaddill`,`dumpdill`
 #### Misc 
-`Tqdm`, `Timer`, `randint`, `unique`, `diff` and many more
+`Tqdm`, `Timer`, `randint`, `unique`, `diff`
 #### Pytorch Modules
 `Reshape` and `Permute` (`nn.Modules`)
+
+
 and many more... 
  
 ## Install
-pip install torch_snippets
+`pip install torch_snippets`
 
 ## Usage
 ```python
