@@ -1,4 +1,6 @@
-# torch utilities for recording metrics and plotting
+# Pytorch utilities for simple pytorch needs
+
+## Logging and plotting metrics
 ```python
 from torch_snippets import Report
 
@@ -23,39 +25,52 @@ for epoch in range(n_epochs):
     log.report_avgs(epoch+1) # persist the report
 
 ```
-
 ![](assets/demo.gif)
-
+* Auto calculates time remaining
+* No need to preinitialize empty lists
+* Automatically stores metrics as collection of key words
+* Persistent vs Transient logging (use `end='\r'`)  
 ```python
-log.plot() # plot everything that has been recorded
+>>> print(log.logged) # get logged metric names
+# ['train_loss', 'train_acc', 'val_loss', 'val_acc']
+>>> log.plot() # plot all the logged metrics
 ```
+
+
+* Auto calculates average of all metrics in an epoch
+* Plot entire training history with one command  
 ![](assets/avgs0.png)
 
+
+* selectively plot logged metrics using regex
 ```python
-print(log.logged) # get logged metric names
-# ['train_loss', 'train_acc', 'val_loss', 'val_acc']
-log.plot(['train_acc','val_acc']) # selectively plot metrics
+>>> log.plot('*_loss')
+# or you can list out the metrics that need plotting
+# >>> log.plot(['train_acc','val_acc'])
 ```
 ![](assets/avgs1.png)
 
-## Features
-* No need to preinitialize empty lists
-* Automatically stores metrics as collection of key words
-* Auto calculates time remaining
-* Auto calculates average of all metrics in an epoch
-* Persistent vs Transient logging using python's `\r` magic with print
-* Plot entire training history with one command
+## Auxiliary Functions
+There are simple functions that are overloaded to take inputs and perform repetitive tasks that usually take a few lines to write
+#### Images
+`show`, `inspect`, `Glob`, `read`
+#### FilePaths
+`stem`, `Glob`, `parent`, `name`
+#### Dump and load python objects
+`loaddill`,`dumpdill`
+#### Misc 
+`Tqdm`, `Timer`, `randint`, `unique`, `diff`
+#### Pytorch Modules
+`Reshape` and `Permute` (`nn.Modules`)
 
+
+and many more... 
+ 
 ## Install
-pip install torch_snippets
+`pip install torch_snippets`
 
 ## Usage
 ```python
-from torch_snippets import *
-log = Record(n_epochs) # number of epochs to be trained
-log.record(pos, **kwargs) # where each kwarg is a float and 
-# pos is the current position in training a float between 0 and n_epochs
-log.report_avgs(epoch+1) # avgs of all metrics logged between `epoch` and `epoch+1`
+import pytorch_snippets
+dir(pytorch_snippets)
 ```
-#### Note
-use `log.record(..., end='\r')` for a temporary log which will be overwritten
