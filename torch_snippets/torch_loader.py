@@ -1,16 +1,10 @@
-'v0.15.2+0.75'
-'''Todo - v0.15.3
-- [x] Make Colab compatible
-- [c] have a better keyword for transient log (`temp`)
+'v0.15.3'
+'''Todo - v0.15.4
 - [ ] accumulate lists of tensors
-- [x] convert to numpy if torch value is sent
-- [x] use regexs for plotting metrics
-- [x] add .plot_epochs()
-- [x] moving average
-- [x] plot can accept axis
+- [ ] make plot_epochs even faster
 '''
 
-__all__ = ['torch','th','torchvision','T','nn','np','F','Dataset','DataLoader','optim','Report']
+__all__ = ['torch','th','torchvision','T','nn','np','F','Dataset','DataLoader','optim','Report','Reshape','Permute']
 
 import torch, torchvision
 import torch as th
@@ -22,6 +16,20 @@ from torch.utils.data import Dataset, DataLoader
 import time, numpy as np, matplotlib.pyplot as plt
 from collections import namedtuple, defaultdict
 import re
+from itertools import dropwhile, takewhile
+
+class Reshape(nn.Module):
+    def __init__(self, *shape):
+        super().__init__()
+        self.shape = shape
+    def forward(self, x):
+        return x.view(*self.shape)
+class Permute(nn.Module):
+    def __init__(self, *order):
+        super().__init__()
+        self.order = order
+    def forward(self, x):
+        return x.permute(*self.order)
 
 metric = namedtuple('metric', 'pos,val'.split(','))
 info = lambda report: '\t'.join([f'{k}: {v:.3f}' for k,v in report.items()])
@@ -49,7 +57,7 @@ class Report:
                 self.logged.append(k)
         self.report_metrics(pos, **metrics)
 
-    def plot(self, keys:[list,str]=None, smooth=0, ax=None):
+    def plot(self, keys:[list,str]=None, smooth=0, ax=None, **kwargs):
         _show = True if ax is None else False
         if ax is None:
             sz = 8,6
@@ -66,30 +74,40 @@ class Report:
             ax.plot(xs, ys, label=k)
         ax.grid(True)
         ax.set_xlabel('Epochs'); ax.set_ylabel('Metrics')
+        if kwargs.get('log', False): ax.semilogy()
         ax.legend()
         if _show: plt.show()
 
     def history(self, k):
         return [v for _,v in getattr(self,k)]
 
-    def plot_epochs(self, keys:list=None):
+    def plot_epochs(self, keys:list=None, ax=None, **kwargs):
+        _show = True if ax is None else False
+        if ax is None:
+            sz = 8,6
+            fig, ax = plt.subplots(figsize=kwargs.get('figsize', sz))
         avgs = defaultdict(list)
         keys = self.logged if keys is None else keys
-        for epoch in range(self.n_epochs):
+        from tqdm import trange
+        for epoch in trange(self.n_epochs):
             for k in keys:
-                avgs[k].append(np.mean([v for pos,v in getattr(self,k) if epoch-1<=pos<epoch]))
+                items = takewhile(lambda x: epoch-1<=x.pos<epoch, 
+                    dropwhile(lambda x: (epoch-1>x.pos or x.pos>epoch), getattr(self,k)))
+                avgs[k].append(np.mean([v for pos,v in items]))
         for k in avgs:
             plt.plot(avgs[k], label=k)
         plt.grid(True)
         plt.xlabel('Epochs'); plt.ylabel('Metrics')
+        if kwargs.get('log', False): ax.semilogy()
         plt.legend()
-        plt.show()
+        if _show: plt.show()
 
-    def report_avgs(self, epoch):
+    def report_avgs(self, epoch, return_avgs=False):
         avgs = {}
         for k in self.logged:
             avgs[k] = np.mean([v for pos,v in getattr(self,k) if epoch-1<=pos<epoch])
         self.report_metrics(epoch, **avgs)
+        if return_avgs: return avgs
 
     def report_metrics(self, pos, **report):
         '''Report training and validation metrics
@@ -117,6 +135,7 @@ class Report:
             print(f'\r{log}{current_iteration}{info(report)}{elapsed}', end='')
         else:
             print(f'\r{log}{current_iteration}{info(report)}{elapsed}', end=end)
+
 
 def moving_average(a, n=3) :
     b = np.zeros_like(a)

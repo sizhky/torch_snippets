@@ -1,12 +1,18 @@
-'V1.12.05'
+'V1.13.00'
 '''Change Log
+new function - subplots
+fix text='ixs' bug in show
+show accepts 3xHxW tensors as well
+V1.12.05:
 bbs in show will accept a numpy array
 show image torch tensor bug
 '''
-__all__ = ['B','Blank','BB','bbfy','C','choose','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
-'flatten','fname','find','fname2','glob','Glob','inspect','jitter', 'L',
-'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pd','parent','Path','pdb',
-'plt','puttext','randint', 'rand', 'read','rect','rename_batch', 'see','show','stem','stems','sys','tqdm','Tqdm','Timer','unique','uint']
+__all__ = [
+    'B','Blank','BB','bbfy','C','choose','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
+    'flatten','fname','find','fname2','glob','Glob','inspect','jitter', 'L',
+    'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pd','parent','Path','pdb',
+    'plt','puttext','randint','rand','read','rect','rename_batch','see','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint'
+]
 
 import cv2, glob, numpy as np, pandas as pd, tqdm, os, sys
 try:
@@ -95,10 +101,10 @@ def inspect(*arrays, **kwargs):
                 line()
 
         elif hasattr(arr, 'shape'):
-            sh, m, M = arr.shape, arr.min(), arr.max()
+            sh, m, M, dtype = arr.shape, arr.min(), arr.max(), arr.dtype
             try: me = arr.mean()
             except: me = arr.float().mean()
-            print(f'{name}{typ}\tShape: {sh}\tMin: {m:.3f}\tMax: {M:.3f}\tMean: {me:.3f}')
+            print(f'{name}{typ}\tShape: {sh}\tMin: {m:.3f}\tMax: {M:.3f}\tMean: {me:.3f}\tdtype: {dtype}')
             line()
         else:
             ln = len(arr)
@@ -188,6 +194,9 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
     try:
         if isinstance(img, torch.Tensor): img = img.cpu().detach().numpy().copy()
     except: ...
+    if len(img.shape) == 3 and len(img) == 3:
+        # this is likely a torch tensor
+        img = img.transpose(1,2,0)
     img = np.copy(img)
     if img.max() == 255: img = img.astype(np.uint8)
     h, w = img.shape[:2]
@@ -214,7 +223,6 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         if hasattr(texts, 'shape'):
             if isinstance(texts, torch.Tensor): texts = texts.cpu().detach().numpy()
             texts = texts.tolist()
-        texts = list(texts)
         if texts is 'ixs': texts = [i for i in range(len(bbs))]
         if callable(texts): texts = [texts(bb) for bb in bbs]
         assert len(texts) == len(bbs), 'Expecting as many texts as bounding boxes'
@@ -311,6 +319,19 @@ class BB:
         x , y, X, Y = self.bb
         return max(0,x-_x), max(0,y-_y), X+_x,Y+_y
 
+def subplots(ims, nc=5, figsize=(5,5), **kwargs):
+    if len(ims) == 0: return
+    titles = kwargs.pop('titles',[None]*len(ims))
+    nr = (len(ims)//nc) if len(ims)%nc==0 else (1+len(ims)//nc)
+    logger.info(f'plotting {len(ims)} images in a grid of {nr}x{nc} @ {figsize}')
+    fig, axes = plt.subplots(nr,nc,figsize=figsize)
+    axes = axes.flat
+    for ix,(im,ax) in enumerate(zip(ims,axes)):
+        show(im, ax=ax, title=titles[ix], **kwargs)
+    blank = (np.eye(100) + np.eye(100)[::-1])
+    for ax in axes: show(blank, ax=ax)
+    plt.show()
+
 df2bbs = lambda df: [BB(bb) for bb in df[list('xyXY')].values.tolist()]
 def bbfy(bbs): return [BB(bb) for bb in bbs]
 def jitter(bbs, noise):
@@ -325,3 +346,11 @@ class L(list):
 
 uint = lambda im: (255*im).astype(np.uint8)
 Blank = lambda *sh: uint(np.ones(sh))
+
+
+'''108 ways to orgasm
+* Walk on soil
+* Drink clean water, eyes closed and sitting
+* When a sneeze comes, breath in instead of out
+* Feel your heart at the moment of sleep
+'''
