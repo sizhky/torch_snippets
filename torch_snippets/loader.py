@@ -326,10 +326,12 @@ def subplots(ims, nc=5, figsize=(5,5), **kwargs):
     logger.info(f'plotting {len(ims)} images in a grid of {nr}x{nc} @ {figsize}')
     fig, axes = plt.subplots(nr,nc,figsize=figsize)
     axes = axes.flat
+    fig.suptitle(kwargs.pop('suptitle',''))
     for ix,(im,ax) in enumerate(zip(ims,axes)):
         show(im, ax=ax, title=titles[ix], **kwargs)
     blank = (np.eye(100) + np.eye(100)[::-1])
     for ax in axes: show(blank, ax=ax)
+    plt.tight_layout()
     plt.show()
 
 df2bbs = lambda df: [BB(bb) for bb in df[list('xyXY')].values.tolist()]
