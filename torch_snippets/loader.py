@@ -1,5 +1,7 @@
-'V1.13.00'
+'V1.13.01'
 '''Change Log
+new function - common
+V1.13.00
 new function - subplots
 fix text='ixs' bug in show
 show accepts 3xHxW tensors as well
@@ -8,7 +10,7 @@ bbs in show will accept a numpy array
 show image torch tensor bug
 '''
 __all__ = [
-    'B','Blank','BB','bbfy','C','choose','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
+    'B','Blank','BB','bbfy','C','choose','common','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
     'flatten','fname','find','fname2','glob','Glob','inspect','jitter', 'L',
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pd','parent','Path','pdb',
     'plt','puttext','randint','rand','read','rect','rename_batch','see','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint'
@@ -174,6 +176,11 @@ def rename_batch(folder, func, debug=False, one_file=False):
             os.rename(source, destin)
         # !echo {source.replace(' ','\ ')} --\> {destin.replace(' ','\ ')} >> {logfile}
         if one_file: break
+def common(a, b):
+    """Wrapper around set intersection"""
+    x = list(set(a).intersection(set(b)))
+    logger.info(f'{len(x)} items found common from containers of {len(a)} and {len(b)} items respectively')
+    return sorted(x)
 def diff(a, b, rev=False):
     if not rev:
         o = list(sorted(set(a) - set(b)))

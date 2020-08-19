@@ -11,6 +11,7 @@ import torch as th
 import torch.nn as nn
 from torch import optim
 from torch.nn import functional as F
+from torchvision import transfroms
 import torchvision.transforms as T
 from torch.utils.data import Dataset, DataLoader
 import time, numpy as np, matplotlib.pyplot as plt
