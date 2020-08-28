@@ -1,8 +1,8 @@
 from IPython.display import display, HTML
 from .loader import rand
 def displayTextForCopy(string):
-    elemId = rand()+rand()
-    funcName = rand()+rand()
+    elemId = 'X'+rand()+rand()
+    funcName = 'Y'+rand()+rand()
     display(HTML('''
         <script>
         function myFunction() {
