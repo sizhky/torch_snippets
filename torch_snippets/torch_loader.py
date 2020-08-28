@@ -1,5 +1,5 @@
-'v0.15.3'
-'''Todo - v0.15.4
+'v0.15.4'
+'''Todo - v0.15.5
 - [ ] accumulate lists of tensors
 - [ ] make plot_epochs even faster
 '''
@@ -71,7 +71,12 @@ class Report:
         for k in keys:
             xs, ys = list(zip(*getattr(self,k)))
             if smooth: ys = moving_average(np.array(ys), smooth)
-            ax.plot(xs, ys, label=k)
+
+            if 'val' in k   : _type = 'o--'
+            elif 'test' in k: _type = '^:'
+            else            : _type = '-'
+
+            ax.plot(xs, ys, _type, label=k)
         ax.grid(True)
         ax.set_xlabel('Epochs'); ax.set_ylabel('Metrics')
         if kwargs.get('log', False): ax.semilogy()
@@ -95,7 +100,12 @@ class Report:
                     dropwhile(lambda x: (epoch-1>x.pos or x.pos>epoch), getattr(self,k)))
                 avgs[k].append(np.mean([v for pos,v in items]))
         for k in avgs:
-            plt.plot(avgs[k], label=k)
+
+            if 'val' in k   : _type = 'b'
+            elif 'test' in k: _type = '*-'
+            else            : _type = '-'
+
+            plt.plot(avgs[k], _type, label=k,)
         plt.grid(True)
         plt.xlabel('Epochs'); plt.ylabel('Metrics')
         if kwargs.get('log', False): ax.semilogy()

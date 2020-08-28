@@ -1,4 +1,4 @@
-'V1.13.00'
+'V1.13.01'
 '''Change Log
 new function - subplots
 fix text='ixs' bug in show
@@ -187,6 +187,7 @@ def puttext(im, string, org, scale=1, color=(255,0,0), thickness=2):
     x,y = org
     org = x, int(y+30*scale)
     cv2.putText(im, str(string), org, cv2.FONT_HERSHEY_COMPLEX, scale, color, thickness)
+
 def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
          texts=None, bb_colors=None, cmap='gray', grid=False,
          save_path=None, text_sz=15, df=None, **kwargs):
@@ -250,8 +251,9 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         img = C(img) if len(img.shape) == 2 else img
         [rect(img, tuple(bb), c=bb_colors[ix], th=th) for ix,bb in enumerate(bbs)]
 
+    if title: ax.set_title(title, fontdict=kwargs.pop('fontdict', None))
     ax.imshow(img, cmap=cmap, **kwargs)
-    ax.set_title(title)
+
     if not grid: ax.set_axis_off()
     if save_path:
         fig.savefig(save_path)
