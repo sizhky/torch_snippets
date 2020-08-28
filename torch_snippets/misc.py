@@ -1,4 +1,5 @@
 from IPython.display import display, HTML
+from .loader import rand
 def displayTextForCopy(string):
     elemId = rand()+rand()
     funcName = rand()+rand()
