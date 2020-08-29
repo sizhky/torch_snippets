@@ -1,4 +1,4 @@
-'v0.15.4'
+'v0.15.41'
 '''Todo - v0.15.5
 - [ ] accumulate lists of tensors
 - [ ] make plot_epochs even faster
@@ -73,8 +73,8 @@ class Report:
             xs, ys = list(zip(*getattr(self,k)))
             if smooth: ys = moving_average(np.array(ys), smooth)
 
-            if 'val' in k   : _type = 'o--'
-            elif 'test' in k: _type = '^:'
+            if 'val' in k   : _type = '--'
+            elif 'test' in k: _type = ':'
             else            : _type = '-'
 
             ax.plot(xs, ys, _type, label=k)
@@ -102,8 +102,8 @@ class Report:
                 avgs[k].append(np.mean([v for pos,v in items]))
         for k in avgs:
 
-            if 'val' in k   : _type = 'b'
-            elif 'test' in k: _type = '*-'
+            if 'val' in k   : _type = '--'
+            elif 'test' in k: _type = ':'
             else            : _type = '-'
 
             plt.plot(avgs[k], _type, label=k,)
