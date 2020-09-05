@@ -13,7 +13,7 @@ __all__ = [
     'B','Blank','BB','bbfy','C','choose','common','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
     'flatten','fname','find','fname2','glob','Glob','inspect','jitter', 'L',
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pd','pdfilter','parent','Path','pdb',
-    'plt','PIL','puttext','randint','rand','read','rect','rename_batch','resize','see','change_logging_level','show','stem',
+    'plt','PIL','puttext','randint','rand','read','rect','rename_batch','resize','see','set_logging_level','show','stem',
     'stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint'
 ]
 
