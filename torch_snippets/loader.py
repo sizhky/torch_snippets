@@ -1,4 +1,4 @@
-'V1.13.01'
+'V1.13.02'
 '''Change Log
 new function - common
 V1.13.00
@@ -12,12 +12,13 @@ show image torch tensor bug
 __all__ = [
     'B','Blank','BB','bbfy','C','choose','common','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
     'flatten','fname','find','fname2','glob','Glob','inspect','jitter', 'L',
-    'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pd','parent','Path','pdb',
-    'plt','puttext','randint','rand','read','rect','rename_batch','see','show','stem','stems','subplots',
-    'sys','tqdm','Tqdm','Timer','unique','uint'
+    'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pd','pdfilter','parent','Path','pdb',
+    'plt','PIL','puttext','randint','rand','read','rect','rename_batch','resize','see','change_logging_level','show','stem',
+    'stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint'
 ]
 
 import cv2, glob, numpy as np, pandas as pd, tqdm, os, sys
+import PIL
 try:
     import torch
     import torch.nn as nn
@@ -202,6 +203,7 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
     'show an image'
     try:
         if isinstance(img, torch.Tensor): img = img.cpu().detach().numpy().copy()
+        if isinstance(img, PIL.Image): img = np.array(img)
     except: ...
     if len(img.shape) == 3 and len(img) == 3:
         # this is likely a torch tensor
@@ -359,6 +361,36 @@ class L(list):
 uint = lambda im: (255*im).astype(np.uint8)
 Blank = lambda *sh: uint(np.ones(sh))
 
+def pdfilter(df, column, condition):
+    _df = df[df[column].map(condition)]
+    logger.debug(f'Filtering {len(_df)} items out of {df}')
+    return _df
+def pdsort(df, column, asc=True):
+    df.sort_values(column, ascending=asc)
+
+def set_logging_level(level):
+    logger.remove()
+    logger.add(sys.stderr, level="INFO")
+
+def resize(im:np.ndarray, sz:[float,('H','W')]):
+    h,w = im.shape[:2]
+    if isinstance(sz, float):
+        frac = sz
+        H,W = [int(i*frac) for i in [h,w]]
+    elif isinstance(sz, int):
+        H,W = sz,sz
+    elif isinstance(sz, tuple):
+        if sz[0] == -1:
+            _,W = sz
+            f = W/w
+            H = int(f*h)
+        elif sz[1] == -1:
+            H,_ = sz
+            f = H/h
+            W = int(f*w)
+        else:
+            H,W = sz
+    return cv2.resize(im, (W,H))
 
 '''108 ways to orgasm
 * Walk on soil
