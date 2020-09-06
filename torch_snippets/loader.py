@@ -1,4 +1,4 @@
-'V1.13.02'
+'V1.14'
 '''Change Log
 new function - common
 V1.13.00
@@ -13,12 +13,14 @@ __all__ = [
     'B','Blank','BB','bbfy','C','choose','common','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
     'flatten','fname','find','fname2','glob','Glob','inspect','jitter', 'L',
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pd','pdfilter','parent','Path','pdb',
-    'plt','PIL','puttext','randint','rand','read','rect','rename_batch','resize','see','set_logging_level','show','stem',
-    'stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint'
+    'plt','PIL','puttext','randint','rand','read','readPIL','rect','rename_batch','resize','see','set_logging_level','show','stem',
+    'stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint',
+    'Info','Warn','Debug','Excep'
 ]
 
 import cv2, glob, numpy as np, pandas as pd, tqdm, os, sys
 import PIL
+from PIL import Image
 try:
     import torch
     import torch.nn as nn
@@ -42,6 +44,11 @@ except:
         def warning(self, message): print(f'WARNING:\t{message}')
         def exception(self, message): print(f'EXCEPTION:\t{message}')
     logger = Logger()
+Info  = lambda x: logger.info(x)
+Warn  = lambda x: logger.warning(x)
+Debug = lambda x: logger.debug(x)
+Excep = lambda x: logger.exception(x)
+
 import time
 class Timer:
     def __init__(self, N):
@@ -125,6 +132,8 @@ def read(fname, mode=0):
     img = cv2.imread(str(fname), mode)
     if mode == 1: img = img[...,::-1] # BGR to RGB
     return img
+def readPIL(fname):
+    return Image.open(str(fname)).convert('RGB')
 def crop_from_bb(im, bb):
     x,y,X,Y = bb
     return im.copy()[y:Y,x:X]

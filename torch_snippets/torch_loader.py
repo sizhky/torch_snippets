@@ -68,7 +68,7 @@ class Report:
         if isinstance(keys, str):
             key_pattern = keys
             keys = [key for key in self.logged if re.search(key_pattern, key)]
-            
+
         for k in keys:
             xs, ys = list(zip(*getattr(self,k)))
             if smooth: ys = moving_average(np.array(ys), smooth)
@@ -80,6 +80,7 @@ class Report:
             ax.plot(xs, ys, _type, label=k)
         ax.grid(True)
         ax.set_xlabel('Epochs'); ax.set_ylabel('Metrics')
+        ax.set_title(kwargs.get('title', None), fontdict=kwargs.get('fontdict', {'size': 20}))
         if kwargs.get('log', False): ax.semilogy()
         ax.legend()
         if _show: plt.show()
@@ -97,7 +98,7 @@ class Report:
         from tqdm import trange
         for epoch in trange(self.n_epochs):
             for k in keys:
-                items = takewhile(lambda x: epoch-1<=x.pos<epoch, 
+                items = takewhile(lambda x: epoch-1<=x.pos<epoch,
                     dropwhile(lambda x: (epoch-1>x.pos or x.pos>epoch), getattr(self,k)))
                 avgs[k].append(np.mean([v for pos,v in items]))
         for k in avgs:
@@ -106,9 +107,10 @@ class Report:
             elif 'test' in k: _type = ':'
             else            : _type = '-'
 
-            plt.plot(avgs[k], _type, label=k,)
-        plt.grid(True)
-        plt.xlabel('Epochs'); plt.ylabel('Metrics')
+            ax.plot(avgs[k], _type, label=k,)
+        ax.grid(True)
+        ax.xlabel('Epochs'); ax.ylabel('Metrics')
+        ax.set_title(kwargs.get('title', None), fontdict=kwargs.get('fontdict', {'size': 20}))
         if kwargs.get('log', False): ax.semilogy()
         plt.legend()
         if _show: plt.show()
