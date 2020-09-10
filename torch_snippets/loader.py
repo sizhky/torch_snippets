@@ -1,4 +1,4 @@
-'V1.14'
+'V1.15'
 '''Change Log
 new function - common
 V1.13.00
@@ -13,8 +13,8 @@ __all__ = [
     'B','Blank','BB','bbfy','C','choose','common','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
     'flatten','fname','find','fname2','glob','Glob','inspect','jitter', 'L',
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pd','pdfilter','parent','Path','pdb',
-    'plt','PIL','puttext','randint','rand','read','readPIL','rect','rename_batch','resize','see','set_logging_level','show','stem',
-    'stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint',
+    'plt','PIL','puttext','randint','rand','read','readlines','readPIL','rect','rename_batch','resize','see',
+    'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint',
     'Info','Warn','Debug','Excep'
 ]
 
@@ -401,6 +401,11 @@ def resize(im:np.ndarray, sz:[float,('H','W')]):
             H,W = sz
     return cv2.resize(im, (W,H))
 
+def readlines(fpath):
+    with open(fpath, 'r') as f:
+        lines = f.read().split('\n')
+        lines = [l.strip() for l in lines if l.strip()!='']
+        return lines
 '''108 ways to orgasm
 * Walk on soil
 * Drink clean water, eyes closed and sitting
