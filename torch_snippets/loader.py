@@ -132,8 +132,11 @@ def read(fname, mode=0):
     img = cv2.imread(str(fname), mode)
     if mode == 1: img = img[...,::-1] # BGR to RGB
     return img
-def readPIL(fname):
-    return Image.open(str(fname)).convert('RGB')
+
+def readPIL(fname, mode='RGB'):
+    if mode.lower() == 'bw': mode = 'L'
+    return Image.open(str(fname)).convert(mode.upper())
+
 def crop_from_bb(im, bb):
     x,y,X,Y = bb
     return im.copy()[y:Y,x:X]
@@ -212,7 +215,7 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
     'show an image'
     try:
         if isinstance(img, torch.Tensor): img = img.cpu().detach().numpy().copy()
-        if isinstance(img, PIL.Image): img = np.array(img)
+        if isinstance(img, PIL.Image.Image): img = np.array(img)
     except: ...
     if len(img.shape) == 3 and len(img) == 3:
         # this is likely a torch tensor
@@ -405,6 +408,7 @@ def readlines(fpath):
     with open(fpath, 'r') as f:
         lines = f.read().split('\n')
         lines = [l.strip() for l in lines if l.strip()!='']
+        Info(f'loaded {len(lines)} lines')
         return lines
 '''108 ways to orgasm
 * Walk on soil
