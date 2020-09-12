@@ -109,7 +109,7 @@ class Report:
 
             ax.plot(avgs[k], _type, label=k,)
         ax.grid(True)
-        ax.xlabel('Epochs'); ax.ylabel('Metrics')
+        ax.set_xlabel('Epochs'); ax.set_ylabel('Metrics')
         ax.set_title(kwargs.get('title', None), fontdict=kwargs.get('fontdict', {'size': 20}))
         if kwargs.get('log', False): ax.semilogy()
         plt.legend()
