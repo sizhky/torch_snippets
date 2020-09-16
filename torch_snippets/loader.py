@@ -382,7 +382,7 @@ def pdsort(df, column, asc=True):
 
 def set_logging_level(level):
     logger.remove()
-    logger.add(sys.stderr, level="INFO")
+    logger.add(sys.stderr, level=level)
 
 def resize(im:np.ndarray, sz:[float,('H','W')]):
     h,w = im.shape[:2]
