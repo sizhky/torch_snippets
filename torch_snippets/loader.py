@@ -4,7 +4,7 @@ __all__ = [
     'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L',
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
     'plt','PIL','puttext','randint','rand','read','readlines','readPIL','rect','rename_batch','resize','see',
-    'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint',
+    'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','writelines',
     'Info','Warn','Debug','Excep'
 ]
 
@@ -58,10 +58,8 @@ unique = lambda l: list(sorted(set(l)))
 nunique = lambda l: len(set(l))
 def choose(List, n=1):
     if n == 1: return List[randint(len(List))]
-    else:
-        _ns = np.arange(len(List))
-        np.random.shuffle(_ns)
-        return [List[ix] for ix in _ns[:n]]
+    else:      return [choose(List) for _ in range(n)]
+
 rand = lambda : ''.join(choose(list('1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'), n=6))
 def find(item, List):
     '''Find an `item` in a `List`
@@ -365,7 +363,7 @@ Blank = lambda *sh: uint(np.ones(sh))
 
 def pdfilter(df, column, condition):
     _df = df[df[column].map(condition)]
-    logger.debug(f'Filtering {len(_df)} items out of {df}')
+    logger.debug(f'Filtering {len(_df)} items out of {len(df)}')
     return _df
 def pdsort(df, column, asc=True):
     df.sort_values(column, ascending=asc)
@@ -455,6 +453,17 @@ def pad(im, sz, pad_value=255):
     IM = np.ones(sz)*pad_value
     IM[:h,:w] = im
     return IM
+
+def writelines(lines, file):
+    makedir(parent(file))
+    failed = []
+    with open(file, 'w') as f:
+        for line in lines:
+            try: f.write(f'{line}\n')
+            except: failed.append(line)
+    if failed!=[]:
+        logger.info(f'Failed to write {len(failed)} lines out of {len(lines)}')
+        return failed
 
 '''108 ways to orgasm
 * Walk on soil
