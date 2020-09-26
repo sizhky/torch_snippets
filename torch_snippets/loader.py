@@ -1,18 +1,8 @@
-'V1.15'
-'''Change Log
-new function - common
-V1.13.00
-new function - subplots
-fix text='ixs' bug in show
-show accepts 3xHxW tensors as well
-V1.12.05:
-bbs in show will accept a numpy array
-show image torch tensor bug
-'''
+'V1.16'
 __all__ = [
     'B','Blank','BB','bbfy','C','choose','common','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
-    'flatten','fname','find','fname2','glob','Glob','inspect','jitter', 'L',
-    'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pd','pdfilter','parent','Path','pdb',
+    'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L',
+    'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
     'plt','PIL','puttext','randint','rand','read','readlines','readPIL','rect','rename_batch','resize','see',
     'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint',
     'Info','Warn','Debug','Excep'
@@ -410,6 +400,62 @@ def readlines(fpath):
         lines = [l.strip() for l in lines if l.strip()!='']
         Info(f'loaded {len(lines)} lines')
         return lines
+
+def resize(im:np.ndarray, sz:[float,('H','W'),(str,('H','W'))]):
+    '''Resize an image based on info from sz
+    *Aspect ratio is preserved
+    Examples:
+        >>> im = np.random.rand(100,100)
+        >>> _im = resize(im, 50)                    ; assert _im.shape == (50,50)
+        >>> _im = resize(im, 0.5)                   ; assert _im.shape == (50,50)   #*
+        >>> _im = resize(im, (50,200))              ; assert _im.shape == (50,200)
+        >>> _im = resize(im, (0.5,2.0))             ; assert _im.shape == (50,200)
+        >>> _im = resize(im, (0.5,200))             ; assert _im.shape == (50,200)
+
+        >>> im = np.random.rand(50,100)
+        >>> _im = resize(im, (-1, 200))             ; assert _im.shape == (100,200) #*
+        >>> _im = resize(im, (100, -1))             ; assert _im.shape == (100,200) #*
+        >>> _im = resize(im, ('at-least',(40,400))) ; assert _im.shape == (200,400) #*
+        >>> _im = resize(im, ('at-least',(400,40))) ; assert _im.shape == (400,800) #*
+        >>> _im = resize(im, ('at-most', (40,400))) ; assert _im.shape == (40,80)   #*
+        >>> _im = resize(im, ('at-most', (400,40))) ; assert _im.shape == (20,40)   #*
+   '''
+    h,w = im.shape[:2]
+    if isinstance(sz, (tuple,list)) and isinstance(sz[0], str):
+        signal, (H,W) = sz
+        assert signal in 'at-least,at-most'.split(','),\
+            'Resize type must be one of `at-least` or `at-most`'
+        if signal == 'at-least':
+            f = max(H/h,W/w)
+        if signal == 'at-most':
+            f = min(H/h,W/w)
+        H,W = [i*f for i in [h,w]]
+    elif isinstance(sz, float):
+        frac = sz
+        H,W = [i*frac for i in [h,w]]
+    elif isinstance(sz, int):
+        H,W = sz,sz
+    elif isinstance(sz, tuple):
+        H,W = sz
+        if H == -1:
+            _,W = sz
+            f = W/w
+            H = f*h
+        elif W == -1:
+            H,_ = sz
+            f = H/h
+            W = f*w
+        if isinstance(H, float): H = H*h
+        if isinstance(W, float): W = W*h
+    H,W = int(H),int(W)
+    return cv2.resize(im, (W,H))
+
+def pad(im, sz, pad_value=255):
+    h,w = im.shape[:2]
+    IM = np.ones(sz)*pad_value
+    IM[:h,:w] = im
+    return IM
+
 '''108 ways to orgasm
 * Walk on soil
 * Drink clean water, eyes closed and sitting
