@@ -4,7 +4,7 @@ __all__ = [
     'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L',
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
     'plt','PIL','puttext','randint','rand','read','readlines','readPIL','rect','rename_batch','resize','see',
-    'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','writelines',
+    'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','writelines','zip_files','unzip_file'
     'Info','Warn','Debug','Excep'
 ]
 
@@ -336,9 +336,11 @@ def subplots(ims, nc=5, figsize=(5,5), **kwargs):
     titles = kwargs.pop('titles',[None]*len(ims))
     nr = (len(ims)//nc) if len(ims)%nc==0 else (1+len(ims)//nc)
     logger.info(f'plotting {len(ims)} images in a grid of {nr}x{nc} @ {figsize}')
+    figsize = kwargs.pop('sz', figsize)
     fig, axes = plt.subplots(nr,nc,figsize=figsize)
     axes = axes.flat
     fig.suptitle(kwargs.pop('suptitle',''))
+    titles = titles.split(',') if isinstance(titles, str) else titles
     for ix,(im,ax) in enumerate(zip(ims,axes)):
         show(im, ax=ax, title=titles[ix], **kwargs)
     blank = (np.eye(100) + np.eye(100)[::-1])
@@ -464,6 +466,18 @@ def writelines(lines, file):
     if failed!=[]:
         logger.info(f'Failed to write {len(failed)} lines out of {len(lines)}')
         return failed
+
+def zip_files(list_of_files, dest):
+    import zipfile
+    Info(f'Zipping {len(list_of_files)} to {dest}...')
+    with zipfile.ZipFile(dest, 'w') as zipMe:
+        for file in Tqdm(list_of_files):
+            zipMe.write(file, compress_type=zipfile.ZIP_DEFLATED)
+
+def unzip_file(file, dest):
+    import zipfile
+    with zipfile.ZipFile(file, 'r') as zip_ref:
+        zip_ref.extractall(dest)
 
 '''108 ways to orgasm
 * Walk on soil
