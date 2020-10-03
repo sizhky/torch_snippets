@@ -4,7 +4,7 @@ __all__ = [
     'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L',
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
     'plt','PIL','puttext','randint','rand','read','readlines','readPIL','rect','rename_batch','resize','see',
-    'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','writelines','zip_files','unzip_file'
+    'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','writelines','zip_files','unzip_file',
     'Info','Warn','Debug','Excep'
 ]
 
