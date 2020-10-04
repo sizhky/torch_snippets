@@ -4,7 +4,7 @@
 - [ ] make plot_epochs even faster
 '''
 
-__all__ = ['torch','th','torchvision','T','nn','np','F','Dataset','DataLoader','optim','Report','Reshape','Permute']
+__all__ = ['torch','th','torchvision','T','transforms','nn','np','F','Dataset','DataLoader','optim','Report','Reshape','Permute','device']
 
 import torch, torchvision
 import torch as th
@@ -18,6 +18,8 @@ import time, numpy as np, matplotlib.pyplot as plt
 from collections import namedtuple, defaultdict
 import re
 from itertools import dropwhile, takewhile
+
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class Reshape(nn.Module):
     def __init__(self, *shape):

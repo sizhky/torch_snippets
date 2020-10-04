@@ -337,6 +337,7 @@ def subplots(ims, nc=5, figsize=(5,5), **kwargs):
     nr = (len(ims)//nc) if len(ims)%nc==0 else (1+len(ims)//nc)
     logger.info(f'plotting {len(ims)} images in a grid of {nr}x{nc} @ {figsize}')
     figsize = kwargs.pop('sz', figsize)
+    figsize = (figsize,figsize) if isinstance(figsize, int) else figsize
     fig, axes = plt.subplots(nr,nc,figsize=figsize)
     axes = axes.flat
     fig.suptitle(kwargs.pop('suptitle',''))
@@ -469,7 +470,7 @@ def writelines(lines, file):
 
 def zip_files(list_of_files, dest):
     import zipfile
-    Info(f'Zipping {len(list_of_files)} to {dest}...')
+    Info(f'Zipping {len(list_of_files)} files to {dest}...')
     with zipfile.ZipFile(dest, 'w') as zipMe:
         for file in Tqdm(list_of_files):
             zipMe.write(file, compress_type=zipfile.ZIP_DEFLATED)
