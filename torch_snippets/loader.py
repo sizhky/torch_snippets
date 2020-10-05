@@ -5,6 +5,7 @@ __all__ = [
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
     'plt','PIL','puttext','randint','rand','read','readlines','readPIL','rect','rename_batch','resize','see',
     'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','writelines','zip_files','unzip_file',
+    'remove_duplicates', 'md5',
     'Info','Warn','Debug','Excep'
 ]
 
@@ -479,6 +480,24 @@ def unzip_file(file, dest):
     import zipfile
     with zipfile.ZipFile(file, 'r') as zip_ref:
         zip_ref.extractall(dest)
+
+def md5(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+def remove_duplicates(files):
+    hashes = [md5(f) for f in files]
+    df = pd.DataFrame({'f':files, 'h': hashes})
+    x = df.drop_duplicates('h')
+    y = diff(files, x.f)
+    for i in y:
+        os.rename(i, './x')
+    # !rm ./x
+    return
+
 
 '''108 ways to orgasm
 * Walk on soil
