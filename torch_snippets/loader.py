@@ -498,10 +498,3 @@ def remove_duplicates(files):
     # !rm ./x
     return
 
-
-'''108 ways to orgasm
-* Walk on soil
-* Drink clean water, eyes closed and sitting
-* When a sneeze comes, breath in instead of out
-* Feel your heart at the moment of sleep
-'''

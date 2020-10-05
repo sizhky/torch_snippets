@@ -3,7 +3,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-VERSION = '0.227'
+VERSION = '0.228'
 setup(
   name = 'torch_snippets',         # How you named your package folder (MyLib)
   packages = ['torch_snippets'],   # Chose the same as "name"
