@@ -4,7 +4,7 @@ __all__ = [
     'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L',
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
     'plt','PIL','puttext','randint','rand','read','readlines','readPIL','rect','rename_batch','resize','see',
-    'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','writelines','zip_files','unzip_file',
+    'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','writelines','zip_files','unzip_file','xywh2xyXY',
     'remove_duplicates', 'md5',
     'Info','Warn','Debug','Excep'
 ]
@@ -396,11 +396,11 @@ def resize(im:np.ndarray, sz:[float,('H','W')]):
             H,W = sz
     return cv2.resize(im, (W,H))
 
-def readlines(fpath):
+def readlines(fpath, silent=False):
     with open(fpath, 'r') as f:
         lines = f.read().split('\n')
         lines = [l.strip() for l in lines if l.strip()!='']
-        Info(f'loaded {len(lines)} lines')
+        if not silent: Info(f'loaded {len(lines)} lines')
         return lines
 
 def resize(im:np.ndarray, sz:[float,('H','W'),(str,('H','W'))]):
@@ -498,3 +498,9 @@ def remove_duplicates(files):
     # !rm ./x
     return
 
+
+def xywh2xyXY(bbs):
+    if len(bbs) == 4 and isinstance(bbs[0], int):
+        x,y,w,h = bbs
+        return BBox(x,y,x+w,y+h)
+    return [xywh2xyXY(bb) for bb in bbs]
