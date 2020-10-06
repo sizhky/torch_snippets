@@ -335,6 +335,8 @@ class BB:
 def subplots(ims, nc=5, figsize=(5,5), **kwargs):
     if len(ims) == 0: return
     titles = kwargs.pop('titles',[None]*len(ims))
+    if isinstance(titles, str):
+        titles = titles.split(',')
     nr = (len(ims)//nc) if len(ims)%nc==0 else (1+len(ims)//nc)
     logger.info(f'plotting {len(ims)} images in a grid of {nr}x{nc} @ {figsize}')
     figsize = kwargs.pop('sz', figsize)
