@@ -337,6 +337,7 @@ def subplots(ims, nc=5, figsize=(5,5), **kwargs):
     titles = kwargs.pop('titles',[None]*len(ims))
     if isinstance(titles, str):
         titles = titles.split(',')
+    if len(ims) <= 3: nc=len(ims)
     nr = (len(ims)//nc) if len(ims)%nc==0 else (1+len(ims)//nc)
     logger.info(f'plotting {len(ims)} images in a grid of {nr}x{nc} @ {figsize}')
     figsize = kwargs.pop('sz', figsize)
@@ -378,7 +379,7 @@ def set_logging_level(level):
     logger.remove()
     logger.add(sys.stderr, level=level)
 
-def resize(im:np.ndarray, sz:[float,('H','W')]):
+def resize_old(im:np.ndarray, sz:[float,('H','W')]):
     h,w = im.shape[:2]
     if isinstance(sz, float):
         frac = sz
@@ -452,7 +453,6 @@ def resize(im:np.ndarray, sz:[float,('H','W'),(str,('H','W'))]):
         elif isinstance(H, float): H = H*h
         elif isinstance(W, float): W = W*h
     H,W = int(H),int(W)
-    print(H,W)
     return cv2.resize(im, (W,H))
 
 def pad(im, sz, pad_value=255):
