@@ -449,9 +449,10 @@ def resize(im:np.ndarray, sz:[float,('H','W'),(str,('H','W'))]):
             H,_ = sz
             f = H/h
             W = f*w
-        if isinstance(H, float): H = H*h
-        if isinstance(W, float): W = W*h
+        elif isinstance(H, float): H = H*h
+        elif isinstance(W, float): W = W*h
     H,W = int(H),int(W)
+    print(H,W)
     return cv2.resize(im, (W,H))
 
 def pad(im, sz, pad_value=255):
