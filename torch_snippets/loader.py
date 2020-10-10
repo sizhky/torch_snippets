@@ -52,7 +52,12 @@ class Timer:
         elapsed = time.time() - self.start
         print('\r{}\t{}/{} ({:.2f}s - {:.2f}s remaining)'.format(info, ix+1, self.N, elapsed, (self.N-ix)*(elapsed/(ix+1))), end='')
 
-line = lambda N=66: print('='*N)
+old_line = lambda N=66: print('='*N)
+def line(string='', lw=66, upper=True, pad='='):
+    i = string.center(lw, pad)
+    if upper: i = i.upper()
+    print(i)
+
 def see(*X, N=66): list(map(lambda x: print('='*N+'\n{}'.format(x)), X))+[print('='*N)]
 def flatten(lists): return [y for x in lists for y in  x]
 unique = lambda l: list(sorted(set(l)))
@@ -72,9 +77,10 @@ def find(item, List):
     filtered = [i for i in List if item in i]
     if len(filtered) == 1: return filtered[0]
     return filtered
+
 def inspect(*arrays, **kwargs):
     '''
-    shows shape, min, max and mean of an array/list of oreys
+    shows shape, min, max and mean of an array/list/dict of oreys
     Usage:
     >>> inspect(arr1, arr2, arr3, [arr4,arr5,arr6], arr7, [arr8, arr9],...)
     where every `arr` is  assume to have a .shape, .min, .max and .mean methods
@@ -85,9 +91,10 @@ def inspect(*arrays, **kwargs):
         if ',' in names: names = names.split(',')
         assert len(names) == len(arrays), 'Give as many names as there are tensors to inspect'
     line()
+
     for ix, arr in enumerate(arrays):
         name = '\t'*depth
-        name = name + f'{names[ix].upper().strip()}:\n' if names is not None else name
+        name = name + f'{names[ix].upper().strip()}:\n' + name if names is not None else name
         name = name
         typ = type(arr).__name__
 
@@ -96,9 +103,18 @@ def inspect(*arrays, **kwargs):
                 print('[]')
             else:
                 print(f'{name}List Of {len(arr)} items')
-                inspect(*arr[:3], depth=depth+1)
-                print('\t'*(depth+1)+f'... ... {len(arr) - 3} more items')
-                line()
+                inspect(*arr[:5], depth=depth+1)
+                if len(arr) > 5:
+                    print('\t'*(depth+1)+f'... ... {len(arr) - 5} more items')
+
+        elif isinstance(arr, dict):
+            print(f'{name}Dict Of {len(arr)} items')
+            for ix,(k,v) in enumerate(arr.items()):
+                # print(f'\t'*(depth)+f' {k}'.upper())
+                inspect(v, depth=depth+1, names=[k])
+                if ix == 4: break
+            if len(arr) > 5:
+                print('\t'*(depth)+f'... ... {len(arr) - 5} more items')
 
         elif hasattr(arr, 'shape'):
             sh, m, M, dtype = arr.shape, arr.min(), arr.max(), arr.dtype
@@ -110,6 +126,7 @@ def inspect(*arrays, **kwargs):
             ln = len(arr)
             print(f'{name}{typ} Length: {ln}')
             line()
+
 randint = lambda high: np.random.randint(high)
 def Tqdm(x, total=None, desc=None):
     total = len(x) if total is None else total
