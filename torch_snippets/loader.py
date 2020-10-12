@@ -385,9 +385,9 @@ class L(list):
 uint = lambda im: (255*im).astype(np.uint8)
 Blank = lambda *sh: uint(np.ones(sh))
 
-def pdfilter(df, column, condition):
+def pdfilter(df, column, condition, silent=True):
     _df = df[df[column].map(condition)]
-    logger.debug(f'Filtering {len(_df)} items out of {len(df)}')
+    if silent: logger.debug(f'Filtering {len(_df)} items out of {len(df)}')
     return _df
 def pdsort(df, column, asc=True):
     df.sort_values(column, ascending=asc)
