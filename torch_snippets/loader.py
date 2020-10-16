@@ -3,13 +3,13 @@ __all__ = [
     'B','Blank','BB','bbfy','C','choose','common','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
     'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L',
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
-    'plt','PIL','puttext','randint','rand','read','readlines','readPIL','rect','rename_batch','resize','see',
-    'set_logging_level','show','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','writelines','zip_files','unzip_file','xywh2xyXY',
+    'plt','PIL','puttext','randint','rand','re','read','readlines','readPIL','rect','rename_batch','resize','see',
+    'set_logging_level','show','store_attr','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','writelines','zip_files','unzip_file','xywh2xyXY',
     'remove_duplicates', 'md5',
     'Info','Warn','Debug','Excep'
 ]
 
-import cv2, glob, numpy as np, pandas as pd, tqdm, os, sys
+import cv2, glob, numpy as np, pandas as pd, tqdm, os, sys, re
 import PIL
 from PIL import Image
 try:
@@ -524,3 +524,22 @@ def xywh2xyXY(bbs):
         x,y,w,h = bbs
         return BBox(x,y,x+w,y+h)
     return [xywh2xyXY(bb) for bb in bbs]
+
+def _store_attr(self, anno, **attrs):
+    for n,v in attrs.items():
+        if n in anno: v = anno[n](v)
+        setattr(self, n, v)
+        self.__stored_args__[n] = v
+
+def store_attr(names=None, self=None, but=None, cast=False, **attrs):
+    "Store params named in comma-separated `names` from calling context into attrs in `self`"
+    fr = sys._getframe(1)
+    args = fr.f_code.co_varnames[:fr.f_code.co_argcount]
+    if self: args = ('self', *args)
+    else: self = fr.f_locals[args[0]]
+    if not hasattr(self, '__stored_args__'): self.__stored_args__ = {}
+    anno = self.__class__.__init__.__annotations__ if cast else {}
+    if attrs: return _store_attr(self, anno, **attrs)
+    ns = re.split(', *', names) if names else args[1:]
+    but = [] if not but else but
+    _store_attr(self, anno, **{n:fr.f_locals[n] for n in ns if n not in but})
