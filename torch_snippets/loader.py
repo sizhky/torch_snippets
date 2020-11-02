@@ -1,11 +1,14 @@
-'V1.16'
+'V1.17'
 __all__ = [
-    'B','Blank','BB','bbfy','C','choose','common','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
+    'B','Blank','C','choose','common','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
     'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L',
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
-    'plt','PIL','puttext','randint','rand','re','read','readlines','readPIL','rect','rename_batch','resize','see',
-    'set_logging_level','show','store_attr','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','writelines','zip_files','unzip_file','xywh2xyXY',
-    'remove_duplicates', 'md5',
+    'plt','PIL','puttext','randint','rand','re','read','readPIL','rect','rename_batch','resize','rotate','see',
+    'set_logging_level','show','store_attr','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','write',
+    'readlines','writelines',
+    'zip_files','unzip_file',
+    'BB','bbfy','xywh2xyXY',
+    'remove_duplicates','md5',
     'Info','Warn','Debug','Excep'
 ]
 
@@ -215,6 +218,14 @@ def puttext(im, string, org, scale=1, color=(255,0,0), thickness=2):
     org = x, int(y+30*scale)
     cv2.putText(im, str(string), org, cv2.FONT_HERSHEY_COMPLEX, scale, color, thickness)
 
+def rotate(im, angle, return_type=np.ndarray):
+    pad = np.median(np.array(im))
+    pad = int(pad)
+    if isinstance(im, np.ndarray):
+        im = Image.fromarray(im)
+    im = im.rotate(angle, expand=1, fillcolor=(pad,pad,pad))
+    return np.array(im)
+
 def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
          texts=None, bb_colors=None, cmap='gray', grid=False,
          save_path=None, text_sz=15, df=None, **kwargs):
@@ -247,6 +258,9 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         except:
             pass
         bbs = df2bbs(df) # assumes df has 'x,y,X,Y' columns
+        _x_ = df.x.max()
+        rel = True if _x_ < 1 else False
+        if rel: bbs = [bb.absolute((h,w)) for bb in bbs]
     if isinstance(texts, pd.core.series.Series): texts = texts.tolist()
     if texts is not None:
         if hasattr(texts, 'shape'):
@@ -273,7 +287,6 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         if hasattr(bbs, 'shape'):
             if isinstance(bbs, torch.Tensor): bbs = bbs.cpu().detach().numpy()
             bbs = bbs.astype(np.uint32).tolist()
-
         bb_colors = [[randint(255) for _ in range(3)] for _ in range(len(bbs))] if bb_colors is 'random' else bb_colors
         bb_colors = [None]*len(bbs) if bb_colors is None else bb_colors
         img = C(img) if len(img.shape) == 2 else img
@@ -308,10 +321,10 @@ def loaddill(fpath):
 
 class BB:
     def __init__(self, *bb):
-        rel = False
         # assert len(bb) == 4, 'expecting a list/tuple of 4 values respectively for (x,y,X,Y)'
         if len(bb) == 4: x,y,X,Y = bb
         elif len(bb) == 1: (x,y,X,Y), = bb
+        rel = True if max(x,y,X,Y) < 1 else False
         if not rel: x,y,X,Y = map(lambda i: int(round(i)), (x,y,X,Y))
         self.bb = x,y,X,Y
         self.x, self.y, self.X, self.Y = x,y,X,Y
@@ -334,7 +347,10 @@ class BB:
         return BB(round(sf_x*self.x), round(sf_y*self.y), round(sf_x*self.X), round(sf_y*self.Y))
     def relative(self, dim:('h','w')):
         h, w = dim
-        return BB(self.x/w, self.y/h, self.X/w, self.Y/h, rel=True)
+        return BB(self.x/w, self.y/h, self.X/w, self.Y/h)
+    def absolute(self, dim:('h','w')):
+        h, w = dim
+        return BB(self.x*w, self.y*h, self.X*w, self.Y*h)
     def local_to(self, _bb):
         x,y,X,Y = self
         a,b,A,B = _bb
@@ -543,3 +559,8 @@ def store_attr(names=None, self=None, but=None, cast=False, **attrs):
     ns = re.split(', *', names) if names else args[1:]
     but = [] if not but else but
     _store_attr(self, anno, **{n:fr.f_locals[n] for n in ns if n not in but})
+
+
+def write(image, fpath):
+    makedir(parent(fpath))
+    cv2.imwrite(fpath, image)
