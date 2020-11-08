@@ -98,7 +98,7 @@ class Report:
         avgs = defaultdict(list)
         keys = self.logged if keys is None else keys
         from tqdm import trange
-        for epoch in trange(self.n_epochs):
+        for epoch in trange(self.n_epochs+1):
             for k in keys:
                 items = takewhile(lambda x: epoch-1<=x.pos<epoch,
                     dropwhile(lambda x: (epoch-1>x.pos or x.pos>epoch), getattr(self,k)))

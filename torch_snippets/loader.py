@@ -258,9 +258,6 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         except:
             pass
         bbs = df2bbs(df) # assumes df has 'x,y,X,Y' columns
-        _x_ = df.x.max()
-        rel = True if _x_ < 1 else False
-        if rel: bbs = [bb.absolute((h,w)) for bb in bbs]
     if isinstance(texts, pd.core.series.Series): texts = texts.tolist()
     if texts is not None:
         if hasattr(texts, 'shape'):
@@ -287,6 +284,9 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         if hasattr(bbs, 'shape'):
             if isinstance(bbs, torch.Tensor): bbs = bbs.cpu().detach().numpy()
             bbs = bbs.astype(np.uint32).tolist()
+        _x_ = np.array(bbs).max()
+        rel = True if _x_ < 1 else False
+        if rel: bbs = [bb.absolute((h,w)) for bb in bbs]
         bb_colors = [[randint(255) for _ in range(3)] for _ in range(len(bbs))] if bb_colors is 'random' else bb_colors
         bb_colors = [None]*len(bbs) if bb_colors is None else bb_colors
         img = C(img) if len(img.shape) == 2 else img
