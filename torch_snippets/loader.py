@@ -150,7 +150,7 @@ def crop_from_bb(im, bb):
     x,y,X,Y = bb
     return im.copy()[y:Y,x:X]
 def rect(im, bb, c=None, th=2):
-    c = (0,255,0) if c is None else c
+    c = 'g' if c is None else c
     _d = {'r':(255,0,0), 'g':(0,255,0), 'b':(0,0,255)}
     c = _d[c] if isinstance(c, str) else c
     x,y,X,Y = bb
