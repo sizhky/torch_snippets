@@ -151,9 +151,10 @@ def crop_from_bb(im, bb):
     return im.copy()[y:Y,x:X]
 def rect(im, bb, c=None, th=2):
     c = (0,255,0) if c is None else c
+    _d = {'r':(255,0,0), 'g':(0,255,0), 'b':(0,0,255)}
+    c = _d[c] if isinstance(c, str) else c
     x,y,X,Y = bb
     cv2.rectangle(im, (x,y), (X,Y), c, th)
-
 def B(im, th=180):
     'Binarize Image'
     return 255*(im > th).astype(np.uint8)
@@ -288,6 +289,7 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         rel = True if _x_ < 1 else False
         if rel: bbs = [bb.absolute((h,w)) for bb in bbs]
         bb_colors = [[randint(255) for _ in range(3)] for _ in range(len(bbs))] if bb_colors is 'random' else bb_colors
+        bb_colors = [bb_colors]*len(bbs) if isinstance(bb_colors, str) else bb_colors
         bb_colors = [None]*len(bbs) if bb_colors is None else bb_colors
         img = C(img) if len(img.shape) == 2 else img
         [rect(img, tuple(bb), c=bb_colors[ix], th=th) for ix,bb in enumerate(bbs)]
