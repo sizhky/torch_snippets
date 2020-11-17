@@ -287,7 +287,7 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
             bbs = bbs.astype(np.uint32).tolist()
         _x_ = np.array(bbs).max()
         rel = True if _x_ < 1 else False
-        if rel: bbs = [bb.absolute((h,w)) for bb in bbs]
+        if rel: bbs = [BB(bb).absolute((h,w)) for bb in bbs]
         bb_colors = [[randint(255) for _ in range(3)] for _ in range(len(bbs))] if bb_colors is 'random' else bb_colors
         bb_colors = [bb_colors]*len(bbs) if isinstance(bb_colors, str) else bb_colors
         bb_colors = [None]*len(bbs) if bb_colors is None else bb_colors
