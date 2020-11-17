@@ -260,16 +260,6 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
             pass
         bbs = df2bbs(df) # assumes df has 'x,y,X,Y' columns
     if isinstance(texts, pd.core.series.Series): texts = texts.tolist()
-    if texts is not None:
-        if hasattr(texts, 'shape'):
-            if isinstance(texts, torch.Tensor): texts = texts.cpu().detach().numpy()
-            texts = texts.tolist()
-        if texts is 'ixs': texts = [i for i in range(len(bbs))]
-        if callable(texts): texts = [texts(bb) for bb in bbs]
-        assert len(texts) == len(bbs), 'Expecting as many texts as bounding boxes'
-        texts = list(map(str, texts))
-        texts = ['*' if len(t.strip())==0 else t for t in texts]
-        [puttext(ax, text.replace('$','\$'), tuple(bbs[ix][:2]), size=text_sz) for ix,text in enumerate(texts)]
     if confs:
         colors = [[255, 0, 0], [223, 111, 0], [191, 191, 0], [79, 159, 0], [0, 128, 0]]
         bb_colors = [colors[ int(cnf*5)-1 ] for cnf in confs]
@@ -293,7 +283,16 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         bb_colors = [None]*len(bbs) if bb_colors is None else bb_colors
         img = C(img) if len(img.shape) == 2 else img
         [rect(img, tuple(bb), c=bb_colors[ix], th=th) for ix,bb in enumerate(bbs)]
-
+    if texts is not None:
+        if hasattr(texts, 'shape'):
+            if isinstance(texts, torch.Tensor): texts = texts.cpu().detach().numpy()
+            texts = texts.tolist()
+        if texts is 'ixs': texts = [i for i in range(len(bbs))]
+        if callable(texts): texts = [texts(bb) for bb in bbs]
+        assert len(texts) == len(bbs), 'Expecting as many texts as bounding boxes'
+        texts = list(map(str, texts))
+        texts = ['*' if len(t.strip())==0 else t for t in texts]
+        [puttext(ax, text.replace('$','\$'), tuple(bbs[ix][:2]), size=text_sz) for ix,text in enumerate(texts)]
     if title: ax.set_title(title, fontdict=kwargs.pop('fontdict', None))
     ax.imshow(img, cmap=cmap, **kwargs)
 
