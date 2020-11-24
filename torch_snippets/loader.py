@@ -4,7 +4,7 @@ __all__ = [
     'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L',
     'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
     'plt','PIL','puttext','randint','rand','re','read','readPIL','rect','rename_batch','resize','rotate','see',
-    'set_logging_level','show','store_attr','stem','stems','subplots','sys','tqdm','Tqdm','Timer','unique','uint','write',
+    'set_logging_level','show','store_attr','stem','stems','subplots','sys','tqdm','Tqdm','trange','Timer','unique','uint','write',
     'readlines','writelines',
     'zip_files','unzip_file',
     'BB','bbfy','xywh2xyXY',
@@ -70,7 +70,7 @@ def choose(List, n=1):
     else:      return [choose(List) for _ in range(n)]
 
 rand = lambda : ''.join(choose(list('1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'), n=6))
-def find(item, List):
+def find(item, List, match_stem=False):
     '''Find an `item` in a `List`
     >>> find('abc', ['ijk','asdfs','dfsabcdsf','lmnop'])
     'dgsabcdsf'
@@ -78,9 +78,10 @@ def find(item, List):
     ['/tmp/file1.jpg', '/tmp/file1.png']
     '''
     filtered = [i for i in List if item in i]
+    if match_stem and len(filtered) > 1:
+        filtered = [f for f in filtered if stem(f)==item]
     if len(filtered) == 1: return filtered[0]
     return filtered
-
 def inspect(*arrays, **kwargs):
     '''
     shows shape, min, max and mean of an array/list/dict of oreys
@@ -135,6 +136,7 @@ def Tqdm(x, total=None, desc=None):
     total = len(x) if total is None else total
     return tqdm.tqdm(x, total=total, desc=desc)
 
+from tqdm import trange
 now = lambda : str(datetime.datetime.now())[:-10].replace(' ', '_')
 
 def read(fname, mode=0):
@@ -147,8 +149,14 @@ def readPIL(fname, mode='RGB'):
     return Image.open(str(fname)).convert(mode.upper())
 
 def crop_from_bb(im, bb):
+    if isinstance(bb[0], list):
+        return [crop_from_bb(im, _bb) for _bb in bb]
     x,y,X,Y = bb
+    if max(x,y,X,Y) < 1.5:
+        h,w = im.shape[:2]
+        x,y,X,Y = BB(bb).absolute((h,w))
     return im.copy()[y:Y,x:X]
+
 def rect(im, bb, c=None, th=2):
     c = 'g' if c is None else c
     _d = {'r':(255,0,0), 'g':(0,255,0), 'b':(0,0,255)}
@@ -276,7 +284,7 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
             if isinstance(bbs, torch.Tensor): bbs = bbs.cpu().detach().numpy()
             bbs = bbs.astype(np.uint32).tolist()
         _x_ = np.array(bbs).max()
-        rel = True if _x_ < 1 else False
+        rel = True if _x_ < 1.5 else False
         if rel: bbs = [BB(bb).absolute((h,w)) for bb in bbs]
         bb_colors = [[randint(255) for _ in range(3)] for _ in range(len(bbs))] if bb_colors is 'random' else bb_colors
         bb_colors = [bb_colors]*len(bbs) if isinstance(bb_colors, str) else bb_colors
@@ -370,7 +378,8 @@ def subplots(ims, nc=5, figsize=(5,5), **kwargs):
     if len(ims) == 0: return
     titles = kwargs.pop('titles',[None]*len(ims))
     if isinstance(titles, str):
-        titles = titles.split(',')
+        if titles=='ixs': titles = [str(i) for i in range(len(ims))]
+        else: titles = titles.split(',')
     if len(ims) <= 3: nc=len(ims)
     nr = (len(ims)//nc) if len(ims)%nc==0 else (1+len(ims)//nc)
     logger.info(f'plotting {len(ims)} images in a grid of {nr}x{nc} @ {figsize}')
@@ -433,8 +442,8 @@ def resize_old(im:np.ndarray, sz:[float,('H','W')]):
             H,W = sz
     return cv2.resize(im, (W,H))
 
-def readlines(fpath, silent=False):
-    with open(fpath, 'r') as f:
+def readlines(fpath, silent=False, encoding=None):
+    with open(fpath, 'r', encoding=encoding) as f:
         lines = f.read().split('\n')
         lines = [l.strip() for l in lines if l.strip()!='']
         if not silent: Info(f'loaded {len(lines)} lines')
