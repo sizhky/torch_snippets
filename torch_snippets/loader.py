@@ -1,13 +1,14 @@
-'V1.17'
 __all__ = [
-    'B','Blank','C','choose','common','crop_from_bb','cv2', 'dumpdill','df2bbs','diff','find',
-    'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L',
-    'line','loaddill','logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
+    'B','Blank','C','choose','common','crop_from_bb','cv2','diff','find',
+    'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L', 'lzip',
+    'line','lines',
+    'dumpdill','loaddill',
+    'logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
     'plt','PIL','puttext','randint','rand','re','read','readPIL','rect','rename_batch','resize','rotate','see',
     'set_logging_level','show','store_attr','stem','stems','subplots','sys','tqdm','Tqdm','trange','Timer','unique','uint','write',
     'readlines','writelines',
     'zip_files','unzip_file',
-    'BB','bbfy','xywh2xyXY',
+    'BB','bbfy','xywh2xyXY','df2bbs',
     'remove_duplicates','md5',
     'Info','Warn','Debug','Excep'
 ]
@@ -28,6 +29,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 import pdb, datetime, dill
 from pathlib import Path
+Path.ls = lambda x: list(x.iterdir())
 try:
     from loguru import logger
 except:
@@ -60,6 +62,12 @@ def line(string='', lw=66, upper=True, pad='='):
     i = string.center(lw, pad)
     if upper: i = i.upper()
     print(i)
+
+def lines(n=3, string='', **kwargs):
+    assert n//2 != (n-1)//2, '`n` should be odd'
+    for _ in n//2: line(**kwargs)
+    line(string=string, **kwargs)
+    for _ in n//2: line(**kwargs)
 
 def see(*X, N=66): list(map(lambda x: print('='*N+'\n{}'.format(x)), X))+[print('='*N)]
 def flatten(lists): return [y for x in lists for y in  x]
@@ -149,7 +157,7 @@ def readPIL(fname, mode='RGB'):
     return Image.open(str(fname)).convert(mode.upper())
 
 def crop_from_bb(im, bb):
-    if isinstance(bb[0], list):
+    if isinstance(bb, list):
         return [crop_from_bb(im, _bb) for _bb in bb]
     x,y,X,Y = bb
     if max(x,y,X,Y) < 1.5:
@@ -208,20 +216,19 @@ def rename_batch(folder, func, debug=False, one_file=False):
             os.rename(source, destin)
         # !echo {source.replace(' ','\ ')} --\> {destin.replace(' ','\ ')} >> {logfile}
         if one_file: break
+
 def common(a, b):
     """Wrapper around set intersection"""
     x = list(set(a).intersection(set(b)))
     logger.info(f'{len(x)} items found common from containers of {len(a)} and {len(b)} items respectively')
     return sorted(x)
-def diff(a, b, rev=False):
-    if not rev:
-        o = list(sorted(set(a) - set(b)))
-        logger.info(f'{len(o)} items found to differ')
-        return o
-    else:
-        o = list(sorted(set(b) - set(a)))
-        logger.info(f'{len(o)} items found to differ')
-        return o
+
+def diff(a, b, rev=False, silent=False):
+    if not rev: o = list(sorted(set(a) - set(b)))
+    else      : o = list(sorted(set(b) - set(a)))
+    if not silent: logger.info(f'{len(o)} items found to differ')
+    return o
+
 def puttext(im, string, org, scale=1, color=(255,0,0), thickness=2):
     x,y = org
     org = x, int(y+30*scale)
@@ -304,7 +311,9 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
     if title: ax.set_title(title, fontdict=kwargs.pop('fontdict', None))
     ax.imshow(img, cmap=cmap, **kwargs)
 
-    if not grid: ax.set_axis_off()
+    if grid: ax.grid()
+    else   : ax.set_axis_off()
+
     if save_path:
         fig.savefig(save_path)
         return
@@ -574,3 +583,5 @@ def store_attr(names=None, self=None, but=None, cast=False, **attrs):
 def write(image, fpath):
     makedir(parent(fpath))
     cv2.imwrite(fpath, image)
+
+def lzip(*x): return list(zip(*x))
