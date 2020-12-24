@@ -64,10 +64,10 @@ def line(string='', lw=66, upper=True, pad='='):
     print(i)
 
 def lines(n=3, string='', **kwargs):
-    assert n//2 != (n-1)//2, '`n` should be odd'
-    for _ in n//2: line(**kwargs)
+    assert n//2 == (n-1)//2, '`n` should be odd'
+    for _ in range(n//2): line(**kwargs)
     line(string=string, **kwargs)
-    for _ in n//2: line(**kwargs)
+    for _ in range(n//2): line(**kwargs)
 
 def see(*X, N=66): list(map(lambda x: print('='*N+'\n{}'.format(x)), X))+[print('='*N)]
 def flatten(lists): return [y for x in lists for y in  x]
@@ -389,7 +389,7 @@ def subplots(ims, nc=5, figsize=(5,5), **kwargs):
     if isinstance(titles, str):
         if titles=='ixs': titles = [str(i) for i in range(len(ims))]
         else: titles = titles.split(',')
-    if len(ims) <= 3: nc=len(ims)
+    if len(ims) <= 5 and nc==5: nc=len(ims)
     nr = (len(ims)//nc) if len(ims)%nc==0 else (1+len(ims)//nc)
     logger.info(f'plotting {len(ims)} images in a grid of {nr}x{nc} @ {figsize}')
     figsize = kwargs.pop('sz', figsize)
@@ -422,8 +422,9 @@ Blank = lambda *sh: uint(np.ones(sh))
 
 def pdfilter(df, column, condition, silent=True):
     _df = df[df[column].map(condition)]
-    if silent: logger.debug(f'Filtering {len(_df)} items out of {len(df)}')
+    if not silent: logger.debug(f'Filtering {len(_df)} items out of {len(df)}')
     return _df
+
 def pdsort(df, column, asc=True):
     df.sort_values(column, ascending=asc)
 
