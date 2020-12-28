@@ -3,7 +3,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-VERSION = '0.242'
+VERSION = '0.243'
 setup(
   name = 'torch_snippets',         # How you named your package folder (MyLib)
   packages = ['torch_snippets'],   # Chose the same as "name"
@@ -23,7 +23,6 @@ setup(
           'tqdm',
           'matplotlib',
           'pandas',
-          'opencv-python-headless',
           'Pillow',
       ],
   classifiers=[

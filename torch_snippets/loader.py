@@ -13,7 +13,7 @@ __all__ = [
     'Info','Warn','Debug','Excep'
 ]
 
-import cv2, glob, numpy as np, pandas as pd, tqdm, os, sys, re
+import glob, numpy as np, pandas as pd, tqdm, os, sys, re
 import PIL
 from PIL import Image
 try:
@@ -44,6 +44,9 @@ Info  = lambda x: logger.info(x)
 Warn  = lambda x: logger.warning(x)
 Debug = lambda x: logger.debug(x)
 Excep = lambda x: logger.exception(x)
+
+try: import cv2
+except: logger.warning('Skipping cv2 import')
 
 import time
 class Timer:
