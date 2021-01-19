@@ -35,7 +35,7 @@ class Permute(nn.Module):
         return x.permute(*self.order)
 
 metric = namedtuple('metric', 'pos,val'.split(','))
-info = lambda report: '\t'.join([f'{k}: {v:.3f}' for k,v in report.items()])
+info = lambda report, precision: '\t'.join([f'{k}: {v:.{precision}f}' for k,v in report.items()])
 
 def to_np(x):
     if isinstance(x, torch.Tensor): return x.detach().cpu().numpy()
@@ -43,9 +43,10 @@ def to_np(x):
         return x
 
 class Report:
-    def __init__(self, n_epochs):
+    def __init__(self, n_epochs, precision=3):
         self.start = time.time()
         self.n_epochs = n_epochs
+        self.precision = precision
         self.completed_epochs = -1
         self.logged = []
 
@@ -147,10 +148,46 @@ class Report:
         elapsed = '\t({:.2f}s - {:.2f}s remaining)'.format(time.time() - self.start, ((self.n_epochs-pos)/pos)*elapsed)
         current_iteration = f'EPOCH: {pos:.3f}\t'
         if end == '\r':
-            print(f'\r{log}{current_iteration}{info(report)}{elapsed}', end='')
+            print(f'\r{log}{current_iteration}{info(report, self.precision)}{elapsed}', end='')
         else:
-            print(f'\r{log}{current_iteration}{info(report)}{elapsed}', end=end)
+            print(f'\r{log}{current_iteration}{info(report, self.precision)}{elapsed}', end=end)
 
+try:
+    from pytorch_lightning.callbacks.progress import ProgressBarBase
+    class LightningReport(ProgressBarBase):
+        def __init__(self, epochs, print_total=10, precision=4):
+            super().__init__()
+            self.enable = True
+            self.epoch_ix = 0
+            self.report = Report(epochs, precision)
+            self.print_every = epochs // print_total
+
+        def disable(self):
+            self.enable = False
+
+        def on_epoch_end(self, trainer, pl_module):
+            self.epoch_ix += 1
+            if self.epoch_ix % self.print_every == 0:
+                self.report.report_avgs(self.epoch_ix)
+
+        def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx):
+            super().on_train_batch_end(trainer, pl_module, outputs, batch, batch_idx, dataloader_idx)
+            loss = float(trainer.progress_bar_dict["loss"])
+            self.px = self.epoch_ix + ((1+batch_idx)/self.total_train_batches)
+            self.report.record(self.px, trn_loss=loss, end='\r')
+
+        def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx):
+            super().on_train_batch_end(trainer, pl_module, outputs, batch, batch_idx, dataloader_idx)
+            loss = float(trainer.progress_bar_dict["loss"])
+            self.px = self.epoch_ix + ((1+batch_idx)/self.total_val_batches)
+            self.report.record(self.px, val_loss=loss, end='\r')
+
+        def __getattr__(self, attr, **kwargs):
+            return getattr(self.report, attr, **kwargs)
+
+    __all__ += ['LightningReport']
+except:
+    ...
 
 def moving_average(a, n=3) :
     b = np.zeros_like(a)

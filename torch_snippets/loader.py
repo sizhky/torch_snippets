@@ -1,5 +1,5 @@
 __all__ = [
-    'B','Blank','C','choose','common','crop_from_bb','cv2','diff','find',
+    'B','Blank','C','choose','common','crop_from_bb','diff','find',
     'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L', 'lzip',
     'line','lines',
     'dumpdill','loaddill',
@@ -45,7 +45,9 @@ Warn  = lambda x: logger.warning(x)
 Debug = lambda x: logger.debug(x)
 Excep = lambda x: logger.exception(x)
 
-try: import cv2
+try:
+    import cv2
+    __all__ += ['cv2']
 except: logger.warning('Skipping cv2 import')
 
 import time
