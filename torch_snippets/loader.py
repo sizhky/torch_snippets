@@ -3,6 +3,7 @@ __all__ = [
     'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L', 'lzip',
     'line','lines',
     'dumpdill','loaddill',
+    'to_absolute', 'to_relative',
     'logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
     'plt','PIL','puttext','randint','rand','re','read','readPIL','rect','rename_batch','resize','rotate','see',
     'set_logging_level','show','store_attr','stem','stems','subplots','sys','tqdm','Tqdm','trange','Timer','unique','uint','write',
@@ -591,3 +592,26 @@ def write(image, fpath):
     cv2.imwrite(fpath, image)
 
 def lzip(*x): return list(zip(*x))
+
+def to_absolute(df, shape):
+    if isinstance(shape, np.ndarray) and shape.ndim >=2:
+        shape = shape.shape[:2]
+    h, w = shape
+    df = df.copy()
+    def _round(x): return np.round(x.values.astype(np.double)).astype(np.uint16)
+    df['x'] = _round(df.x*w)
+    df['X'] = _round(df.X*w)
+    df['y'] = _round(df.y*h)
+    df['Y'] = _round(df.Y*h)
+    return df
+
+def to_relative(df, shape):
+    if isinstance(shape, np.ndarray) and shape.ndim >=2:
+        shape = shape.shape[:2]
+    h, w = shape
+    df = df.copy()
+    df['x'] = (df.x / w)
+    df['X'] = (df.X / w)
+    df['y'] = (df.y / h)
+    df['Y'] = (df.Y / h)
+    return df
