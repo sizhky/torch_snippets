@@ -170,17 +170,28 @@ try:
             if self.epoch_ix % self.print_every == 0:
                 self.report.report_avgs(self.epoch_ix)
 
+        def prefix_dict_keys(self, prefix, _dict):
+            _d = {}
+            for k in _dict:
+                _d[f'{prefix}_{k}'] = _dict[k]
+            return _d
+
         def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx):
             super().on_train_batch_end(trainer, pl_module, outputs, batch, batch_idx, dataloader_idx)
-            loss = float(trainer.progress_bar_dict["loss"])
+            if isinstance(outputs, list):
+                loss = float(trainer.progress_bar_dict["loss"])
+                outputs = outputs[0][0]['extra']
+                outputs['loss'] = loss
+            outputs = self.prefix_dict_keys('trn', outputs)
             self.px = self.epoch_ix + ((1+batch_idx)/self.total_train_batches)
-            self.report.record(self.px, trn_loss=loss, end='\r')
+            self.report.record(self.px, end='\r', **outputs)
 
         def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx):
             super().on_train_batch_end(trainer, pl_module, outputs, batch, batch_idx, dataloader_idx)
             loss = float(trainer.progress_bar_dict["loss"])
             self.px = self.epoch_ix + ((1+batch_idx)/self.total_val_batches)
-            self.report.record(self.px, val_loss=loss, end='\r')
+            outputs = self.prefix_dict_keys('val', outputs)
+            self.report.record(self.px, end='\r', **outputs)
 
         def __getattr__(self, attr, **kwargs):
             return getattr(self.report, attr, **kwargs)

@@ -4,7 +4,8 @@ __all__ = [
     'line','lines',
     'dumpdill','loaddill',
     'to_absolute', 'to_relative',
-    'logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','pdb',
+    'enlarge_bbs', 'shrink_bbs',
+    'logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','P','pdb',
     'plt','PIL','puttext','randint','rand','re','read','readPIL','rect','rename_batch','resize','rotate','see',
     'set_logging_level','show','store_attr','stem','stems','subplots','sys','tqdm','Tqdm','trange','Timer','unique','uint','write',
     'readlines','writelines',
@@ -31,6 +32,7 @@ import matplotlib.patheffects as path_effects
 import pdb, datetime, dill
 from pathlib import Path
 Path.ls = lambda x: list(x.iterdir())
+Path.__repr__ = lambda x: f"`{x}`"
 try:
     from loguru import logger
 except:
@@ -199,8 +201,11 @@ def parent(fpath):
     if out == '': return './'
     else:         return out
 extn = lambda x: x.split('.')[-1]
-def Glob(x, silent=False):
+def Glob(x, extns=None, silent=False):
     files = glob.glob(x+'/*') if '*' not in x else glob.glob(x)
+    if extns:
+        if isinstance(extns, str): extns.split(',')
+        files = [f for f in files if any([f.endswith(ext) for ext in extns])]
     if not silent: logger.info('{} files found at {}'.format(len(files), x))
     return files
 
@@ -250,9 +255,10 @@ def rotate(im, angle, return_type=np.ndarray):
 
 def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
          texts=None, bb_colors=None, cmap='gray', grid=False,
-         save_path=None, text_sz=15, df=None, **kwargs):
+         save_path=None, text_sz=15, df=None, pts=None, **kwargs):
     'show an image'
     try:
+        if isinstance(img, (str, Path)): img = read(img, 1)
         if isinstance(img, torch.Tensor): img = img.cpu().detach().numpy().copy()
         if isinstance(img, PIL.Image.Image): img = np.array(img)
     except: ...
@@ -315,6 +321,12 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         texts = ['*' if len(t.strip())==0 else t for t in texts]
         [puttext(ax, text.replace('$','\$'), tuple(bbs[ix][:2]), size=text_sz) for ix,text in enumerate(texts)]
     if title: ax.set_title(title, fontdict=kwargs.pop('fontdict', None))
+    if pts:
+        pts = np.array(pts)
+        if pts.max() < 1.1:
+            pts = (pts * np.array([[w,h]])).astype(np.uint16).tolist()
+        ax.scatter(*zip(*pts))
+
     ax.imshow(img, cmap=cmap, **kwargs)
 
     if grid: ax.grid()
@@ -615,3 +627,15 @@ def to_relative(df, shape):
     df['y'] = (df.y / h)
     df['Y'] = (df.Y / h)
     return df
+
+def enlarge_bbs(bbs, eps=0.2):
+    "enlarge all `bbs` by `eps` fraction (or eps*100 percent)"
+    shs = [(bb.h,bb.w) for bb in bbs]
+    return [BB(x-(w*eps/2), y-(h*eps/2), X+(w*eps/2), Y+(h*eps/2))\
+            for (x,y,X,Y),(h,w) in zip(bbs, shs)]
+
+def shrink_bbs(bbs, eps=0.2):
+    "shrink all `bbs` by `eps` fraction (or eps*100 percent)"
+    shs = [(bb.h,bb.w) for bb in bbs]
+    return [BB(x+(w*eps/2), y+(h*eps/2), X-(w*eps/2), Y-(h*eps/2))\
+            for (x,y,X,Y),(h,w) in zip(bbs, shs)]
