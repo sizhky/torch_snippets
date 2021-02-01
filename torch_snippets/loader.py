@@ -31,6 +31,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 import pdb, datetime, dill
 from pathlib import Path
+P = Path
 Path.ls = lambda x: list(x.iterdir())
 Path.__repr__ = lambda x: f"`{x}`"
 try:
@@ -555,6 +556,7 @@ def unzip_file(file, dest):
     with zipfile.ZipFile(file, 'r') as zip_ref:
         zip_ref.extractall(dest)
 
+import hashlib
 def md5(fname):
     hash_md5 = hashlib.md5()
     with open(fname, "rb") as f:
