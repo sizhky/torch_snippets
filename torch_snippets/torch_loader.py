@@ -98,7 +98,12 @@ class Report:
             fig, ax = plt.subplots(figsize=kwargs.get('figsize', sz))
         avgs = defaultdict(list)
         keys = self.logged if keys is None else keys
+
         from tqdm import trange
+        if isinstance(keys, str):
+            key_pattern = keys
+            keys = [key for key in self.logged if re.search(key_pattern, key)]
+
         for epoch in trange(self.n_epochs+1):
             for k in keys:
                 items = takewhile(lambda x: epoch-1<=x.pos<epoch,
@@ -155,12 +160,17 @@ class Report:
 try:
     from pytorch_lightning.callbacks.progress import ProgressBarBase
     class LightningReport(ProgressBarBase):
-        def __init__(self, epochs, print_total=10, precision=4):
+        def __init__(self, epochs, print_total=None, precision=4):
             super().__init__()
             self.enable = True
             self.epoch_ix = 0
             self.report = Report(epochs, precision)
-            self.print_every = epochs // print_total
+            if print_total is None:
+                if epochs < 11: self.print_every = 1
+                else:
+                    self.print_every = epochs // 5
+            else:
+                self.print_every = epochs // print_total
 
         def disable(self):
             self.enable = False
