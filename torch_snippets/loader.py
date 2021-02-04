@@ -607,28 +607,40 @@ def write(image, fpath):
 
 def lzip(*x): return list(zip(*x))
 
-def to_absolute(df, shape):
+def to_absolute(input, shape):
     if isinstance(shape, np.ndarray) and shape.ndim >=2:
         shape = shape.shape[:2]
     h, w = shape
-    df = df.copy()
-    def _round(x): return np.round(x.values.astype(np.double)).astype(np.uint16)
-    df['x'] = _round(df.x*w)
-    df['X'] = _round(df.X*w)
-    df['y'] = _round(df.y*h)
-    df['Y'] = _round(df.Y*h)
-    return df
+    if isinstance(input, BB):
+        return input.absolute((h,w))
+    elif isinstance(input, pd.DataFrame):
+        def _round(x): return np.round(x.values.astype(np.double)).astype(np.uint16)
+        df = input.copy()
+        df['x'] = _round(df.x*w)
+        df['X'] = _round(df.X*w)
+        df['y'] = _round(df.y*h)
+        df['Y'] = _round(df.Y*h)
+        return df
+    elif isinstance(input, list):
+        bbs = bbfy(input)
+        return [bb.absolute((h,w)) for bb in bbs]
 
-def to_relative(df, shape):
+def to_relative(input, shape):
     if isinstance(shape, np.ndarray) and shape.ndim >=2:
         shape = shape.shape[:2]
     h, w = shape
-    df = df.copy()
-    df['x'] = (df.x / w)
-    df['X'] = (df.X / w)
-    df['y'] = (df.y / h)
-    df['Y'] = (df.Y / h)
-    return df
+    if isinstance(input, BB):
+        return input.relative((h,w))
+    elif isinstance(input, pd.DataFrame):
+        df = input.copy()
+        df['x'] = (df.x / w)
+        df['X'] = (df.X / w)
+        df['y'] = (df.y / h)
+        df['Y'] = (df.Y / h)
+        return df
+    elif isinstance(input, list):
+        bbs = bbfy(input)
+        return [bb.relative((h,w)) for bb in bbs]
 
 def enlarge_bbs(bbs, eps=0.2):
     "enlarge all `bbs` by `eps` fraction (or eps*100 percent)"
