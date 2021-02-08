@@ -17,6 +17,7 @@ from torch.utils.data import Dataset, DataLoader
 import time, numpy as np, matplotlib.pyplot as plt
 from collections import namedtuple, defaultdict
 import re
+from loguru import logger
 from itertools import dropwhile, takewhile
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -43,12 +44,22 @@ def to_np(x):
         return x
 
 class Report:
-    def __init__(self, n_epochs, precision=3):
+    def __init__(self, n_epochs, precision=3, old_report=None):
         self.start = time.time()
         self.n_epochs = n_epochs
         self.precision = precision
         self.completed_epochs = -1
         self.logged = []
+        if old_report:
+            self.prepend(old_report)
+
+    def prepend(self, old_report):
+        for k in old_report.logged:
+            self.logged.append(k)
+            last = getattr(old_report, k)[-1].pos
+            setattr(self, k, [])
+            for m in getattr(old_report, k):
+                getattr(self, k).append(metric(m.pos - last, to_np(m.val)))
 
     def record(self, pos, **metrics):
         for k,v in metrics.items():
@@ -103,19 +114,26 @@ class Report:
         if isinstance(keys, str):
             key_pattern = keys
             keys = [key for key in self.logged if re.search(key_pattern, key)]
-
-        for epoch in trange(self.n_epochs+1):
+        xs = []
+        for epoch in trange(-100, self.n_epochs+1):
             for k in keys:
                 items = takewhile(lambda x: epoch-1<=x.pos<epoch,
                     dropwhile(lambda x: (epoch-1>x.pos or x.pos>epoch), getattr(self,k)))
+                items = list(items)
+                if items == []: continue
+                xs.append(epoch)
                 avgs[k].append(np.mean([v for pos,v in items]))
+            xs = sorted(set(xs))
+
         for k in avgs:
 
             if 'val' in k   : _type = '--'
             elif 'test' in k: _type = ':'
             else            : _type = '-'
-
-            ax.plot(avgs[k], _type, label=k,)
+            if len(avgs[k]) != len(xs):
+                logger.info(f'metric {k} was not fully recorded. Plotting final epochs using last recorded value')
+                avgs[k].extend([avgs[k][-1]]*(len(xs)-len(avgs[k])))
+            ax.plot(xs, avgs[k], _type, label=k,)
         ax.grid(True)
         ax.set_xlabel('Epochs'); ax.set_ylabel('Metrics')
         ax.set_title(kwargs.get('title', None), fontdict=kwargs.get('fontdict', {'size': 20}))
@@ -160,11 +178,11 @@ class Report:
 try:
     from pytorch_lightning.callbacks.progress import ProgressBarBase
     class LightningReport(ProgressBarBase):
-        def __init__(self, epochs, print_total=None, precision=4):
+        def __init__(self, epochs, print_total=None, precision=4, old_report=None):
             super().__init__()
             self.enable = True
             self.epoch_ix = 0
-            self.report = Report(epochs, precision)
+            self.report = Report(epochs, precision, old_report.report)
             if print_total is None:
                 if epochs < 11: self.print_every = 1
                 else:
