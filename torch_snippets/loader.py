@@ -205,7 +205,7 @@ extn = lambda x: x.split('.')[-1]
 def Glob(x, extns=None, silent=False):
     files = glob.glob(x+'/*') if '*' not in x else glob.glob(x)
     if extns:
-        if isinstance(extns, str): extns.split(',')
+        if isinstance(extns, str): extns = extns.split(',')
         files = [f for f in files if any([f.endswith(ext) for ext in extns])]
     if not silent: logger.info('{} files found at {}'.format(len(files), x))
     return files

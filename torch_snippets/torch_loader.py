@@ -4,7 +4,7 @@
 - [ ] make plot_epochs even faster
 '''
 
-__all__ = ['torch','th','torchvision','T','transforms','nn','np','F','Dataset','DataLoader','optim','Report','Reshape','Permute','device']
+__all__ = ['torch','th','torchvision','T','transforms','nn','np','F','Dataset','DataLoader','optim','Report','Reshape','Permute','device', 'load_torch', 'save_torch_model_weights_from', 'load_torch_model_weights_to']
 
 import torch, torchvision
 import torch as th
@@ -185,8 +185,6 @@ try:
             self.report = Report(epochs, precision, old_report.report)
             if print_total is None:
                 if epochs < 11: self.print_every = 1
-                else:
-                    self.print_every = epochs // 5
             else:
                 self.print_every = epochs // print_total
 
@@ -235,3 +233,15 @@ def moving_average(a, n=3) :
     _n = len(b) - n
     b[-_n-1:] = ret[(n-1):] / n
     return b
+
+
+def save_torch_model_weights_from(model, fpath):
+    'from model to fpath'
+    torch.save(model.state_dict(), fpath)
+    fsize = os.path.getsize(fpath) >> 20
+    logger.info(f'Saved weights of size ~{fsize} MB to {fpath}')
+
+def load_torch_model_weights_to(model, fpath):
+    'to model from fpath'
+    model.load_state_dict(torch.load(fpath))
+    logger.info(f'Loaded weights from {fpath} to given model')
