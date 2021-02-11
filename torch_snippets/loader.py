@@ -64,6 +64,7 @@ class Timer:
         self.ix = 0
 
     def __call__(self, ix=None, info=None):
+        ix = self.ix if ix is None else ix
         elapsed = time.time() - self.start
         print('\r{}\t{}/{} ({:.2f}s - {:.2f}s remaining)'.format(info, ix+1, self.N, elapsed, (self.N-ix)*(elapsed/(ix+1))), end='')
         self.ix += 1
