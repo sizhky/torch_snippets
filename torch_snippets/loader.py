@@ -61,10 +61,12 @@ class Timer:
         'assumes this timer is called exactly N times or less'
         self.start = time.time()
         self.N = N
+        self.ix = 0
 
-    def __call__(self, ix, info=None):
+    def __call__(self, ix=None, info=None):
         elapsed = time.time() - self.start
         print('\r{}\t{}/{} ({:.2f}s - {:.2f}s remaining)'.format(info, ix+1, self.N, elapsed, (self.N-ix)*(elapsed/(ix+1))), end='')
+        self.ix += 1
 
 old_line = lambda N=66: print('='*N)
 def line(string='', lw=66, upper=True, pad='='):
