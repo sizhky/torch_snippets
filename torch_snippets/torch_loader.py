@@ -182,7 +182,8 @@ try:
             super().__init__()
             self.enable = True
             self.epoch_ix = 0
-            self.report = Report(epochs, precision, old_report.report)
+            _report = old_report.report if old_report is not None else None
+            self.report = Report(epochs, precision, _report)
             if print_total is None:
                 if epochs < 11: self.print_every = 1
             else:
