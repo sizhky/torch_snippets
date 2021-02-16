@@ -4,7 +4,7 @@
 - [ ] make plot_epochs even faster
 '''
 
-__all__ = ['torch','th','torchvision','T','transforms','nn','np','F','Dataset','DataLoader','optim','Report','Reshape','Permute','device', 'load_torch', 'save_torch_model_weights_from', 'load_torch_model_weights_to']
+__all__ = ['torch','th','torchvision','T','transforms','nn','np','F','Dataset','DataLoader','optim','Report','Reshape','Permute','device','save_torch_model_weights_from','load_torch_model_weights_to']
 
 import torch, torchvision
 import torch as th
@@ -224,7 +224,7 @@ try:
 
     __all__ += ['LightningReport']
 except:
-    ...
+    logger.warning('Not importing Lightning Report')
 
 def moving_average(a, n=3) :
     b = np.zeros_like(a)

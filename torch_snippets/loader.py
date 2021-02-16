@@ -259,7 +259,7 @@ def rotate(im, angle, return_type=np.ndarray):
 
 def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
          texts=None, bb_colors=None, cmap='gray', grid=False,
-         save_path=None, text_sz=15, df=None, pts=None, **kwargs):
+         save_path=None, text_sz=10, df=None, pts=None, **kwargs):
     'show an image'
     try:
         if isinstance(img, (str, Path)): img = read(img, 1)
