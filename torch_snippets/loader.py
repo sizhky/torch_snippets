@@ -1,17 +1,19 @@
 __all__ = [
     'B','Blank','C','choose','common','crop_from_bb','diff','find',
+    'E',
     'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L', 'lzip',
     'line','lines',
     'dumpdill','loaddill',
     'to_absolute', 'to_relative',
     'enlarge_bbs', 'shrink_bbs',
-    'logger','extn', 'makedir', 'np', 'now','nunique','os','pad','pd','pdfilter','parent','Path','P','pdb',
+    'makedir', 'isdir', 'extn', 'P', 'Path', 'parent','stem','stems',
+    'remove_duplicates','md5',
+    'logger', 'np', 'now','nunique','os','pad','pd','pdfilter','pdb',
     'plt','PIL','puttext','randint','rand','re','read','readPIL','rect','rename_batch','resize','rotate','see',
-    'set_logging_level','show','store_attr','stem','stems','subplots','sys','tqdm','Tqdm','trange','Timer','unique','uint','write',
+    'set_logging_level','show','store_attr','subplots','sys','tqdm','Tqdm','trange','Timer','unique','uint','write',
     'readlines','writelines',
     'zip_files','unzip_file',
     'BB','bbfy','xywh2xyXY','df2bbs',
-    'remove_duplicates','md5',
     'Info','Warn','Debug','Excep'
 ]
 
@@ -32,6 +34,7 @@ import matplotlib.patheffects as path_effects
 import pdb, datetime, dill
 from pathlib import Path
 P = Path
+E = enumerate
 Path.ls = lambda x: list(x.iterdir())
 Path.__repr__ = lambda x: f"`{x}`"
 try:
@@ -192,7 +195,11 @@ def C(im):
     else:
         return np.repeat(im[...,None], 3, 2)
 
-makedir = lambda x: os.makedirs(x, exist_ok=True)
+def isdir(fpath): return '.' not in fpath.split('/')[-1]
+def makedir(x):
+    if isdir(x): makedir(parent(x))
+    else       : os.makedirs(x, exist_ok=True)
+
 fname = lambda fpath: fpath.split('/')[-1]
 fname2 = lambda fpath: stem(fpath.split('/')[-1])
 def stem(fpath): return '.'.join(fname(fpath).split('.')[:-1])
@@ -206,6 +213,7 @@ def parent(fpath):
     else:         return out
 extn = lambda x: x.split('.')[-1]
 def Glob(x, extns=None, silent=False):
+    x = str(x)
     files = glob.glob(x+'/*') if '*' not in x else glob.glob(x)
     if extns:
         if isinstance(extns, str): extns = extns.split(',')
@@ -647,6 +655,7 @@ def to_relative(input, shape):
 
 def enlarge_bbs(bbs, eps=0.2):
     "enlarge all `bbs` by `eps` fraction (or eps*100 percent)"
+    epsx, epsy = eps if isinstance(eps, tuple) else (eps, eps)
     shs = [(bb.h,bb.w) for bb in bbs]
     return [BB(x-(w*eps/2), y-(h*eps/2), X+(w*eps/2), Y+(h*eps/2))\
             for (x,y,X,Y),(h,w) in zip(bbs, shs)]

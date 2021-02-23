@@ -178,16 +178,19 @@ class Report:
 try:
     from pytorch_lightning.callbacks.progress import ProgressBarBase
     class LightningReport(ProgressBarBase):
-        def __init__(self, epochs, print_total=None, precision=4, old_report=None):
+        def __init__(self, epochs, print_every=None, print_total=None, precision=4, old_report=None):
             super().__init__()
             self.enable = True
             self.epoch_ix = 0
             _report = old_report.report if old_report is not None else None
             self.report = Report(epochs, precision, _report)
-            if print_total is None:
-                if epochs < 11: self.print_every = 1
+            if print_every is None:
+                self.print_every = print_every
             else:
-                self.print_every = epochs // print_total
+                if print_total is None:
+                    if epochs < 11: self.print_every = 1
+                else:
+                    self.print_every = epochs // print_total
 
         def disable(self):
             self.enable = False
@@ -238,6 +241,7 @@ def moving_average(a, n=3) :
 
 def save_torch_model_weights_from(model, fpath):
     'from model to fpath'
+    makedir(fpath)
     torch.save(model.state_dict(), fpath)
     fsize = os.path.getsize(fpath) >> 20
     logger.info(f'Saved weights of size ~{fsize} MB to {fpath}')
