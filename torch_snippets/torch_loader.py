@@ -176,6 +176,7 @@ class Report:
             print(f'\r{log}{current_iteration}{info(report, self.precision)}{elapsed}', end=end)
 
 try:
+    import pytorch_lightning as pl
     from pytorch_lightning.callbacks.progress import ProgressBarBase
     class LightningReport(ProgressBarBase):
         def __init__(self, epochs, print_every=None, print_total=None, precision=4, old_report=None):
@@ -226,7 +227,7 @@ try:
         def __getattr__(self, attr, **kwargs):
             return getattr(self.report, attr, **kwargs)
 
-    __all__ += ['LightningReport']
+    __all__ += ['LightningReport', 'pl']
 except:
     logger.warning('Not importing Lightning Report')
 

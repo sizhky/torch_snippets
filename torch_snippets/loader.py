@@ -357,10 +357,13 @@ def puttext(ax, string, org, size=15, color=(255,0,0), thickness=2):
                            path_effects.Normal()])
 
 def dumpdill(obj, fpath, silent=False):
+    start = time.time()
     os.makedirs(parent(fpath), exist_ok=True)
     with open(fpath, 'wb') as f:
         dill.dump(obj, f)
-    if not silent: logger.info('Dumped object @ {}'.format(fpath))
+    if not silent:
+        fsize = os.path.getsize(fpath) >> 20
+        logger.info(f'Dumped object of size `~{fsize} MB` @ "{fpath}" in {time.time()-start:.2f} seconds')
 
 def loaddill(fpath):
     with open(fpath, 'rb') as f:
@@ -653,15 +656,31 @@ def to_relative(input, shape):
         bbs = bbfy(input)
         return [bb.relative((h,w)) for bb in bbs]
 
+def compute_eps(eps):
+    if isinstance(eps, tuple):
+        if len(eps) == 4:
+            epsx, epsy, epsX, epsY = eps
+        else:
+            epsx, epsy = eps
+            epsx, epsy, epsX, epsY = epsx/2, epsy/2, epsx/2, epsy/2
+    else:
+        epsx, epsy, epsX, epsY = eps/2, eps/2, eps/2, eps/2
+    return epsx, epsy, epsX, epsY
+
 def enlarge_bbs(bbs, eps=0.2):
-    "enlarge all `bbs` by `eps` fraction (or eps*100 percent)"
-    epsx, epsy = eps if isinstance(eps, tuple) else (eps, eps)
+    "enlarge all `bbs` by `eps` fraction (i.e., eps*100 percent)"
+    bbs = bbfy(bbs)
+    epsx, epsy, epsX, epsY = compute_eps(eps)
+    bbs = bbfy(bbs)
     shs = [(bb.h,bb.w) for bb in bbs]
-    return [BB(x-(w*eps/2), y-(h*eps/2), X+(w*eps/2), Y+(h*eps/2))\
+    return [BB(x-(w*epsx), y-(h*epsy), X+(w*epsX), Y+(h*epsY))\
             for (x,y,X,Y),(h,w) in zip(bbs, shs)]
 
 def shrink_bbs(bbs, eps=0.2):
-    "shrink all `bbs` by `eps` fraction (or eps*100 percent)"
+    "shrink all `bbs` by `eps` fraction (i.e., eps*100 percent)"
+    bbs = bbfy(bbs)
+    epsx, epsy, epsX, epsY = compute_eps(eps)
+    bbs = bbfy(bbs)
     shs = [(bb.h,bb.w) for bb in bbs]
-    return [BB(x+(w*eps/2), y+(h*eps/2), X-(w*eps/2), Y-(h*eps/2))\
+    return [BB(x+(w*epsx), y+(h*epsy), X-(w*epsX), Y-(h*epsY))\
             for (x,y,X,Y),(h,w) in zip(bbs, shs)]
