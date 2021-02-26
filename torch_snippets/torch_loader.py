@@ -185,7 +185,7 @@ try:
             self.epoch_ix = 0
             _report = old_report.report if old_report is not None else None
             self.report = Report(epochs, precision, _report)
-            if print_every is None:
+            if print_every is not None:
                 self.print_every = print_every
             else:
                 if print_total is None:
