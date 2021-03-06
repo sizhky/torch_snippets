@@ -16,4 +16,5 @@ torch_snippets.egg-info/SOURCES.txt
 torch_snippets.egg-info/dependency_links.txt
 torch_snippets.egg-info/entry_points.txt
 torch_snippets.egg-info/not-zip-safe
+torch_snippets.egg-info/requires.txt
 torch_snippets.egg-info/top_level.txt
