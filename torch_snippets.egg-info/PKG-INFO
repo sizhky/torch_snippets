@@ -1,0 +1,22 @@
+Metadata-Version: 1.1
+Name: torch-snippets
+Version: 0.315
+Summary: utilites for torch metrics
+Home-page: https://github.com/sizhky/torch_snippets
+Author: Yeshwanth
+Author-email: 1992chinna@gmail.com
+License: MIT
+Download-URL: https://github.com/sizhky/torch_snippets/archive/0.315.tar.gz
+Description: UNKNOWN
+Keywords: plot,torch
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8

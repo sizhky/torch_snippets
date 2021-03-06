@@ -1,0 +1,12 @@
+README.md
+setup.cfg
+setup.py
+torch_snippets/__init__.py
+torch_snippets/loader.py
+torch_snippets/misc.py
+torch_snippets/torch_loader.py
+torch_snippets.egg-info/PKG-INFO
+torch_snippets.egg-info/SOURCES.txt
+torch_snippets.egg-info/dependency_links.txt
+torch_snippets.egg-info/requires.txt
+torch_snippets.egg-info/top_level.txt

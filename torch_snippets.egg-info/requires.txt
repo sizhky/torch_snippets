@@ -1,0 +1,8 @@
+loguru
+numpy
+pandas
+dill
+tqdm
+matplotlib
+pandas
+Pillow
