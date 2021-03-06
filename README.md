@@ -1,5 +1,8 @@
-# Pytorch utilities for simple pytorch needs
+# Utilities for simple needs
 
+
+
+```python
 ## Logging and plotting metrics
 ```python
 from torch_snippets import Report
@@ -25,7 +28,7 @@ for epoch in range(n_epochs):
     log.report_avgs(epoch+1) # persist the report
 
 ```
-![](assets/demo.gif)
+![](../assets/demo.gif)
 * Auto calculates time remaining
 * No need to preinitialize empty lists
 * Automatically stores metrics as collection of key words
@@ -39,7 +42,7 @@ for epoch in range(n_epochs):
 
 * Auto calculates average of all metrics in an epoch
 * Plot entire training history with one command  
-![](assets/avgs0.png)
+![](../assets/avgs0.png)
 
 
 * selectively plot logged metrics using regex
@@ -73,4 +76,6 @@ and many more...
 ```python
 import pytorch_snippets
 dir(pytorch_snippets)
+```
+
 ```

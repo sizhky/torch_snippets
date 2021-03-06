@@ -15,6 +15,9 @@ entries:
     - output: web,pdf
       title: Report
       url: report.html
+    - output: web,pdf
+      title: Show
+      url: show.html
     output: web
     title: torch_snippets
   output: web

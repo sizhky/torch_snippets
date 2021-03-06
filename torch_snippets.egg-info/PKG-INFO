@@ -1,13 +1,16 @@
 Metadata-Version: 2.1
 Name: torch-snippets
-Version: 0.320
+Version: 0.322
 Summary: One line functions for common tasks
 Home-page: https://github.com/sizhky/torch_snippets/tree/master/
 Author: Yeshwanth Reddy
 Author-email: 1992chinna@gmail.com
 License: Apache Software License 2.0
-Description: # Pytorch utilities for simple pytorch needs
+Description: # Utilities for simple needs
         
+        
+        
+        ```python
         ## Logging and plotting metrics
         ```python
         from torch_snippets import Report
@@ -33,7 +36,7 @@ Description: # Pytorch utilities for simple pytorch needs
             log.report_avgs(epoch+1) # persist the report
         
         ```
-        ![](assets/demo.gif)
+        ![](../assets/demo.gif)
         * Auto calculates time remaining
         * No need to preinitialize empty lists
         * Automatically stores metrics as collection of key words
@@ -47,7 +50,7 @@ Description: # Pytorch utilities for simple pytorch needs
         
         * Auto calculates average of all metrics in an epoch
         * Plot entire training history with one command  
-        ![](assets/avgs0.png)
+        ![](../assets/avgs0.png)
         
         
         * selectively plot logged metrics using regex
@@ -81,6 +84,8 @@ Description: # Pytorch utilities for simple pytorch needs
         ```python
         import pytorch_snippets
         dir(pytorch_snippets)
+        ```
+        
         ```
         
 Keywords: snippets,torch

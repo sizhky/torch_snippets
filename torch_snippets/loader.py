@@ -14,10 +14,12 @@ __all__ = [
     'readlines','writelines',
     'zip_files','unzip_file',
     'BB','bbfy','xywh2xyXY','df2bbs',
-    'Info','Warn','Debug','Excep'
+    'Info','Warn','Debug','Excep',
+    'display'
 ]
 
 import glob, numpy as np, pandas as pd, tqdm, os, sys, re
+from IPython.display import display
 import PIL
 from PIL import Image
 try:
@@ -274,6 +276,10 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         if isinstance(img, torch.Tensor): img = img.cpu().detach().numpy().copy()
         if isinstance(img, PIL.Image.Image): img = np.array(img)
     except: ...
+    if not isinstance(img, np.ndarray):
+        display(img)
+        return
+
     if len(img.shape) == 3 and len(img) == 3:
         # this is likely a torch tensor
         img = img.transpose(1,2,0)
