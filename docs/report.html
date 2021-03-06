@@ -220,6 +220,31 @@ EPOCH: 5.000	train_loss: 1.115	train_acc: 0.635	val_loss: 1.087	val_acc: 0.656	(
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Features">Features<a class="anchor-link" href="#Features"> </a></h2><p><img src="https://i.imgur.com/5iZl2s3.gif" alt=""></p>
+<ul>
+<li>Auto calculates time remaining</li>
+<li>No need to preinitialize empty lists</li>
+<li>Automatically stores metrics as collection of key words</li>
+<li>Persistent vs Transient logging (use <code>end='\r'</code>)  <div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="o">&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">logged</span><span class="p">)</span> <span class="c1"># get logged metric names</span>
+<span class="c1"># [&#39;train_loss&#39;, &#39;train_acc&#39;, &#39;val_loss&#39;, &#39;val_acc&#39;]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">log</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span> <span class="c1"># plot all the logged metrics</span>
+</pre></div>
+</li>
+</ul>
+<ul>
+<li>Auto calculates average of all metrics in an epoch</li>
+<li><p>Plot entire training history with one command<br>
+<img src="https://i.imgur.com/BrQIaR7.png" alt=""></p>
+</li>
+<li><p>selectively plot logged metrics using regex</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
 </div>
  
 
