@@ -18,6 +18,9 @@ entries:
     - output: web,pdf
       title: Show
       url: show.html
+    - output: web,pdf
+      title: Title
+      url: sklegos.html
     output: web
     title: torch_snippets
   output: web

@@ -3,9 +3,17 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"alt": "charts.ipynb",
-         "Chart": "charts.ipynb"}
+         "Chart": "charts.ipynb",
+         "confusion_matrix": "charts.ipynb",
+         "CM": "charts.ipynb",
+         "train_test_split": "sklegos.ipynb",
+         "ColumnSelector": "sklegos.ipynb",
+         "MakeFrame": "sklegos.ipynb",
+         "ImputeMissingValues": "sklegos.ipynb",
+         "Cat2Num": "sklegos.ipynb"}
 
-modules = ["charts.py"]
+modules = ["charts.py",
+           "sklegos.py"]
 
 doc_url = "https://sizhky.github.io/torch_snippets/"
 
