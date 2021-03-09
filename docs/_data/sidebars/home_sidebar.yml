@@ -13,6 +13,9 @@ entries:
       title: Charts
       url: charts.html
     - output: web,pdf
+      title: Functions
+      url: misc.html
+    - output: web,pdf
       title: Report
       url: report.html
     - output: web,pdf

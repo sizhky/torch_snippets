@@ -9,6 +9,4 @@ numpy
 pandas
 tqdm
 scikit-learn
-scikit-lego
-memo
 rich

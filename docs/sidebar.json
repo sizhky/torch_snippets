@@ -2,6 +2,7 @@
   "torch_snippets": {
     "Overview": "/",
     "Charts": "charts.html",
+    "Functions": "misc.html",
     "Report": "report.html",
     "Show": "show.html",
     "sklearn Transforms": "sklegos.html"
