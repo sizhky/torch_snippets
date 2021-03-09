@@ -22,7 +22,9 @@ def confusion_matrix(df=None, truth=None, pred=None, threshold=None, mapping=Non
         assert isinstance(mapping, dict), 'mapping should be a dictionary'
         df[truth] = df[truth].map(lambda x: mapping[x])
         df[pred] = df[pred].map(lambda x: mapping[x])
-    base = Chart(df).transform_aggregate(
+
+    sz = 300 if len(df[truth].unique()) > 4 else 150
+    base = Chart(df, height=sz, width=sz).transform_aggregate(
         num_vals='count()',
         groupby=[truth, pred]
     ).encode(
@@ -46,10 +48,9 @@ def confusion_matrix(df=None, truth=None, pred=None, threshold=None, mapping=Non
 
     try:
         from sklearn.metrics import classification_report
-        print(classification_report(df['truth'], df['pred']))
+        print(classification_report(df[truth], df[pred]))
     except:
-        ...
-
+        logger.info('Skipping Report')
     return hm + tx
 
 CM = confusion_matrix

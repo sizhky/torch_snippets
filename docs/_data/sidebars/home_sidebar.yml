@@ -19,7 +19,7 @@ entries:
       title: Show
       url: show.html
     - output: web,pdf
-      title: Title
+      title: sklearn Transforms
       url: sklegos.html
     output: web
     title: torch_snippets

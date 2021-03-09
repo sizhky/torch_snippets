@@ -8,9 +8,15 @@ index = {"alt": "charts.ipynb",
          "CM": "charts.ipynb",
          "train_test_split": "sklegos.ipynb",
          "ColumnSelector": "sklegos.ipynb",
+         "transform": "sklegos.ipynb",
+         "GroupedEstimator": "sklegos.ipynb",
+         "GroupedPredictor": "sklegos.ipynb",
+         "EstimatorTransformer": "sklegos.ipynb",
          "MakeFrame": "sklegos.ipynb",
          "ImputeMissingValues": "sklegos.ipynb",
-         "Cat2Num": "sklegos.ipynb"}
+         "LambdaTransformer": "sklegos.ipynb",
+         "Cat2Num": "sklegos.ipynb",
+         "SplitDateColumn": "sklegos.ipynb"}
 
 modules = ["charts.py",
            "sklegos.py"]

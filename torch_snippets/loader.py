@@ -15,9 +15,10 @@ __all__ = [
     'zip_files','unzip_file',
     'BB','bbfy','xywh2xyXY','df2bbs',
     'Info','Warn','Debug','Excep',
-    'display'
+    'display', 'print'
 ]
 
+from rich import print
 import glob, numpy as np, pandas as pd, tqdm, os, sys, re
 from IPython.display import display
 import PIL
