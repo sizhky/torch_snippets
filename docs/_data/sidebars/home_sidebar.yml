@@ -13,6 +13,9 @@ entries:
       title: Charts
       url: charts.html
     - output: web,pdf
+      title: Rich Logging and Printing
+      url: logging.html
+    - output: web,pdf
       title: Functions
       url: misc.html
     - output: web,pdf

@@ -19,8 +19,7 @@ __all__ = [
 ]
 
 print_py = print
-from rich import print
-from rich.logging import RichHandler
+from .logger import *
 import glob, numpy as np, pandas as pd, tqdm, os, sys, re
 from IPython.display import display
 import PIL
@@ -42,55 +41,6 @@ P = Path
 E = enumerate
 Path.ls = lambda x: list(x.iterdir())
 Path.__repr__ = lambda x: f"`{x}`"
-try:
-    from loguru import logger
-    from datetime import datetime
-    from fastcore.basics import patch_to
-    @patch_to(RichHandler)
-    def render(
-        self,
-        *,
-        record,
-        traceback,
-        message_renderable: "ConsoleRenderable",
-    ) -> "ConsoleRenderable":
-        """patched the renderer to print function name as well
-        """
-        path = Path(record.pathname).name
-        level = self.get_level_text(record)
-        time_format = None if self.formatter is None else self.formatter.datefmt
-        log_time = datetime.fromtimestamp(record.created)
-
-        log_renderable = self._log_render(
-            self.console,
-            [message_renderable] if not traceback else [message_renderable, traceback],
-            log_time=log_time,
-            time_format=time_format,
-            level=level,
-            path=path,
-            line_no=f'{record.funcName}:{record.lineno}',
-            link_path=record.pathname if self.enable_link_path else None,
-        )
-        return log_renderable
-
-    logger.remove(0)
-    logger.add(
-        RichHandler(rich_tracebacks=True),
-        format='<level>{message}</level>'
-    )
-except Exception as e:
-    print(e)
-    class Logger:
-        def __init__(self): pass
-        def info(self, message): print(f'INFO:\t{message}')
-        def debug(self, message): print(f'DEBUG:\t{message}')
-        def warning(self, message): print(f'WARNING:\t{message}')
-        def exception(self, message): print(f'EXCEPTION:\t{message}')
-    logger = Logger()
-Info  = lambda x: logger.info(x)
-Warn  = lambda x: logger.warning(x)
-Debug = lambda x: logger.debug(x)
-Excep = lambda x: logger.exception(x)
 
 try:
     import cv2

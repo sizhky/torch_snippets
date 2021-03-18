@@ -18,7 +18,6 @@ def train_test_split(*args, **kwargs):
     outputs = [i.reset_index(drop=True) for i in outputs]
     return outputs
 
-
 # Cell
 from sklearn.base import BaseEstimator, TransformerMixin, MetaEstimatorMixin
 from sklego.preprocessing import ColumnSelector
@@ -53,7 +52,6 @@ class MakeFrame(BaseEstimator, TransformerMixin):
 
     def transform(self, X, y=None):
         return pd.DataFrame(X, columns=self.column_names)
-
 
 # Cell
 class ImputeMissingValues(BaseEstimator, TransformerMixin):

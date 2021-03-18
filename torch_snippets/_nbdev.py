@@ -6,6 +6,14 @@ index = {"alt": "charts.ipynb",
          "Chart": "charts.ipynb",
          "confusion_matrix": "charts.ipynb",
          "CM": "charts.ipynb",
+         "console": "logging.ipynb",
+         "print": "logging.ipynb",
+         "render": "logging.ipynb",
+         "logger": "logging.ipynb",
+         "Info": "logging.ipynb",
+         "Warn": "logging.ipynb",
+         "Debug": "logging.ipynb",
+         "Excep": "logging.ipynb",
          "train_test_split": "sklegos.ipynb",
          "ColumnSelector": "sklegos.ipynb",
          "transform": "sklegos.ipynb",
@@ -19,6 +27,7 @@ index = {"alt": "charts.ipynb",
          "SplitDateColumn": "sklegos.ipynb"}
 
 modules = ["charts.py",
+           "logger.py",
            "sklegos.py"]
 
 doc_url = "https://sizhky.github.io/torch_snippets/"
