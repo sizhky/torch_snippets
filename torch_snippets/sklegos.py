@@ -159,7 +159,7 @@ class Cat2Num(BaseEstimator, TransformerMixin):
 
 # Cell
 class SplitDateColumn(BaseEstimator, TransformerMixin):
-    def __init__(self, column_names, has_date, has_time):
+    def __init__(self, column_names, has_date, has_time, date_format=None):
         self.column_names = column_names if isinstance(column_names, list) else [column_names]
         self.has_date = has_date
         self.has_time = has_time

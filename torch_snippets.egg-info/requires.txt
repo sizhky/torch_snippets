@@ -8,5 +8,4 @@ loguru
 numpy
 pandas
 tqdm
-scikit-learn
 rich
