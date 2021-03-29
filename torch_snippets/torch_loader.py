@@ -246,9 +246,9 @@ def save_torch_model_weights_from(model, fpath):
     makedir(fpath)
     torch.save(model.state_dict(), fpath)
     fsize = os.path.getsize(fpath) >> 20
-    logger.info(f'Saved weights of size ~{fsize} MB to {fpath}')
+    logger.opt(depth=1).log('INFO', f'Saved weights of size ~{fsize} MB to {fpath}')
 
 def load_torch_model_weights_to(model, fpath):
     'to model from fpath'
     model.load_state_dict(torch.load(fpath))
-    logger.info(f'Loaded weights from {fpath} to given model')
+    logger.opt(depth=1).log('INFO', f'Loaded weights from {fpath} to given model')

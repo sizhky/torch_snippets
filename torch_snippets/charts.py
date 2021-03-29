@@ -11,38 +11,45 @@ Chart = Chart
 from .loader import *
 
 # Cell
-def confusion_matrix(df=None, truth=None, pred=None, threshold=None, mapping=None):
+def confusion_matrix(df=None, truth=None, pred=None, mapping=None):
     if df is None:
         df = pd.DataFrame({'truth': truth, 'pred': pred})
         truth = 'truth'
         pred = 'pred'
-    if threshold is None:
-        threshold = len(df) // 4
+    threshold = len(df)
     if mapping:
         assert isinstance(mapping, dict), 'mapping should be a dictionary'
         df[truth] = df[truth].map(lambda x: mapping[x])
         df[pred] = df[pred].map(lambda x: mapping[x])
 
-    sz = 300 if len(df[truth].unique()) > 4 else 150
+    sz = 450 if len(df[truth].unique()) > 4 else 250
     base = Chart(df, height=sz, width=sz).transform_aggregate(
         num_vals='count()',
         groupby=[truth, pred]
+    ).transform_calculate(
+        rev_num_vals='-(datum.num_vals) + max(datum.num_vals)',
     ).encode(
-        alt.X(f'{truth}:O', scale=alt.Scale(paddingInner=0)),
-        alt.Y(f'{pred}:O', scale=alt.Scale(paddingInner=0)),
+        alt.Y(f'{truth}:O', scale=alt.Scale(paddingInner=0)),
+        alt.X(f'{pred}:O', scale=alt.Scale(paddingInner=0)),
     )
 
     hm = base.mark_rect().encode(
-        color=alt.Color('num_vals:Q',
-            legend=None # alt.Legend(direction='horizontal')
+        color=alt.Color(
+            'num_vals:Q', scale=alt.Scale(scheme="lightorange"),
+            legend=None
         )
     )
 
     tx = base.mark_text(baseline='middle').encode(
         text='num_vals:Q',
+#         color=alt.Color(alt.value('gray'))
+#         color='rev_num_vals:Q'
+#         color=alt.Color(
+#             'num_vals:Q', scale=alt.Scale(scheme="redyellowgreen"),
+#         )
         color=alt.condition(
             alt.datum.num_vals > threshold,
-            alt.value('white'),
+            alt.value('black'),
             alt.value('black'))
     )
 

@@ -14,7 +14,7 @@ __all__ = [
     'readlines','writelines',
     'zip_files','unzip_file',
     'BB','bbfy','xywh2xyXY','df2bbs',
-    'Info','Warn','Debug','Excep',
+    'Info','Warn','Debug','Excep','reset_logger_width',
     'display', 'print'
 ]
 
@@ -40,7 +40,7 @@ from pathlib import Path
 P = Path
 E = enumerate
 Path.ls = lambda x: list(x.iterdir())
-Path.__repr__ = lambda x: f"`{x}`"
+Path.__repr__ = lambda x: f"» {x}"
 
 try:
     import cv2
@@ -209,7 +209,8 @@ def Glob(x, extns=None, silent=False):
     if extns:
         if isinstance(extns, str): extns = extns.split(',')
         files = [f for f in files if any([f.endswith(ext) for ext in extns])]
-    if not silent: logger.info('{} files found at {}'.format(len(files), x))
+        
+    if not silent: logger.opt(depth=1).log('INFO', '{} files found at {}'.format(len(files), x))
     return files
 
 def rename_batch(folder, func, debug=False, one_file=False):
@@ -234,13 +235,13 @@ def rename_batch(folder, func, debug=False, one_file=False):
 def common(a, b):
     """Wrapper around set intersection"""
     x = list(set(a).intersection(set(b)))
-    logger.info(f'{len(x)} items found common from containers of {len(a)} and {len(b)} items respectively')
+    logger.opt(depth=1).log('INFO', f'{len(x)} items found common from containers of {len(a)} and {len(b)} items respectively')
     return sorted(x)
 
 def diff(a, b, rev=False, silent=False):
     if not rev: o = list(sorted(set(a) - set(b)))
     else      : o = list(sorted(set(b) - set(a)))
-    if not silent: logger.info(f'{len(o)} items found to differ')
+    if not silent: logger.opt(depth=1).log('INFO', f'{len(o)} items found to differ')
     return o
 
 def puttext(im, string, org, scale=1, color=(255,0,0), thickness=2):
@@ -358,7 +359,8 @@ def dumpdill(obj, fpath, silent=False):
         dill.dump(obj, f)
     if not silent:
         fsize = os.path.getsize(fpath) >> 20
-        logger.info(f'Dumped object of size `~{fsize} MB` @ "{fpath}" in {time.time()-start:.2f} seconds')
+        fsize = f'{fsize} MB' if fsize > 0 else f'{os.path.getsize(fpath) >> 10} KB'
+        logger.opt(depth=1).log('INFO', f'Dumped object of size ≈{fsize} @ "{fpath}" in {time.time()-start:.2f} seconds')
 
 def loaddill(fpath):
     with open(fpath, 'rb') as f:
@@ -411,7 +413,7 @@ class BB:
         x , y, X, Y = self.bb
         return max(0,x-_x), max(0,y-_y), X+_x,Y+_y
 
-def subplots(ims, nc=5, figsize=(5,5), **kwargs):
+def subplots(ims, nc=5, figsize=(5,5), silent=True, **kwargs):
     if len(ims) == 0: return
     titles = kwargs.pop('titles',[None]*len(ims))
     if isinstance(titles, str):
@@ -419,7 +421,8 @@ def subplots(ims, nc=5, figsize=(5,5), **kwargs):
         else: titles = titles.split(',')
     if len(ims) <= 5 and nc==5: nc=len(ims)
     nr = (len(ims)//nc) if len(ims)%nc==0 else (1+len(ims)//nc)
-    logger.info(f'plotting {len(ims)} images in a grid of {nr}x{nc} @ {figsize}')
+    if not silent:
+        logger.opt(depth=1).log('INFO', f'plotting {len(ims)} images in a grid of {nr}x{nc} @ {figsize}')
     figsize = kwargs.pop('sz', figsize)
     figsize = (figsize,figsize) if isinstance(figsize, int) else figsize
     fig, axes = plt.subplots(nr,nc,figsize=figsize)
@@ -450,7 +453,7 @@ Blank = lambda *sh: uint(np.ones(sh))
 
 def pdfilter(df, column, condition, silent=True):
     _df = df[df[column].map(condition)]
-    if not silent: logger.debug(f'Filtering {len(_df)} items out of {len(df)}')
+    if not silent: logger.opt(depth=1).log("DEBUG", f'Filtering {len(_df)} items out of {len(df)}')
     return _df
 
 def pdsort(df, column, asc=True):
@@ -484,7 +487,7 @@ def readlines(fpath, silent=False, encoding=None):
     with open(fpath, 'r', encoding=encoding) as f:
         lines = f.read().split('\n')
         lines = [l.strip() for l in lines if l.strip()!='']
-        if not silent: Info(f'loaded {len(lines)} lines')
+        if not silent: logger.opt(depth=1).log("INFO", f'loaded {len(lines)} lines')
         return lines
 
 def resize(im:np.ndarray, sz:[float,('H','W'),(str,('H','W'))]):
@@ -550,7 +553,7 @@ def writelines(lines, file):
             try: f.write(f'{line}\n')
             except: failed.append(line)
     if failed!=[]:
-        logger.info(f'Failed to write {len(failed)} lines out of {len(lines)}')
+        logger.opt(depth=1).log('INFO', f'Failed to write {len(failed)} lines out of {len(lines)}')
         return failed
 
 def zip_files(list_of_files, dest):

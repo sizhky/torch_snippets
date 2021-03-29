@@ -33,6 +33,30 @@ nb_path: "nbs/logging.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="get_console" class="doc_header"><code>get_console</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/logger.py#L11" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_console</code>(<strong><code>width</code></strong>=<em><code>None</code></em>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
 </div>
     {% endraw %}
 
@@ -44,7 +68,7 @@ nb_path: "nbs/logging.ipynb"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The Number is 128&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="s1">&#39;lskjdf&#39;</span><span class="p">,</span> <span class="p">]})</span>
+<span class="nb">print</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="s1">&#39;lskjdf&#39;</span><span class="p">,</span> <span class="p">],</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="s1">&#39;lskjdf&#39;</span><span class="p">,</span> <span class="p">],</span> <span class="s1">&#39;ae&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;bf&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="s1">&#39;lskjdf&#39;</span><span class="p">,</span> <span class="p">],</span> <span class="s1">&#39;ag&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ba&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="s1">&#39;lskjdf&#39;</span><span class="p">,</span> <span class="p">]})</span>
 </pre></div>
 
     </div>
@@ -69,7 +93,16 @@ nb_path: "nbs/logging.ipynb"
 
 
 <div class="output_html rendered_html output_subarea ">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">{</span><span style="color: #008000; text-decoration-color: #008000">'a'</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>, <span style="color: #008000; text-decoration-color: #008000">'b'</span>: <span style="font-weight: bold">[{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>, <span style="color: #008000; text-decoration-color: #008000">'lskjdf'</span><span style="font-weight: bold">]}</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">{</span>
+    <span style="color: #008000; text-decoration-color: #008000">'a'</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,
+    <span style="color: #008000; text-decoration-color: #008000">'b'</span>: <span style="font-weight: bold">[{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>, <span style="color: #008000; text-decoration-color: #008000">'lskjdf'</span><span style="font-weight: bold">]</span>,
+    <span style="color: #008000; text-decoration-color: #008000">'c'</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,
+    <span style="color: #008000; text-decoration-color: #008000">'d'</span>: <span style="font-weight: bold">[{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>, <span style="color: #008000; text-decoration-color: #008000">'lskjdf'</span><span style="font-weight: bold">]</span>,
+    <span style="color: #008000; text-decoration-color: #008000">'ae'</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,
+    <span style="color: #008000; text-decoration-color: #008000">'bf'</span>: <span style="font-weight: bold">[{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>, <span style="color: #008000; text-decoration-color: #008000">'lskjdf'</span><span style="font-weight: bold">]</span>,
+    <span style="color: #008000; text-decoration-color: #008000">'ag'</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,
+    <span style="color: #008000; text-decoration-color: #008000">'ba'</span>: <span style="font-weight: bold">[{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>, <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>, <span style="color: #008000; text-decoration-color: #008000">'lskjdf'</span><span style="font-weight: bold">]</span>
+<span style="font-weight: bold">}</span>
 </pre>
 
 </div>
@@ -118,10 +151,10 @@ nb_path: "nbs/logging.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Debug</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
+<span class="n">Info</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
+<span class="n">Warn</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
+<span class="n">Excep</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -135,7 +168,7 @@ nb_path: "nbs/logging.ipynb"
 
 
 <div class="output_html rendered_html output_subarea ">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[03/18/21 17:41:31] </span><span style="color: #008000; text-decoration-color: #008000">DEBUG   </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>        <a href="file://<ipython-input-5-9606d30aa11b>"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;ipython-input-5-9606d30aa11b&gt;</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:&lt;module&gt;:1</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[03/25/21 21:01:33] </span><span style="color: #008000; text-decoration-color: #008000">DEBUG   </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>        <a href="file://<ipython-input-5-297d12075eac>"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;ipython-input-5-297d12075eac&gt;</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:&lt;module&gt;:1</span>
 </pre>
 
 </div>
@@ -146,7 +179,7 @@ nb_path: "nbs/logging.ipynb"
 
 
 <div class="output_html rendered_html output_subarea ">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>        <a href="file://<ipython-input-5-9606d30aa11b>"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;ipython-input-5-9606d30aa11b&gt;</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:&lt;module&gt;:2</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>        <a href="file://<ipython-input-5-297d12075eac>"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;ipython-input-5-297d12075eac&gt;</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:&lt;module&gt;:2</span>
 </pre>
 
 </div>
@@ -157,7 +190,7 @@ nb_path: "nbs/logging.ipynb"
 
 
 <div class="output_html rendered_html output_subarea ">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>        <a href="file://<ipython-input-5-9606d30aa11b>"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;ipython-input-5-9606d30aa11b&gt;</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:&lt;module&gt;:3</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>        <a href="file://<ipython-input-5-297d12075eac>"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;ipython-input-5-297d12075eac&gt;</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:&lt;module&gt;:3</span>
 </pre>
 
 </div>
@@ -168,10 +201,96 @@ nb_path: "nbs/logging.ipynb"
 
 
 <div class="output_html rendered_html output_subarea ">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>        <a href="file://<ipython-input-5-9606d30aa11b>"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;ipython-input-5-9606d30aa11b&gt;</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:&lt;module&gt;:4</span>
-                             <span style="color: #800080; text-decoration-color: #800080; font-style: italic">None</span>Type: <span style="color: #800080; text-decoration-color: #800080; font-style: italic">None</span>                                                  
-                                                                                             
-                                                                                             
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>        <a href="file://<ipython-input-5-297d12075eac>"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;ipython-input-5-297d12075eac&gt;</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:&lt;module&gt;:4</span>
+</pre>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="reset_logger_width" class="doc_header"><code>reset_logger_width</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/logger.py#L73" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>reset_logger_width</code>(<strong><code>logger</code></strong>, <strong><code>width</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Excep</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
+<span class="n">reset_logger_width</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="mi">155</span><span class="p">)</span>
+<span class="n">Excep</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>        <a href="file://<ipython-input-7-632b42440fe9>"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;ipython-input-7-632b42440fe9&gt;</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:&lt;module&gt;:1</span>
+</pre>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> reset logger's console width to <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">155</span>!                                       <a href="file://<ipython-input-6-9832864f681e>"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;ipython-input-6-9832864f681e&gt;</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:reset_logger_width:4</span>
+</pre>
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>                                                                      <a href="file://<ipython-input-7-632b42440fe9>"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;ipython-input-7-632b42440fe9&gt;</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:&lt;module&gt;:3</span>
 </pre>
 
 </div>
