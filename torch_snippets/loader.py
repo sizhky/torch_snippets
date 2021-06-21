@@ -20,6 +20,8 @@ __all__ = [
 
 print_py = print
 from .logger import *
+from fastcore.basics import patch_to
+from fastcore.foundation import L
 import glob, numpy as np, pandas as pd, tqdm, os, sys, re
 from IPython.display import display
 import PIL
@@ -36,11 +38,49 @@ import matplotlib#; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 import pdb, datetime, dill
+E = enumerate
+
+# File operations
 from pathlib import Path
 P = Path
-E = enumerate
-Path.ls = lambda x: list(x.iterdir())
-Path.__repr__ = lambda x: f"» {x}"
+P.ls = lambda x: list(x.iterdir())
+P.__repr__ = lambda x: f"» {x}"
+
+@patch_to(P)
+def Glob(self, pattern='*'):
+    return list(self.glob(pattern))
+
+def isdir(fpath): return os.path.isdir(fpath)
+
+def makedir(x):
+    os.makedirs(x, exist_ok=True)
+    
+fname = lambda fpath: fpath.split('/')[-1]
+
+fname2 = lambda fpath: stem(fpath.split('/')[-1])
+
+def stem(fpath): return '.'.join(fname(str(fpath)).split('.')[:-1])
+def stems(folder):
+    if isinstance(folder, (str, P)) : return [stem(str(x)) for x in Glob(folder)]
+    if isinstance(folder, list): return [stem(x) for x in folder]
+
+def parent(fpath):
+    out = '/'.join(fpath.split('/')[:-1])
+    if out == '': return './'
+    else:         return out
+    
+extn = lambda x: x.split('.')[-1]
+
+def Glob(x, extns=None, silent=False):
+    x = str(x)
+    files = glob.glob(x+'/*') if '*' not in x else glob.glob(x)
+    if extns:
+        if isinstance(extns, str): extns = extns.split(',')
+        files = [f for f in files if any([f.endswith(ext) for ext in extns])]
+        
+    if not silent: logger.opt(depth=1).log('INFO', '{} files found at {}'.format(len(files), x))
+    return files
+
 
 try:
     import cv2
@@ -96,6 +136,7 @@ def find(item, List, match_stem=False):
         filtered = [f for f in filtered if stem(f)==item]
     if len(filtered) == 1: return filtered[0]
     return filtered
+
 def inspect(*arrays, **kwargs):
     '''
     shows shape, min, max and mean of an array/list/dict of oreys
@@ -116,7 +157,7 @@ def inspect(*arrays, **kwargs):
         name = name
         typ = type(arr).__name__
 
-        if isinstance(arr, list):
+        if isinstance(arr, (list, tuple)):
             if arr == []:
                 print('[]')
             else:
@@ -186,33 +227,6 @@ def C(im):
     else:
         return np.repeat(im[...,None], 3, 2)
 
-def isdir(fpath): return '.' not in fpath.split('/')[-1]
-def makedir(x):
-    if isdir(x): makedir(parent(x))
-    else       : os.makedirs(x, exist_ok=True)
-
-fname = lambda fpath: fpath.split('/')[-1]
-fname2 = lambda fpath: stem(fpath.split('/')[-1])
-def stem(fpath): return '.'.join(fname(fpath).split('.')[:-1])
-def stems(folder):
-    if isinstance(folder, str) : return [stem(x) for x in Glob(folder)]
-    if isinstance(folder, list): return [stem(x) for x in folder]
-
-def parent(fpath):
-    out = '/'.join(fpath.split('/')[:-1])
-    if out == '': return './'
-    else:         return out
-extn = lambda x: x.split('.')[-1]
-def Glob(x, extns=None, silent=False):
-    x = str(x)
-    files = glob.glob(x+'/*') if '*' not in x else glob.glob(x)
-    if extns:
-        if isinstance(extns, str): extns = extns.split(',')
-        files = [f for f in files if any([f.endswith(ext) for ext in extns])]
-        
-    if not silent: logger.opt(depth=1).log('INFO', '{} files found at {}'.format(len(files), x))
-    return files
-
 def rename_batch(folder, func, debug=False, one_file=False):
     'V.V.Imp: Use debug=True first to confirm file name changes are as expected'
     if isinstance(folder, str): folder = Glob(folder)
@@ -262,7 +276,7 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
          save_path=None, text_sz=10, df=None, pts=None, **kwargs):
     'show an image'
     try:
-        if isinstance(img, (str, Path)): img = read(img, 1)
+        if isinstance(img, (str, Path)): img = read(str(img), 1)
         if isinstance(img, torch.Tensor): img = img.cpu().detach().numpy().copy()
         if isinstance(img, PIL.Image.Image): img = np.array(img)
     except: ...
@@ -360,7 +374,7 @@ def dumpdill(obj, fpath, silent=False):
     if not silent:
         fsize = os.path.getsize(fpath) >> 20
         fsize = f'{fsize} MB' if fsize > 0 else f'{os.path.getsize(fpath) >> 10} KB'
-        logger.opt(depth=1).log('INFO', f'Dumped object of size ≈{fsize} @ "{fpath}" in {time.time()-start:.2f} seconds')
+        logger.opt(depth=1).log('INFO', f'Dumped object of size ≈{fsize} @ "{fpath}" in {time.time()-start:.2e} seconds')
 
 def loaddill(fpath):
     with open(fpath, 'rb') as f:
@@ -441,7 +455,7 @@ def bbfy(bbs): return [BB(bb) for bb in bbs]
 def jitter(bbs, noise):
     return [BB(bb).jitter(noise) for bb in bbs]
 
-class L(list):
+class L_old(list):
     def __getitem__(self, keys):
         if isinstance(keys, (int, slice)): return list.__getitem__(self, keys)
         return L([self[k] for k in keys])

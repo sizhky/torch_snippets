@@ -19,7 +19,7 @@ from collections import namedtuple, defaultdict
 import re
 from loguru import logger
 from itertools import dropwhile, takewhile
-from .loader import makedir
+from .loader import makedir, os
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -243,7 +243,6 @@ def moving_average(a, n=3) :
 
 def save_torch_model_weights_from(model, fpath):
     'from model to fpath'
-    makedir(fpath)
     torch.save(model.state_dict(), fpath)
     fsize = os.path.getsize(fpath) >> 20
     logger.opt(depth=1).log('INFO', f'Saved weights of size ~{fsize} MB to {fpath}')

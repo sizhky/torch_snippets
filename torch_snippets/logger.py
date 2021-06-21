@@ -57,10 +57,11 @@ def render(
     )
     return log_renderable
 
-logger.configure(handlers=[{
-    "sink":RichHandler(rich_tracebacks=True, console=console),
-    "format":'<level>{message}</level>'}
-])
+# logger.configure(handlers=[{
+#     "sink":RichHandler(rich_tracebacks=False, console=console),
+#     "format":'<level>{message}</level>',
+#     "backtrace": False
+# }])
 
 logger = logger
 
@@ -71,5 +72,6 @@ Excep = lambda x: logger.opt(depth=1).log("ERROR", x)
 
 # Cell
 def reset_logger_width(logger, width):
+    return
     logger._core.handlers[1]._sink._handler.console = get_console(width=width)
     logger.info(f'reset logger\'s console width to {width}!')

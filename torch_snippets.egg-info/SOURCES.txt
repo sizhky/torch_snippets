@@ -1,4 +1,5 @@
 LICENSE
+LICENSE.txt
 MANIFEST.in
 README.md
 settings.ini
