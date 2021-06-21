@@ -99,7 +99,7 @@ class Timer:
         ix = self.ix if ix is None else ix
         info = '' if info is None else f'{info}\t'
         elapsed = time.time() - self.start
-        print_py('{}{}/{} ({:.2f}s - {:.2f}s remaining)'.format(info, ix+1, self.N, elapsed, (self.N-ix)*(elapsed/(ix+1))), end='\r')
+        print('{}{}/{} ({:.2f}s - {:.2f}s remaining)'.format(info, ix+1, self.N, elapsed, (self.N-ix)*(elapsed/(ix+1))), end='\r')
         self.ix += 1
 
 old_line = lambda N=66: print('='*N)
