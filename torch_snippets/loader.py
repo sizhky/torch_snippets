@@ -15,10 +15,9 @@ __all__ = [
     'zip_files','unzip_file',
     'BB','bbfy','xywh2xyXY','df2bbs',
     'Info','Warn','Debug','Excep','reset_logger_width',
-    'display', 'print'
+    'display'
 ]
 
-print_py = print
 from .logger import *
 from fastcore.basics import patch_to
 from fastcore.foundation import L
@@ -43,8 +42,8 @@ E = enumerate
 # File operations
 from pathlib import Path
 P = Path
-P.ls = lambda x: list(x.iterdir())
-P.__repr__ = lambda x: f"» {x}"
+P.ls = lambda self: list(self.iterdir())
+P.__repr__ = lambda self: f"» {self}"
 
 @patch_to(P)
 def Glob(self, pattern='*'):
