@@ -1,0 +1,11 @@
+{
+  "torch_snippets": {
+    "Overview": "/",
+    "Charts": "charts.html",
+    "Rich Logging and Printing": "logging.html",
+    "Functions": "misc.html",
+    "Report": "report.html",
+    "Show": "show.html",
+    "sklearn Transforms": "sklegos.html"
+  }
+}

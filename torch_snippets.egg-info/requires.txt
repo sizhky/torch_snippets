@@ -1,0 +1,11 @@
+fastcore
+matplotlib
+Pillow
+altair
+dill
+ipython
+loguru
+numpy
+pandas
+tqdm
+rich
