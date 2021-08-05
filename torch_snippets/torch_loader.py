@@ -19,7 +19,7 @@ from collections import namedtuple, defaultdict
 import re
 from loguru import logger
 from itertools import dropwhile, takewhile
-from .loader import makedir, os
+from .paths import makedir, os
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -229,8 +229,8 @@ try:
             return getattr(self.report, attr, **kwargs)
 
     __all__ += ['LightningReport', 'pl']
-except:
-    logger.warning('Not importing Lightning Report')
+except Exception as e:
+    logger.warning(f'Error: {e}\nNot importing Lightning Report')
 
 def moving_average(a, n=3) :
     b = np.zeros_like(a)

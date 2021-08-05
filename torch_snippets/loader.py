@@ -1,18 +1,14 @@
 __all__ = [
-    'B','Blank','C','choose','common','crop_from_bb','diff','find',
+    'B','Blank','C','choose','common','crop_from_bb','diff',
     'E',
-    'flatten','fname','find','fname2','glob','Glob','Image','inspect','jitter', 'L', 'lzip',
+    'flatten','Image','inspect','jitter', 'L', 'lzip',
     'line','lines',
     'dumpdill','loaddill',
     'to_absolute', 'to_relative',
     'enlarge_bbs', 'shrink_bbs',
-    'makedir', 'isdir', 'extn', 'P', 'Path', 'parent','stem','stems',
-    'remove_duplicates','md5',
     'logger', 'np', 'now','nunique','os','pad','pd','pdfilter','pdb',
-    'plt','PIL','puttext','randint','rand','re','read','readPIL','rect','rename_batch','resize','rotate','see',
+    'plt','PIL','puttext','randint','rand','re','read','readPIL','rect','resize','rotate','see',
     'set_logging_level','show','store_attr','subplots','sys','tqdm','Tqdm','trange','Timer','unique','uint','write',
-    'readlines','writelines',
-    'zip_files','unzip_file',
     'BB','bbfy','xywh2xyXY','df2bbs',
     'Info','Warn','Debug','Excep','reset_logger_width',
     'display',
@@ -20,8 +16,7 @@ __all__ = [
 ]
 
 from .logger import *
-# from .show_image_utils import *
-from fastcore.basics import patch_to
+from pathlib import Path
 from fastcore.foundation import L
 from fastcore.dispatch import typedispatch
 
@@ -42,48 +37,6 @@ import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 import pdb, datetime, dill
 E = enumerate
-
-# File operations
-from pathlib import Path
-P = Path
-P.ls = lambda self: list(self.iterdir())
-P.__repr__ = lambda self: f"» {self}"
-
-@patch_to(P)
-def Glob(self, pattern='*'):
-    return list(self.glob(pattern))
-
-def isdir(fpath): return os.path.isdir(fpath)
-
-def makedir(x):
-    os.makedirs(x, exist_ok=True)
-    
-fname = lambda fpath: fpath.split('/')[-1]
-
-fname2 = lambda fpath: stem(fpath.split('/')[-1])
-
-def stem(fpath): return '.'.join(fname(str(fpath)).split('.')[:-1])
-def stems(folder):
-    if isinstance(folder, (str, P)) : return [stem(str(x)) for x in Glob(folder)]
-    if isinstance(folder, list): return [stem(x) for x in folder]
-
-def parent(fpath):
-    out = '/'.join(fpath.split('/')[:-1])
-    if out == '': return './'
-    else:         return out
-    
-extn = lambda x: x.split('.')[-1]
-
-def Glob(x, extns=None, silent=False):
-    x = str(x)
-    files = glob.glob(x+'/*') if '*' not in x else glob.glob(x)
-    if extns:
-        if isinstance(extns, str): extns = extns.split(',')
-        files = [f for f in files if any([f.endswith(ext) for ext in extns])]
-        
-    if not silent: logger.opt(depth=1).log('INFO', '{} files found at {}'.format(len(files), x))
-    return files
-
 
 try:
     import cv2
@@ -140,18 +93,7 @@ def choose(i:set, n=1):
     
 
 rand = lambda : ''.join(choose(list('1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'), n=6))
-def find(item, List, match_stem=False):
-    '''Find an `item` in a `List`
-    >>> find('abc', ['ijk','asdfs','dfsabcdsf','lmnop'])
-    'dgsabcdsf'
-    >>> find('file1', ['/tmp/file0.jpg', '/tmp/file0.png', '/tmp/file1.jpg', '/tmp/file1.png', '/tmp/file2.jpg', '/tmp/file2.png'])
-    ['/tmp/file1.jpg', '/tmp/file1.png']
-    '''
-    filtered = [i for i in List if item in i]
-    if match_stem and len(filtered) > 1:
-        filtered = [f for f in filtered if stem(f)==item]
-    if len(filtered) == 1: return filtered[0]
-    return filtered
+
 
 def inspect(*arrays, **kwargs):
     '''
@@ -243,24 +185,6 @@ def C(im):
     else:
         return np.repeat(im[...,None], 3, 2)
 
-def rename_batch(folder, func, debug=False, one_file=False):
-    'V.V.Imp: Use debug=True first to confirm file name changes are as expected'
-    if isinstance(folder, str): folder = Glob(folder)
-    sources = []
-    destins = []
-    log_file = f'moved_files_{now()}.log'
-    for f in folder:
-        source = f
-        destin = func(f)
-        if source == destin: continue
-        if debug:
-            logger.debug(f'moving `{source}` --> `{destin}`')
-        else:
-            # !mv {source.replace(' ','\ ')} {destin.replace(' ','\ ')}
-            logger.info(f'moving `{source}` --> `{destin}`')
-            os.rename(source, destin)
-        # !echo {source.replace(' ','\ ')} --\> {destin.replace(' ','\ ')} >> {logfile}
-        if one_file: break
 
 def common(a, b):
     """Wrapper around set intersection"""
@@ -295,7 +219,8 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         if isinstance(img, (str, Path)): img = read(str(img), 1)
         if isinstance(img, torch.Tensor): img = img.cpu().detach().numpy().copy()
         if isinstance(img, PIL.Image.Image): img = np.array(img)
-    except: ...
+    except Exception as e:
+        print(e)
     if not isinstance(img, np.ndarray):
         display(img)
         return
@@ -515,13 +440,6 @@ def resize_old(im:np.ndarray, sz:[float,('H','W')]):
             H,W = sz
     return cv2.resize(im, (W,H))
 
-def readlines(fpath, silent=False, encoding=None):
-    with open(fpath, 'r', encoding=encoding) as f:
-        lines = f.read().split('\n')
-        lines = [l.strip() for l in lines if l.strip()!='']
-        if not silent: logger.opt(depth=1).log("INFO", f'loaded {len(lines)} lines')
-        return lines
-
 def resize(im:np.ndarray, sz:[float,('H','W'),(str,('H','W'))]):
     '''Resize an image based on info from sz
     *Aspect ratio is preserved
@@ -587,36 +505,6 @@ def writelines(lines, file):
     if failed!=[]:
         logger.opt(depth=1).log('INFO', f'Failed to write {len(failed)} lines out of {len(lines)}')
         return failed
-
-def zip_files(list_of_files, dest):
-    import zipfile
-    Info(f'Zipping {len(list_of_files)} files to {dest}...')
-    with zipfile.ZipFile(dest, 'w') as zipMe:
-        for file in Tqdm(list_of_files):
-            zipMe.write(file, compress_type=zipfile.ZIP_DEFLATED)
-
-def unzip_file(file, dest):
-    import zipfile
-    with zipfile.ZipFile(file, 'r') as zip_ref:
-        zip_ref.extractall(dest)
-
-import hashlib
-def md5(fname):
-    hash_md5 = hashlib.md5()
-    with open(fname, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    return hash_md5.hexdigest()
-
-def remove_duplicates(files):
-    hashes = [md5(f) for f in files]
-    df = pd.DataFrame({'f':files, 'h': hashes})
-    x = df.drop_duplicates('h')
-    y = diff(files, x.f)
-    for i in y:
-        os.rename(i, './x')
-    # !rm ./x
-    return
 
 
 def xywh2xyXY(bbs):
