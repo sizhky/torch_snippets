@@ -1,10 +1,10 @@
 {
   "torch_snippets": {
     "Overview": "/",
-    "Utility to show one or more Images": "Untitled.html",
     "Charts": "charts.html",
     "Rich Logging and Printing": "logging.html",
     "Functions": "misc.html",
+    "Title": "paths.html",
     "Report": "report.html",
     "Show": "show.html",
     "sklearn Transforms": "sklegos.html"
