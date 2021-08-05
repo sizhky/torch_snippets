@@ -1,6 +1,7 @@
 {
   "torch_snippets": {
     "Overview": "/",
+    "Utility to show one or more Images": "Untitled.html",
     "Charts": "charts.html",
     "Rich Logging and Printing": "logging.html",
     "Functions": "misc.html",

@@ -10,6 +10,9 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
+      title: Utility to show one or more Images
+      url: Untitled.html
+    - output: web,pdf
       title: Charts
       url: charts.html
     - output: web,pdf

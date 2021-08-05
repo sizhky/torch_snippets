@@ -15,12 +15,16 @@ __all__ = [
     'zip_files','unzip_file',
     'BB','bbfy','xywh2xyXY','df2bbs',
     'Info','Warn','Debug','Excep','reset_logger_width',
-    'display'
+    'display',
+    'typedispatch',
 ]
 
 from .logger import *
+# from .show_image_utils import *
 from fastcore.basics import patch_to
 from fastcore.foundation import L
+from fastcore.dispatch import typedispatch
+
 import glob, numpy as np, pandas as pd, tqdm, os, sys, re
 from IPython.display import display
 import PIL
@@ -118,9 +122,22 @@ def see(*X, N=66): list(map(lambda x: print('='*N+'\n{}'.format(x)), X))+[print(
 def flatten(lists): return [y for x in lists for y in  x]
 unique = lambda l: list(sorted(set(l)))
 nunique = lambda l: len(set(l))
+
+@typedispatch
 def choose(List, n=1):
     if n == 1: return List[randint(len(List))]
-    else:      return [choose(List) for _ in range(n)]
+    else:      return L([choose(List) for _ in range(n)])
+    
+@typedispatch
+def choose(i:dict, n=1):
+    keys = list(i.keys())
+    return choose(keys, n=n)
+
+@typedispatch
+def choose(i:set, n=1):
+    i = list(i)
+    return choose(i, n=n)
+    
 
 rand = lambda : ''.join(choose(list('1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'), n=6))
 def find(item, List, match_stem=False):
@@ -367,6 +384,7 @@ def puttext(ax, string, org, size=15, color=(255,0,0), thickness=2):
 
 def dumpdill(obj, fpath, silent=False):
     start = time.time()
+    fpath = str(fpath)
     os.makedirs(parent(fpath), exist_ok=True)
     with open(fpath, 'wb') as f:
         dill.dump(obj, f)
@@ -376,6 +394,7 @@ def dumpdill(obj, fpath, silent=False):
         logger.opt(depth=1).log('INFO', f'Dumped object of size ≈{fsize} @ "{fpath}" in {time.time()-start:.2e} seconds')
 
 def loaddill(fpath):
+    fpath = str(fpath)
     with open(fpath, 'rb') as f:
         obj = dill.load(f)
     return obj
