@@ -1,7 +1,8 @@
-__version__ = "0.425"
+__version__ = "0.434"
 from .loader import *
 from .fastcores import *
 from .charts import *
+from .paths import *
 try:
     from .torch_loader import *
 except Exception as e:
