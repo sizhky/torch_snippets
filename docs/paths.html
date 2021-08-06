@@ -40,7 +40,7 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="input_to_str" class="doc_header"><code>input_to_str</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L11" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>input_to_str</code>(<strong><code>func</code></strong>)</p>
+<h4 id="input_to_str" class="doc_header"><code>input_to_str</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L13" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>input_to_str</code>(<strong><code>func</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -64,7 +64,7 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="output_to_path" class="doc_header"><code>output_to_path</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>output_to_path</code>(<strong><code>func</code></strong>)</p>
+<h4 id="output_to_path" class="doc_header"><code>output_to_path</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L21" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>output_to_path</code>(<strong><code>func</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -95,7 +95,29 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="extn" class="doc_header"><code>extn</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L102" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extn</code>(<strong><code>x</code></strong>)</p>
+<h4 id="None" class="doc_header"><code>None</code><a href="" class="source_link" style="float:right">[source]</a></h4>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="extn" class="doc_header"><code>extn</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L112" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>extn</code>(<strong><code>x</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -119,7 +141,7 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Glob" class="doc_header"><code>Glob</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L105" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Glob</code>(<strong><code>x</code></strong>, <strong><code>extns</code></strong>=<em><code>None</code></em>, <strong><code>silent</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="Glob" class="doc_header"><code>Glob</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L115" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Glob</code>(<strong><code>x</code></strong>, <strong><code>extns</code></strong>=<em><code>None</code></em>, <strong><code>silent</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -230,6 +252,240 @@ nb_path: "nbs/paths.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">P</span><span class="p">(</span><span class="s1">&#39;test.txt&#39;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">mv</span><span class="p">(</span><span class="s1">&#39;test1.txt&#39;</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="s1">&#39;test2.txt&#39;</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">q</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;0 KB&#39;</span>
+<span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;test1.txt&#39;</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">extn</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;txt&#39;</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">parent</span> <span class="o">==</span> <span class="n">P</span><span class="p">()</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">rm</span><span class="p">(</span><span class="n">confirm_prompt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">q</span><span class="o">.</span><span class="n">rm</span><span class="p">(</span><span class="n">confirm_prompt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">P</span><span class="p">(</span><span class="s1">&#39;torch_snippets&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">Glob</span><span class="p">())</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">&#39;*.py&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sample file: `</span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sample file size: `</span><span class="si">{</span><span class="n">q</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+<div id="9b046670-bd23-4135-af88-620305049b6c"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#9b046670-bd23-4135-af88-620305049b6c');
+
+        if (window._pyforest_update_imports_cell) { window._pyforest_update_imports_cell('import os'); }
+    
+</script>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="474ee382-60b2-4f34-804e-d1216dd970d8"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#474ee382-60b2-4f34-804e-d1216dd970d8');
+
+        if (window._pyforest_update_imports_cell) { window._pyforest_update_imports_cell('import os'); }
+    
+</script>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>2021-08-06 16:54:27.659 | INFO     | __main__:&lt;module&gt;:3 - 0 KB
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="128ea330-54e8-42a8-9dde-8987d1444ebd"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#128ea330-54e8-42a8-9dde-8987d1444ebd');
+
+        if (window._pyforest_update_imports_cell) { window._pyforest_update_imports_cell('import os'); }
+    
+</script>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="63a4c996-5e21-4db5-ab4f-356366735752"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#63a4c996-5e21-4db5-ab4f-356366735752');
+
+        if (window._pyforest_update_imports_cell) { window._pyforest_update_imports_cell('import os'); }
+    
+</script>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="4782c263-97fb-4103-ad49-8278945382c5"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#4782c263-97fb-4103-ad49-8278945382c5');
+
+        if (window._pyforest_update_imports_cell) { window._pyforest_update_imports_cell('import os'); }
+    
+</script>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="46c129fc-bf91-4307-a245-dc7d335471f9"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#46c129fc-bf91-4307-a245-dc7d335471f9');
+
+        if (window._pyforest_update_imports_cell) { window._pyforest_update_imports_cell('import os'); }
+    
+</script>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>2021-08-06 16:54:27.674 | INFO     | __main__:rm:43 - Deleted test1.txt
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="fb71ae39-30f5-4e48-8b9c-6b0e893591d0"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#fb71ae39-30f5-4e48-8b9c-6b0e893591d0');
+
+        if (window._pyforest_update_imports_cell) { window._pyforest_update_imports_cell('import os'); }
+    
+</script>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>2021-08-06 16:54:27.677 | INFO     | __main__:rm:43 - Deleted test2.txt
+2021-08-06 16:54:27.679 | INFO     | __main__:&lt;module&gt;:17 - [» torch_snippets/misc.py, » torch_snippets/_nbdev.py, » torch_snippets/paths.py, » torch_snippets/charts.py, » torch_snippets/__init__.py, » torch_snippets/torch_loader.py, » torch_snippets/__pycache__, » torch_snippets/logger.py, » torch_snippets/fastcores.py, » torch_snippets/sklegos.py, » torch_snippets/.mypy_cache, » torch_snippets/loader.py, » torch_snippets/.ipynb_checkpoints]
+2021-08-06 16:54:27.681 | INFO     | __main__:&lt;module&gt;:19 - Sample file: `torch_snippets/fastcores.py`
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="60689f44-e733-475c-9709-3c32b4088fcb"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#60689f44-e733-475c-9709-3c32b4088fcb');
+
+        if (window._pyforest_update_imports_cell) { window._pyforest_update_imports_cell('import os'); }
+    
+</script>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+
+<div id="fb80874d-233b-4657-9dd6-de5827f5da03"></div>
+<div class="output_subarea output_javascript ">
+<script type="text/javascript">
+var element = $('#fb80874d-233b-4657-9dd6-de5827f5da03');
+
+        if (window._pyforest_update_imports_cell) { window._pyforest_update_imports_cell('import os'); }
+    
+</script>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>2021-08-06 16:54:27.689 | INFO     | __main__:&lt;module&gt;:20 - Sample file size: `0 KB`
+2021-08-06 16:54:27.690 | WARNING  | __main__:&lt;module&gt;:24 - `torch_snippets` is a directory
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
 <div class="output">
@@ -238,7 +494,7 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="isdir" class="doc_header"><code>isdir</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L73" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>isdir</code>(<strong><code>fpath</code></strong>)</p>
+<h4 id="isdir" class="doc_header"><code>isdir</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L83" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>isdir</code>(<strong><code>fpath</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -262,7 +518,7 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="makedir" class="doc_header"><code>makedir</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L75" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>makedir</code>(<strong><code>x</code></strong>)</p>
+<h4 id="makedir" class="doc_header"><code>makedir</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L85" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>makedir</code>(<strong><code>x</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -286,7 +542,7 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="fname" class="doc_header"><code>fname</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L79" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fname</code>(<strong><code>fpath</code></strong>)</p>
+<h4 id="fname" class="doc_header"><code>fname</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L89" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fname</code>(<strong><code>fpath</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -310,7 +566,7 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="fname2" class="doc_header"><code>fname2</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L83" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fname2</code>(<strong><code>fpath</code></strong>)</p>
+<h4 id="fname2" class="doc_header"><code>fname2</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L93" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fname2</code>(<strong><code>fpath</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -334,7 +590,7 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="stem" class="doc_header"><code>stem</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L87" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>stem</code>(<strong><code>fpath</code></strong>)</p>
+<h4 id="stem" class="doc_header"><code>stem</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L97" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>stem</code>(<strong><code>fpath</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -358,7 +614,7 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="stems" class="doc_header"><code>stems</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L90" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>stems</code>(<strong><code>folder</code></strong>)</p>
+<h4 id="stems" class="doc_header"><code>stems</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L100" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>stems</code>(<strong><code>folder</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -382,7 +638,7 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="parent" class="doc_header"><code>parent</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L95" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>parent</code>(<strong><code>fpath</code></strong>)</p>
+<h4 id="parent" class="doc_header"><code>parent</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L105" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>parent</code>(<strong><code>fpath</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -450,7 +706,7 @@ nb_path: "nbs/paths.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="find" class="doc_header"><code>find</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L116" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>find</code>(<strong><code>item</code></strong>, <strong><code>List</code></strong>, <strong><code>match_stem</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="find" class="doc_header"><code>find</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L126" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>find</code>(<strong><code>item</code></strong>, <strong><code>List</code></strong>, <strong><code>match_stem</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Find an <code>item</code> in a <code>List</code></p>
 <blockquote><blockquote><blockquote><p>find('abc', ['ijk','asdfs','dfsabcdsf','lmnop'])
@@ -481,6 +737,55 @@ find('file1', ['/tmp/file0.jpg', '/tmp/file0.png', '/tmp/file1.jpg', '/tmp/file1
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">P</span><span class="p">(</span><span class="s1">&#39;test.txt&#39;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">isdir</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span>
+<span class="k">assert</span> <span class="n">fname</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;test.txt&#39;</span>
+<span class="k">assert</span> <span class="n">parent</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="n">P</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">stem</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span>
+<span class="k">assert</span> <span class="n">extn</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;txt&#39;</span>
+
+<span class="n">find</span><span class="p">(</span><span class="s1">&#39;logger&#39;</span><span class="p">,</span> <span class="n">Glob</span><span class="p">(</span><span class="s1">&#39;torch_snippets&#39;</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>2021-08-06 16:54:27.717 | INFO     | __main__:inner:17 - 11 files found at torch_snippets
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>» torch_snippets/logger.py</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
 <div class="output">
@@ -489,7 +794,7 @@ find('file1', ['/tmp/file0.jpg', '/tmp/file0.png', '/tmp/file1.jpg', '/tmp/file1
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="zip_files" class="doc_header"><code>zip_files</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L131" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>zip_files</code>(<strong><code>list_of_files</code></strong>, <strong><code>dest</code></strong>)</p>
+<h4 id="zip_files" class="doc_header"><code>zip_files</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L141" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>zip_files</code>(<strong><code>list_of_files</code></strong>, <strong><code>dest</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -513,117 +818,7 @@ find('file1', ['/tmp/file0.jpg', '/tmp/file0.png', '/tmp/file1.jpg', '/tmp/file1
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="unzip_file" class="doc_header"><code>unzip_file</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L138" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>unzip_file</code>(<strong><code>file</code></strong>, <strong><code>dest</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="md5" class="doc_header"><code>md5</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L145" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>md5</code>(<strong><code>fname</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="remove_duplicates" class="doc_header"><code>remove_duplicates</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L152" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>remove_duplicates</code>(<strong><code>files</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="readlines" class="doc_header"><code>readlines</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L163" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>readlines</code>(<strong><code>fpath</code></strong>, <strong><code>silent</code></strong>=<em><code>False</code></em>, <strong><code>encoding</code></strong>=<em><code>None</code></em>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="writelines" class="doc_header"><code>writelines</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L170" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>writelines</code>(<strong><code>lines</code></strong>, <strong><code>file</code></strong>)</p>
+<h4 id="unzip_file" class="doc_header"><code>unzip_file</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L148" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>unzip_file</code>(<strong><code>file</code></strong>, <strong><code>dest</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -654,7 +849,234 @@ find('file1', ['/tmp/file0.jpg', '/tmp/file0.png', '/tmp/file1.jpg', '/tmp/file1
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="rename_batch" class="doc_header"><code>rename_batch</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L182" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>rename_batch</code>(<strong><code>folder</code></strong>, <strong><code>func</code></strong>, <strong><code>debug</code></strong>=<em><code>False</code></em>, <strong><code>one_file</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="md5" class="doc_header"><code>md5</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L155" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>md5</code>(<strong><code>fname</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="remove_duplicates" class="doc_header"><code>remove_duplicates</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L162" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>remove_duplicates</code>(<strong><code>files</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">md5</span><span class="p">(</span><span class="s1">&#39;paths.ipynb&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;79f9c5aa4ebc52d7cabd97fdf1eae6dc&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="readlines" class="doc_header"><code>readlines</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L173" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>readlines</code>(<strong><code>fpath</code></strong>, <strong><code>silent</code></strong>=<em><code>False</code></em>, <strong><code>encoding</code></strong>=<em><code>None</code></em>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="None" class="doc_header"><code>None</code><a href="" class="source_link" style="float:right">[source]</a></h4>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="writelines" class="doc_header"><code>writelines</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L184" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>writelines</code>(<strong><code>lines</code></strong>, <strong><code>file</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="None" class="doc_header"><code>None</code><a href="" class="source_link" style="float:right">[source]</a></h4>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">P</span><span class="p">(</span><span class="s1">&#39;tmp.txt&#39;</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+<span class="n">x</span><span class="o">.</span><span class="n">write_lines</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)])</span>
+<span class="n">lines</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">read_lines</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">lines</span> <span class="o">==</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)]</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">rm</span><span class="p">(</span><span class="n">confirm_prompt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>2021-08-06 16:54:27.782 | INFO     | __main__:read_lines:11 - loaded 1000 lines
+2021-08-06 16:54:27.784 | INFO     | __main__:&lt;module&gt;:6 - 3 KB
+2021-08-06 16:54:27.786 | INFO     | __main__:rm:43 - Deleted tmp.txt
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="rename_batch" class="doc_header"><code>rename_batch</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L200" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>rename_batch</code>(<strong><code>folder</code></strong>, <strong><code>func</code></strong>, <strong><code>debug</code></strong>=<em><code>False</code></em>, <strong><code>one_file</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>V.V.Imp: Use debug=True first to confirm file name changes are as expected</p>
 
@@ -686,7 +1108,7 @@ find('file1', ['/tmp/file0.jpg', '/tmp/file0.png', '/tmp/file1.jpg', '/tmp/file1
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dumpdill" class="doc_header"><code>dumpdill</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L205" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dumpdill</code>(<strong><code>obj</code></strong>, <strong><code>fpath</code></strong>, <strong><code>silent</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="dumpdill" class="doc_header"><code>dumpdill</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L223" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dumpdill</code>(<strong><code>obj</code></strong>, <strong><code>fpath</code></strong>, <strong><code>silent</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -710,7 +1132,7 @@ find('file1', ['/tmp/file0.jpg', '/tmp/file0.png', '/tmp/file1.jpg', '/tmp/file1
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="loaddill" class="doc_header"><code>loaddill</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L216" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>loaddill</code>(<strong><code>fpath</code></strong>)</p>
+<h4 id="loaddill" class="doc_header"><code>loaddill</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/paths.py#L233" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>loaddill</code>(<strong><code>fpath</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -726,6 +1148,42 @@ find('file1', ['/tmp/file0.jpg', '/tmp/file0.png', '/tmp/file1.jpg', '/tmp/file1
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">P</span><span class="p">(</span><span class="s1">&#39;test.tmp&#39;</span><span class="p">)</span>
+<span class="n">dumpdill</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">loaddill</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">rm</span><span class="p">(</span><span class="n">confirm_prompt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">y</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>2021-08-06 16:54:27.829 | INFO     | __main__:&lt;module&gt;:2 - Dumped object of size ≈0 KB @ &#34;test.tmp&#34; in 2.42e-03 seconds
+2021-08-06 16:54:27.832 | INFO     | __main__:rm:43 - Deleted test.tmp
+</pre>
+</div>
+</div>
+
+</div>
+</div>
 
 </div>
     {% endraw %}
