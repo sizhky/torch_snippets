@@ -3,7 +3,6 @@ __all__ = [
     'E',
     'flatten','Image','inspect','jitter', 'L', 'lzip',
     'line','lines',
-    'dumpdill','loaddill',
     'to_absolute', 'to_relative',
     'enlarge_bbs', 'shrink_bbs',
     'logger', 'np', 'now','nunique','os','pad','pd','pdfilter','pdb',
@@ -35,7 +34,7 @@ except: ...
 import matplotlib#; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
-import pdb, datetime, dill
+import pdb, datetime
 E = enumerate
 
 try:
@@ -307,23 +306,6 @@ def puttext(ax, string, org, size=15, color=(255,0,0), thickness=2):
     text.set_path_effects([path_effects.Stroke(linewidth=3, foreground='white'),
                            path_effects.Normal()])
 
-def dumpdill(obj, fpath, silent=False):
-    start = time.time()
-    fpath = str(fpath)
-    os.makedirs(parent(fpath), exist_ok=True)
-    with open(fpath, 'wb') as f:
-        dill.dump(obj, f)
-    if not silent:
-        fsize = os.path.getsize(fpath) >> 20
-        fsize = f'{fsize} MB' if fsize > 0 else f'{os.path.getsize(fpath) >> 10} KB'
-        logger.opt(depth=1).log('INFO', f'Dumped object of size ≈{fsize} @ "{fpath}" in {time.time()-start:.2e} seconds')
-
-def loaddill(fpath):
-    fpath = str(fpath)
-    with open(fpath, 'rb') as f:
-        obj = dill.load(f)
-    return obj
-
 class BB:
     def __init__(self, *bb):
         # assert len(bb) == 4, 'expecting a list/tuple of 4 values respectively for (x,y,X,Y)'
@@ -494,17 +476,6 @@ def pad(im, sz, pad_value=255):
     IM = np.ones(sz)*pad_value
     IM[:h,:w] = im
     return IM
-
-def writelines(lines, file):
-    makedir(parent(file))
-    failed = []
-    with open(file, 'w') as f:
-        for line in lines:
-            try: f.write(f'{line}\n')
-            except: failed.append(line)
-    if failed!=[]:
-        logger.opt(depth=1).log('INFO', f'Failed to write {len(failed)} lines out of {len(lines)}')
-        return failed
 
 
 def xywh2xyXY(bbs):

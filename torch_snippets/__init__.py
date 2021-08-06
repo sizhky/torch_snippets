@@ -1,4 +1,4 @@
-__version__ = "0.427"
+__version__ = "0.451"
 from .loader import *
 from .fastcores import *
 from .charts import *

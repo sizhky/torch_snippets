@@ -2,11 +2,10 @@
 
 __all__ = ['input_to_str', 'output_to_path', 'extn', 'Glob', 'sample', 'mv', 'cp', 'rm', 'P', 'isdir', 'makedir',
            'fname', 'fname2', 'stem', 'stems', 'parent', 'extn', 'Glob', 'find', 'zip_files', 'unzip_file', 'md5',
-           'remove_duplicates', 'readlines', 'writelines', 'rename_batch']
+           'remove_duplicates', 'readlines', 'writelines', 'rename_batch', 'dumpdill', 'loaddill', 'dill']
 
 # Cell
 from fastcore.basics import patch_to
-from .loader import *
 from functools import wraps
 
 def input_to_str(func):
@@ -69,13 +68,8 @@ def rm(self, confirm=True, verbose=True):
             logger.info(f'Deleted {self}')
 
 # Cell
-
-
-
-
 import glob, os
 
-#export
 def isdir(fpath): return os.path.isdir(fpath)
 
 @input_to_str
@@ -147,7 +141,6 @@ def unzip_file(file, dest):
         zip_ref.extractall(dest)
 
 # Cell
-
 import hashlib
 def md5(fname):
     hash_md5 = hashlib.md5()
@@ -167,7 +160,6 @@ def remove_duplicates(files):
     return
 
 # Cell
-
 def readlines(fpath, silent=False, encoding=None):
     with open(fpath, 'r', encoding=encoding) as f:
         lines = f.read().split('\n')
@@ -205,3 +197,24 @@ def rename_batch(folder, func, debug=False, one_file=False):
             os.rename(source, destin)
         # !echo {source.replace(' ','\ ')} --\> {destin.replace(' ','\ ')} >> {logfile}
         if one_file: break
+
+# Cell
+import dill
+
+dill = dill
+def dumpdill(obj, fpath, silent=False):
+    start = time.time()
+    fpath = str(fpath)
+    os.makedirs(parent(fpath), exist_ok=True)
+    with open(fpath, 'wb') as f:
+        dill.dump(obj, f)
+    if not silent:
+        fsize = os.path.getsize(fpath) >> 20
+        fsize = f'{fsize} MB' if fsize > 0 else f'{os.path.getsize(fpath) >> 10} KB'
+        logger.opt(depth=1).log('INFO', f'Dumped object of size ≈{fsize} @ "{fpath}" in {time.time()-start:.2e} seconds')
+
+def loaddill(fpath):
+    fpath = str(fpath)
+    with open(fpath, 'rb') as f:
+        obj = dill.load(f)
+    return obj
