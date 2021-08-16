@@ -15,6 +15,10 @@ index = {"alt": "charts.ipynb",
          "Warn": "logging.ipynb",
          "Excep": "logging.ipynb",
          "reset_logger_width": "logging.ipynb",
+         "read_json": "markups.ipynb",
+         "write_json": "markups.ipynb",
+         "AttrDict": "markups.ipynb",
+         "pretty_json": "markups.ipynb",
          "input_to_str": "paths.ipynb",
          "output_to_path": "paths.ipynb",
          "size": "paths.ipynb",
@@ -61,6 +65,7 @@ index = {"alt": "charts.ipynb",
 
 modules = ["charts.py",
            "logger.py",
+           "markups.py",
            "paths.py",
            "sklegos.py"]
 
