@@ -16,11 +16,11 @@ entries:
       title: Rich Logging and Printing
       url: logging.html
     - output: web,pdf
+      title: Title
+      url: registry.html
+    - output: web,pdf
       title: Functions
       url: misc.html
-    - output: web,pdf
-      title: Title
-      url: paths.html
     - output: web,pdf
       title: Report
       url: report.html
