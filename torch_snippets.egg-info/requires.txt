@@ -9,3 +9,9 @@ numpy
 pandas
 tqdm
 rich
+PyYAML
+catalogue
+pydantic
+srsly
+typing_extensions
+wasabi

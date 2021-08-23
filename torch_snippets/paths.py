@@ -8,7 +8,7 @@ __all__ = ['input_to_str', 'output_to_path', 'size', 'extn', 'Glob', 'sample', '
 # Cell
 from fastcore.basics import patch_to
 from functools import wraps
-from .logger import logger
+from .logger import logger, Info, Debug, Warn, Excep
 
 def input_to_str(func):
     @wraps(func)
@@ -140,7 +140,7 @@ def find(item, List, match_stem=False):
 import zipfile
 def zip_files(list_of_files, dest):
     import zipfile
-    Info(f'Zipping {len(list_of_files)} files to {dest}...')
+    logger.info(f'Zipping {len(list_of_files)} files to {dest}...')
     with zipfile.ZipFile(dest, 'w') as zipMe:
         for file in Tqdm(list_of_files):
             zipMe.write(file, compress_type=zipfile.ZIP_DEFLATED)
