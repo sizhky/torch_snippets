@@ -64,10 +64,10 @@ def render(
 
 logger = logger
 
-Debug = lambda x: logger.opt(depth=1).log("DEBUG", x)
-Info  = lambda x: logger.opt(depth=1).log("INFO", x)
-Warn  = lambda x: logger.opt(depth=1).log("WARNING", x)
-Excep = lambda x: logger.opt(depth=1).log("ERROR", x)
+Debug = lambda x, dept=1: logger.opt(depth=depth).log("DEBUG", x)
+Info  = lambda x, dept=1: logger.opt(depth=depth).log("INFO", x)
+Warn  = lambda x, dept=1: logger.opt(depth=depth).log("WARNING", x)
+Excep = lambda x, dept=1: logger.opt(depth=depth).log("ERROR", x)
 
 # Cell
 def reset_logger_width(logger, width):

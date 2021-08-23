@@ -32,6 +32,43 @@ nb_path: "nbs/markups.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">isnamedtupleinstance</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">bases</span> <span class="o">=</span> <span class="n">_type</span><span class="o">.</span><span class="vm">__bases__</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bases</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">bases</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_type</span><span class="p">,</span> <span class="s1">&#39;_fields&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">==</span><span class="nb">str</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">unpack</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">unpack</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">isnamedtupleinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">unpack</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">unpack</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
 <div class="output">
@@ -40,7 +77,7 @@ nb_path: "nbs/markups.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="isnamedtupleinstance" class="doc_header"><code>isnamedtupleinstance</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L7" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>isnamedtupleinstance</code>(<strong><code>x</code></strong>)</p>
+<h4 id="read_json" class="doc_header"><code>read_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markups.py#L7" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>read_json</code>(<strong><code>fpath</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -64,38 +101,7 @@ nb_path: "nbs/markups.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="unpack" class="doc_header"><code>unpack</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L17" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>unpack</code>(<strong><code>obj</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="read_json" class="doc_header"><code>read_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L35" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>read_json</code>(<strong><code>fpath</code></strong>)</p>
+<h4 id="write_json" class="doc_header"><code>write_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markups.py#L12" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>write_json</code>(<strong><code>obj</code></strong>, <strong><code>fpath</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -119,8 +125,17 @@ nb_path: "nbs/markups.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="write_json" class="doc_header"><code>write_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L40" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>write_json</code>(<strong><code>obj</code></strong>, <strong><code>fpath</code></strong>)</p>
+<h2 id="AttrDict" class="doc_header"><code>class</code> <code>AttrDict</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markups.py#L23" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AttrDict</code>(<strong><code>value</code></strong>=<em><code>None</code></em>) :: <code>dict</code></p>
 </blockquote>
+<p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+    (key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+    d = {}
+    for k, v in iterable:
+        d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+    in the keyword argument list.  For example:  dict(one=1, two=2)</p>
 
 </div>
 
@@ -143,32 +158,7 @@ nb_path: "nbs/markups.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AttrDict" class="doc_header"><code>class</code> <code>AttrDict</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L51" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AttrDict</code>(<strong><code>value</code></strong>=<em><code>None</code></em>) :: <code>dict</code></p>
-</blockquote>
-<p>Caution!! AttrDict Replaces <code>-</code> in keys with <code>_</code></p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="pretty_json" class="doc_header"><code>pretty_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L91" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pretty_json</code>(<strong><code>i</code></strong>, <strong><code>fpath</code></strong>=<em><code>None</code></em>, <strong><code>indent</code></strong>=<em><code>4</code></em>)</p>
+<h4 id="pretty_json" class="doc_header"><code>pretty_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markups.py#L62" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pretty_json</code>(<strong><code>i</code></strong>, <strong><code>fpath</code></strong>=<em><code>None</code></em>, <strong><code>indent</code></strong>=<em><code>4</code></em>)</p>
 </blockquote>
 
 </div>
@@ -219,7 +209,7 @@ nb_path: "nbs/markups.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>2021-08-17 10:55:06.872 | DEBUG    | __main__:pretty:59 - 
+<pre>2021-08-16 13:24:57.803 | DEBUG    | __main__:pretty:55 - 
 {
     &#34;a&#34;: {
         &#34;b&#34;: 10,
@@ -253,15 +243,17 @@ nb_path: "nbs/markups.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,{</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="p">},</span><span class="mi">3</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">torch_snippets.paths</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">torch_snippets.logger</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,{</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="p">},</span><span class="mi">3</span><span class="p">]</span>
 
 <span class="n">pretty_json</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="p">})</span>
 <span class="n">pretty_json</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="n">write_json</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s1">&#39;/tmp/test.json&#39;</span><span class="p">)</span>
-
-<span class="k">assert</span> <span class="n">read_json</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="mi">3</span><span class="p">]</span>
-<span class="n">f</span><span class="o">.</span><span class="n">rm</span><span class="p">(</span><span class="n">confirm_prompt</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">read_json</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -274,12 +266,12 @@ nb_path: "nbs/markups.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>2021-08-17 10:55:06.882 | DEBUG    | __main__:&lt;module&gt;:3 - 
+<pre>2021-08-16 13:25:04.897 | DEBUG    | __main__:&lt;module&gt;:6 - 
 {
     &#34;1&#34;: 1,
     &#34;2&#34;: 2
 }
-2021-08-17 10:55:06.885 | DEBUG    | __main__:&lt;module&gt;:4 - 
+2021-08-16 13:25:04.898 | DEBUG    | __main__:&lt;module&gt;:7 - 
 [
     1,
     {
@@ -288,300 +280,29 @@ nb_path: "nbs/markups.ipynb"
     },
     3
 ]
-2021-08-17 10:55:06.886 | DEBUG    | __main__:&lt;module&gt;:6 - Dumping json to /tmp/test.json
-2021-08-17 10:55:06.890 | INFO     | torch_snippets.paths:rm:75 - Deleted /tmp/test.json
+2021-08-16 13:25:04.900 | DEBUG    | __main__:&lt;module&gt;:9 - Dumping json to /tmp/test.json
 </pre>
 </div>
 </div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="read_yaml" class="doc_header"><code>read_yaml</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L110" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>read_yaml</code>(<strong><code>file</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="write_yaml" class="doc_header"><code>write_yaml</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L117" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>write_yaml</code>(<strong><code>content</code></strong>, <strong><code>fpath</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%writefile</span> test.yaml
- <span class="n">doe</span><span class="p">:</span> <span class="s2">&quot;a deer, a female deer&quot;</span>
- <span class="n">ray</span><span class="p">:</span> <span class="s2">&quot;a drop of golden sun&quot;</span>
- <span class="n">pi</span><span class="p">:</span> <span class="mf">3.14159</span>
- <span class="n">xmas</span><span class="p">:</span> <span class="n">true</span>
- <span class="n">french</span><span class="o">-</span><span class="n">hens</span><span class="p">:</span> <span class="mi">3</span>
- <span class="n">calling</span><span class="o">-</span><span class="n">birds</span><span class="p">:</span>
-   <span class="o">-</span> <span class="n">huey</span>
-   <span class="o">-</span> <span class="n">dewey</span>
-   <span class="o">-</span> <span class="n">louie</span>
-   <span class="o">-</span> <span class="n">fred</span>
- <span class="n">xmas</span><span class="o">-</span><span class="n">fifth</span><span class="o">-</span><span class="n">day</span><span class="p">:</span>
-   <span class="n">calling</span><span class="o">-</span><span class="n">birds</span><span class="p">:</span> <span class="n">four</span>
-   <span class="n">french</span><span class="o">-</span><span class="n">hens</span><span class="p">:</span> <span class="mi">3</span>
-   <span class="n">golden</span><span class="o">-</span><span class="n">rings</span><span class="p">:</span> <span class="mi">5</span>
-   <span class="n">partridges</span><span class="p">:</span>
-     <span class="n">count</span><span class="p">:</span> <span class="mi">1</span>
-     <span class="n">my</span><span class="o">-</span><span class="n">location</span><span class="p">:</span> <span class="s2">&quot;a pear tree&quot;</span>
-   <span class="n">turtle</span><span class="o">-</span><span class="n">doves</span><span class="p">:</span> <span class="n">two</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
 
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Overwriting test.yaml
+<pre>/tmp/test.json
 </pre>
 </div>
 </div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">read_yaml</span><span class="p">(</span><span class="s1">&#39;test.yaml&#39;</span><span class="p">)</span> 
-
-<span class="k">assert</span> <span class="n">x</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;doe&#39;</span><span class="p">:</span> <span class="s1">&#39;a deer, a female deer&#39;</span><span class="p">,</span>
- <span class="s1">&#39;ray&#39;</span><span class="p">:</span> <span class="s1">&#39;a drop of golden sun&#39;</span><span class="p">,</span>
- <span class="s1">&#39;pi&#39;</span><span class="p">:</span> <span class="mf">3.14159</span><span class="p">,</span>
- <span class="s1">&#39;xmas&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
- <span class="s1">&#39;french-hens&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
- <span class="s1">&#39;calling-birds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;huey&#39;</span><span class="p">,</span> <span class="s1">&#39;dewey&#39;</span><span class="p">,</span> <span class="s1">&#39;louie&#39;</span><span class="p">,</span> <span class="s1">&#39;fred&#39;</span><span class="p">],</span>
- <span class="s1">&#39;xmas-fifth-day&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;calling-birds&#39;</span><span class="p">:</span> <span class="s1">&#39;four&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;french-hens&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-  <span class="s1">&#39;golden-rings&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-  <span class="s1">&#39;partridges&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;my-location&#39;</span><span class="p">:</span> <span class="s1">&#39;a pear tree&#39;</span><span class="p">},</span>
-  <span class="s1">&#39;turtle-doves&#39;</span><span class="p">:</span> <span class="s1">&#39;two&#39;</span><span class="p">}}</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">ray</span> <span class="o">==</span> <span class="s1">&#39;a drop of golden sun&#39;</span>
-<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">xmas_fifth_day</span><span class="o">.</span><span class="n">calling_birds</span> <span class="o">==</span> <span class="s1">&#39;four&#39;</span>
-<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">xmas_fifth_day</span><span class="o">.</span><span class="n">partridges</span><span class="o">.</span><span class="n">my_location</span> <span class="o">==</span> <span class="s1">&#39;a pear tree&#39;</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">write_yaml</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="s1">&#39;test.yaml&#39;</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">cat</span> test.yaml
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>calling_birds:
-- huey
-- dewey
-- louie
-- fred
-doe: a deer, a female deer
-french_hens: 3
-pi: 3.14159
-ray: a drop of golden sun
-xmas: true
-xmas_fifth_day:
-  calling_birds: four
-  french_hens: 3
-  golden_rings: 5
-  partridges:
-    count: 1
-    my_location: a pear tree
-  turtle_doves: two
-</pre>
-</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[1, {&#39;1&#39;: 1, &#39;2&#39;: 2}, 3]</pre>
 </div>
 
 </div>
-</div>
 
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">P</span><span class="p">(</span><span class="s1">&#39;test.yaml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">rm</span><span class="p">(</span><span class="n">confirm_prompt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>2021-08-17 11:20:49.842 | INFO     | torch_snippets.paths:rm:75 - Deleted test.yaml
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">from_str</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">[data]</span>
-<span class="s1">dir = /root</span>
-
-<span class="s1">[training]</span>
-
-<span class="s1">[training.data]</span>
-<span class="s1">dir = $</span><span class="si">{data.dir}</span><span class="s1">/train</span>
-
-<span class="s1">[training.scheme]</span>
-<span class="s1">epochs = 10</span>
-
-<span class="s1">[training.scheme.optimizer]</span>
-<span class="s1">lr = 1e-3</span>
-<span class="s1">type = float</span>
-<span class="s1">lr-type = cyclic</span>
-
-<span class="s1">[testing]</span>
-<span class="s1">dir = $</span><span class="si">{data.dir}</span><span class="s1">/test</span>
-
-<span class="s1">[validation]</span>
-<span class="s1">dir = $</span><span class="si">{testing.dir}</span><span class="s1"></span>
-<span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dir</span> <span class="o">==</span> <span class="s1">&#39;/root&#39;</span>
-<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">epochs</span> <span class="o">==</span> <span class="mi">10</span>
-<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">lr</span> <span class="o">==</span> <span class="mf">1e-3</span>
-<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">lr_type</span> <span class="o">==</span> <span class="s1">&#39;cyclic&#39;</span>
-<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">dir</span> <span class="o">==</span> <span class="n">x</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">dir</span> <span class="o">==</span> <span class="s1">&#39;/root/test&#39;</span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 

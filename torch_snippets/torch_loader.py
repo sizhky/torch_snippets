@@ -247,7 +247,10 @@ def save_torch_model_weights_from(model, fpath):
     fsize = os.path.getsize(fpath) >> 20
     logger.opt(depth=1).log('INFO', f'Saved weights of size ~{fsize} MB to {fpath}')
 
-def load_torch_model_weights_to(model, fpath):
+def load_torch_model_weights_to(model, fpath, device=None):
     'to model from fpath'
-    model.load_state_dict(torch.load(fpath))
+    if not device:
+        model.load_state_dict(torch.load(fpath))
+    else:
+        model.load_state_dict(torch.load(fpath, map_location=device))
     logger.opt(depth=1).log('INFO', f'Loaded weights from {fpath} to given model')
