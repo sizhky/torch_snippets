@@ -5,6 +5,7 @@
     "Rich Logging and Printing": "logging.html",
     "Title": "registry.html",
     "Functions": "misc.html",
+    "PATHS": "paths.html",
     "Report": "report.html",
     "Show": "show.html",
     "sklearn Transforms": "sklegos.html"

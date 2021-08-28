@@ -32,6 +32,7 @@ def output_to_path(func):
 
 # Cell
 from .loader import choose as ts_choose
+from .loader import Tqdm
 from pathlib import Path
 P = Path
 P.ls = lambda self: list(self.iterdir())
@@ -67,7 +68,7 @@ def cp(self, to):
     return P(shutil.copy(self, to))
 
 @patch_to(P)
-def rm(self, confirm_prompt=True, verbose=True):
+def rm(self, confirm_prompt=False, verbose=True):
     confirm = input(f'Are you sure you want to delete `{self}`? [y/N]') if confirm_prompt else 'y'
     if confirm.lower() == 'y':
         os.remove(self)
@@ -138,17 +139,30 @@ def find(item, List, match_stem=False):
 
 # Cell
 import zipfile
+import tarfile
+
 def zip_files(list_of_files, dest):
-    import zipfile
+    dest = str(dest)
     logger.info(f'Zipping {len(list_of_files)} files to {dest}...')
-    with zipfile.ZipFile(dest, 'w') as zipMe:
-        for file in Tqdm(list_of_files):
-            zipMe.write(file, compress_type=zipfile.ZIP_DEFLATED)
+    if dest.lower().endswith('.zip'):
+        with zipfile.ZipFile(dest, 'w') as zipMe:
+            for file in Tqdm(list_of_files):
+                zipMe.write(file, compress_type=zipfile.ZIP_DEFLATED)
+    elif dest.lower().endswith('.tar.gz'):
+        with tarfile.open(dest, "w:gz") as tarMe:
+            for file in Tqdm(list_of_files):
+                tarMe.add(file)
+    return P(dest)
 
 def unzip_file(file, dest):
-    import zipfile
-    with zipfile.ZipFile(file, 'r') as zip_ref:
-        zip_ref.extractall(dest)
+    file = str(file)
+    if file.lower().endswith('.zip'):
+        with zipfile.ZipFile(file, 'r') as zip_ref:
+            zip_ref.extractall(dest)
+    elif file.lower().endswith('.tar.xz') or file.endswith('.tar.gz'):
+        with tarfile.open(file, 'r') as f:
+            f.extractall(dest)
+    return P(dest)
 
 # Cell
 import hashlib
@@ -160,6 +174,8 @@ def md5(fname):
     return hash_md5.hexdigest()
 
 def remove_duplicates(files):
+    import pandas as pd
+    from .loader import diff
     hashes = [md5(f) for f in files]
     df = pd.DataFrame({'f':files, 'h': hashes})
     x = df.drop_duplicates('h')
@@ -198,6 +214,7 @@ def write_lines(self, lines):
 
 # Cell
 def rename_batch(folder, func, debug=False, one_file=False):
+    from .loader import now
     'V.V.Imp: Use debug=True first to confirm file name changes are as expected'
     if isinstance(folder, (str, P)): folder = Glob(folder)
     sources = []

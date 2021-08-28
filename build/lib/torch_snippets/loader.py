@@ -503,7 +503,14 @@ def store_attr(names=None, self=None, but=None, cast=False, **attrs):
     but = [] if not but else but
     _store_attr(self, anno, **{n:fr.f_locals[n] for n in ns if n not in but})
 
+def makedir(x):
+    os.makedirs(x, exist_ok=True)
 
+def parent(fpath):
+    out = '/'.join(fpath.split('/')[:-1])
+    if out == '': return './'
+    else:         return out
+    
 def write(image, fpath):
     makedir(parent(fpath))
     cv2.imwrite(fpath, image)
