@@ -4,7 +4,7 @@
 - [ ] make plot_epochs even faster
 '''
 
-__all__ = ['torch','th','torchvision','T','transforms','nn','np','F','Dataset','DataLoader','optim','Report','Reshape','Permute','device','save_torch_model_weights_from','load_torch_model_weights_to']
+__all__ = ['torch','th','torchvision','T','transforms','nn','np','F','Dataset','DataLoader','optim','Report','Reshape','Permute','device','save_torch_model_weights_from','load_torch_model_weights_to','detach']
 
 import torch, torchvision
 import torch as th
@@ -230,7 +230,7 @@ try:
 
     __all__ += ['LightningReport', 'pl']
 except Exception as e:
-    logger.warning(f'Error: {e}\nNot importing Lightning Report')
+    ...
 
 def moving_average(a, n=3) :
     b = np.zeros_like(a)
@@ -254,3 +254,13 @@ def load_torch_model_weights_to(model, fpath, device=None):
     else:
         model.load_state_dict(torch.load(fpath, map_location=device))
     logger.opt(depth=1).log('INFO', f'Loaded weights from {fpath} to given model')
+
+def detach(i):
+    if isinstance(i, dict):
+        for k, v in i.items():
+            i[k] = detach(v)
+        return i
+    elif isinstance(i, list):
+        return [detach(j) for j in i]
+    else:
+        return i.cpu().detach()
