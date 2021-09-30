@@ -12,7 +12,6 @@ torch_snippets/fastcores.py
 torch_snippets/loader.py
 torch_snippets/logger.py
 torch_snippets/markup.py
-torch_snippets/markups.py
 torch_snippets/misc.py
 torch_snippets/paths.py
 torch_snippets/registry.py

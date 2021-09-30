@@ -1,13 +1,13 @@
-__version__ = "0.460"
+__version__ = "0.463"
 from .loader import *
 from .charts import *
 from .paths import *
 try:
     from .torch_loader import *
 except Exception as e:
-    logger.warning(f'torch is not found. Skipping relevant imports from submodule `torch_loader`\nException: {e}')
-    
+    ...
+
 try:
     from .sklegos import *
 except Exception as e:
-    logger.warning(f'sklearn is not found. Skipping relevant imports from submodule `sklegos`\nException: {e}')
+    ...

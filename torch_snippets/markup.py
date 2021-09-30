@@ -48,36 +48,29 @@ def write_json(obj, fpath):
         json.dump(obj, f, indent=4, default=set_default)
     return P(fpath)
 
-class AttrDict(dict):
-    "Caution!! AttrDict Replaces `-` in keys with `_`"
-    MARKER = object()
+class AttrDict(object):
+    def __init__(self, data):
+        for name, value in data.items():
+            setattr(self, name, self._wrap(value))
 
-    def __init__(self, value=None):
-        if value is None:
-            pass
-        elif isinstance(value, dict):
-            for key in value:
-                self.__setitem__(key.replace('-', '_'), value[key])
+    def _wrap(self, value):
+        if isinstance(value, (tuple, list, set, frozenset)):
+            return type(value)([self._wrap(v) for v in value])
         else:
-            raise TypeError('expected dict')
+            return AttrDict(value) if isinstance(value, dict) else value
 
-    def __setitem__(self, key, value):
-        if isinstance(value, dict) and not isinstance(value, AttrDict):
-            value = AttrDict(value)
-        super(AttrDict, self).__setitem__(key, value)
+    __getitem__ = lambda self, x: getattr(self, x)
+    __setitem__ = lambda self, k, v: setattr(self, k, self._wrap(v))
 
-    def __getitem__(self, key):
-        found = self.get(key, AttrDict.MARKER)
-        if found is AttrDict.MARKER:
-            found = AttrDict()
-            super(AttrDict, self).__setitem__(key, found)
-        return found
+    def __repr__(self):
+        return '{%s}' % str(', '.join("'%s': %s" % (k, repr(v)) for (k, v) in self.__dict__.items()))
 
-    __setattr__, __getattr__ = __setitem__, __getitem__
+    def __dir__(self):
+        return self.__dict__.keys()
 
     def to_dict(self):
         d = {}
-        for k in self.keys():
+        for k in dir(self):
             v = self[k]
             if isinstance(v, AttrDict):
                 v = v.to_dict()
@@ -86,6 +79,9 @@ class AttrDict(dict):
 
     def pretty(self, *args, **kwargs):
         pretty_json(self.to_dict(), *args, **kwargs)
+
+    def __eq__(self, other):
+        return AttrDict(other).to_dict() == self.to_dict()
 
 
 def pretty_json(i, fpath=None, indent=4):
