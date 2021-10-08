@@ -26,21 +26,6 @@ nb_path: "nbs/registry.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>2021-09-30 17:49:09.645 | WARNING  | torch_snippets:&lt;module&gt;:13 - sklearn is not found. Skipping relevant imports from submodule `sklegos`
-Exception: No module named &#39;sklego&#39;
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -58,131 +43,12 @@ Exception: No module named &#39;sklego&#39;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">torch_snippets</span> <span class="kn">import</span> <span class="n">logger</span>
-
-<span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span> <span class="s1">&#39;student&#39;</span><span class="p">):</span>
-    <span class="n">registry</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;student&#39;</span><span class="p">)</span>
-<span class="nd">@registry</span><span class="o">.</span><span class="n">college</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;student&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Student</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">classes</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="n">stream</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="n">classes</span>
-        
-<span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span> <span class="s1">&#39;college&#39;</span><span class="p">):</span>
-    <span class="n">registry</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;college&#39;</span><span class="p">)</span>
-<span class="nd">@registry</span><span class="o">.</span><span class="n">college</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;lecture&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Lecture</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">professor</span><span class="p">,</span> <span class="n">timings</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">professor</span> <span class="o">=</span> <span class="n">professor</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timings</span> <span class="o">=</span> <span class="n">timings</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">registry</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;student&#39;</span><span class="p">)</span>
+<span class="n">registry</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;student&#39;</span><span class="p">)</span>
+<span class="n">registry</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;student&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">from_str</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">[lectures]</span>
-<span class="s1">[lectures.math]</span>
-<span class="s1">@lecture: linear algebra</span>
-<span class="s1">professor: dakshinamurthy</span>
-<span class="s1">timings: 10am-12pm [mon,tue]</span>
-
-<span class="s1">[lectures.science]</span>
-<span class="s1">@lecture: waves</span>
-<span class="s1">professor: sridhar</span>
-<span class="s1">timings: 12pm-13pm [mon,tue,wed]</span>
-
-<span class="s1">[bio]</span>
-<span class="s1">@student: Ramu</span>
-<span class="s1">stream: mechanical</span>
-<span class="s1">age: 20</span>
-<span class="s1">classes: [$</span><span class="si">{lectures.math}</span><span class="s1">, $</span><span class="si">{lectures.science}</span><span class="s1">]</span>
-<span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">AttrDict</span><span class="p">(</span><span class="n">registry</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-<span class="n">x</span><span class="o">.</span><span class="n">lectures</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">professor</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">lectures</span><span class="o">.</span><span class="n">science</span><span class="o">.</span><span class="n">professor</span>
-<span class="n">x</span><span class="o">.</span><span class="n">bio</span><span class="o">.</span><span class="n">classes</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">RegistryError</span>                             Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-6-c002e70daf27&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     19</span> &#39;&#39;&#39;)
-<span class="ansi-green-intense-fg ansi-bold">     20</span> 
-<span class="ansi-green-fg">---&gt; 21</span><span class="ansi-red-fg"> </span>x <span class="ansi-blue-fg">=</span> AttrDict<span class="ansi-blue-fg">(</span>registry<span class="ansi-blue-fg">.</span>resolve<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     22</span> x<span class="ansi-blue-fg">.</span>lectures<span class="ansi-blue-fg">.</span>math<span class="ansi-blue-fg">.</span>professor<span class="ansi-blue-fg">,</span> x<span class="ansi-blue-fg">.</span>lectures<span class="ansi-blue-fg">.</span>science<span class="ansi-blue-fg">.</span>professor
-<span class="ansi-green-intense-fg ansi-bold">     23</span> x<span class="ansi-blue-fg">.</span>bio<span class="ansi-blue-fg">.</span>classes
-
-<span class="ansi-green-fg">~/Documents/github/torch_snippets/nbs/torch_snippets/thinc_parser/parser.py</span> in <span class="ansi-cyan-fg">resolve</span><span class="ansi-blue-fg">(cls, config, schema, overrides, validate)</span>
-<span class="ansi-green-intense-fg ansi-bold">    726</span>     ) -&gt; Dict[str, Any]:
-<span class="ansi-green-intense-fg ansi-bold">    727</span>         resolved, _ = cls._make(
-<span class="ansi-green-fg">--&gt; 728</span><span class="ansi-red-fg">             </span>config<span class="ansi-blue-fg">,</span> schema<span class="ansi-blue-fg">=</span>schema<span class="ansi-blue-fg">,</span> overrides<span class="ansi-blue-fg">=</span>overrides<span class="ansi-blue-fg">,</span> validate<span class="ansi-blue-fg">=</span>validate<span class="ansi-blue-fg">,</span> resolve<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span>
-<span class="ansi-green-intense-fg ansi-bold">    729</span>         )
-<span class="ansi-green-intense-fg ansi-bold">    730</span>         <span class="ansi-green-fg">return</span> resolved
-
-<span class="ansi-green-fg">~/Documents/github/torch_snippets/nbs/torch_snippets/thinc_parser/parser.py</span> in <span class="ansi-cyan-fg">_make</span><span class="ansi-blue-fg">(cls, config, schema, overrides, resolve, validate)</span>
-<span class="ansi-green-intense-fg ansi-bold">    775</span>             config <span class="ansi-blue-fg">=</span> Config<span class="ansi-blue-fg">(</span>orig_config<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>interpolate<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    776</span>         filled, _, resolved = cls._fill(
-<span class="ansi-green-fg">--&gt; 777</span><span class="ansi-red-fg">             </span>config<span class="ansi-blue-fg">,</span> schema<span class="ansi-blue-fg">,</span> validate<span class="ansi-blue-fg">=</span>validate<span class="ansi-blue-fg">,</span> overrides<span class="ansi-blue-fg">=</span>overrides<span class="ansi-blue-fg">,</span> resolve<span class="ansi-blue-fg">=</span>resolve
-<span class="ansi-green-intense-fg ansi-bold">    778</span>         )
-<span class="ansi-green-intense-fg ansi-bold">    779</span>         filled <span class="ansi-blue-fg">=</span> Config<span class="ansi-blue-fg">(</span>filled<span class="ansi-blue-fg">,</span> section_order<span class="ansi-blue-fg">=</span>section_order<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/Documents/github/torch_snippets/nbs/torch_snippets/thinc_parser/parser.py</span> in <span class="ansi-cyan-fg">_fill</span><span class="ansi-blue-fg">(cls, config, schema, validate, resolve, parent, overrides)</span>
-<span class="ansi-green-intense-fg ansi-bold">    828</span>                     field <span class="ansi-blue-fg">=</span> schema<span class="ansi-blue-fg">.</span>__fields__<span class="ansi-blue-fg">[</span>key<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">    829</span>                     schema<span class="ansi-blue-fg">.</span>__fields__<span class="ansi-blue-fg">[</span>key<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> copy_model_field<span class="ansi-blue-fg">(</span>field<span class="ansi-blue-fg">,</span> Any<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 830</span><span class="ansi-red-fg">                 </span>promise_schema <span class="ansi-blue-fg">=</span> cls<span class="ansi-blue-fg">.</span>make_promise_schema<span class="ansi-blue-fg">(</span>value<span class="ansi-blue-fg">,</span> resolve<span class="ansi-blue-fg">=</span>resolve<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    831</span>                 filled[key], validation[v_key], final[key] = cls._fill(
-<span class="ansi-green-intense-fg ansi-bold">    832</span>                     value<span class="ansi-blue-fg">,</span>
-
-<span class="ansi-green-fg">~/Documents/github/torch_snippets/nbs/torch_snippets/thinc_parser/parser.py</span> in <span class="ansi-cyan-fg">make_promise_schema</span><span class="ansi-blue-fg">(cls, obj, resolve)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1019</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> resolve <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> cls<span class="ansi-blue-fg">.</span>has<span class="ansi-blue-fg">(</span>reg_name<span class="ansi-blue-fg">,</span> func_name<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">   1020</span>             <span class="ansi-green-fg">return</span> EmptySchema
-<span class="ansi-green-fg">-&gt; 1021</span><span class="ansi-red-fg">         </span>func <span class="ansi-blue-fg">=</span> cls<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>reg_name<span class="ansi-blue-fg">,</span> func_name<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1022</span>         <span class="ansi-red-fg"># Read the argument annotations and defaults from the function signature</span>
-<span class="ansi-green-intense-fg ansi-bold">   1023</span>         id_keys <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>k <span class="ansi-green-fg">for</span> k <span class="ansi-green-fg">in</span> obj<span class="ansi-blue-fg">.</span>keys<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">if</span> k<span class="ansi-blue-fg">.</span>startswith<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;@&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span>
-
-<span class="ansi-green-fg">~/Documents/github/torch_snippets/nbs/torch_snippets/thinc_parser/parser.py</span> in <span class="ansi-cyan-fg">get</span><span class="ansi-blue-fg">(cls, registry_name, func_name)</span>
-<span class="ansi-green-intense-fg ansi-bold">    711</span>             <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;Unknown registry: &#39;{registry_name}&#39;&#34;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    712</span>         reg <span class="ansi-blue-fg">=</span> getattr<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> registry_name<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 713</span><span class="ansi-red-fg">         </span>func <span class="ansi-blue-fg">=</span> reg<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>func_name<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    714</span>         <span class="ansi-green-fg">if</span> func <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    715</span>             <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;Could not find &#39;{func_name}&#39; in &#39;{registry_name}&#39;&#34;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/catalogue/__init__.py</span> in <span class="ansi-cyan-fg">get</span><span class="ansi-blue-fg">(self, name)</span>
-<span class="ansi-green-intense-fg ansi-bold">     94</span>             current_namespace <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34; -&gt; &#34;</span><span class="ansi-blue-fg">.</span>join<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>namespace<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     95</span>             available <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;, &#34;</span><span class="ansi-blue-fg">.</span>join<span class="ansi-blue-fg">(</span>sorted<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>get_all<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>keys<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">or</span> <span class="ansi-blue-fg">&#34;none&#34;</span>
-<span class="ansi-green-fg">---&gt; 96</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> RegistryError<span class="ansi-blue-fg">(</span>err<span class="ansi-blue-fg">.</span>format<span class="ansi-blue-fg">(</span>name<span class="ansi-blue-fg">,</span> current_namespace<span class="ansi-blue-fg">,</span> available<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     97</span>         <span class="ansi-green-fg">return</span> _get<span class="ansi-blue-fg">(</span>namespace<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     98</span> 
-
-<span class="ansi-red-fg">RegistryError</span>: Cant&#39;t find &#39;Ramu&#39; in registry torch_snippets -&gt; student. Available names: none</pre>
-</div>
-</div>
-
 </div>
 </div>
 

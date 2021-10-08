@@ -26,7 +26,6 @@ def unpack(obj):
     else:
         return obj
 
-
 # Cell
 import json
 from .paths import *
@@ -68,6 +67,9 @@ class AttrDict(object):
     def __dir__(self):
         return self.__dict__.keys()
 
+    def __contains__(self, key):
+        return key in self.__dict__.keys()
+
     def to_dict(self):
         d = {}
         for k in dir(self):
@@ -77,14 +79,14 @@ class AttrDict(object):
             d[k] = v
         return d
 
-    def pretty(self, *args, **kwargs):
-        pretty_json(self.to_dict(), *args, **kwargs)
+    def pretty(self, print_with_logger=False, *args, **kwargs):
+        pretty_json(self.to_dict(), print_with_logger=print_with_logger, *args, **kwargs)
 
     def __eq__(self, other):
         return AttrDict(other).to_dict() == self.to_dict()
 
 
-def pretty_json(i, fpath=None, indent=4):
+def pretty_json(i, fpath=None, indent=4, print_with_logger=True):
     def set_default(obj):
         if isinstance(obj, set):
             return list(obj)
@@ -97,8 +99,10 @@ def pretty_json(i, fpath=None, indent=4):
         with open(fpath, 'w') as f:
             json.dump(i, f, indent=indent, default=set_default)
             return
-    return logger.opt(depth=1).log('DEBUG', f'\n{dump}')
-
+    if print_with_logger:
+        return logger.opt(depth=1).log('DEBUG', f'\n{dump}')
+    else:
+        print(dump)
 
 # Cell
 import yaml

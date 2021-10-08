@@ -26,21 +26,6 @@ nb_path: "nbs/markups.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>2021-09-30 17:48:57.487 | WARNING  | torch_snippets:&lt;module&gt;:13 - sklearn is not found. Skipping relevant imports from submodule `sklegos`
-Exception: No module named &#39;sklego&#39;
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -110,7 +95,7 @@ Exception: No module named &#39;sklego&#39;
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="read_json" class="doc_header"><code>read_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L35" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>read_json</code>(<strong><code>fpath</code></strong>)</p>
+<h4 id="read_json" class="doc_header"><code>read_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L34" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>read_json</code>(<strong><code>fpath</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -134,7 +119,7 @@ Exception: No module named &#39;sklego&#39;
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="write_json" class="doc_header"><code>write_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L40" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>write_json</code>(<strong><code>obj</code></strong>, <strong><code>fpath</code></strong>)</p>
+<h4 id="write_json" class="doc_header"><code>write_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L39" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>write_json</code>(<strong><code>obj</code></strong>, <strong><code>fpath</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -158,7 +143,7 @@ Exception: No module named &#39;sklego&#39;
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AttrDict" class="doc_header"><code>class</code> <code>AttrDict</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L51" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AttrDict</code>(<strong><code>data</code></strong>)</p>
+<h2 id="AttrDict" class="doc_header"><code>class</code> <code>AttrDict</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L50" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AttrDict</code>(<strong><code>data</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -182,7 +167,7 @@ Exception: No module named &#39;sklego&#39;
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="pretty_json" class="doc_header"><code>pretty_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L87" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pretty_json</code>(<strong><code>i</code></strong>, <strong><code>fpath</code></strong>=<em><code>None</code></em>, <strong><code>indent</code></strong>=<em><code>4</code></em>)</p>
+<h4 id="pretty_json" class="doc_header"><code>pretty_json</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L89" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>pretty_json</code>(<strong><code>i</code></strong>, <strong><code>fpath</code></strong>=<em><code>None</code></em>, <strong><code>indent</code></strong>=<em><code>4</code></em>, <strong><code>print_with_logger</code></strong>=<em><code>True</code></em>)</p>
 </blockquote>
 
 </div>
@@ -221,6 +206,10 @@ Exception: No module named &#39;sklego&#39;
 <span class="k">assert</span> <span class="n">y</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;abc&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">},</span> <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;e&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;abc&#39;</span><span class="p">:</span> <span class="s1">&#39;pqrs&#39;</span><span class="p">},</span> <span class="mf">2.234</span><span class="p">],</span> <span class="s1">&#39;g&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">}}}</span>
 
 <span class="n">y</span><span class="o">.</span><span class="n">pretty</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="s1">&#39;abc&#39;</span> <span class="ow">in</span> <span class="n">y</span>
+<span class="k">assert</span> <span class="s1">&#39;def&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">y</span>
+<span class="s1">&#39;e&#39;</span> <span class="ow">in</span> <span class="n">y</span><span class="o">.</span><span class="n">d</span>
 </pre></div>
 
     </div>
@@ -232,9 +221,8 @@ Exception: No module named &#39;sklego&#39;
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>2021-09-30 17:41:13.523 | DEBUG    | __main__:pretty:52 - 
-{
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{
   &#34;abc&#34;: {
     &#34;b&#34;: 10,
     &#34;c&#34;: 11
@@ -252,6 +240,16 @@ Exception: No module named &#39;sklego&#39;
 }
 </pre>
 </div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>True</pre>
+</div>
+
 </div>
 
 </div>
@@ -287,12 +285,12 @@ Exception: No module named &#39;sklego&#39;
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>2021-09-30 17:41:13.530 | DEBUG    | __main__:&lt;module&gt;:3 - 
+<pre>2021-10-08 21:24:10.907 | DEBUG    | __main__:&lt;module&gt;:3 - 
 {
     &#34;1&#34;: 1,
     &#34;2&#34;: 2
 }
-2021-09-30 17:41:13.532 | DEBUG    | __main__:&lt;module&gt;:4 - 
+2021-10-08 21:24:10.909 | DEBUG    | __main__:&lt;module&gt;:4 - 
 [
     1,
     {
@@ -301,7 +299,7 @@ Exception: No module named &#39;sklego&#39;
     },
     3
 ]
-2021-09-30 17:41:13.533 | DEBUG    | __main__:&lt;module&gt;:6 - Dumping json to /tmp/test.json
+2021-10-08 21:24:10.910 | DEBUG    | __main__:&lt;module&gt;:6 - Dumping json to /tmp/test.json
 </pre>
 </div>
 </div>
@@ -341,7 +339,7 @@ Exception: No module named &#39;sklego&#39;
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="read_yaml" class="doc_header"><code>read_yaml</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L106" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>read_yaml</code>(<strong><code>file</code></strong>)</p>
+<h4 id="read_yaml" class="doc_header"><code>read_yaml</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L110" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>read_yaml</code>(<strong><code>file</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -365,7 +363,7 @@ Exception: No module named &#39;sklego&#39;
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="write_yaml" class="doc_header"><code>write_yaml</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L113" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>write_yaml</code>(<strong><code>content</code></strong>, <strong><code>fpath</code></strong>)</p>
+<h4 id="write_yaml" class="doc_header"><code>write_yaml</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/markup.py#L117" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>write_yaml</code>(<strong><code>content</code></strong>, <strong><code>fpath</code></strong>)</p>
 </blockquote>
 
 </div>

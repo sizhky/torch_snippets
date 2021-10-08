@@ -267,7 +267,7 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         _x_ = np.array(bbs).max()
         rel = True if _x_ < 1.5 else False
         if rel: bbs = [BB(bb).absolute((h,w)) for bb in bbs]
-        bb_colors = [[randint(255) for _ in range(3)] for _ in range(len(bbs))] if bb_colors is 'random' else bb_colors
+        bb_colors = [[randint(255) for _ in range(3)] for _ in range(len(bbs))] if bb_colors == 'random' else bb_colors
         bb_colors = [bb_colors]*len(bbs) if isinstance(bb_colors, str) else bb_colors
         bb_colors = [None]*len(bbs) if bb_colors is None else bb_colors
         img = C(img) if len(img.shape) == 2 else img
@@ -276,7 +276,7 @@ def show(img=None, ax=None, title=None, sz=None, bbs=None, confs=None,
         if hasattr(texts, 'shape'):
             if isinstance(texts, torch.Tensor): texts = texts.cpu().detach().numpy()
             texts = texts.tolist()
-        if texts is 'ixs': texts = [i for i in range(len(bbs))]
+        if texts == 'ixs': texts = [i for i in range(len(bbs))]
         if callable(texts): texts = [texts(bb) for bb in bbs]
         assert len(texts) == len(bbs), 'Expecting as many texts as bounding boxes'
         texts = list(map(str, texts))
@@ -392,7 +392,10 @@ Blank = lambda *sh: uint(np.ones(sh))
 
 def pdfilter(df, column, condition, silent=True):
     if not callable(condition):
-        condition = lambda x: x == condition
+        if isinstance(condition, list):
+            condition = lambda x: x in condition
+        else:
+            condition = lambda x: x == condition
     _df = df[df[column].map(condition)]
     if not silent: logger.opt(depth=1).log("DEBUG", f'Filtering {len(_df)} items out of {len(df)}')
     return _df

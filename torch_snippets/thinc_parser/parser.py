@@ -1,4 +1,3 @@
-
 from typing import Union, Dict, Any, Optional, List, Tuple, Callable, Type, TypeVar
 from typing import Iterable, Sequence
 from types import GeneratorType
@@ -690,7 +689,8 @@ class registry(object):
     def create(cls, registry_name: str, entry_points: bool = False) -> None:
         """Create a new custom registry."""
         if hasattr(cls, registry_name):
-            raise ValueError(f"Registry '{registry_name}' already exists")
+            # raise ValueError(f"Registry '{registry_name}' already exists")
+            return
         reg: Decorator = catalogue.create(
             "torch_snippets", registry_name, entry_points=entry_points
         )
