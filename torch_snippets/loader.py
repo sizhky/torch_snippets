@@ -391,6 +391,8 @@ uint = lambda im: (255*im).astype(np.uint8)
 Blank = lambda *sh: uint(np.ones(sh))
 
 def pdfilter(df, column, condition, silent=True):
+    if not callable(condition):
+        condition = lambda x: x == condition
     _df = df[df[column].map(condition)]
     if not silent: logger.opt(depth=1).log("DEBUG", f'Filtering {len(_df)} items out of {len(df)}')
     return _df
