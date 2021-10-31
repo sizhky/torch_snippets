@@ -8,3 +8,9 @@ from .thinc_parser.parser import registry
 Config = Config
 AttrDict = AttrDict
 registry = registry
+
+def parse(file):
+    return AttrDict(Config().from_disk(file))
+
+def parse_and_resolve(file):
+    return AttrDict(registry.resolve(Config().from_disk(file)))
