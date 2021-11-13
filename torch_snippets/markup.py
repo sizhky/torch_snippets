@@ -40,6 +40,8 @@ def write_json(obj, fpath):
     def set_default(obj):
         if isinstance(obj, set):
             return list(obj)
+        if isinstance(obj, AttrDict):
+            return obj.to_dict()
         raise TypeError
 
     logger.opt(depth=1).log("DEBUG", f"Dumping json to {fpath}")
