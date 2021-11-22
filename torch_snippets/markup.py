@@ -96,6 +96,11 @@ def pretty_json(i, fpath=None, indent=4, print_with_logger=True):
     def set_default(obj):
         if isinstance(obj, set):
             return list(obj)
+        else:
+            try:
+                return str(obj)
+            except:
+                return None
     assert isinstance(i, (dict, list))
     i = unpack(i)
     dump = json.dumps(i, indent=indent, default=set_default)
