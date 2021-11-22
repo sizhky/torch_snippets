@@ -79,6 +79,10 @@ class AttrDict(object):
             d[k] = v
         return d
 
+    def __add__(self, other):
+        assert isinstance(other, (AttrDict, dict))
+        return AttrDict(dict(pair for d in l for pair in d.items()))
+
     def pretty(self, print_with_logger=False, *args, **kwargs):
         pretty_json(self.to_dict(), print_with_logger=print_with_logger, *args, **kwargs)
 
