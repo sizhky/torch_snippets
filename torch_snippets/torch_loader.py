@@ -260,7 +260,7 @@ def detach(i):
         for k, v in i.items():
             i[k] = detach(v)
         return i
-    elif isinstance(i, list):
+    elif isinstance(i, (list, tuple)):
         return [detach(j) for j in i]
     else:
         return i.cpu().detach()

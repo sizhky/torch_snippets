@@ -13,7 +13,10 @@ from .logger import logger, Info, Debug, Warn, Excep
 def input_to_str(func):
     @wraps(func)
     def inner(input, *args, **kwargs):
-        input = str(input)
+        if isinstance(input, P):
+            input = str(input)
+        if isinstance(input, list):
+            input = [str(i) for i in input]
         out = func(input, *args, **kwargs)
         return out
     return inner
