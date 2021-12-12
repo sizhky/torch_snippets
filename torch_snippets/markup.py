@@ -52,6 +52,15 @@ class AttrDict(object):
         for name, value in data.items():
             setattr(self, name, self._wrap(value))
 
+    def items(self):
+        return self.__dict__.items()
+
+    def keys(self):
+        return self.__dict__.keys()
+
+    def values(self):
+        return self.__dict__.values()
+
     def _wrap(self, value):
         if isinstance(value, (tuple, list, set, frozenset)):
             return type(value)([self._wrap(v) for v in value])
@@ -70,12 +79,17 @@ class AttrDict(object):
     def __contains__(self, key):
         return key in self.__dict__.keys()
 
+    def __delitem__(self, key):
+        del self.__dict__[key]
+
     def to_dict(self):
         d = {}
         for k in dir(self):
             v = self[k]
             if isinstance(v, AttrDict):
                 v = v.to_dict()
+            if isinstance(v, (tuple, list, set, frozenset)):
+                v = [_v.to_dict() if isinstance(_v, AttrDict) else _v for _v in v]
             d[k] = v
         return d
 
