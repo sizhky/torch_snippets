@@ -43,12 +43,9 @@ nb_path: "nbs/inspector.ipynb"
 <h4 id="inspect" class="doc_header"><code>inspect</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/inspector.py#L10" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>inspect</code>(<strong>*<code>arrays</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>shows shape, min, max and mean of an array/list/dict of oreys
-Usage:</p>
-<blockquote><blockquote><blockquote><p>inspect(arr1, arr2, arr3, [arr4,arr5,arr6], arr7, [arr8, arr9],...)
+Usage:
+inspect(arr1, arr2, arr3, [arr4,arr5,arr6], arr7, [arr8, arr9],...)
 where every <code>arr</code> is  assume to have a .shape, .min, .max and .mean methods</p>
-</blockquote>
-</blockquote>
-</blockquote>
 
 </div>
 
@@ -63,6 +60,62 @@ where every <code>arr</code> is  assume to have a .shape, .min, .max and .mean m
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;np.arange&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="nb">tuple</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,]),</span> <span class="nb">set</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span>  <span class="p">[],</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span><span class="mi">10</span><span class="p">]]}}</span>
+<span class="n">inspect</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>==================================================================
+dict of 3 items
+	A:
+	list of 4 items
+		int: 0
+		int: 1
+		int: 2
+		int: 3
+	B:
+	Tensor	Shape: torch.Size([10, 10])	Min: 0.008	Max: 0.999	Mean: 0.521	dtype: torch.float32
+	C:
+	dict of 2 items
+		D:
+		ndarray	Shape: (10,)	Min: 0.000	Max: 9.000	Mean: 4.500	dtype: int64
+		E:
+		list of 6 items
+			str `np.arange`
+			dict of 0 items
+			tuple of 2 items
+				int: 1
+				int: 2
+			set Length: 3
+			list of 0 items
+			and ... ... 1 more item(s)
+==================================================================
+</pre>
+</div>
+</div>
+
+</div>
+</div>
 
 </div>
     {% endraw %}

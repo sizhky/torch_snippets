@@ -11,7 +11,7 @@ def inspect(*arrays, **kwargs):
     """
     shows shape, min, max and mean of an array/list/dict of oreys
     Usage:
-    >>> inspect(arr1, arr2, arr3, [arr4,arr5,arr6], arr7, [arr8, arr9],...)
+    inspect(arr1, arr2, arr3, [arr4,arr5,arr6], arr7, [arr8, arr9],...)
     where every `arr` is  assume to have a .shape, .min, .max and .mean methods
     """
     depth = kwargs.pop("depth", 0)
@@ -23,7 +23,8 @@ def inspect(*arrays, **kwargs):
         assert len(names) == len(
             arrays
         ), "Give as many names as there are tensors to inspect"
-
+    if depth == 0:
+        line()
     for ix, arr in enumerate(arrays):
         name = "\t" * depth
         name = (
@@ -39,19 +40,16 @@ def inspect(*arrays, **kwargs):
             inspect(arr, depth=depth + 1, **kwargs)
 
         elif isinstance(arr, (L, list, tuple)):
-            if arr == []:
-                print("»[]")
-            else:
-                print(f"{name}{typ} Of {len(arr)} items")
-                inspect(*arr[: kwargs.get("max_items", 5)], depth=depth + 1, **kwargs)
-                if len(arr) > kwargs.get("max_items", 5):
-                    print(
-                        "\t" * (depth + 1)
-                        + f"and ... ... {len(arr) - kwargs.get('max_items', 5)} more item(s)"
-                    )
+            print(f"{name}{typ} of {len(arr)} items")
+            inspect(*arr[: kwargs.get("max_items", 5)], depth=depth + 1, **kwargs)
+            if len(arr) > kwargs.get("max_items", 5):
+                print(
+                    "\t" * (depth + 1)
+                    + f"and ... ... {len(arr) - kwargs.get('max_items', 5)} more item(s)"
+                )
 
         elif isinstance(arr, dict) and (dict not in kwargs.get("suppress", [])):
-            print(f"{name}Dict Of {len(arr)} items")
+            print(f"{name}{typ} of {len(arr)} items")
             for ix, (k, v) in enumerate(arr.items()):
                 inspect(v, depth=depth + 1, names=[k])
                 if ix == kwargs.get("max_items", 5) - 1:
@@ -86,3 +84,5 @@ def inspect(*arrays, **kwargs):
                 print(f"{name}{typ} Length: {ln}")
             except:
                 print(f"{name}{typ}: {arr}")
+        if depth == 0:
+            line()
