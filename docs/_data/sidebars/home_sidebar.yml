@@ -10,8 +10,20 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
+      title: Bokeh Plotting
+      url: bokeh_plotting.html
+    - output: web,pdf
+      title: Train PyTorch Keras style
+      url: capsule.html
+    - output: web,pdf
       title: Charts
       url: charts.html
+    - output: web,pdf
+      title: ImgAug Loader
+      url: imgaug_loader.html
+    - output: web,pdf
+      title: Inspect Containers (Recursively)
+      url: inspector.html
     - output: web,pdf
       title: Rich Logging and Printing
       url: logging.html
@@ -24,6 +36,9 @@ entries:
     - output: web,pdf
       title: PATHS
       url: paths.html
+    - output: web,pdf
+      title: Load PDFs
+      url: pdf.html
     - output: web,pdf
       title: Registry
       url: registry.html

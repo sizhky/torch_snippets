@@ -12,6 +12,9 @@ rich
 PyYAML
 catalogue
 pydantic
+typing
 srsly
 typing_extensions
 wasabi
+jsonlines
+imgaug>=0.4.0

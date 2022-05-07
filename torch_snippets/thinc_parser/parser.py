@@ -27,10 +27,12 @@ else:
 
 _DIn = TypeVar("_DIn")
 
+
 class Decorator(Protocol):
     """Protocol to mark a function as returning its child with identical signature."""
-    
-    def __call__(self, name: str) -> Callable[[_DIn], _DIn]: ...
+
+    def __call__(self, name: str) -> Callable[[_DIn], _DIn]:
+        ...
 
 
 # Field used for positional arguments, e.g. [section.*.xyz]. The alias is
@@ -684,7 +686,6 @@ class Promise:
 
 
 class registry(object):
-
     @classmethod
     def create(cls, registry_name: str, entry_points: bool = False) -> None:
         """Create a new custom registry."""

@@ -1,9 +1,13 @@
 from IPython.display import display, HTML
 from .loader import rand
+
+
 def displayTextForCopy(string):
-    elemId = 'X'+rand()+rand()
-    funcName = 'Y'+rand()+rand()
-    display(HTML('''
+    elemId = "X" + rand() + rand()
+    funcName = "Y" + rand() + rand()
+    display(
+        HTML(
+            """
         <script>
         function myFunction() {
           /* Get the text field */
@@ -24,5 +28,10 @@ def displayTextForCopy(string):
 
         <!-- The button used to copy the text -->
         <button onclick="myFunction()">Copy text</button>
-        '''.replace('mystring',string).replace('myInput',elemId).replace('myFunction', funcName)
-    ))
+        """.replace(
+                "mystring", string
+            )
+            .replace("myInput", elemId)
+            .replace("myFunction", funcName)
+        )
+    )

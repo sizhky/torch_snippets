@@ -1,7 +1,7 @@
 __pycache__
 .ipynb_checkpoints
 .DS_Store
-build
+build/*
 dist
 .whl
 .vscode

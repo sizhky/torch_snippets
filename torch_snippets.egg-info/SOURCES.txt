@@ -7,13 +7,17 @@ setup.cfg
 setup.py
 torch_snippets/__init__.py
 torch_snippets/_nbdev.py
+torch_snippets/bokeh_loader.py
 torch_snippets/charts.py
 torch_snippets/fastcores.py
+torch_snippets/imgaug_loader.py
+torch_snippets/inspector.py
 torch_snippets/loader.py
 torch_snippets/logger.py
 torch_snippets/markup.py
 torch_snippets/misc.py
 torch_snippets/paths.py
+torch_snippets/pdf_loader.py
 torch_snippets/registry.py
 torch_snippets/sklegos.py
 torch_snippets/torch_loader.py
@@ -24,5 +28,8 @@ torch_snippets.egg-info/entry_points.txt
 torch_snippets.egg-info/not-zip-safe
 torch_snippets.egg-info/requires.txt
 torch_snippets.egg-info/top_level.txt
+torch_snippets/capsule/__init__.py
 torch_snippets/thinc_parser/__init__.py
 torch_snippets/thinc_parser/parser.py
+torch_snippets/trainer/__init__.py
+torch_snippets/trainer/capsule.py

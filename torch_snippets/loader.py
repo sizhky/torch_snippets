@@ -9,7 +9,6 @@ __all__ = [
     "E",
     "flatten",
     "Image",
-    "inspect",
     "jitter",
     "L",
     "lzip",
@@ -64,6 +63,9 @@ __all__ = [
     "reset_logger_width",
     "display",
     "typedispatch",
+    "defaultdict",
+    "Counter",
+    "dcopy",
 ]
 
 from .logger import *
@@ -90,6 +92,7 @@ import matplotlib  # ; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 import pdb, datetime
+from typing import Union, Tuple
 
 E = enumerate
 
@@ -101,6 +104,8 @@ except:
     logger.warning("Skipping cv2 import")
 
 import time
+from collections import defaultdict, Counter
+from copy import deepcopy as dcopy
 
 
 class Timer:
@@ -180,71 +185,6 @@ rand = lambda n=6: "".join(
 )
 
 
-def inspect(*arrays, **kwargs):
-    """
-    shows shape, min, max and mean of an array/list/dict of oreys
-    Usage:
-    >>> inspect(arr1, arr2, arr3, [arr4,arr5,arr6], arr7, [arr8, arr9],...)
-    where every `arr` is  assume to have a .shape, .min, .max and .mean methods
-    """
-    depth = kwargs.get("depth", 0)
-    names = kwargs.get("names", None)
-    if names is not None:
-        if "," in names:
-            names = names.split(",")
-        assert len(names) == len(
-            arrays
-        ), "Give as many names as there are tensors to inspect"
-    line()
-
-    for ix, arr in enumerate(arrays):
-        name = "\t" * depth
-        name = (
-            name + f"{names[ix].upper().strip()}:\n" + name
-            if names is not None
-            else name
-        )
-        name = name
-        typ = type(arr).__name__
-
-        if isinstance(arr, (list, tuple)):
-            if arr == []:
-                print("[]")
-            else:
-                print(f"{name}List Of {len(arr)} items")
-                inspect(*arr[:10], depth=depth + 1)
-                if len(arr) > 10:
-                    print("\t" * (depth + 1) + f"... ... {len(arr) - 10} more item(s)")
-
-        elif isinstance(arr, dict):
-            print(f"{name}Dict Of {len(arr)} items")
-            for ix, (k, v) in enumerate(arr.items()):
-                # print(f'\t'*(depth)+f' {k}'.upper())
-                inspect(v, depth=depth + 1, names=[k])
-                if ix == 4:
-                    break
-            if len(arr) > 5:
-                print("\t" * (depth) + f"... ... {len(arr) - 10} more item(s)")
-
-        elif hasattr(arr, "shape"):
-            sh, m, M, dtype = arr.shape, arr.min(), arr.max(), arr.dtype
-            try:
-                me = arr.mean()
-            except:
-                me = arr.float().mean()
-            print(
-                f"{name}{typ}\tShape: {sh}\tMin: {m:.3f}\tMax: {M:.3f}\tMean: {me:.3f}\tdtype: {dtype}"
-            )
-            line()
-        else:
-            try:
-                ln = len(arr)
-                print(f"{name}{typ} Length: {ln}")
-                line()
-            except:
-                print(f"{name}{typ}: {arr}")
-
-
 randint = lambda high: np.random.randint(high)
 
 
@@ -304,19 +244,19 @@ def C(im):
 
 def common(a, b):
     """Wrapper around set intersection"""
-    x = list(set(a).intersection(set(b)))
+    x = set(a).intersection(set(b))
     logger.opt(depth=1).log(
         "INFO",
         f"{len(x)} items found common from containers of {len(a)} and {len(b)} items respectively",
     )
-    return sorted(x)
+    return set(sorted(x))
 
 
 def diff(a, b, rev=False, silent=False):
     if not rev:
-        o = list(sorted(set(a) - set(b)))
+        o = set(sorted(set(a) - set(b)))
     else:
-        o = list(sorted(set(b) - set(a)))
+        o = set(sorted(set(b) - set(a)))
     if not silent:
         logger.opt(depth=1).log("INFO", f"{len(o)} items found to differ")
     return o
@@ -368,6 +308,7 @@ def show(
             img = img.cpu().detach().numpy().copy()
         if isinstance(img, PIL.Image.Image):
             img = np.array(img)
+
     except Exception as e:
         print(e)
     if not isinstance(img, np.ndarray):
@@ -481,8 +422,9 @@ def show(
                 head_length=4,
                 width=meta * 2,
             )
-            puttext(ax, f"{meta:.2f}", (_xc, _yc), size=text_sz)
-
+            if kwargs.get("conn_text", True):
+                puttext(ax, f"{meta:.2f}", (_xc, _yc), size=text_sz)
+        kwargs.pop("conn_text")
     ax.imshow(img, cmap=cmap, **kwargs)
 
     if grid:
@@ -523,6 +465,7 @@ class BB:
         self.h = Y - y
         self.w = X - x
         self.area = self.h * self.w
+        self.shape = (self.h, self.w)
 
     def __getitem__(self, i):
         return self.bb[i]
@@ -549,7 +492,11 @@ class BB:
         x, y, X, Y = self
         return BB(x + a, y + b, X + a, Y + b)
 
-    def remap(self, og_dim: ("h", "w"), new_dim: ("H", "W")):
+    def remap(self, og_dim: Tuple[int, int], new_dim: Tuple[int, int]):
+        """
+        og_dim = (Height, Width)
+        new_dim = (Height, Width)
+        """
         h, w = og_dim
         H, W = new_dim
         sf_x = H / h
@@ -602,6 +549,9 @@ class BB:
             dbb = BB(dx, dy, dX, dY)
             return BB([max(0, i + j) for i, j in zip(self, dbb)])
 
+    def shrink_inplace(self):
+        "return a new thing, shrunk"
+
     def add_padding(self, *pad):
         if len(pad) == 4:
             _x, _y, _X, _Y = pad
@@ -610,6 +560,25 @@ class BB:
             _x, _y, _X, _Y = pad, pad, pad, pad
         x, y, X, Y = self.bb
         return max(0, x - _x), max(0, y - _y), X + _x, Y + _y
+
+    def l2(self, other, xyfactor=(1, 1)):
+        _x_, _y_ = xyfactor
+        other = BB(other)
+        xc, yc = self.xc, self.yc
+        ac, bc = other.xc, other.yc
+        return np.sqrt(_x_ * (xc - ac) ** 2 + _y_ * (yc - bc) ** 2)
+
+    def distances(self, other_bbs, threshold=None, direction=None):
+        other_bbs = bbfy(other_bbs)
+        if direction:
+            assert direction in "x,y,left,right,top,down".split(",")
+            if direction == "x":
+                output = [
+                    (ix, bb, self.l2(bb, xyfactor=(1, 1000))) for (ix, bb) in other_bbs
+                ]
+                return pd.DataFrame(output, columns="ix,bb,dist".split(","))
+            raise NotImplementedError("")
+        return sorted(other_bbs, key=lambda obj: self.l2(obj[1]))
 
 
 def subplots(ims, nc=5, figsize=(5, 5), silent=True, **kwargs):
@@ -647,7 +616,10 @@ def subplots(ims, nc=5, figsize=(5, 5), silent=True, **kwargs):
 
 def df2bbs(df):
     if "bb" in df.columns:
-        return bbfy(df["bb"].values.tolist())
+        try:
+            return bbfy(df["bb"].values.tolist())
+        except:
+            return bbfy(df["bb"].map(lambda x: eval(x)).values.tolist())
     return [BB(bb) for bb in df[list("xyXY")].values.tolist()]
 
 
@@ -720,7 +692,9 @@ def resize_old(im: np.ndarray, sz: [float, ("H", "W")]):
     return cv2.resize(im, (W, H))
 
 
-def resize(im: np.ndarray, sz: [float, ("H", "W"), (str, ("H", "W"))]):
+def resize(
+    im: Union[np.ndarray, PIL.Image.Image], sz: [float, ("H", "W"), (str, ("H", "W"))]
+):
     """Resize an image based on info from sz
     *Aspect ratio is preserved
     Examples:
@@ -738,7 +712,12 @@ def resize(im: np.ndarray, sz: [float, ("H", "W"), (str, ("H", "W"))]):
         >>> _im = resize(im, ('at-least',(400,40))) ; assert _im.shape == (400,800) #*
         >>> _im = resize(im, ('at-most', (40,400))) ; assert _im.shape == (40,80)   #*
         >>> _im = resize(im, ('at-most', (400,40))) ; assert _im.shape == (20,40)   #*
-   """
+    """
+    if isinstance(im, PIL.Image.Image):
+        im = np.array(im)
+        to_pil = True
+    else:
+        to_pil = False
     h, w = im.shape[:2]
     if isinstance(sz, (tuple, list)) and isinstance(sz[0], str):
         signal, (H, W) = sz
@@ -770,7 +749,10 @@ def resize(im: np.ndarray, sz: [float, ("H", "W"), (str, ("H", "W"))]):
         elif isinstance(W, float):
             W = W * h
     H, W = int(H), int(W)
-    return cv2.resize(im, (W, H))
+    im = cv2.resize(im, (W, H))
+    if to_pil:
+        im = PIL.Image.fromarray(im)
+    return im
 
 
 def pad(im, sz, pad_value=255):
@@ -909,3 +891,28 @@ def shrink_bbs(bbs, eps=0.2):
         for (x, y, X, Y), (h, w) in zip(bbs, shs)
     ]
 
+
+from fastcore.basics import patch_to
+
+
+@patch_to(L)
+def first(self):
+    if len(self) > 0:
+        return self[0]
+    else:
+        return None
+
+
+@patch_to(L)
+def get(self, condition):
+    sublist = self.filter(condition)
+    if len(sublist) > 0:
+        return sublist.first()
+    else:
+        return None
+
+
+@patch_to(L)
+def get_all(self, condition):
+    sublist = self.filter(condition)
+    return sublist
