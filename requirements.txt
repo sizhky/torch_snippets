@@ -9,6 +9,7 @@ numpy
 pandas
 setuptools
 tqdm
+jsonlines
 
 # opencv_python_headless
 # pytorch_lightning
