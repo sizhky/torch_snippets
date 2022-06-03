@@ -186,6 +186,7 @@ rand = lambda n=6: "".join(
 
 
 randint = lambda high: np.random.randint(high)
+randint = np.random.randint
 
 
 def Tqdm(x, total=None, desc=None):

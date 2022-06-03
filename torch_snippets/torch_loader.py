@@ -62,9 +62,18 @@ class Permute(nn.Module):
 
 
 metric = namedtuple("metric", "pos,val".split(","))
-info = lambda report, precision: "\t".join(
-    [f"{k}: {v:.{precision}f}" for k, v in report.items()]
-)
+
+
+def process(v):
+    if isinstance(v, torch.Tensor):
+        if v.numel() == 1:
+            return v.item()
+    return v
+
+
+def info(report, precision):
+    report = {k: process(v) for k, v in report.items()}
+    return "\t".join([f"{k}: {v:.{precision}f}" for k, v in report.items()])
 
 
 def to_np(x):
