@@ -25,6 +25,7 @@ __all__ = [
     "detach",
 ]
 
+from typing import Union, List
 import torch, torchvision
 import torch as th
 import torch.nn as nn
@@ -116,7 +117,7 @@ class Report:
                 self.logged.append(k)
         self.report_metrics(pos, **metrics)
 
-    def plot(self, keys: [list, str] = None, smooth=0, ax=None, **kwargs):
+    def plot(self, keys: Union[List, str] = None, smooth=0, ax=None, **kwargs):
         _show = True if ax is None else False
         if ax is None:
             sz = 8, 6
@@ -215,7 +216,7 @@ class Report:
         if _show:
             plt.show()
 
-    def report_avgs(self, epoch, return_avgs=False):
+    def report_avgs(self, epoch, return_avgs=True):
         avgs = {}
         for k in self.logged:
             avgs[k] = np.mean(
