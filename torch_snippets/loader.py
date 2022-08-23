@@ -132,7 +132,7 @@ class Timer:
 old_line = lambda N=66: print("=" * N)
 
 
-def line(string="", lw=66, upper=True, pad="="):
+def line(string="", lw=66, upper=True, pad="\N{Box Drawings Double Horizontal}"):
     i = string.center(lw, pad)
     if upper:
         i = i.upper()
@@ -509,11 +509,11 @@ class BB:
             round(sf_y * self.Y),
         )
 
-    def relative(self, dim: ("h", "w")):
+    def relative(self, dim: Tuple[int, int]):
         h, w = dim
         return BB(self.x / w, self.y / h, self.X / w, self.Y / h)
 
-    def absolute(self, dim: ("h", "w")):
+    def absolute(self, dim: Tuple[int, int]):
         h, w = dim
         return BB(self.x * w, self.y * h, self.X * w, self.Y * h)
 
@@ -605,9 +605,18 @@ def subplots(ims, nc=5, figsize=(5, 5), silent=True, **kwargs):
     fig.suptitle(kwargs.pop("suptitle", ""))
     dfs = kwargs.pop("dfs", [None] * len(ims))
     bbss = kwargs.pop("bbss", [None] * len(ims))
+    text_cols = kwargs.pop("text_cols", [None] * len(ims))
     titles = titles.split(",") if isinstance(titles, str) else titles
     for ix, (im, ax) in enumerate(zip(ims, axes)):
-        show(im, ax=ax, title=titles[ix], df=dfs[ix], bbs=bbss[ix], **kwargs)
+        show(
+            im,
+            ax=ax,
+            title=titles[ix],
+            df=dfs[ix],
+            bbs=bbss[ix],
+            text_col=text_cols[ix],
+            **kwargs,
+        )
     blank = np.eye(100) + np.eye(100)[::-1]
     for ax in axes:
         show(blank, ax=ax)
@@ -672,7 +681,7 @@ def set_logging_level(level):
     logger.add(sys.stderr, level=level)
 
 
-def resize_old(im: np.ndarray, sz: [float, ("H", "W")]):
+def resize_old(im: np.ndarray, sz: Union[float, Tuple[int, int]]):
     h, w = im.shape[:2]
     if isinstance(sz, float):
         frac = sz
@@ -694,7 +703,8 @@ def resize_old(im: np.ndarray, sz: [float, ("H", "W")]):
 
 
 def resize(
-    im: Union[np.ndarray, PIL.Image.Image], sz: [float, ("H", "W"), (str, ("H", "W"))]
+    im: Union[np.ndarray, PIL.Image.Image],
+    sz: Union[float, Tuple[int, int], Tuple[str, Tuple[int, int]]],
 ):
     """Resize an image based on info from sz
     *Aspect ratio is preserved
@@ -766,7 +776,7 @@ def pad(im, sz, pad_value=255):
 def xywh2xyXY(bbs):
     if len(bbs) == 4 and isinstance(bbs[0], int):
         x, y, w, h = bbs
-        return BBox(x, y, x + w, y + h)
+        return BB(x, y, x + w, y + h)
     return [xywh2xyXY(bb) for bb in bbs]
 
 

@@ -64,6 +64,9 @@ def inspect(*arrays, **kwargs):
         elif isinstance(arr, pd.DataFrame):
             print(f"{name}{typ}\tShape: {arr.shape}")
 
+        elif isinstance(arr, BB):
+            info = f"{name}{typ}\t{arr}"
+
         elif hasattr(arr, "shape"):
             sh, m, M, dtype = arr.shape, arr.min(), arr.max(), arr.dtype
             try:
