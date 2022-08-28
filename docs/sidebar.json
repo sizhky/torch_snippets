@@ -6,6 +6,7 @@
     "Charts": "charts.html",
     "ImgAug Loader": "imgaug_loader.html",
     "Inspect Containers (Recursively)": "inspector.html",
+    "Title": "jupyter_notebook.html",
     "Rich Logging and Printing": "logging.html",
     "Markups": "markups.html",
     "Miscellaneous Functions": "misc.html",

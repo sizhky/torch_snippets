@@ -62,9 +62,13 @@ def render(
 
 
 logger.configure(handlers=[{
-    "sink":RichHandler(rich_tracebacks=False, console=console),
+    "sink":RichHandler(
+        rich_tracebacks=True,
+        console=console,
+        tracebacks_show_locals=False
+    ),
     "format":'<level>{message}</level>',
-    "backtrace": False
+    "backtrace": True
 }])
 
 logger = logger
@@ -78,8 +82,15 @@ Excep = lambda x, depth=0: logger.opt(depth=depth + 1).log("ERROR", x)
 from .ipython import is_in_notebook
 
 def reset_logger_width(logger, width):
-    logger._core.handlers[1]._sink._handler.console = get_console(width=width)
-    logger.info(f"reset logger's console width to {width}!")
+    for handler_id in logger._core.handlers:
+        try:
+            handler = logger._core.handlers[handler_id]
+            handler._sink._handler.console = get_console(width=width)
+            logger.info(f"reset logger's console width to {width}!")
+        except:
+            ...
 
-if is_in_notebook():
-    reset_logger_width(logger, 117)
+# Excep("TESTING {1,2,3}")
+# if is_in_notebook():
+#     reset_logger_width(logger, 115)
+# Excep("TESTING {1,2,3}")

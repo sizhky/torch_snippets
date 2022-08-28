@@ -25,6 +25,9 @@ entries:
       title: Inspect Containers (Recursively)
       url: inspector.html
     - output: web,pdf
+      title: Title
+      url: jupyter_notebook.html
+    - output: web,pdf
       title: Rich Logging and Printing
       url: logging.html
     - output: web,pdf
