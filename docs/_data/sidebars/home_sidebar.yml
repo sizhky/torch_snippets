@@ -13,7 +13,7 @@ entries:
       title: Bokeh Plotting
       url: bokeh_plotting.html
     - output: web,pdf
-      title: Train PyTorch Keras style
+      title: Train PyTorch - Keras style
       url: capsule.html
     - output: web,pdf
       title: Charts

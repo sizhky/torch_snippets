@@ -1,4 +1,4 @@
-__version__ = "0.494"
+__version__ = "0.498"
 from .loader import *
 from .charts import *
 from .paths import *

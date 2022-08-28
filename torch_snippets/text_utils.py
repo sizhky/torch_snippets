@@ -1,4 +1,4 @@
-__all__ = ["textify", "find_lines", "find_substring"]
+__all__ = ["textify", "find_lines", "find_blocks", "find_substring"]
 import string
 
 import pandas as pd, numpy as np
@@ -52,24 +52,44 @@ def textify(dataframe: pd.DataFrame, im=None, separator_size: int = 20):
     return TEXT
 
 
-def find_lines(df=None, texts=None, confs=None, bbs=None, types=None, eps=20):
-    """Cluster bboxes into individual lines there are present, in an image"""
-    # if not len(texts): return pd.DataFrame(columns='x,y,X,Y,line,text,conf,type'.split(','))
-    texts = df["text"] if texts is None else texts
-    confs = df["conf"] if (confs is None and "conf" in df) else [None] * len(texts)
-    bbs = df2bbs(df) if bbs is None else bbs
-    types = df["type"] if (types is None and "type" in df) else [None] * len(texts)
+def find_lines(df=None, eps=20):
+    df = df.reset_index()
+    if "line" in df.columns:
+        df.drop("line", inplace=True, axis=1)
+    bbs = df2bbs(df)
+    extra_columns = df.columns.tolist()
+    for col in ["bb", "x", "y", "X", "Y"]:
+        if col in extra_columns:
+            extra_columns.remove(col)
+    extra_columns = {col: df[col] for col in extra_columns}
+
     df = find_lines_for_bbs(bbs, eps=eps)
-    texts = pd.DataFrame(texts)
-    confs = pd.DataFrame(confs)
-    df = pd.merge(df, texts, left_on="i", right_index=True)
-    df = pd.merge(df, confs, left_on="i", right_index=True)
-    if types is not None:
-        types = pd.DataFrame(types)
-        df = pd.merge(df, types, left_on="i", right_index=True)
+    for col in extra_columns:
+        df = pd.merge(df, extra_columns[col], left_on="i", right_index=True)
     df.drop(["i"], inplace=True, axis=1)
-    df.columns = "x,y,X,Y,line,text,conf,type".split(",")
+    df.columns = [
+        *"xyXY",
+        "line",
+        *extra_columns.keys(),
+    ]  # "x,y,X,Y,line,text,conf,type".split(",")
     return df
+
+
+def find_blocks(df):
+    blocks = []
+    for line in sorted(df["line"].unique()):
+        _df = df[df["line"] == line].sort_values("x")
+        if line % 1 != 0:
+            _df["line_block"] = line
+        else:
+            _df["delta_x"] = _df["x"] - _df["X"].shift(1)
+            _df["line_block"] = (
+                df["line"].map(str)
+                + "_"
+                + ((_df["x"] - _df["X"].shift(1)) > 20).cumsum().map(str)
+            )
+        blocks.append(_df)
+    return pd.concat(blocks)
 
 
 def find_substring(needle, hay):

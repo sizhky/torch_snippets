@@ -40,7 +40,7 @@ nb_path: "nbs/logging.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_console" class="doc_header"><code>get_console</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/logger.py#L10" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_console</code>(<strong><code>width</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="get_console" class="doc_header"><code>get_console</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/logger.py#L11" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_console</code>(<strong><code>width</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -67,8 +67,31 @@ nb_path: "nbs/logging.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The Number is 128&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="s1">&#39;lskjdf&#39;</span><span class="p">,</span> <span class="p">],</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="s1">&#39;lskjdf&#39;</span><span class="p">,</span> <span class="p">],</span> <span class="s1">&#39;ae&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;bf&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="s1">&#39;lskjdf&#39;</span><span class="p">,</span> <span class="p">],</span> <span class="s1">&#39;ag&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ba&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span> <span class="s1">&#39;lskjdf&#39;</span><span class="p">,</span> <span class="p">]})</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The Number is 128&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span>
+            <span class="s2">&quot;lskjdf&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span>
+            <span class="s2">&quot;lskjdf&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;ae&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;bf&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span>
+            <span class="s2">&quot;lskjdf&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;ag&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;ba&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span>
+            <span class="s2">&quot;lskjdf&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
 </pre></div>
 
     </div>
@@ -118,7 +141,7 @@ nb_path: "nbs/logging.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\x86&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\x86&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -179,7 +202,7 @@ nb_path: "nbs/logging.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="mi">1221</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">2342</span><span class="p">}</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1221</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">2342</span><span class="p">}</span>
 <span class="k">del</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">a</span>
 </pre></div>
@@ -214,10 +237,10 @@ nb_path: "nbs/logging.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Debug</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
-<span class="n">Info</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
-<span class="n">Warn</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
-<span class="n">Excep</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Debug</span><span class="p">(</span><span class="s2">&quot;TESTING {1,2,3}&quot;</span><span class="p">)</span>
+<span class="n">Info</span><span class="p">(</span><span class="s2">&quot;TESTING {1,2,3}&quot;</span><span class="p">)</span>
+<span class="n">Warn</span><span class="p">(</span><span class="s2">&quot;TESTING {1,2,3}&quot;</span><span class="p">)</span>
+<span class="n">Excep</span><span class="p">(</span><span class="s2">&quot;TESTING {1,2,3}&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -229,13 +252,38 @@ nb_path: "nbs/logging.ipynb"
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>2021-05-27 19:39:58.862 | DEBUG    | __main__:&lt;module&gt;:1 - TESTING {1,2,3}
-2021-05-27 19:39:58.864 | INFO     | __main__:&lt;module&gt;:2 - TESTING {1,2,3}
-2021-05-27 19:39:58.865 | WARNING  | __main__:&lt;module&gt;:3 - TESTING {1,2,3}
-2021-05-27 19:39:58.867 | ERROR    | __main__:&lt;module&gt;:4 - TESTING {1,2,3}
+
+<div class="output_html rendered_html output_subarea "><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[08/28/22 19:43:19] </span><span style="color: #008000; text-decoration-color: #008000">DEBUG   </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>                         <a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/3592958886.py"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3592958886.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/3592958886.py#<module>:1"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:1</span></a>
 </pre>
 </div>
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea "><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>                         <a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/3592958886.py"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3592958886.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/3592958886.py#<module>:2"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:2</span></a>
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea "><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>                         <a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/3592958886.py"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3592958886.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/3592958886.py#<module>:3"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:3</span></a>
+</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea "><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>                         <a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/3592958886.py"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3592958886.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/3592958886.py#<module>:4"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:4</span></a>
+</pre>
+</div>
+
 </div>
 
 </div>
@@ -255,7 +303,7 @@ nb_path: "nbs/logging.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="reset_logger_width" class="doc_header"><code>reset_logger_width</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/logger.py#L73" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>reset_logger_width</code>(<strong><code>logger</code></strong>, <strong><code>width</code></strong>)</p>
+<h4 id="reset_logger_width" class="doc_header"><code>reset_logger_width</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/logger.py#L80" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>reset_logger_width</code>(<strong><code>logger</code></strong>, <strong><code>width</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -282,9 +330,9 @@ nb_path: "nbs/logging.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Excep</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Excep</span><span class="p">(</span><span class="s2">&quot;TESTING {1,2,3}&quot;</span><span class="p">)</span>
 <span class="n">reset_logger_width</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="mi">155</span><span class="p">)</span>
-<span class="n">Excep</span><span class="p">(</span><span class="s1">&#39;TESTING {1,2,3}&#39;</span><span class="p">)</span>
+<span class="n">Excep</span><span class="p">(</span><span class="s2">&quot;TESTING {1,2,3}&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -296,10 +344,32 @@ nb_path: "nbs/logging.ipynb"
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>2021-05-27 19:39:58.883 | ERROR    | __main__:&lt;module&gt;:1 - TESTING {1,2,3}
-2021-05-27 19:39:58.884 | ERROR    | __main__:&lt;module&gt;:3 - TESTING {1,2,3}
+
+<div class="output_html rendered_html output_subarea "><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[08/28/22 19:43:22] </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> TESTING <span style="font-weight: bold">{</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span><span style="font-weight: bold">}</span>                         <a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/2210703394.py"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2210703394.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/2210703394.py#<module>:1"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:1</span></a>
 </pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-fg">/var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/2210703394.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> Excep<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;TESTING {1,2,3}&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>reset_logger_width<span class="ansi-blue-fg">(</span>logger<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">155</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> Excep<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;TESTING {1,2,3}&#34;</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_25006/454185586.py</span> in <span class="ansi-cyan-fg">reset_logger_width</span><span class="ansi-blue-fg">(logger, width)</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> 
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-green-fg">def</span> reset_logger_width<span class="ansi-blue-fg">(</span>logger<span class="ansi-blue-fg">,</span> width<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg">     </span>logger<span class="ansi-blue-fg">.</span>_core<span class="ansi-blue-fg">.</span>handlers<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>_sink<span class="ansi-blue-fg">.</span>_handler<span class="ansi-blue-fg">.</span>console <span class="ansi-blue-fg">=</span> get_console<span class="ansi-blue-fg">(</span>width<span class="ansi-blue-fg">=</span>width<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span>     logger<span class="ansi-blue-fg">.</span>info<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;reset logger&#39;s console width to {width}!&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span> 
+
+<span class="ansi-red-fg">KeyError</span>: 1</pre>
 </div>
 </div>
 
@@ -318,19 +388,25 @@ nb_path: "nbs/logging.ipynb"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 <span class="kn">import</span> <span class="nn">time</span>
+
+
 <span class="k">def</span> <span class="nf">enter_exit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Logs when a function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger_</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">opt</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">function_timer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="n">logger_</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Entered function `</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+        <span class="n">logger_</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Entered function `</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
         <span class="n">o</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">toc</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="n">logger_</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Exiting function `</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">` after </span><span class="si">{</span><span class="n">toc</span><span class="o">-</span><span class="n">tic</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+        <span class="n">logger_</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+            <span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Exiting function `</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">` after </span><span class="si">{</span><span class="n">toc</span><span class="o">-</span><span class="n">tic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> seconds&quot;</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">o</span>
+
     <span class="k">return</span> <span class="n">function_timer</span>
 </pre></div>
 
@@ -349,12 +425,13 @@ nb_path: "nbs/logging.ipynb"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@enter_exit</span>
-<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sleeping...&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sleeping...&quot;</span><span class="p">)</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 
-<span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">23</span><span class="p">)</span>
+
+<span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -413,9 +490,11 @@ nb_path: "nbs/logging.ipynb"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">traceback</span>
-<span class="k">try</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">0</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_stack</span><span class="p">()))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_stack</span><span class="p">()))</span>
 </pre></div>
 
     </div>

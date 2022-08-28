@@ -3,6 +3,7 @@
 __all__ = ['to', 'train', 'validate', 'predict', 'Capsule']
 
 # Cell
+from functools import wraps
 from ..loader import *
 from ..torch_loader import *
 from ..paths import loaddill, dumpdill
@@ -32,6 +33,7 @@ def to(item, device):
 
 
 def train(train_function):
+    @wraps(train_function)
     def _train_batch(self, *args, **kwargs):
         args = self.before_train_batch(args)
         kwargs = self.before_train_batch(kwargs)
@@ -45,6 +47,7 @@ def train(train_function):
 
 @torch.no_grad()
 def validate(validation_function):
+    @wraps(validation_function)
     def _validate_batch(self, *args, **kwargs):
         args = self.before_validate_batch(args)
         kwargs = self.before_validate_batch(kwargs)
@@ -58,6 +61,7 @@ def validate(validation_function):
 
 @torch.no_grad()
 def predict(predict_function):
+    @wraps(predict_function)
     def _predict(self, *args, **kwargs):
         args = self.before_predict(args)
         kwargs = self.before_predict(kwargs)

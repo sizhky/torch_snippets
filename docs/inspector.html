@@ -40,7 +40,7 @@ nb_path: "nbs/inspector.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="inspect" class="doc_header"><code>inspect</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/inspector.py#L9" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>inspect</code>(<strong>*<code>arrays</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="inspect" class="doc_header"><code>inspect</code><a href="https://github.com/sizhky/torch_snippets/tree/master/torch_snippets/inspector.py#L10" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>inspect</code>(<strong>*<code>arrays</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>shows shape, min, max and mean of an array/list/dict of oreys
 Usage:
@@ -71,7 +71,26 @@ where every <code>arr</code> is  assume to have a .shape, .min, .max and .mean m
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;np.arange&#39;</span><span class="p">,</span> <span class="p">{},</span> <span class="nb">tuple</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,]),</span> <span class="nb">set</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span>  <span class="p">[],</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span><span class="mi">10</span><span class="p">]]}}</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+        <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;np.arange&quot;</span><span class="p">,</span>
+            <span class="p">{},</span>
+            <span class="nb">tuple</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="mi">1</span><span class="p">,</span>
+                    <span class="mi">2</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+            <span class="nb">set</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span>
+            <span class="p">[],</span>
+            <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">}</span>
 <span class="n">inspect</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 

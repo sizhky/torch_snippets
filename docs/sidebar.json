@@ -2,7 +2,7 @@
   "torch_snippets": {
     "Overview": "/",
     "Bokeh Plotting": "bokeh_plotting.html",
-    "Train PyTorch Keras style": "capsule.html",
+    "Train PyTorch - Keras style": "capsule.html",
     "Charts": "charts.html",
     "ImgAug Loader": "imgaug_loader.html",
     "Inspect Containers (Recursively)": "inspector.html",

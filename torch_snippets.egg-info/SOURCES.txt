@@ -20,6 +20,7 @@ torch_snippets/paths.py
 torch_snippets/pdf_loader.py
 torch_snippets/registry.py
 torch_snippets/sklegos.py
+torch_snippets/text_utils.py
 torch_snippets/torch_loader.py
 torch_snippets.egg-info/PKG-INFO
 torch_snippets.egg-info/SOURCES.txt
