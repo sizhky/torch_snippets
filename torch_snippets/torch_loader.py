@@ -43,6 +43,13 @@ from .paths import makedir, os
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
+try:
+    import wandb
+
+    __all__ += []
+except ImportError:
+    pass
+
 
 class Reshape(nn.Module):
     def __init__(self, *shape):
@@ -74,7 +81,7 @@ def process(v):
 
 def info(report, precision):
     report = {k: process(v) for k, v in report.items()}
-    return "\t".join([f"{k}: {v:.{precision}f}" for k, v in report.items()])
+    return "  ".join([f"{k}: {v:.{precision}f}" for k, v in report.items()])
 
 
 def to_np(x):
@@ -85,12 +92,21 @@ def to_np(x):
 
 
 class Report:
-    def __init__(self, n_epochs, precision=3, old_report=None):
+    def __init__(
+        self,
+        n_epochs,
+        precision=3,
+        old_report=None,
+        wandb_project=None,
+        hyper_parameters=None,
+    ):
         self.start = time.time()
         self.n_epochs = n_epochs
         self.precision = precision
         self.completed_epochs = -1
-        self.logged = []
+        self.logged = set()
+        if wandb_project:
+            self.set_wandb_logging(wandb_project, hyper_parameters)
         if old_report:
             self.prepend(old_report)
 
@@ -114,7 +130,14 @@ class Report:
             else:
                 setattr(self, k, [])
                 getattr(self, k).append(metric(pos, to_np(v)))
-                self.logged.append(k)
+                self.logged.add(k)
+        if hasattr(self, "wandb_logging"):
+            if any(["val" in key for key in metrics.keys()]):
+                wandb.log({**metrics, "validation_step": self.validation_step})
+                self.validation_step += 1
+            else:
+                wandb.log({**metrics, "train_step": self.train_step})
+                self.train_step += 1
         self.report_metrics(pos, **metrics)
 
     def plot(self, keys: Union[List, str] = None, smooth=0, ax=None, **kwargs):
@@ -199,10 +222,7 @@ class Report:
                 )
                 avgs[k].extend([avgs[k][-1]] * (len(xs) - len(avgs[k])))
             ax.plot(
-                xs,
-                avgs[k],
-                _type,
-                label=k,
+                xs, avgs[k], _type, label=k,
             )
         ax.grid(True)
         ax.set_xlabel("Epochs")
@@ -216,13 +236,14 @@ class Report:
         if _show:
             plt.show()
 
-    def report_avgs(self, epoch, return_avgs=True):
+    def report_avgs(self, epoch, return_avgs=True, end="\n"):
         avgs = {}
         for k in self.logged:
             avgs[k] = np.mean(
                 [v for pos, v in getattr(self, k) if epoch - 1 <= pos < epoch]
             )
-        self.report_metrics(epoch, **avgs)
+        self.report_metrics(epoch, end=end, **avgs)
+        wandb.log({**{f"epoch_{k}": v for k, v in avgs.items()}, "epoch": epoch})
         if return_avgs:
             return avgs
 
@@ -247,10 +268,10 @@ class Report:
         end = report.pop("end", "\n")
         log = report.pop("log", "")
         log = log + ": " if log != "" else log
-        elapsed = "\t({:.2f}s - {:.2f}s remaining)".format(
+        elapsed = "  ({:.2f}s - {:.2f}s remaining)".format(
             time.time() - self.start, ((self.n_epochs - pos) / pos) * elapsed
         )
-        current_iteration = f"EPOCH: {pos:.3f}\t"
+        current_iteration = f"EPOCH: {pos:.3f}  "
         if end == "\r":
             print(
                 f"\r{log}{current_iteration}{info(report, self.precision)}{elapsed}",
@@ -261,6 +282,17 @@ class Report:
                 f"\r{log}{current_iteration}{info(report, self.precision)}{elapsed}",
                 end=end,
             )
+
+    def set_wandb_logging(self, project=None, hyper_parameters=None):
+        wandb.init(project=project, config=hyper_parameters)
+        print(hyper_parameters)
+        self.wandb_logging = True
+        self.train_step = 0
+        self.validation_step = 0
+
+    def finish_run(self):
+        if hasattr(self, "wandb_logging"):
+            wandb.finish()
 
 
 try:

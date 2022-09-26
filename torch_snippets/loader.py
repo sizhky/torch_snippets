@@ -1,6 +1,7 @@
 __all__ = [
     "B",
     "Blank",
+    "batchify",
     "C",
     "choose",
     "common",
@@ -29,6 +30,7 @@ __all__ = [
     "pdb",
     "plt",
     "PIL",
+    "print",
     "puttext",
     "randint",
     "rand",
@@ -44,10 +46,11 @@ __all__ = [
     "store_attr",
     "subplots",
     "sys",
+    "toss",
+    "track",
     "tqdm",
     "Tqdm",
     "trange",
-    "Timer",
     "unique",
     "uint",
     "write",
@@ -69,6 +72,7 @@ __all__ = [
 ]
 
 from .logger import *
+from .bb_utils import *
 from pathlib import Path
 from fastcore.foundation import L
 from fastcore.dispatch import typedispatch
@@ -107,26 +111,9 @@ import time
 from collections import defaultdict, Counter
 from copy import deepcopy as dcopy
 
+from rich.progress import track as _track
 
-class Timer:
-    def __init__(self, N):
-        "print elapsed time every iteration and print out remaining time"
-        "assumes this timer is called exactly N times or less"
-        self.start = time.time()
-        self.N = N
-        self.ix = 0
-
-    def __call__(self, ix=None, info=None):
-        ix = self.ix if ix is None else ix
-        info = "" if info is None else f"{info}\t"
-        elapsed = time.time() - self.start
-        print(
-            "{}{}/{} ({:.2f}s - {:.2f}s remaining)".format(
-                info, ix + 1, self.N, elapsed, (self.N - ix) * (elapsed / (ix + 1))
-            ),
-            end="\r",
-        )
-        self.ix += 1
+track = lambda iterator, description="": _track(iterator, description=description)
 
 
 old_line = lambda N=66: print("=" * N)
@@ -348,6 +335,7 @@ def show(
         except:
             pass
         bbs = df2bbs(df)  # assumes df has 'x,y,X,Y' columns or a single 'bb' column
+    kwargs.pop("text_col") if "text_col" in kwargs else ...
     if isinstance(texts, pd.core.series.Series):
         texts = texts.tolist()
     if confs:
@@ -449,139 +437,6 @@ def puttext(ax, string, org, size=15, color=(255, 0, 0), thickness=2):
     )
 
 
-class BB:
-    def __init__(self, *bb):
-        # assert len(bb) == 4, 'expecting a list/tuple of 4 values respectively for (x,y,X,Y)'
-        if len(bb) == 4:
-            x, y, X, Y = bb
-        elif len(bb) == 1:
-            ((x, y, X, Y),) = bb
-        rel = True if max(x, y, X, Y) < 1 else False
-        if not rel:
-            x, y, X, Y = map(lambda i: int(round(i)), (x, y, X, Y))
-        self.bb = x, y, X, Y
-        self.x, self.y, self.X, self.Y = x, y, X, Y
-        self.xc, self.yc = (self.x + self.X) / 2, (self.y + self.Y) / 2
-        self.c = (self.xc, self.yc)
-        self.h = Y - y
-        self.w = X - x
-        self.area = self.h * self.w
-        self.shape = (self.h, self.w)
-
-    def __getitem__(self, i):
-        return self.bb[i]
-
-    def __repr__(self):
-        return self.bb.__repr__()
-
-    def __len__(self):
-        return 4
-
-    def __eq__(self, other):
-        return (
-            self.x == other.x
-            and self.y == other.y
-            and self.X == other.X
-            and self.Y == other.Y
-        )
-
-    def __hash__(self):
-        return hash(tuple(self))
-
-    def __add__(self, origin):
-        a, b = origin[:2]
-        x, y, X, Y = self
-        return BB(x + a, y + b, X + a, Y + b)
-
-    def remap(self, og_dim: Tuple[int, int], new_dim: Tuple[int, int]):
-        """
-        og_dim = (Height, Width)
-        new_dim = (Height, Width)
-        """
-        h, w = og_dim
-        H, W = new_dim
-        sf_x = H / h
-        sf_y = W / w
-        return BB(
-            round(sf_x * self.x),
-            round(sf_y * self.y),
-            round(sf_x * self.X),
-            round(sf_y * self.Y),
-        )
-
-    def relative(self, dim: Tuple[int, int]):
-        h, w = dim
-        return BB(self.x / w, self.y / h, self.X / w, self.Y / h)
-
-    def absolute(self, dim: Tuple[int, int]):
-        h, w = dim
-        return BB(self.x * w, self.y * h, self.X * w, self.Y * h)
-
-    def local_to(self, _bb):
-        x, y, X, Y = self
-        a, b, A, B = _bb
-        return BB(x - a, y - b, X - a, Y - b)
-
-    def jitter(self, noise, preserve_shape=True):
-        if isinstance(noise, (int, float)):
-            return BB([i + (noise - randint(2 * noise)) for i in self])
-        elif isinstance(noise, (list, tuple)):
-            if len(noise) == 2:
-                dx, dy = noise
-                dx, dy, dX, dY = dx / 2, dy / 2, dx / 2, dy / 2
-            elif len(noise) == 4:
-                dx, dy, dX, dY = noise
-            if 0 < dx < 1:
-                dx = int(self.w * dx)
-            if 0 < dX < 1:
-                dX = int(self.w * dX)
-            if 0 < dy < 1:
-                dy = int(self.h * dy)
-            if 0 < dY < 1:
-                dY = int(self.w * dY)
-            dx = dx - 2 * randint(dx + 1)
-            dy = dy - 2 * randint(dy + 1)
-            if preserve_shape:
-                dX = dx
-                dY = dy
-            else:
-                dX = dX - 2 * randint(dX + 1)
-                dY = dy - 2 * randint(dY + 1)
-            dbb = BB(dx, dy, dX, dY)
-            return BB([max(0, i + j) for i, j in zip(self, dbb)])
-
-    def shrink_inplace(self):
-        "return a new thing, shrunk"
-
-    def add_padding(self, *pad):
-        if len(pad) == 4:
-            _x, _y, _X, _Y = pad
-        else:
-            (pad,) = pad
-            _x, _y, _X, _Y = pad, pad, pad, pad
-        x, y, X, Y = self.bb
-        return max(0, x - _x), max(0, y - _y), X + _x, Y + _y
-
-    def l2(self, other, xyfactor=(1, 1)):
-        _x_, _y_ = xyfactor
-        other = BB(other)
-        xc, yc = self.xc, self.yc
-        ac, bc = other.xc, other.yc
-        return np.sqrt(_x_ * (xc - ac) ** 2 + _y_ * (yc - bc) ** 2)
-
-    def distances(self, other_bbs, threshold=None, direction=None):
-        other_bbs = bbfy(other_bbs)
-        if direction:
-            assert direction in "x,y,left,right,top,down".split(",")
-            if direction == "x":
-                output = [
-                    (ix, bb, self.l2(bb, xyfactor=(1, 1000))) for (ix, bb) in other_bbs
-                ]
-                return pd.DataFrame(output, columns="ix,bb,dist".split(","))
-            raise NotImplementedError("")
-        return sorted(other_bbs, key=lambda obj: self.l2(obj[1]))
-
-
 def subplots(ims, nc=5, figsize=(5, 5), silent=True, **kwargs):
     if len(ims) == 0:
         return
@@ -622,28 +477,6 @@ def subplots(ims, nc=5, figsize=(5, 5), silent=True, **kwargs):
         show(blank, ax=ax)
     plt.tight_layout()
     plt.show()
-
-
-def df2bbs(df):
-    if "bb" in df.columns:
-        try:
-            return bbfy(df["bb"].values.tolist())
-        except:
-            return bbfy(df["bb"].map(lambda x: eval(x)).values.tolist())
-    return [BB(bb) for bb in df[list("xyXY")].values.tolist()]
-
-
-def bbs2df(bbs):
-    bbs = [list(bb) for bb in bbs]
-    return pd.DataFrame(bbs, columns=["x", "y", "X", "Y"])
-
-
-def bbfy(bbs):
-    return [BB(bb) for bb in bbs]
-
-
-def jitter(bbs, noise):
-    return [BB(bb).jitter(noise) for bb in bbs]
 
 
 class L_old(list):
@@ -827,80 +660,44 @@ def lzip(*x):
     return list(zip(*x))
 
 
-def to_absolute(input, shape):
-    if isinstance(shape, np.ndarray) and shape.ndim >= 2:
-        shape = shape.shape[:2]
-    h, w = shape
-    if isinstance(input, BB):
-        return input.absolute((h, w))
-    elif isinstance(input, pd.DataFrame):
+# def to_absolute(input, shape):
+#     if isinstance(shape, np.ndarray) and shape.ndim >= 2:
+#         shape = shape.shape[:2]
+#     h, w = shape
+#     if isinstance(input, BB):
+#         return input.absolute((h, w))
+#     elif isinstance(input, pd.DataFrame):
 
-        def _round(x):
-            return np.round(x.values.astype(np.double)).astype(np.uint16)
+#         def _round(x):
+#             return np.round(x.values.astype(np.double)).astype(np.uint16)
 
-        df = input.copy()
-        df["x"] = _round(df.x * w)
-        df["X"] = _round(df.X * w)
-        df["y"] = _round(df.y * h)
-        df["Y"] = _round(df.Y * h)
-        return df
-    elif isinstance(input, list):
-        bbs = bbfy(input)
-        return [bb.absolute((h, w)) for bb in bbs]
-
-
-def to_relative(input, shape):
-    if isinstance(shape, np.ndarray) and shape.ndim >= 2:
-        shape = shape.shape[:2]
-    h, w = shape
-    if isinstance(input, BB):
-        return input.relative((h, w))
-    elif isinstance(input, pd.DataFrame):
-        df = input.copy()
-        df["x"] = df.x / w
-        df["X"] = df.X / w
-        df["y"] = df.y / h
-        df["Y"] = df.Y / h
-        return df
-    elif isinstance(input, list):
-        bbs = bbfy(input)
-        return [bb.relative((h, w)) for bb in bbs]
+#         df = input.copy()
+#         df["x"] = _round(df.x * w)
+#         df["X"] = _round(df.X * w)
+#         df["y"] = _round(df.y * h)
+#         df["Y"] = _round(df.Y * h)
+#         return df
+#     elif isinstance(input, list):
+#         bbs = bbfy(input)
+#         return [bb.absolute((h, w)) for bb in bbs]
 
 
-def compute_eps(eps):
-    if isinstance(eps, tuple):
-        if len(eps) == 4:
-            epsx, epsy, epsX, epsY = eps
-        else:
-            epsx, epsy = eps
-            epsx, epsy, epsX, epsY = epsx / 2, epsy / 2, epsx / 2, epsy / 2
-    else:
-        epsx, epsy, epsX, epsY = eps / 2, eps / 2, eps / 2, eps / 2
-    return epsx, epsy, epsX, epsY
-
-
-def enlarge_bbs(bbs, eps=0.2):
-    "enlarge all `bbs` by `eps` fraction (i.e., eps*100 percent)"
-    bbs = bbfy(bbs)
-    epsx, epsy, epsX, epsY = compute_eps(eps)
-    bbs = bbfy(bbs)
-    shs = [(bb.h, bb.w) for bb in bbs]
-    return [
-        BB(x - (w * epsx), y - (h * epsy), X + (w * epsX), Y + (h * epsY))
-        for (x, y, X, Y), (h, w) in zip(bbs, shs)
-    ]
-
-
-def shrink_bbs(bbs, eps=0.2):
-    "shrink all `bbs` by `eps` fraction (i.e., eps*100 percent)"
-    bbs = bbfy(bbs)
-    epsx, epsy, epsX, epsY = compute_eps(eps)
-    bbs = bbfy(bbs)
-    shs = [(bb.h, bb.w) for bb in bbs]
-    return [
-        BB(x + (w * epsx), y + (h * epsy), X - (w * epsX), Y - (h * epsY))
-        for (x, y, X, Y), (h, w) in zip(bbs, shs)
-    ]
+# def to_relative(input, shape):
+#     if isinstance(shape, np.ndarray) and shape.ndim >= 2:
+#         shape = shape.shape[:2]
+#     h, w = shape
+#     if isinstance(input, BB):
+#         return input.relative((h, w))
+#     elif isinstance(input, pd.DataFrame):
+#         df = input.copy()
+#         df["x"] = df.x / w
+#         df["X"] = df.X / w
+#         df["y"] = df.y / h
+#         df["Y"] = df.Y / h
+#         return df
+#     elif isinstance(input, list):
+#         bbs = bbfy(input)
+#         return [bb.relative((h, w)) for bb in bbs]
 
 
 from fastcore.basics import patch_to
@@ -927,3 +724,18 @@ def get(self, condition):
 def get_all(self, condition):
     sublist = self.filter(condition)
     return sublist
+
+
+def batchify(items, batch_size=32):
+    "yield `batch_size` items at a time"
+    head = 0
+    n = len(items)
+    while head < n:
+        tail = head + batch_size
+        batch = items[head:tail]
+        yield batch
+        head = tail
+
+
+def toss(frac: float, pass_=True, fail_=False):
+    return [fail_, pass_][np.random.uniform() < frac]
