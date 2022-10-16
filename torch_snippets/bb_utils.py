@@ -2,7 +2,7 @@
 
 # %% auto 0
 __all__ = ['randint', 'BB', 'df2bbs', 'bbs2df', 'bbfy', 'jitter', 'compute_eps', 'enlarge_bbs', 'shrink_bbs', 'iou',
-           'split_bb_to_xyXY', 'combine_xyXY_to_bb', 'to_relative', 'to_absolute']
+           'split_bb_to_xyXY', 'combine_xyXY_to_bb', 'to_relative', 'to_absolute', 'merge_by_bb']
 
 # %% ../nbs/bounding_boxes.ipynb 2
 import numpy as np
@@ -278,4 +278,19 @@ def to_absolute(df, height, width):
     df["Y"] = (df["Y"] * height).astype(np.uint16)
     if _recombine:
         df = combine_xyXY_to_bb(df)
+    return df
+
+# %% ../nbs/bounding_boxes.ipynb 17
+def merge_by_bb(df1, df2):
+    """Merge df2 columns to df1 by using iou
+    Make sure both df1 & df2 are relative or both absolute
+    """
+    df1, df2 = [df.copy() for df in [df1, df2]]
+    assert all([c in df1.columns for c in "xyXY"])
+    assert all([c in df2.columns for c in "xyXY"])
+    ious = iou(df2bbs(df1), df2bbs(df2))
+    df2["ix"] = ious.argmax(0)
+    df2.drop([*"xyXY"], axis=1, inplace=True)
+    df = pd.merge(df1, df2, left_index=True, right_on="ix")
+    df.drop(["ix"], axis=1, inplace=True)
     return df

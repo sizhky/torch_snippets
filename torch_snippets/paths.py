@@ -10,9 +10,9 @@ from fastcore.basics import patch_to
 from functools import wraps
 from .loader import choose as ts_choose, Tqdm, os, logger, Info, Debug, Warn, Excep
 from pathlib import Path
+import hashlib, shutil
 import glob
 import dill, time
-import hashlib
 
 # %% ../nbs/paths.ipynb 3
 def input_to_str(func):
@@ -45,6 +45,17 @@ def output_to_path(func):
 P = Path
 P.ls = lambda self: list(self.iterdir())
 P.__repr__ = lambda self: f"» {self}"
+
+
+@patch_to(P)
+def rmtree(self, prompt=True, force=False):
+    if force:
+        shutil.rmtree(self)
+    elif prompt and input(f"Really remove `{self}` and its contents? [y/n] ").lower() == "y":
+        shutil.rmtree(self)
+    else:
+        raise OSError(f"{self} exists and is not empty")
+
 
 
 @patch_to(P)

@@ -81,6 +81,10 @@ class AttrDict(object):
     __getitem__ = lambda self, x: getattr(self, str(x))
     __setitem__ = lambda self, k, v: setattr(self, str(k), self._wrap(v))
 
+    def update(self, dict):
+        for k,v in dict.items():
+            self[k] = v
+
     def get(self, key, default=None):
         key = str(key)
         return self[key] if key in self else default
@@ -142,7 +146,7 @@ class AttrDict(object):
         return AttrDict(other).to_dict() == self.to_dict()
 
 
-def pretty_json(i, fpath=None, indent=4, print_with_logger=True):
+def pretty_json(i, fpath=None, indent=4, print_with_logger=True, return_as_string=False):
     def set_default(obj):
         if isinstance(obj, (set, BB)):
             return list(obj)
@@ -163,7 +167,10 @@ def pretty_json(i, fpath=None, indent=4, print_with_logger=True):
     if print_with_logger:
         return logger.opt(depth=1).log("DEBUG", f"\n{dump}")
     else:
+        if return_as_string:
+            return dump
         print(dump)
+
 
 # %% ../nbs/markups.ipynb 7
 def read_json(fpath):

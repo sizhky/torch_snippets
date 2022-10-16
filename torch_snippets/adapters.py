@@ -92,14 +92,57 @@ def csvs_2_cvat(images_folder, csvs_folder, xml_output_file, items=None):
         data.annotations.image.append(_ia)
     write_xml(data, xml_output_file)
 
+def _get_attribute_columns(column):
+    def _get_columns_from_row(item):
+        if item != item:
+            return []
+        if isinstance(item, dict):
+            return [item['@name']]
+        else:
+            return [_item['@name'] for _item in item]
+    output = set(flatten(column.map(_get_columns_from_row)))
+    return output
+
+def _get_attribute_data(item, column_name):
+    if item != item:
+        return item
+    if isinstance(item, dict):
+        if item['@name'] == column_name:
+            return item.get("#text", np.nan)
+        else:
+            return np.nan
+    elif isinstance(item, list):
+        item = [_item for _item in item if _item['@name'] == column_name]
+        if item:
+            print(item)
+            return item[0].get('#text', np.nan)
+        else:
+            return np.nan
+
 def _cvat_ann_2_csv(ann):
     df = pd.DataFrame([a.to_dict() for a in ann.box])
-    df.rename({'@xtl': 'x', '@ytl': 'y', '@xbr': 'X', '@ybr': 'Y', '@label': 'readable_label'}, inplace=1, axis=1)
-    for col in 'xyXY':
+    df.rename(
+        {
+            "@xtl": "x",
+            "@ytl": "y",
+            "@xbr": "X",
+            "@ybr": "Y",
+            "@label": "readable_label",
+        },
+        inplace=1,
+        axis=1,
+    )
+    for col in "xyXY":
         df[col] = df[col].map(lambda x: int(float(x)))
-    df.drop(['@z_order','@source','@occluded'], axis=1, inplace=True)
-    height, width = int(ann['@height']), int(ann['@width'])
+    df.drop(["@z_order", "@source", "@occluded"], axis=1, inplace=True)
+    height, width = int(ann["@height"]), int(ann["@width"])
     df = to_relative(df, height, width)
+
+    if "attribute" in df.columns:
+        new_columns = _get_attribute_columns(df.attribute)
+        for column in new_columns:
+            df[column] = df["attribute"].map(lambda x: _get_attribute_data(x, column))
+        df.drop(["attribute"], axis=1, inplace=True)
     return df
 
 def cvat_2_csvs(xmlfile, csvs_folder):
@@ -109,7 +152,7 @@ def cvat_2_csvs(xmlfile, csvs_folder):
             df = _cvat_ann_2_csv(item)
             save_at = f'{csvs_folder}/{stem(item["@name"])}.csv'
             makedir(parent(save_at))
-            df.to_csv(save_at)
+            df.to_csv(save_at, index=False)
         except Exception as e:
             Warn(f'{e} @ {item["@name"]}')
 

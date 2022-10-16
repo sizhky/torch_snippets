@@ -35,7 +35,7 @@ def do(img, bbs, aug, cval=255):
     bbs = bbs2imgaugbbs(bbs, img)
     img, bbs = aug(images=[img], bounding_boxes=[bbs])
     img, bbs = (img[0], imgaugbbs2bbs(bbs))
-    H, W = img.shape
+    H, W = img.shape[:2]
     
     if _Image:
         img = Image.fromarray(img)
