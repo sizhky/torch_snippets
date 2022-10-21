@@ -39,11 +39,13 @@ def b64_2_file(
         logger.info(f"wrote pdf file to {fpath}")
 
 # %% ../nbs/adapters.ipynb 4
-def _process(df: pd.DataFrame, label_column="readable_label", default_label="Others"):
+def _process(df: pd.DataFrame, label_column, default_label):
     df["@xbr"] = df["X"]
     df["@xtl"] = df["x"]
     df["@ybr"] = df["Y"]
     df["@ytl"] = df["y"]
+    if 'text' in df.columns:
+        df['attribute'] = df['text'].map(lambda text: {'@name': "OCR", "#text": text})
     df["@label"] = df[label_column] if label_column in df.columns else default_label
     df["@occluded"] = "0"
     df["@source"] = "manual"
@@ -63,6 +65,7 @@ def _process(df: pd.DataFrame, label_column="readable_label", default_label="Oth
                     "@occluded",
                     "@source",
                     "@z_order",
+                    'attribute'
                 ]
             )
         ],
@@ -73,9 +76,15 @@ def _process(df: pd.DataFrame, label_column="readable_label", default_label="Oth
     return records
 
 
-def csvs_2_cvat(images_folder, csvs_folder, xml_output_file, items=None):
-    images_folder, csvs_folder = [P(_) for _ in [images_folder, csvs_folder]]
+def csvs_2_cvat(images_folder, csvs_folder, xml_output_file, label_column='readable_label', default_label="Background", items=None):
+    if csvs_folder is None:
+        images_folder = P(images_folder)
+    else:
+        images_folder, csvs_folder = [P(_) for _ in [images_folder, csvs_folder]]
+
     data = AttrDict({"annotations": {"image": []}})
+    if csvs_folder is None:
+        items = stems(images_folder)
     if items is None:
         items = common(stems(images_folder), stems(csvs_folder))
 
@@ -83,41 +92,48 @@ def csvs_2_cvat(images_folder, csvs_folder, xml_output_file, items=None):
 
     for ix, item in enumerate(track(items)):
         _ia = _image_annotation = AttrDict({})
-        image = images_folder / f"{item}.jpg"
-        df = pd.read_csv(f"{csvs_folder}/{item}.csv")
+        image = images_folder / f"{item}.png"
         _ia["@height"], _ia["@width"] = read(image).shape[:2]
         _ia["@id"] = str(ix)
-        _ia["@name"] = f"{item}.jpg"
-        _ia["box"] = _process(df)
+        _ia["@name"] = f"{item}.png"
+        if csvs_folder is not None:
+            df = pd.read_csv(f"{csvs_folder}/{item}.csv")
+            _ia["box"] = _process(df, label_column=label_column, default_label=default_label)
+        else:
+            _ia["box"] = []
+        print(_ia)
         data.annotations.image.append(_ia)
     write_xml(data, xml_output_file)
+
 
 def _get_attribute_columns(column):
     def _get_columns_from_row(item):
         if item != item:
             return []
         if isinstance(item, dict):
-            return [item['@name']]
+            return [item["@name"]]
         else:
-            return [_item['@name'] for _item in item]
+            return [_item["@name"] for _item in item]
+
     output = set(flatten(column.map(_get_columns_from_row)))
     return output
+
 
 def _get_attribute_data(item, column_name):
     if item != item:
         return item
     if isinstance(item, dict):
-        if item['@name'] == column_name:
+        if item["@name"] == column_name:
             return item.get("#text", np.nan)
         else:
             return np.nan
     elif isinstance(item, list):
-        item = [_item for _item in item if _item['@name'] == column_name]
+        item = [_item for _item in item if _item["@name"] == column_name]
         if item:
-            print(item)
-            return item[0].get('#text', np.nan)
+            return item[0].get("#text", np.nan)
         else:
             return np.nan
+
 
 def _cvat_ann_2_csv(ann):
     df = pd.DataFrame([a.to_dict() for a in ann.box])
@@ -145,6 +161,7 @@ def _cvat_ann_2_csv(ann):
         df.drop(["attribute"], axis=1, inplace=True)
     return df
 
+
 def cvat_2_csvs(xmlfile, csvs_folder):
     data = read_xml(xmlfile)
     for item in data.annotations.image:
@@ -155,4 +172,5 @@ def cvat_2_csvs(xmlfile, csvs_folder):
             df.to_csv(save_at, index=False)
         except Exception as e:
             Warn(f'{e} @ {item["@name"]}')
+
 

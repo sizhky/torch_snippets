@@ -11,6 +11,7 @@ tqdm
 rich
 PyYAML
 catalogue
+confection
 pydantic
 typing
 srsly

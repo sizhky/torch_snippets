@@ -89,6 +89,12 @@ class AttrDict(object):
         key = str(key)
         return self[key] if key in self else default
 
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
+
     def __repr__(self):
         return "{%s}" % str(
             ", ".join("'%s': %s" % (k, repr(v)) for (k, v) in self.__dict__.items())

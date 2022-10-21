@@ -222,7 +222,10 @@ class Report:
                 )
                 avgs[k].extend([avgs[k][-1]] * (len(xs) - len(avgs[k])))
             ax.plot(
-                xs, avgs[k], _type, label=k,
+                xs,
+                avgs[k],
+                _type,
+                label=k,
             )
         ax.grid(True)
         ax.set_xlabel("Epochs")
@@ -243,7 +246,8 @@ class Report:
                 [v for pos, v in getattr(self, k) if epoch - 1 <= pos < epoch]
             )
         self.report_metrics(epoch, end=end, **avgs)
-        wandb.log({**{f"epoch_{k}": v for k, v in avgs.items()}, "epoch": epoch})
+        if self.wandb_logging:
+            wandb.log({**{f"epoch_{k}": v for k, v in avgs.items()}, "epoch": epoch})
         if return_avgs:
             return avgs
 

@@ -1,4 +1,10 @@
-__all__ = ["textify", "find_lines", "find_blocks", "find_substring"]
+__all__ = [
+    "textify",
+    "find_lines",
+    "find_blocks",
+    "find_substring",
+    "get_line_data_from_word_data",
+]
 import string
 
 import pandas as pd, numpy as np
@@ -75,7 +81,7 @@ def find_lines(df=None, eps=20):
     return df
 
 
-def find_blocks(df):
+def find_blocks(df, eps=20):
     blocks = []
     for line in sorted(df["line"].unique()):
         _df = df[df["line"] == line].sort_values("x")
@@ -86,7 +92,7 @@ def find_blocks(df):
             _df["line_block"] = (
                 df["line"].map(str)
                 + "_"
-                + ((_df["x"] - _df["X"].shift(1)) > 20).cumsum().map(str)
+                + ((_df["x"] - _df["X"].shift(1)) > eps).cumsum().map(str)
             )
         blocks.append(_df)
     return pd.concat(blocks)
@@ -357,3 +363,19 @@ def fuzzyfind(needle, hay):
 
 
 valid_chars = string.ascii_letters + "1234567890 !@#$%^&*(){}[];':\",./<>?-_=+"
+
+
+def get_line_data_from_word_data(df, line_gap=10, block_gap=10):
+    df = find_lines(df, eps=line_gap)
+    df = find_blocks(df, eps=block_gap)
+    df = df.groupby("line_block").agg(
+        {
+            "x": min,
+            "y": min,
+            "X": max,
+            "Y": max,
+            "text": lambda x: " ".join(x),
+            **{c: lambda x: list(x) for c in df.columns if c not in [*"xyXY", "text"]},
+        }
+    )
+    return df

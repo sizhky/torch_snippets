@@ -2,8 +2,8 @@
 
 # %% auto 0
 __all__ = ['P', 'dill', 'input_to_str', 'output_to_path', 'isdir', 'makedir', 'fname', 'fname2', 'stem', 'stems', 'parent',
-           'extn', 'Glob', 'find', 'zip_files', 'unzip_file', 'md5', 'remove_duplicates', 'readlines', 'writelines',
-           'rename_batch', 'dumpdill', 'loaddill']
+           'extn', 'Glob', 'find', 'zip_files', 'unzip_file', 'list_zip', 'md5', 'remove_duplicates', 'readlines',
+           'writelines', 'rename_batch', 'dumpdill', 'loaddill']
 
 # %% ../nbs/paths.ipynb 2
 from fastcore.basics import patch_to
@@ -240,6 +240,15 @@ def unzip_file(file, dest):
         with tarfile.open(file, "r") as f:
             f.extractall(dest)
     return P(dest)
+
+def list_zip(file):
+    elements = []
+    with zipfile.ZipFile(file, "r") as zipObj:
+        listOfiles = zipObj.namelist()
+        for elem in listOfiles:
+            elements.append(elem)
+    return elements
+
 
 # %% ../nbs/paths.ipynb 24
 def md5(fname):
