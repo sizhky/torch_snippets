@@ -10,12 +10,16 @@ from .loader import BB, PIL, bbs2df, df2bbs, np, pd, Image
 from .bb_utils import split_bb_to_xyXY, combine_xyXY_to_bb, to_relative, to_absolute
 
 # %% ../nbs/imgaug_loader.ipynb 3
-def do(img, bbs, aug, cval=255):
+def do(img, bbs=None, aug=None, cval=255):
     if isinstance(img, PIL.Image.Image):
         _Image = True
         img = np.array(img)
     else:
         _Image = False
+    no_bbs = False
+    if bbs is None:
+        no_bbs = True
+        bbs = []
     H, W = img.shape[:2]
     if isinstance(bbs, pd.DataFrame):
         _df = bbs.copy()
@@ -47,6 +51,8 @@ def do(img, bbs, aug, cval=255):
         if not _separate:
             __df = combine_xyXY_to_bb(__df)
         bbs = __df
+    if no_bbs:
+        return img
     return img, bbs
 
 
@@ -55,9 +61,9 @@ def bw(img, bbs):
     return do(img, bbs, aug)
 
 
-def rotate(img, bbs, angle, cval=255):
+def rotate(img, bbs=None, angle=None, cval=255):
     aug = iaa.Rotate(angle, cval=cval, fit_output=True)
-    return do(img, bbs, aug)
+    return do(img, bbs=bbs, aug=aug)
 
 
 def pad(img, bbs, sz=None, deltas=None, cval=0):

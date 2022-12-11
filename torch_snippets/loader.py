@@ -174,7 +174,10 @@ def choose(i: set, n=1):
 
 @typedispatch
 def choose(i: pd.DataFrame, n=1):
-    return i.sample(n)
+    o = i.sample(n)
+    if n == 1:
+        return o.squeeze()
+    return o
 
 
 rand = lambda n=6: "".join(
