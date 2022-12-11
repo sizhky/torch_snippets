@@ -24,3 +24,4 @@ fuzzywuzzy
 sklearn
 nltk
 python-Levenshtein
+lovely_tensors
