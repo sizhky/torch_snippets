@@ -71,6 +71,10 @@ __all__ = [
     "dcopy",
 ]
 
+
+import lovely_tensors as lt
+lt.monkey_patch()
+
 from .logger import *
 from .bb_utils import *
 from pathlib import Path
@@ -281,7 +285,7 @@ def show(
     cmap="gray",
     grid=False,
     save_path=None,
-    text_sz=10,
+    text_sz=None,
     df=None,
     pts=None,
     conns=None,
@@ -371,6 +375,7 @@ def show(
         bb_colors = [None] * len(bbs) if bb_colors is None else bb_colors
         img = C(img) if len(img.shape) == 2 else img
         [rect(img, tuple(bb), c=bb_colors[ix], th=th) for ix, bb in enumerate(bbs)]
+    text_sz = text_sz if text_sz else (max(sz) * 3 // 5)
     if texts is not None:
         if hasattr(texts, "shape"):
             if isinstance(texts, torch.Tensor):
@@ -658,6 +663,46 @@ def write(image, fpath):
 
 def lzip(*x):
     return list(zip(*x))
+
+
+# def to_absolute(input, shape):
+#     if isinstance(shape, np.ndarray) and shape.ndim >= 2:
+#         shape = shape.shape[:2]
+#     h, w = shape
+#     if isinstance(input, BB):
+#         return input.absolute((h, w))
+#     elif isinstance(input, pd.DataFrame):
+
+#         def _round(x):
+#             return np.round(x.values.astype(np.double)).astype(np.uint16)
+
+#         df = input.copy()
+#         df["x"] = _round(df.x * w)
+#         df["X"] = _round(df.X * w)
+#         df["y"] = _round(df.y * h)
+#         df["Y"] = _round(df.Y * h)
+#         return df
+#     elif isinstance(input, list):
+#         bbs = bbfy(input)
+#         return [bb.absolute((h, w)) for bb in bbs]
+
+
+# def to_relative(input, shape):
+#     if isinstance(shape, np.ndarray) and shape.ndim >= 2:
+#         shape = shape.shape[:2]
+#     h, w = shape
+#     if isinstance(input, BB):
+#         return input.relative((h, w))
+#     elif isinstance(input, pd.DataFrame):
+#         df = input.copy()
+#         df["x"] = df.x / w
+#         df["X"] = df.X / w
+#         df["y"] = df.y / h
+#         df["Y"] = df.Y / h
+#         return df
+#     elif isinstance(input, list):
+#         bbs = bbfy(input)
+#         return [bb.relative((h, w)) for bb in bbs]
 
 
 from fastcore.basics import patch_to

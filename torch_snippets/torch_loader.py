@@ -45,10 +45,13 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 try:
     import wandb
-
-    __all__ += []
 except ImportError:
     pass
+
+try:
+    from mlflow_extend import mlflow
+except ImportError:
+    mlflow = None
 
 
 class Reshape(nn.Module):
@@ -86,7 +89,7 @@ def info(report, precision):
 
 def to_np(x):
     if isinstance(x, torch.Tensor):
-        return x.detach().cpu().numpy()
+        return float(x.detach().cpu().numpy())
     else:
         return x
 
@@ -94,19 +97,19 @@ def to_np(x):
 class Report:
     def __init__(
         self,
-        n_epochs,
+        n_epochs=None,
         precision=3,
         old_report=None,
         wandb_project=None,
         hyper_parameters=None,
+        **kwargs,
     ):
         self.start = time.time()
         self.n_epochs = n_epochs
         self.precision = precision
         self.completed_epochs = -1
         self.logged = set()
-        if wandb_project:
-            self.set_wandb_logging(wandb_project, hyper_parameters)
+        self.set_external_logging(wandb_project, hyper_parameters)
         if old_report:
             self.prepend(old_report)
 
@@ -122,6 +125,7 @@ class Report:
                 getattr(self, k).append(metric(m.pos - last, to_np(m.val)))
 
     def record(self, pos, **metrics):
+        metrics = {k: to_np(v) for k, v in metrics.items()}
         for k, v in metrics.items():
             if k in ["end", "pos"]:
                 continue
@@ -131,14 +135,26 @@ class Report:
                 setattr(self, k, [])
                 getattr(self, k).append(metric(pos, to_np(v)))
                 self.logged.add(k)
-        if hasattr(self, "wandb_logging"):
-            if any(["val" in key for key in metrics.keys()]):
-                wandb.log({**metrics, "validation_step": self.validation_step})
-                self.validation_step += 1
-            else:
-                wandb.log({**metrics, "train_step": self.train_step})
-                self.train_step += 1
+
+        if not any(["val" in key for key in metrics.keys()]):
+            key = "train_step"
+            step = self.train_step
+        else:
+            key = "validation_step"
+            step = self.validation_step
+
         self.report_metrics(pos, **metrics)
+
+        metrics = {k: v for k, v in metrics.items() if not isinstance(v, str)}
+        if self.wandb_logging:
+            wandb.log({**metrics, key: step})
+        if self.mlflow_logging:
+            mlflow.log_metrics(metrics, step=step)
+
+        if key == "train_step":
+            self.train_step += 1
+        else:
+            self.validation_step += 1
 
     def plot(self, keys: Union[List, str] = None, smooth=0, ax=None, **kwargs):
         _show = True if ax is None else False
@@ -209,7 +225,6 @@ class Report:
             xs = sorted(set(xs))
 
         for k in avgs:
-
             if "val" in k:
                 _type = "--"
             elif "test" in k:
@@ -246,8 +261,11 @@ class Report:
                 [v for pos, v in getattr(self, k) if epoch - 1 <= pos < epoch]
             )
         self.report_metrics(epoch, end=end, **avgs)
+        avgs = {f"epoch_{k}": v for k, v in avgs.items()}
         if self.wandb_logging:
-            wandb.log({**{f"epoch_{k}": v for k, v in avgs.items()}, "epoch": epoch})
+            wandb.log({**avgs, "epoch": epoch})
+        if self.mlflow_logging:
+            mlflow.log_metrics(avgs, step=epoch)
         if return_avgs:
             return avgs
 
@@ -287,16 +305,27 @@ class Report:
                 end=end,
             )
 
-    def set_wandb_logging(self, project=None, hyper_parameters=None):
-        wandb.init(project=project, config=hyper_parameters)
-        print(hyper_parameters)
-        self.wandb_logging = True
+    def set_external_logging(self, project=None, hyper_parameters=None):
+        if project is not None:
+            if "/" in project:
+                project, name = project.split("/")
+            self.wandb_logging = True
+            wandb.init(project=project, name=name, config=hyper_parameters)
+        else:
+            self.wandb_logging = False
+
+        if mlflow and mlflow.active_run():
+            self.mlflow_logging = True
+        else:
+            self.mlflow_logging = False
+
         self.train_step = 0
         self.validation_step = 0
 
-    def finish_run(self):
-        if hasattr(self, "wandb_logging"):
-            wandb.finish()
+    def finish_run(self, **kwargs):
+        if not kwargs.get("do_not_finish_wandb", False):
+            if self.wandb_logging:
+                wandb.finish()
 
 
 try:

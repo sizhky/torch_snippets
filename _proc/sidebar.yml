@@ -9,6 +9,7 @@ website:
       - charts.ipynb
       - imgaug_loader.ipynb
       - inspector.ipynb
+      - interactive_show.ipynb
       - jupyter_notebook.ipynb
       - load_defautls.ipynb
       - logging.ipynb

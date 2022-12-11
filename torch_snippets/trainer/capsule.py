@@ -79,6 +79,7 @@ class Capsule(nn.Module):
     """
     Inherit from Capsule and train with fewer lines of code
     """
+
     def __init__(self, report=None):
         super().__init__()
         if report is not None:
@@ -123,11 +124,12 @@ class Capsule(nn.Module):
             pass
 
     def save(self, save_to):
-        save_torch_model_weights_from(self, save_to)
-        save_to = save_to + ".report"
         if not exists(parent(save_to)):
-            makedir(parent(save_to, prompt=True))
-        dumpdill(self.report, save_to)
+            makedir(parent(save_to), prompt=False)
+        save_torch_model_weights_from(self, save_to)
+        if hasattr(self, "report"):
+            save_to = save_to + ".report"
+            dumpdill(self.report, save_to)
 
     # Fit function
     def fit(
@@ -148,8 +150,8 @@ class Capsule(nn.Module):
 
         if lr:
             for group in self.optimizer.param_groups:
-                group['lr'] = lr
-            Info(f'Learning Rate: {lr}')
+                group["lr"] = lr
+            Info(f"Learning Rate: {lr}")
 
         if not hasattr(self, "report"):
             self.report = Report(num_epochs, **kwargs)
@@ -174,7 +176,7 @@ class Capsule(nn.Module):
                 if (print_every and ((epoch + 1) % print_every == 0)) or epoch == 0:
                     self.report.report_avgs(epoch + 1)
                 else:
-                    self.report.report_avgs(epoch + 1, end='\r')
+                    self.report.report_avgs(epoch + 1, end="\r")
         except KeyboardInterrupt:
             pass
 
@@ -182,7 +184,7 @@ class Capsule(nn.Module):
             self.report.plot(log=True, smooth=0)
         if save_to:
             self.save(save_to)
-        self.report.finish_run()
+        self.report.finish_run(**kwargs)
 
     def evaluate(
         self, val_dl, report=None, device="cuda", epoch=None, show_report=False
@@ -226,3 +228,4 @@ class Capsule(nn.Module):
         x, _ = data
         outputs = self(x)
         return outputs
+

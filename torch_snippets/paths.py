@@ -48,10 +48,10 @@ P.__repr__ = lambda self: f"» {self}"
 
 
 @patch_to(P)
-def rmtree(self, prompt=True, force=False):
+def rmtree(self, prompt="Really remove `{self}` and its contents? [y/n] ", force=False):
     if force:
         shutil.rmtree(self)
-    elif prompt and input(f"Really remove `{self}` and its contents? [y/n] ").lower() == "y":
+    elif prompt and input(prompt.format(self=self)).lower() == "y":
         shutil.rmtree(self)
     else:
         raise OSError(f"{self} exists and is not empty")
@@ -97,9 +97,9 @@ def cp(self, to):
 
 
 @patch_to(P)
-def rm(self, confirm_prompt=False, silent=True, missing_ok=True):
+def rm(self, confirm_prompt="Are you sure you want to delete `{self}`? [y/N]", silent=True, missing_ok=True):
     confirm = (
-        input(f"Are you sure you want to delete `{self}`? [y/N]")
+        input(confirm_prompt.format(self=self))
         if confirm_prompt
         else "y"
     )

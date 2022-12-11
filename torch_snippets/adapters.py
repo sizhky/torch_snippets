@@ -75,16 +75,56 @@ def _process(df: pd.DataFrame, label_column, default_label):
     records = df.to_dict(orient="records")
     return records
 
+def _process(
+    df: pd.DataFrame, label_column="readable_label", default_label="Background"
+):
+    df["@xbr"] = df["X"]
+    df["@xtl"] = df["x"]
+    df["@ybr"] = df["Y"]
+    df["@ytl"] = df["y"]
+    df["@label"] = df[label_column] if label_column in df.columns else default_label
+    df["@occluded"] = "0"
+    df["@source"] = "manual"
+    df["@z_order"] = "0"
+    if "text" in df.columns:
+        df["attribute"] = [[{"@name": "OCR", "#text": text}] for text in df["text"]]
+    df.drop(
+        [
+            c
+            for c in df.columns
+            if c
+            not in set(
+                [
+                    "@xbr",
+                    "@xtl",
+                    "@ybr",
+                    "@ytl",
+                    "@label",
+                    "@occluded",
+                    "@source",
+                    "@z_order",
+                    "attribute",
+                ]
+            )
+        ],
+        axis=1,
+        inplace=True,
+    )
+    records = df.to_dict(orient="records")
+    return records
 
-def csvs_2_cvat(images_folder, csvs_folder, xml_output_file, label_column='readable_label', default_label="Background", items=None):
-    if csvs_folder is None:
-        images_folder = P(images_folder)
-    else:
-        images_folder, csvs_folder = [P(_) for _ in [images_folder, csvs_folder]]
 
+def csvs_2_cvat(
+    images_folder,
+    csvs_folder,
+    xml_output_file,
+    items=None,
+    parquet=True,
+    relative_df=True,
+    default_label="Background",
+):
+    images_folder, csvs_folder = [P(_) for _ in [images_folder, csvs_folder]]
     data = AttrDict({"annotations": {"image": []}})
-    if csvs_folder is None:
-        items = stems(images_folder)
     if items is None:
         items = common(stems(images_folder), stems(csvs_folder))
 
@@ -92,16 +132,18 @@ def csvs_2_cvat(images_folder, csvs_folder, xml_output_file, label_column='reada
 
     for ix, item in enumerate(track(items)):
         _ia = _image_annotation = AttrDict({})
-        image = images_folder / f"{item}.png"
-        _ia["@height"], _ia["@width"] = read(image).shape[:2]
-        _ia["@id"] = str(ix)
-        _ia["@name"] = f"{item}.png"
-        if csvs_folder is not None:
-            df = pd.read_csv(f"{csvs_folder}/{item}.csv")
-            _ia["box"] = _process(df, label_column=label_column, default_label=default_label)
+        image = images_folder / f"{item}.jpg"
+        height, width = read(image).shape[:2]
+        if parquet:
+            df = pd.read_parquet(f"{csvs_folder}/{item}.parquet")
         else:
-            _ia["box"] = []
-        print(_ia)
+            df = pd.read_csv(f"{csvs_folder}/{item}.csv")
+        if relative_df:
+            df = to_absolute(df, height, width)
+        _ia["@height"], _ia["@width"] = height, width
+        _ia["@id"] = str(ix)
+        _ia["@name"] = f"{item}.jpg"
+        _ia["box"] = _process(df, default_label=default_label)
         data.annotations.image.append(_ia)
     write_xml(data, xml_output_file)
 

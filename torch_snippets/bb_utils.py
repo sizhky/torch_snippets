@@ -2,7 +2,7 @@
 
 # %% auto 0
 __all__ = ['randint', 'BB', 'df2bbs', 'bbs2df', 'bbfy', 'jitter', 'compute_eps', 'enlarge_bbs', 'shrink_bbs', 'iou',
-           'split_bb_to_xyXY', 'combine_xyXY_to_bb', 'to_relative', 'to_absolute', 'merge_by_bb']
+           'split_bb_to_xyXY', 'combine_xyXY_to_bb', 'to_relative', 'to_absolute', 'merge_by_bb', 'isin']
 
 # %% ../nbs/bounding_boxes.ipynb 2
 import numpy as np
@@ -294,3 +294,19 @@ def merge_by_bb(df1, df2):
     df = pd.merge(df1, df2, left_index=True, right_on="ix")
     df.drop(["ix"], axis=1, inplace=True)
     return df
+
+def isin(bboxes1, bboxes2):
+    """return indexes of those boxes from `bboxes1` that are completely inside `bboxes2`"""
+    bboxes1 = np.array(bboxes1)
+    bboxes2 = np.array(bboxes2)
+    x11, y11, x12, y12 = np.split(bboxes1, 4, axis=1)
+    x21, y21, x22, y22 = np.split(bboxes2, 4, axis=1)
+    xA = np.maximum(x11, np.transpose(x21))
+    yA = np.maximum(y11, np.transpose(y21))
+    xB = np.minimum(x12, np.transpose(x22))
+    yB = np.minimum(y12, np.transpose(y22))
+    interArea = np.maximum((xB - xA + 1), 0) * np.maximum((yB - yA + 1), 0)
+    boxAArea = (x12 - x11 + 1) * (y12 - y11 + 1)
+    output = interArea / boxAArea
+    ixs = np.where(output == 1)[0]
+    return ixs
