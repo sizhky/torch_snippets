@@ -73,6 +73,7 @@ __all__ = [
 
 
 import lovely_tensors as lt
+
 lt.monkey_patch()
 
 from .logger import *
@@ -169,6 +170,11 @@ def choose(i: dict, n=1):
 def choose(i: set, n=1):
     i = list(i)
     return choose(i, n=n)
+
+
+@typedispatch
+def choose(i: pd.DataFrame, n=1):
+    return i.sample(n)
 
 
 rand = lambda n=6: "".join(
