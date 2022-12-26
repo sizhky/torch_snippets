@@ -224,7 +224,7 @@ def crop_from_bb(im, bb):
 
 def rect(im, bb, c=None, th=2):
     c = "g" if c is None else c
-    _d = {"r": (255, 0, 0), "g": (0, 255, 0), "b": (0, 0, 255)}
+    _d = {"r": (255, 0, 0), "g": (0, 255, 0), "b": (0, 0, 255), "y": (255, 0, 255)}
     c = _d[c] if isinstance(c, str) else c
     x, y, X, Y = bb
     cv2.rectangle(im, (x, y), (X, Y), c, th)
@@ -243,12 +243,25 @@ def C(im):
         return np.repeat(im[..., None], 3, 2)
 
 
-def common(a, b):
+def common_old(a, b):
     """Wrapper around set intersection"""
     x = set(a).intersection(set(b))
     logger.opt(depth=1).log(
         "INFO",
         f"{len(x)} items found common from containers of {len(a)} and {len(b)} items respectively",
+    )
+    return set(sorted(x))
+
+
+def common(*items):
+    """Wrapper around set intersection"""
+    x = set(items[0])
+    for item in items[1:]:
+        x = set(item).intersection(x)
+    lens = [str(len(i)) for i in items]
+    logger.opt(depth=1).log(
+        "INFO",
+        f"{len(x)} items found common from containers of {', '.join(lens)} items respectively",
     )
     return set(sorted(x))
 
@@ -344,7 +357,11 @@ def show(
 
     if df is not None:
         try:
-            texts = df[kwargs.pop("text_col", "text")]
+            text_col = kwargs.pop("text_col", "text")
+            if text_col == "ixs":
+                texts = df.index.tolist()
+            else:
+                texts = df[text_col]
         except:
             pass
         bbs = df2bbs(df)  # assumes df has 'x,y,X,Y' columns or a single 'bb' column

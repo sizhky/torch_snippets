@@ -7,7 +7,6 @@ Author: Yeshwanth Reddy
 Author-email: 1992chinna@gmail.com
 License: Apache Software License 2.0
 Keywords: snippets,torch
-Platform: UNKNOWN
 Classifier: Development Status :: 3 - Alpha
 Classifier: Intended Audience :: Developers
 Classifier: License :: OSI Approved :: Apache Software License
@@ -332,7 +331,5 @@ dir()
      'xywh2xyXY',
      'zip_cycle',
      'zip_files']
-
-
 
 
