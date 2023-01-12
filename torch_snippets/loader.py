@@ -491,7 +491,10 @@ def subplots(ims, nc=5, figsize=(5, 5), silent=True, **kwargs):
     fig.suptitle(kwargs.pop("suptitle", ""))
     dfs = kwargs.pop("dfs", [None] * len(ims))
     bbss = kwargs.pop("bbss", [None] * len(ims))
-    text_cols = kwargs.pop("text_cols", [None] * len(ims))
+    if "text_col" in kwargs:
+        text_cols = [kwargs.pop("text_col")] * len(ims)
+    else:
+        text_cols = kwargs.pop("text_cols", [None] * len(ims))
     titles = titles.split(",") if isinstance(titles, str) else titles
     for ix, (im, ax) in enumerate(zip(ims, axes)):
         show(
