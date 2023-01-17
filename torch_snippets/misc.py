@@ -19,10 +19,10 @@ class Timer:
         info = "" if info is None else f"{info}\t"
         elapsed = time.time() - self.start
         speed = elapsed / (ix + 1)
-        unit = 's/item'
+        unit = 's/iter'
         if speed < 1:
             speed = 1 / speed
-            unit = 'item/s'
+            unit = 'iters/s'
         print(
             "{}{}/{} ({:.2f}s - {:.2f}s remaining - {:.2f} {}){}".format(
                 info, ix + 1, self.N, elapsed, (self.N - ix) * (elapsed / (ix + 1)), speed, unit, " "*10

@@ -42,11 +42,13 @@ def b64_2_file(
 def bytes_2_file(
     input: bytes,  # bytes
     fpath: Union[str, P],  # Place where you want to save the file
+    silent: bool = False
 ) -> None:
     """Save bytes `input` at given `fpath`"""
     with open(fpath, "wb") as file_to_write:
         file_to_write.write(input)
-        logger.info(f"wrote pdf file to {fpath}")
+        if not silent:
+            logger.info(f"wrote pdf file to {fpath}")
 
 
 def file_2_bytes(fpath):

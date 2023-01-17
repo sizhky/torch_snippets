@@ -253,16 +253,17 @@ def common_old(a, b):
     return set(sorted(x))
 
 
-def common(*items):
+def common(*items, silent=True):
     """Wrapper around set intersection"""
     x = set(items[0])
     for item in items[1:]:
         x = set(item).intersection(x)
     lens = [str(len(i)) for i in items]
-    logger.opt(depth=1).log(
-        "INFO",
-        f"{len(x)} items found common from containers of {', '.join(lens)} items respectively",
-    )
+    if not silent:
+        logger.opt(depth=1).log(
+            "INFO",
+            f"{len(x)} items found common from containers of {', '.join(lens)} items respectively",
+        )
     return set(sorted(x))
 
 
