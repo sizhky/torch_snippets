@@ -1,27 +1,27 @@
 package:
   name: torch_snippets
-  version: 0.499.17
+  version: 0.499.18
 source:
-  sha256: fdc309f0ad80c234770fb9079966fea113801ee9944764689f40fd1ad8c6e102
-  url: https://files.pythonhosted.org/packages/82/40/c2588b4c6cb4d5491a805d98aa4682693cf4c64f260b722b56761a06955d/torch_snippets-0.499.17.tar.gz
+  sha256: e298592713bb035ca85d02a9390c57e094028b90f18bacd70811c46616a8ee5e
+  url: https://files.pythonhosted.org/packages/82/9b/b5e7812bd7261775ea56a4a669fd49b9c677b01cd3966108f50c25da078b/torch_snippets-0.499.18.tar.gz
 about:
   description: "# Utilities for simple needs\n\n\n\n## torch snippets does a lot of\
     \ default importing for you\nWhether it is numpy, pandas, matplotlib or the useful\
-    \ functions that are mentioned below\nSimply call \n```python\nfrom torch_snippets\
+    \ functions that are mentioned below\nSimply call\n```python\nfrom torch_snippets\
     \ import *\n```\nAll the imports are lightweight and thus should not take more\
     \ than a couple of seconds\n\n## Auxiliary Functions\nThere are simple functions\
     \ that are overloaded to take inputs and perform repetitive tasks that usually\
     \ take a few lines to write\n\n#### Images\n`show`, `inspect`, `Glob`, `read`,\
     \ `resize`, `rotate`\n\n#### Files and Paths\n`stem`, `Glob`, `parent`, `name`,\
-    \ `fname`,\n\n\n`makedir`, `zip_files`, `unzip_file`,   \n\n\n`find`, `extn`,\
-    \  \n\n\n`readlines`, `writelines`\n\n#### Lists\n`L`, `flatten`\n\n#### Dump\
-    \ and load python objects\n`loaddill`,`dumpdill`\n\n#### Misc \n`Tqdm`, `Timer`,\
-    \ `randint`, `Logger`\n\n#### Sets\n`unique`, `diff`, `choose`, `common`\n\n####\
-    \ Pytorch Modules\n`Reshape` and `Permute` (`nn.Modules`)\n\n#### Report as Pytorch\
-    \ Lightning Callback\n`LightningReport`\n\n#### Charts\n`Chart` from altair\n\n\
-    and many more to come... \n\n## Install\n`pip install torch_snippets`\n\n## Usage\n\
-    \n\n```python\n%time from torch_snippets import *\n```\n\n    CPU times: user\
-    \ 1.79 s, sys: 672 ms, total: 2.46 s\n    Wall time: 2.62 s\n\n\n```python\ndir()\n\
+    \ `fname`,\n\n\n`makedir`, `zip_files`, `unzip_file`,\n\n\n`find`, `extn`,\n\n\
+    \n`readlines`, `writelines`\n\n#### Lists\n`L`, `flatten`\n\n#### Dump and load\
+    \ python objects\n`loaddill`,`dumpdill`\n\n#### Misc\n`Tqdm`, `Timer`, `randint`,\
+    \ `Logger`\n\n#### Sets\n`unique`, `diff`, `choose`, `common`\n\n#### Pytorch\
+    \ Modules\n`Reshape` and `Permute` (`nn.Modules`)\n\n#### Report as Pytorch Lightning\
+    \ Callback\n`LightningReport`\n\n#### Charts\n`Chart` from altair\n\nand many\
+    \ more to come...\n\n## Install\n`pip install torch_snippets`\n\n## Usage\n\n\n\
+    ```python\n%time from torch_snippets import *\n```\n\n    CPU times: user 1.79\
+    \ s, sys: 672 ms, total: 2.46 s\n    Wall time: 2.62 s\n\n\n```python\ndir()\n\
     ```\n\n\n\n\n    ['AttrDict',\n     'B',\n     'BB',\n     'Blank',\n     'C',\n\
     \     'Chart',\n     'DataLoader',\n     'Dataset',\n     'Debug',\n     'E',\n\
     \     'Excep',\n     'F',\n     'Float',\n     'Glob',\n     'Image',\n     'ImportEnum',\n\
@@ -72,7 +72,7 @@ about:
     \  'typed',\n     'uint',\n     'unique',\n     'uniqueify',\n     'unzip_file',\n\
     \     'using_attr',\n     'val2idx',\n     'with_cast',\n     'wrap_class',\n\
     \     'write',\n     'writelines',\n     'xywh2xyXY',\n     'zip_cycle',\n   \
-    \  'zip_files']\n\n\n"
+    \  'zip_files']\n"
   dev_url: https://sizhky.github.io
   doc_url: https://sizhky.github.io
   home: https://sizhky.github.io
@@ -118,6 +118,7 @@ requirements:
   - nltk
   - python-Levenshtein
   - lovely_tensors
+  - pre-commit
   run:
   - pip
   - python
@@ -149,6 +150,7 @@ requirements:
   - nltk
   - python-Levenshtein
   - lovely_tensors
+  - pre-commit
 test:
   imports:
   - torch_snippets

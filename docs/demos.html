@@ -21,16 +21,16 @@ nb_path: "nbs/demos.ipynb"
 -->
 
 <div class="container" id="notebook-container">
-        
+
     {% raw %}
-    
+
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
 
     {% raw %}
-    
+
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -49,7 +49,7 @@ nb_path: "nbs/demos.ipynb"
     {% endraw %}
 
     {% raw %}
-    
+
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -73,7 +73,7 @@ nb_path: "nbs/demos.ipynb"
     {% endraw %}
 
     {% raw %}
-    
+
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -105,7 +105,7 @@ nb_path: "nbs/demos.ipynb"
     {% endraw %}
 
     {% raw %}
-    
+
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -150,9 +150,9 @@ nb_path: "nbs/demos.ipynb"
     <span class="n">optimizer</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span>
 <span class="k">def</span> <span class="nf">get_data</span><span class="p">():</span>
-    <span class="n">train</span> <span class="o">=</span> <span class="n">FMNISTDataset</span><span class="p">(</span><span class="n">tr_images</span><span class="p">,</span> <span class="n">tr_targets</span><span class="p">,</span> <span class="n">aug</span><span class="o">=</span><span class="n">aug</span><span class="p">)</span>     
+    <span class="n">train</span> <span class="o">=</span> <span class="n">FMNISTDataset</span><span class="p">(</span><span class="n">tr_images</span><span class="p">,</span> <span class="n">tr_targets</span><span class="p">,</span> <span class="n">aug</span><span class="o">=</span><span class="n">aug</span><span class="p">)</span>
     <span class="n">trn_dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">train</span><span class="o">.</span><span class="n">collate_fn</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">val</span> <span class="o">=</span> <span class="n">FMNISTDataset</span><span class="p">(</span><span class="n">val_images</span><span class="p">,</span> <span class="n">val_targets</span><span class="p">)</span>     
+    <span class="n">val</span> <span class="o">=</span> <span class="n">FMNISTDataset</span><span class="p">(</span><span class="n">val_images</span><span class="p">,</span> <span class="n">val_targets</span><span class="p">)</span>
     <span class="n">val_dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">val_images</span><span class="p">)</span><span class="o">//</span><span class="mi">5</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">collate_fn</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">trn_dl</span><span class="p">,</span> <span class="n">val_dl</span>
 <span class="k">def</span> <span class="nf">train_batch</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">):</span>
@@ -183,7 +183,7 @@ nb_path: "nbs/demos.ipynb"
     {% endraw %}
 
     {% raw %}
-    
+
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -201,7 +201,7 @@ nb_path: "nbs/demos.ipynb"
     {% endraw %}
 
     {% raw %}
-    
+
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -261,7 +261,7 @@ EPOCH: 5.000	train_loss: 1.115	train_acc: 0.635	val_loss: 1.087	val_acc: 0.656	(
     {% endraw %}
 
     {% raw %}
-    
+
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -296,7 +296,7 @@ EPOCH: 5.000	train_loss: 1.115	train_acc: 0.635	val_loss: 1.087	val_acc: 0.656	(
     {% endraw %}
 
     {% raw %}
-    
+
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -327,7 +327,7 @@ EPOCH: 5.000	train_loss: 1.115	train_acc: 0.635	val_loss: 1.087	val_acc: 0.656	(
     {% endraw %}
 
     {% raw %}
-    
+
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -375,5 +375,3 @@ EPOCH: 5.000	train_loss: 1.115	train_acc: 0.635	val_loss: 1.087	val_acc: 0.656	(
     {% endraw %}
 
 </div>
- 
-

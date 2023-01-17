@@ -25,3 +25,4 @@ sklearn
 nltk
 python-Levenshtein
 lovely_tensors
+pre-commit

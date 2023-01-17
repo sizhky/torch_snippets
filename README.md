@@ -4,7 +4,7 @@
 
 ## torch snippets does a lot of default importing for you
 Whether it is numpy, pandas, matplotlib or the useful functions that are mentioned below
-Simply call 
+Simply call
 ```python
 from torch_snippets import *
 ```
@@ -20,10 +20,10 @@ There are simple functions that are overloaded to take inputs and perform repeti
 `stem`, `Glob`, `parent`, `name`, `fname`,
 
 
-`makedir`, `zip_files`, `unzip_file`,   
+`makedir`, `zip_files`, `unzip_file`,
 
 
-`find`, `extn`,  
+`find`, `extn`,
 
 
 `readlines`, `writelines`
@@ -34,7 +34,7 @@ There are simple functions that are overloaded to take inputs and perform repeti
 #### Dump and load python objects
 `loaddill`,`dumpdill`
 
-#### Misc 
+#### Misc
 `Tqdm`, `Timer`, `randint`, `Logger`
 
 #### Sets
@@ -49,7 +49,7 @@ There are simple functions that are overloaded to take inputs and perform repeti
 #### Charts
 `Chart` from altair
 
-and many more to come... 
+and many more to come...
 
 ## Install
 `pip install torch_snippets`
@@ -311,5 +311,3 @@ dir()
      'xywh2xyXY',
      'zip_cycle',
      'zip_files']
-
-
