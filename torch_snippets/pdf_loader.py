@@ -7,7 +7,6 @@ __all__ = ["PDF"]
 from .loader import np, subplots, show, resize, L, Image
 import fitz
 
-
 # %% ../nbs/pdf.ipynb 3
 class PDF:
     """Load a PDF file from `path` as a list of images

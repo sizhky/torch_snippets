@@ -1,9 +1,9 @@
 package:
   name: torch_snippets
-  version: 0.499.18
+  version: 0.499.19
 source:
-  sha256: e298592713bb035ca85d02a9390c57e094028b90f18bacd70811c46616a8ee5e
-  url: https://files.pythonhosted.org/packages/82/9b/b5e7812bd7261775ea56a4a669fd49b9c677b01cd3966108f50c25da078b/torch_snippets-0.499.18.tar.gz
+  sha256: 30aeab6877ecd2d45fd28010fb1910c2f49c2dc8a1b7e4cfc921800595442d21
+  url: https://files.pythonhosted.org/packages/13/24/ecd1db8b355c361a8900a61a3009ccc9cf68c7fc324012dbe774911f209a/torch_snippets-0.499.19.tar.gz
 about:
   description: "# Utilities for simple needs\n\n\n\n## torch snippets does a lot of\
     \ default importing for you\nWhether it is numpy, pandas, matplotlib or the useful\
@@ -114,7 +114,7 @@ requirements:
   - imgaug>=0.4.0
   - xmltodict
   - fuzzywuzzy
-  - sklearn
+  - scikit-learn
   - nltk
   - python-Levenshtein
   - lovely_tensors
@@ -146,7 +146,7 @@ requirements:
   - imgaug>=0.4.0
   - xmltodict
   - fuzzywuzzy
-  - sklearn
+  - scikit-learn
   - nltk
   - python-Levenshtein
   - lovely_tensors
