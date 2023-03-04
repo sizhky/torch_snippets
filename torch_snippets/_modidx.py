@@ -277,10 +277,18 @@ d = {
             ),
         },
         "torch_snippets.ipython": {
+            "torch_snippets.ipython.backup_this_notebook": (
+                "jupyter_notebook.html#backup_this_notebook",
+                "torch_snippets/ipython.py",
+            ),
             "torch_snippets.ipython.is_in_notebook": (
                 "jupyter_notebook.html#is_in_notebook",
                 "torch_snippets/ipython.py",
-            )
+            ),
+            "torch_snippets.ipython.save_notebook": (
+                "jupyter_notebook.html#save_notebook",
+                "torch_snippets/ipython.py",
+            ),
         },
         "torch_snippets.load_defaults": {
             "torch_snippets.load_defaults.exists": (

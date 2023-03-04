@@ -1,9 +1,9 @@
 package:
   name: torch_snippets
-  version: 0.499.19
+  version: 0.499.22
 source:
-  sha256: 30aeab6877ecd2d45fd28010fb1910c2f49c2dc8a1b7e4cfc921800595442d21
-  url: https://files.pythonhosted.org/packages/13/24/ecd1db8b355c361a8900a61a3009ccc9cf68c7fc324012dbe774911f209a/torch_snippets-0.499.19.tar.gz
+  sha256: f83de4ece0834621cb906b9ca13a0271a7f19d599fca68c2f90503dc1f782545
+  url: https://files.pythonhosted.org/packages/46/28/8f666c7c90639d37a0618c2c72ee2a478d4d186ffd808a3e762aca3fbf37/torch_snippets-0.499.22.tar.gz
 about:
   description: "# Utilities for simple needs\n\n\n\n## torch snippets does a lot of\
     \ default importing for you\nWhether it is numpy, pandas, matplotlib or the useful\
@@ -119,6 +119,7 @@ requirements:
   - python-Levenshtein
   - lovely_tensors
   - pre-commit
+  - pymupdf
   run:
   - pip
   - python
@@ -151,6 +152,7 @@ requirements:
   - python-Levenshtein
   - lovely_tensors
   - pre-commit
+  - pymupdf
 test:
   imports:
   - torch_snippets
