@@ -39,9 +39,10 @@ def save_notebook(file_path):
 
 
 def backup_this_notebook(this_file_path, save_html_to):
-    assert save_html_to
+    available_number = max([int(i) for i in stems(Glob(save_html_to))], default=-1) + 1
+    save_to = f"{save_html_to}/{available_number:04}.html"
+    Info(f"Backing up this version of notebook to {save_to}")
     save_notebook(this_file_path)
-
     this_notebook = nbformat.reads(
         json.dumps(read_json(this_file_path)),
         as_version=4,
@@ -49,8 +50,6 @@ def backup_this_notebook(this_file_path, save_html_to):
 
     html_exporter = HTMLExporter(template_name="classic")
     (body, resources) = html_exporter.from_notebook_node(this_notebook)
-    available_number = max([int(i) for i in stems(Glob(save_html_to))], default=-1) + 1
-    save_to = f"{save_html_to}/{available_number:04}.html"
     makedir(save_html_to)
     writelines([body], save_to)
-    Info(f"Backed a new version of notebook at {save_to}")
+    Info(f"Success!")
