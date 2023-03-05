@@ -9,7 +9,7 @@ import os, sys, json, time, hashlib
 from IPython.display import display, Javascript
 import nbformat
 from nbconvert import HTMLExporter
-from .paths import stems, Glob
+from .paths import stems, Glob, parent, P, stem
 from .markup import read_json, writelines, makedir
 from .logger import Info
 
@@ -38,7 +38,11 @@ def save_notebook(file_path):
     Info(f"Saved the notebook at {file_path}!")
 
 
-def backup_this_notebook(this_file_path, save_html_to):
+def backup_this_notebook(this_file_path, save_html_to=None):
+    if save_html_to is None:
+        save_html_to = (
+            parent(P(this_file_path)).resolve() / f"backups/{stem(this_file_path)}"
+        )
     available_number = max([int(i) for i in stems(Glob(save_html_to))], default=-1) + 1
     save_to = f"{save_html_to}/{available_number:04}.html"
     Info(f"Backing up this version of notebook to {save_to}")
