@@ -263,6 +263,10 @@ d = {
                 "interactive_show.html#plot_image",
                 "torch_snippets/interactive_show.py",
             ),
+            "torch_snippets.interactive_show.to_networkx": (
+                "interactive_show.html#to_networkx",
+                "torch_snippets/interactive_show.py",
+            ),
             "torch_snippets.interactive_show.tolist": (
                 "interactive_show.html#tolist",
                 "torch_snippets/interactive_show.py",
@@ -279,6 +283,22 @@ d = {
         "torch_snippets.ipython": {
             "torch_snippets.ipython.backup_this_notebook": (
                 "jupyter_notebook.html#backup_this_notebook",
+                "torch_snippets/ipython.py",
+            ),
+            "torch_snippets.ipython.display_dfs_side_by_side": (
+                "jupyter_notebook.html#display_dfs_side_by_side",
+                "torch_snippets/ipython.py",
+            ),
+            "torch_snippets.ipython.h1": (
+                "jupyter_notebook.html#h1",
+                "torch_snippets/ipython.py",
+            ),
+            "torch_snippets.ipython.h2": (
+                "jupyter_notebook.html#h2",
+                "torch_snippets/ipython.py",
+            ),
+            "torch_snippets.ipython.h3": (
+                "jupyter_notebook.html#h3",
                 "torch_snippets/ipython.py",
             ),
             "torch_snippets.ipython.is_in_notebook": (
@@ -449,6 +469,11 @@ d = {
             ),
             "torch_snippets.misc.Timer.__init__": (
                 "misc.html#timer.__init__",
+                "torch_snippets/misc.py",
+            ),
+            "torch_snippets.misc.io": ("misc.html#io", "torch_snippets/misc.py"),
+            "torch_snippets.misc.timeit": (
+                "misc.html#timeit",
                 "torch_snippets/misc.py",
             ),
         },

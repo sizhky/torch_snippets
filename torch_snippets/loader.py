@@ -488,6 +488,7 @@ def subplots(ims, nc=5, figsize=(5, 5), silent=True, **kwargs):
     figsize = kwargs.pop("sz", figsize)
     figsize = (figsize, figsize) if isinstance(figsize, int) else figsize
     fig, axes = plt.subplots(nr, nc, figsize=figsize)
+    return_axes = kwargs.pop("return_axes", False)
     axes = axes.flat
     fig.suptitle(kwargs.pop("suptitle", ""))
     dfs = kwargs.pop("dfs", [None] * len(ims))
@@ -511,6 +512,8 @@ def subplots(ims, nc=5, figsize=(5, 5), silent=True, **kwargs):
     for ax in axes:
         show(blank, ax=ax)
     plt.tight_layout()
+    if return_axes:
+        return axes
     plt.show()
 
 

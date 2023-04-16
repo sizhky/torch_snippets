@@ -1,9 +1,9 @@
 package:
   name: torch_snippets
-  version: 0.499.24
+  version: 0.499.26
 source:
-  sha256: 5c85e28aba6c64a93bb0465404c01a5595e4ae45edc5265f456d5ef180ebc6b9
-  url: https://files.pythonhosted.org/packages/c7/4a/f27112aabe0c9f474bea7581b49a342ad664a48022776798bbb7b3c07117/torch_snippets-0.499.24.tar.gz
+  sha256: a5f18ce02f9ef2d67409b3c12f02149796b9f78ac41415d2a60f954ce42c7f70
+  url: https://files.pythonhosted.org/packages/94/9f/c3c7432309bb950d196c014bb4332ac886daaeac2b4839dec3d322a6f10c/torch_snippets-0.499.26.tar.gz
 about:
   description: "# Utilities for simple needs\n\n\n\n## torch snippets does a lot of\
     \ default importing for you\nWhether it is numpy, pandas, matplotlib or the useful\
@@ -73,9 +73,9 @@ about:
     \     'using_attr',\n     'val2idx',\n     'with_cast',\n     'wrap_class',\n\
     \     'write',\n     'writelines',\n     'xywh2xyXY',\n     'zip_cycle',\n   \
     \  'zip_files']\n"
-  dev_url: https://sizhky.github.io
-  doc_url: https://sizhky.github.io
-  home: https://sizhky.github.io
+  dev_url: https://github.com/sizhky/torch_snippets/tree/master/
+  doc_url: https://sizhky.github.io/torch_snippets/
+  home: https://github.com/sizhky/torch_snippets/tree/master/
   license: Apache Software
   license_family: APACHE
   summary: One line functions for common tasks
