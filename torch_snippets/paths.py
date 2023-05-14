@@ -30,6 +30,7 @@ __all__ = [
 
 # %% ../nbs/paths.ipynb 2
 from fastcore.basics import patch_to
+from fastcore.foundation import L
 from functools import wraps
 from .loader import choose as ts_choose, Tqdm, os, logger, Info, Debug, Warn, Excep
 from pathlib import Path
@@ -67,7 +68,7 @@ def output_to_path(func):
 
 # %% ../nbs/paths.ipynb 4
 P = Path
-P.ls = lambda self: list(self.iterdir())
+P.ls = lambda self: L(self.iterdir())
 P.__repr__ = lambda self: f"» {self}"
 
 
@@ -97,7 +98,7 @@ def extn(self, pattern="*"):
 
 @patch_to(P)
 def Glob(self, pattern="*"):
-    return list(self.glob(pattern))
+    return L(self.glob(pattern))
 
 
 @patch_to(P)

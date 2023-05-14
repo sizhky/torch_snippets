@@ -164,6 +164,10 @@ d = {
                 "bounding_boxes.html#merge_by_bb",
                 "torch_snippets/bb_utils.py",
             ),
+            "torch_snippets.bb_utils.merge_by_bb_old": (
+                "bounding_boxes.html#merge_by_bb_old",
+                "torch_snippets/bb_utils.py",
+            ),
             "torch_snippets.bb_utils.shrink_bbs": (
                 "bounding_boxes.html#shrink_bbs",
                 "torch_snippets/bb_utils.py",
@@ -196,6 +200,20 @@ d = {
                 "charts.html#confusion_matrix",
                 "torch_snippets/charts.py",
             )
+        },
+        "torch_snippets.decorators": {
+            "torch_snippets.decorators.check_kwargs_not_none": (
+                "decorators.html#check_kwargs_not_none",
+                "torch_snippets/decorators.py",
+            ),
+            "torch_snippets.decorators.io": (
+                "decorators.html#io",
+                "torch_snippets/decorators.py",
+            ),
+            "torch_snippets.decorators.timeit": (
+                "decorators.html#timeit",
+                "torch_snippets/decorators.py",
+            ),
         },
         "torch_snippets.fastcores": {},
         "torch_snippets.imgaug_loader": {
@@ -301,12 +319,28 @@ d = {
                 "jupyter_notebook.html#h3",
                 "torch_snippets/ipython.py",
             ),
+            "torch_snippets.ipython.h4": (
+                "jupyter_notebook.html#h4",
+                "torch_snippets/ipython.py",
+            ),
+            "torch_snippets.ipython.h5": (
+                "jupyter_notebook.html#h5",
+                "torch_snippets/ipython.py",
+            ),
+            "torch_snippets.ipython.h6": (
+                "jupyter_notebook.html#h6",
+                "torch_snippets/ipython.py",
+            ),
             "torch_snippets.ipython.is_in_notebook": (
                 "jupyter_notebook.html#is_in_notebook",
                 "torch_snippets/ipython.py",
             ),
             "torch_snippets.ipython.save_notebook": (
                 "jupyter_notebook.html#save_notebook",
+                "torch_snippets/ipython.py",
+            ),
+            "torch_snippets.ipython.show_big_dataframe": (
+                "jupyter_notebook.html#show_big_dataframe",
                 "torch_snippets/ipython.py",
             ),
         },

@@ -6,21 +6,26 @@ __all__ = [
     "save_notebook",
     "backup_this_notebook",
     "display_dfs_side_by_side",
+    "show_big_dataframe",
     "h1",
     "h2",
     "h3",
+    "h4",
+    "h5",
+    "h6",
 ]
 
 # %% ../nbs/jupyter_notebook.ipynb 2
 import importlib
 import os, sys, json, time, hashlib
-from IPython.display import display, Javascript, display_html
+from IPython.display import display, Javascript, display_html, Markdown
 import nbformat
 from nbconvert import HTMLExporter
 from .loader import show
 from .paths import stems, Glob, parent, P, stem
 from .markup import read_json, writelines, makedir
-from .logger import Info
+from .logger import Info, Warn
+from .loader import show, pd
 from itertools import chain, cycle
 
 
@@ -60,6 +65,13 @@ def backup_this_notebook(
     available_number = max([int(i) for i in files], default=-1) + 1
     if override_previous_backup:
         available_number -= 1
+        if (
+            input(
+                f"Are you sure you want to override `{save_html_to}/{available_number:04}.html` ? [y/n]"
+            ).lower()
+            != "y"
+        ):
+            raise ValueError("Aborting")
     save_to = f"{save_html_to}/{available_number:04}.html"
     Info(f"Backing up this version of notebook to {save_to}")
     save_notebook(this_file_path)
@@ -97,6 +109,11 @@ def display_dfs_side_by_side(*args, titles=cycle([""])):
     display_html(html_str, raw=True)
 
 
+def show_big_dataframe(df):
+    with pd.option_context("display.max_columns", 1000, "display.max_colwidth", 1000):
+        show(df)
+
+
 # %% ../nbs/jupyter_notebook.ipynb 7
 def h1(text):
     show(Markdown(f"## {text}"))
@@ -108,3 +125,15 @@ def h2(text):
 
 def h3(text):
     show(Markdown(f"### {text}"))
+
+
+def h4(text):
+    show(Markdown(f"#### {text}"))
+
+
+def h5(text):
+    show(Markdown(f"##### {text}"))
+
+
+def h6(text):
+    show(Markdown(f"###### {text}"))

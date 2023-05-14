@@ -12,6 +12,7 @@ torch_snippets/adapters.py
 torch_snippets/bb_utils.py
 torch_snippets/bokeh_loader.py
 torch_snippets/charts.py
+torch_snippets/decorators.py
 torch_snippets/fastcores.py
 torch_snippets/imgaug_loader.py
 torch_snippets/inspector.py
