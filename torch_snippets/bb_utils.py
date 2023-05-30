@@ -14,9 +14,10 @@ __all__ = [
     "iou",
     "split_bb_to_xyXY",
     "combine_xyXY_to_bb",
+    "is_absolute",
+    "is_relative",
     "to_relative",
     "to_absolute",
-    "merge_by_bb_old",
     "merge_by_bb",
     "isin",
 ]
@@ -273,7 +274,19 @@ def combine_xyXY_to_bb(df):
     return df
 
 
+def is_absolute(df):
+    bbs = df2bbs(df)
+    bbs = np.array(bbs)
+    return bbs.max() > 1.1
+
+
+def is_relative(df):
+    return not is_absolute(df)
+
+
 def to_relative(df, height, width):
+    if is_relative(df):
+        return df
     df = df.copy()
     if "x" not in df.columns and "bb" in df.columns:
         _recombine = True
@@ -290,37 +303,24 @@ def to_relative(df, height, width):
 
 
 def to_absolute(df, height, width):
+    if is_absolute(df):
+        return df
     df = df.copy()
     if "x" not in df.columns and "bb" in df.columns:
         _recombine = True
         df = split_bb_to_xyXY(df)
     else:
         _recombine = False
-    df["x"] = (df["x"] * width).astype(np.uint16)
-    df["y"] = (df["y"] * height).astype(np.uint16)
-    df["X"] = (df["X"] * width).astype(np.uint16)
-    df["Y"] = (df["Y"] * height).astype(np.uint16)
+    df["x"] = (np.clip(df["x"], 0, 1) * width).astype(np.uint16)
+    df["y"] = (np.clip(df["y"], 0, 1) * height).astype(np.uint16)
+    df["X"] = (np.clip(df["X"], 0, 1) * width).astype(np.uint16)
+    df["Y"] = (np.clip(df["Y"], 0, 1) * height).astype(np.uint16)
     if _recombine:
         df = combine_xyXY_to_bb(df)
     return df
 
 
 # %% ../nbs/bounding_boxes.ipynb 17
-def merge_by_bb_old(df1, df2):
-    """Merge df2 columns to df1 by using iou
-    Make sure both df1 & df2 are relative or both absolute
-    """
-    df1, df2 = [df.copy() for df in [df1, df2]]
-    assert all([c in df1.columns for c in "xyXY"])
-    assert all([c in df2.columns for c in "xyXY"])
-    ious = iou(df2bbs(df1), df2bbs(df2))
-    df2["ix"] = ious.argmax(0)
-    df2.drop([*"xyXY"], axis=1, inplace=True)
-    df = pd.merge(df1, df2, left_index=True, right_on="ix")
-    df.drop(["ix"], axis=1, inplace=True)
-    return df
-
-
 def merge_by_bb(df1, df2, suffixes=("_x", "_y")):
     """Merge df1 columns to df2 by using iou
     Make sure both df1 & df2 are relative or both absolute
@@ -329,6 +329,8 @@ def merge_by_bb(df1, df2, suffixes=("_x", "_y")):
     assert all([c in df1.columns for c in "xyXY"])
     assert all([c in df2.columns for c in "xyXY"])
     ious = iou(df2bbs(df1), df2bbs(df2))
+    _isin = isin(df2bbs(df1), df2bbs(df2), return_matrix=True)
+    _isin_r = isin(df2bbs(df2), df2bbs(df1), return_matrix=True)
     (ixs, jxs) = np.nonzero(ious)
     ious = ious[ixs, jxs]
     _df1 = df1.iloc[ixs]
@@ -343,10 +345,12 @@ def merge_by_bb(df1, df2, suffixes=("_x", "_y")):
         axis=1,
     )
     output["iou"] = ious
+    output["isin"] = _isin[ixs, jxs]
+    output["isin_r"] = _isin_r.T[ixs, jxs]
     return output
 
 
-def isin(bboxes1, bboxes2):
+def isin(bboxes1, bboxes2, return_matrix=True):
     """return indexes of those boxes from `bboxes1` that are completely inside `bboxes2`"""
     bboxes1 = np.array(bboxes1)
     bboxes2 = np.array(bboxes2)
@@ -359,5 +363,7 @@ def isin(bboxes1, bboxes2):
     interArea = np.maximum((xB - xA + 1), 0) * np.maximum((yB - yA + 1), 0)
     boxAArea = (x12 - x11 + 1) * (y12 - y11 + 1)
     output = interArea / boxAArea
+    if return_matrix:
+        return output
     ixs = np.where(output == 1)[0]
     return ixs

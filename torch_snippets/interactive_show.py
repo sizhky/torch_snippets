@@ -2,6 +2,7 @@
 
 # %% auto 0
 __all__ = [
+    "COLORS",
     "to_networkx",
     "plot_image",
     "plot_graph",
@@ -14,6 +15,7 @@ __all__ = [
 ]
 
 # %% ../nbs/interactive_show.ipynb 1
+from pathlib import Path
 from . import *
 from .bokeh_loader import bshow
 from bokeh.io import output_notebook, show as bokeh_show, output_file
@@ -38,6 +40,7 @@ import torch
 import numpy as np
 from fastcore.basics import ifnone
 from typing import Optional, Any, Iterable, Union
+from .bb_utils import split_bb_to_xyXY, to_absolute, to_relative
 
 output_notebook()
 
@@ -147,6 +150,9 @@ def plot_image(p, image, sz):
     p.image_rgba(image=[img], x=0, y=0, dw=1, dh=h / w)
 
 
+COLORS = {v[0]: v for v in ["green", "red", "blue", "yellow", "cyan", "magenta"]}
+
+
 def plot_graph(g, output, im=None, **kwargs):
     plot = figure(
         title=kwargs.get("title", "Networkx Integration Demonstration"),
@@ -157,17 +163,23 @@ def plot_graph(g, output, im=None, **kwargs):
     )
     h, w = im.shape[:2]
     plot_image(plot, im, sz=kwargs.get("sz", 0.5))
-    fill_color = {
-        ix: "green" if correct else "red"
-        for ix, correct in nx.get_node_attributes(g, "correct").items()
-    }
-    nx.set_node_attributes(g, fill_color, "node_color")
+    if nx.get_node_attributes(g, "color") != {}:
+        nx.set_node_attributes(
+            g,
+            {ix: COLORS[c] for ix, c in nx.get_node_attributes(g, "color").items()},
+            "node_color",
+        )
+    else:
+        nx.get_node_attributes(g, "pos").items()
+        fill_color = {ix: "green" for ix, _ in nx.get_node_attributes(g, "pos").items()}
+        nx.set_node_attributes(g, fill_color, "node_color")
+    hover_tool = HoverTool(
+        tooltips=[("index", "$index")]
+        + [(i, f"@{i}") for i in kwargs.get("tooltips", [])]
+    )
 
     plot.add_tools(
-        HoverTool(
-            tooltips=[("index", "$index")]
-            + [(i, f"@{i}") for i in kwargs.get("tooltips", [])]
-        ),
+        hover_tool,
         TapTool(),
         BoxSelectTool(),
     )
@@ -180,15 +192,8 @@ def plot_graph(g, output, im=None, **kwargs):
         graph = from_networkx(g, pos)
     else:
         print("Using random")
-        # graph = from_networkx(g, nx.layout.fruchterman_reingold_layout, scale=20, center=(0,0))
         graph = from_networkx(g, nx.random_layout)
 
-    # graph.node_renderer.glyph = Circle(
-    #     size=kwargs.get("size", 10),
-    #     # fill_color=kwargs.get("color", "green"),
-    #     fill_color="node_color",
-    #     fill_alpha=kwargs.get("opacity", 0.9),
-    # )
     graph.node_renderer.glyph = Rect(
         width="w",
         height="h",
@@ -196,22 +201,7 @@ def plot_graph(g, output, im=None, **kwargs):
         fill_color="node_color",
         fill_alpha=kwargs.get("opacity", 0.3),
     )
-    # graph.node_renderer.selection_glyph = Circle(
-    #     size=15, fill_color=kwargs.get("color", "gray")
-    # )
-    # graph.node_renderer.hover_glyph = Circle(
-    #     size=15, fill_color=kwargs.get("color", "green")
-    # )
-
-    # graph.edge_renderer.glyph = MultiLine(
-    #     line_color="#CCCCCC", line_alpha=0.8, line_width=1
-    # )
-    # graph.edge_renderer.selection_glyph = MultiLine(line_color="blue", line_width=2)
-    # graph.edge_renderer.hover_glyph = MultiLine(line_color="blue", line_width=2)
-    # graph.selection_policy = NodesAndLinkedEdges()
-    # graph.inspection_policy = EdgesAndLinkedNodes()
     plot.renderers.append(graph)
-    # output_notebook(f"{output}.html")
     bshow(plot)
 
 
@@ -268,6 +258,9 @@ def df2graph_nodes(
 
 
 def ishow(im, df, additional_attrs=None, **kwargs):
+    if isinstance(df, (str, Path)):
+        df = str(df)
+        df = pd.read_csv(df) if df.endswith("csv") else pd.read_parquet(df)
     df = df.copy()
     if isinstance(im, (str, P)):
         im = read(im, 1)
@@ -275,43 +268,10 @@ def ishow(im, df, additional_attrs=None, **kwargs):
         im = np.array(im)
     h, w = im.shape[:2]
     df = df.reset_index(drop=True)
-
     G = nx.Graph()
-
-    if "conf" not in df.columns:
-        df["conf"] = 0
-    if "conf_of_correct_class" not in df.columns:
-        df["conf_of_correct_class"] = 0
-
-    truth_col = kwargs.pop("truth_col", "truth")
-    df["truth"] = None if truth_col not in df.columns else df[truth_col]
-
-    pred_col = kwargs.pop("pred_col", "pred")
-    df["pred"] = None if pred_col not in df.columns else df[pred_col]
-
-    df["text"] = None if "text" not in df.columns else df["text"]
-
-    df["correct"] = df["pred"] == df["truth"]
-    if "x" not in df.columns:
-        x, y, X, Y = list(zip(*df2bbs(df)))
-        df["x"] = x
-        df["X"] = X
-        df["y"] = y
-        df["Y"] = Y
-    if df["X"].max() > 1:
-        df["x"] = df["x"] / w
-        df["y"] = df["y"] / h
-        df["X"] = df["X"] / w
-        df["Y"] = df["Y"] / h
-        if "bb" in df.columns:
-            df.drop("bb", axis=1, inplace=True)
-    additional_attrs = [
-        "truth",
-        "pred",
-        "conf",
-        "conf_of_correct_class",
-        "correct",
-        "text",
-    ] + ifnone(additional_attrs, [])
+    df = split_bb_to_xyXY(df)
+    df = to_relative(df, h, w)
+    if additional_attrs is None:
+        additional_attrs = [c for c in df.columns if c not in [*"xyXY"]]
     G.add_nodes_from(df2graph_nodes(df, additional_attrs=additional_attrs))
     viz2(G, im=im, tooltips=additional_attrs, pos="pos")

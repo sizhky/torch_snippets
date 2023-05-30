@@ -83,7 +83,7 @@ from fastcore.foundation import L
 from fastcore.dispatch import typedispatch
 
 import glob, numpy as np, pandas as pd, tqdm, os, sys, re
-from IPython.display import display
+from IPython.display import display, display_html
 import PIL
 from PIL import Image
 
@@ -326,6 +326,17 @@ def show(
 
     except Exception as e:
         print(e)
+    if isinstance(img, pd.DataFrame):
+        html_str = ""
+        html_str += '<th style="text-align:center"><td style="vertical-align:top">'
+        if title is not None:
+            html_str += f'<h2 style="text-align: center;">{title}</h2>'
+        html_str += img.to_html(max_rows=kwargs.pop("max_rows", 30)).replace(
+            "table", 'table style="display:inline"'
+        )
+        html_str += "</td></th>"
+        display_html(html_str, raw=True)
+        return
     if not isinstance(img, np.ndarray):
         display(img)
         return
@@ -357,6 +368,9 @@ def show(
         _show = False
 
     if df is not None:
+        if isinstance(df, (str, Path)):
+            df = str(df)
+            df = pd.read_csv(df) if df.endswith("csv") else pd.read_parquet(df)
         try:
             text_col = kwargs.pop("text_col", "text")
             if text_col == "ixs":

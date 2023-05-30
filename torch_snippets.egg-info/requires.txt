@@ -27,3 +27,5 @@ python-Levenshtein
 lovely_tensors
 pre-commit
 pymupdf
+nbconvert
+nbformat

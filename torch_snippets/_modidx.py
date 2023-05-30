@@ -152,6 +152,14 @@ d = {
                 "bounding_boxes.html#iou",
                 "torch_snippets/bb_utils.py",
             ),
+            "torch_snippets.bb_utils.is_absolute": (
+                "bounding_boxes.html#is_absolute",
+                "torch_snippets/bb_utils.py",
+            ),
+            "torch_snippets.bb_utils.is_relative": (
+                "bounding_boxes.html#is_relative",
+                "torch_snippets/bb_utils.py",
+            ),
             "torch_snippets.bb_utils.isin": (
                 "bounding_boxes.html#isin",
                 "torch_snippets/bb_utils.py",
@@ -162,10 +170,6 @@ d = {
             ),
             "torch_snippets.bb_utils.merge_by_bb": (
                 "bounding_boxes.html#merge_by_bb",
-                "torch_snippets/bb_utils.py",
-            ),
-            "torch_snippets.bb_utils.merge_by_bb_old": (
-                "bounding_boxes.html#merge_by_bb_old",
                 "torch_snippets/bb_utils.py",
             ),
             "torch_snippets.bb_utils.shrink_bbs": (
@@ -341,6 +345,10 @@ d = {
             ),
             "torch_snippets.ipython.show_big_dataframe": (
                 "jupyter_notebook.html#show_big_dataframe",
+                "torch_snippets/ipython.py",
+            ),
+            "torch_snippets.ipython.shutdown_current_notebook": (
+                "jupyter_notebook.html#shutdown_current_notebook",
                 "torch_snippets/ipython.py",
             ),
         },

@@ -4,6 +4,8 @@ __all__ = [
     "find_blocks",
     "find_substring",
     "get_line_data_from_word_data",
+    "edit_distance_path",
+    "group_blocks",
 ]
 import string
 
@@ -379,3 +381,81 @@ def get_line_data_from_word_data(df, line_gap=10, block_gap=10):
         }
     )
     return df
+
+
+def edit_distance_path(string1, string2):
+    m = len(string1)
+    n = len(string2)
+
+    # Create a matrix to store the edit distances
+    distance_matrix = [[0] * (n + 1) for _ in range(m + 1)]
+
+    # Initialize the first row and column
+    for i in range(m + 1):
+        distance_matrix[i][0] = i
+    for j in range(n + 1):
+        distance_matrix[0][j] = j
+
+    # Calculate the edit distances
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if string1[i - 1] == string2[j - 1]:
+                distance_matrix[i][j] = distance_matrix[i - 1][j - 1]
+            else:
+                distance_matrix[i][j] = min(
+                    distance_matrix[i - 1][j] + 1,  # deletion
+                    distance_matrix[i][j - 1] + 1,  # insertion
+                    distance_matrix[i - 1][j - 1] + 1,  # substitution
+                )
+
+    # Trace back the edit distance path
+    i = m
+    j = n
+    path = []
+
+    while i > 0 and j > 0:
+        if string1[i - 1] == string2[j - 1]:
+            path.append((string1[i - 1], string2[j - 1], ""))
+            i -= 1
+            j -= 1
+        else:
+            if distance_matrix[i][j] == distance_matrix[i - 1][j] + 1:
+                path.append((string1[i - 1], "", "delete"))
+                i -= 1
+            elif distance_matrix[i][j] == distance_matrix[i][j - 1] + 1:
+                path.append(("", string2[j - 1], "insert"))
+                j -= 1
+            else:
+                path.append((string1[i - 1], string2[j - 1], "replace"))
+                i -= 1
+                j -= 1
+
+    while i > 0:
+        path.append((string1[i - 1], "", "delete"))
+        i -= 1
+
+    while j > 0:
+        path.append(("", string2[j - 1], "insert"))
+        j -= 1
+
+    # Reverse the path to get the correct order
+    path.reverse()
+
+    return distance_matrix[m][n], path
+
+
+def group_blocks(df):
+    output = []
+    for block, _df in df.groupby("line_block"):
+        texts = [t for t in _df.text if isinstance(t, str)]
+        _block = {
+            "text": " ".join(texts),
+            "x": _df.x.min(),
+            "y": _df.y.min(),
+            "X": _df.X.max(),
+            "Y": _df.Y.max(),
+            "line_block": block,
+        }
+        output.append(_block)
+    output = pd.DataFrame(output)
+    return output

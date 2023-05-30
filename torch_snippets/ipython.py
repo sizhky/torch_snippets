@@ -13,6 +13,7 @@ __all__ = [
     "h4",
     "h5",
     "h6",
+    "shutdown_current_notebook",
 ]
 
 # %% ../nbs/jupyter_notebook.ipynb 2
@@ -61,19 +62,19 @@ def backup_this_notebook(
         save_html_to = (
             parent(P(this_file_path)).resolve() / f"backups/{stem(this_file_path)}"
         )
+        save_to = f"{save_html_to}/{stem(this_file_path)}__{available_number:04}.html"
+    Info(f"Backing up this version of notebook to {save_to}")
     files = [f for f in stems(Glob(save_html_to)) if f.isdigit()]
     available_number = max([int(i) for i in files], default=-1) + 1
     if override_previous_backup:
         available_number -= 1
         if (
             input(
-                f"Are you sure you want to override `{save_html_to}/{available_number:04}.html` ? [y/n]"
+                f"Are you sure you want to override `{save_html_to}/{stem(this_file_path)}__{available_number:04}.html` ? [y/n]"
             ).lower()
             != "y"
         ):
             raise ValueError("Aborting")
-    save_to = f"{save_html_to}/{available_number:04}.html"
-    Info(f"Backing up this version of notebook to {save_to}")
     save_notebook(this_file_path)
     this_notebook = nbformat.reads(
         json.dumps(read_json(this_file_path)),
@@ -94,15 +95,16 @@ def backup_this_notebook(
     changelog = f"\n# {stem(save_to)}\n{changelog}"
     changelog_file.write_lines(changelog.split("\n"), mode="a+")
     Info(f"Success! Visit {changelog_file} for detailed changes")
+    return save_to
 
 
 # %% ../nbs/jupyter_notebook.ipynb 6
-def display_dfs_side_by_side(*args, titles=cycle([""])):
+def display_dfs_side_by_side(*args, titles=cycle([""]), max_rows=50):
     html_str = ""
     for df, title in zip(args, chain(titles, cycle(["</br>"]))):
         html_str += '<th style="text-align:center"><td style="vertical-align:top">'
         html_str += f'<h2 style="text-align: center;">{title}</h2>'
-        html_str += df.to_html(max_rows=10).replace(
+        html_str += df.to_html(max_rows=max_rows).replace(
             "table", 'table style="display:inline"'
         )
         html_str += "</td></th>"
@@ -137,3 +139,9 @@ def h5(text):
 
 def h6(text):
     show(Markdown(f"###### {text}"))
+
+
+# %% ../nbs/jupyter_notebook.ipynb 8
+# Function to shut down the current notebook session
+def shutdown_current_notebook():
+    os.kill(os.getpid(), 9)
