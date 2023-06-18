@@ -12,6 +12,8 @@ __all__ = [
     "enlarge_bbs",
     "shrink_bbs",
     "iou",
+    "compute_distance_matrix",
+    "compute_distances",
     "split_bb_to_xyXY",
     "combine_xyXY_to_bb",
     "is_absolute",
@@ -236,11 +238,39 @@ def iou(bboxes1, bboxes2):
     yA = np.maximum(y11, np.transpose(y21))
     xB = np.minimum(x12, np.transpose(x22))
     yB = np.minimum(y12, np.transpose(y22))
-    interArea = np.maximum((xB - xA + 1), 0) * np.maximum((yB - yA + 1), 0)
-    boxAArea = (x12 - x11 + 1) * (y12 - y11 + 1)
-    boxBArea = (x22 - x21 + 1) * (y22 - y21 + 1)
+    interArea = np.maximum((xB - xA), 0) * np.maximum((yB - yA), 0)
+    boxAArea = (x12 - x11) * (y12 - y11)
+    boxBArea = (x22 - x21) * (y22 - y21)
     iou = interArea / (boxAArea + np.transpose(boxBArea) - interArea)
     return iou
+
+
+def compute_distance_matrix(bboxes1, bboxes2):
+    # Convert the bounding box lists to NumPy arrays
+    bboxes1 = np.array(bboxes1)
+    bboxes2 = np.array(bboxes2)
+
+    # Extract the x, y coordinates of the bounding boxes
+    xy1 = bboxes1[:, :2]
+    xy2 = bboxes2[:, :2]
+
+    # Compute the squared Euclidean distances between all pairs of bounding box coordinates
+    distance_matrix = np.sum((xy1[:, np.newaxis] - xy2) ** 2, axis=-1)
+
+    # Take the square root to get the Euclidean distances
+    distance_matrix = np.sqrt(distance_matrix)
+
+    return distance_matrix
+
+
+def compute_distances(df1, df2, shrink_factors=(1, 1)):
+    """Return euclidean distance mxn matrix for all boxes from df1 with all boxes from df2"""
+    sx, sy = shrink_factors
+    bbs1 = np.array(df2bbs(df1)) / np.array([sx, sy, sx, sy])
+    bbs2 = np.array(df2bbs(df2)) / np.array([sx, sy, sx, sy])
+
+    distances = compute_distance_matrix(bbs1, bbs2)
+    return distances
 
 
 # %% ../nbs/bounding_boxes.ipynb 10

@@ -56,18 +56,22 @@ def save_notebook(file_path):
 
 
 def backup_this_notebook(
-    this_file_path, save_html_to=None, override_previous_backup=False, changelog=None
+    this_file_path,
+    save_html_to=None,
+    override_previous_backup=False,
+    changelog=None,
+    exclude_input=False,
 ):
     if save_html_to is None:
         save_html_to = (
             parent(P(this_file_path)).resolve() / f"backups/{stem(this_file_path)}"
         )
+        files = [f for f in stems(Glob(save_html_to)) if f.isdigit()]
+        available_number = max([int(i) for i in files], default=-1) + 1
         save_to = f"{save_html_to}/{stem(this_file_path)}__{available_number:04}.html"
-    Info(f"Backing up this version of notebook to {save_to}")
-    files = [f for f in stems(Glob(save_html_to)) if f.isdigit()]
-    available_number = max([int(i) for i in files], default=-1) + 1
     if override_previous_backup:
-        available_number -= 1
+        if available_number != 0:
+            available_number -= 1
         if (
             input(
                 f"Are you sure you want to override `{save_html_to}/{stem(this_file_path)}__{available_number:04}.html` ? [y/n]"
@@ -75,6 +79,8 @@ def backup_this_notebook(
             != "y"
         ):
             raise ValueError("Aborting")
+        save_to = f"{save_html_to}/{stem(this_file_path)}__{available_number:04}.html"
+    Info(f"Backing up this version of notebook to {save_to}")
     save_notebook(this_file_path)
     this_notebook = nbformat.reads(
         json.dumps(read_json(this_file_path)),
@@ -82,6 +88,8 @@ def backup_this_notebook(
     )
 
     html_exporter = HTMLExporter(template_name="classic")
+    if exclude_input:
+        html_exporter.exclude_input = True
     (body, resources) = html_exporter.from_notebook_node(this_notebook)
     makedir(save_html_to)
     writelines([body], save_to)
@@ -92,7 +100,7 @@ def backup_this_notebook(
         changelog = ""
     changelog_file = P(save_html_to) / "changelog.md"
     changelog_file.touch()
-    changelog = f"\n# {stem(save_to)}\n{changelog}"
+    changelog = f"\n## {stem(save_to)}\n{changelog}"
     changelog_file.write_lines(changelog.split("\n"), mode="a+")
     Info(f"Success! Visit {changelog_file} for detailed changes")
     return save_to

@@ -1,5 +1,12 @@
 # Changelog
 
+#### 0.499.29
+
+TODO - override_previous_backup should not trigger when there's no backup to begin with
+TODO - instead of showing markdown objects using display, directly show HTML objects so that the text is preserved on reopen
+h2 in Backup instead of h1
+attrdict can deserialize "L"
+
 #### 0.499.28
 
 - `show` can render a dataframe with a title

@@ -136,6 +136,14 @@ d = {
                 "bounding_boxes.html#combine_xyxy_to_bb",
                 "torch_snippets/bb_utils.py",
             ),
+            "torch_snippets.bb_utils.compute_distance_matrix": (
+                "bounding_boxes.html#compute_distance_matrix",
+                "torch_snippets/bb_utils.py",
+            ),
+            "torch_snippets.bb_utils.compute_distances": (
+                "bounding_boxes.html#compute_distances",
+                "torch_snippets/bb_utils.py",
+            ),
             "torch_snippets.bb_utils.compute_eps": (
                 "bounding_boxes.html#compute_eps",
                 "torch_snippets/bb_utils.py",

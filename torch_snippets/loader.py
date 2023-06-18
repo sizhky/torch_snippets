@@ -327,11 +327,12 @@ def show(
     except Exception as e:
         print(e)
     if isinstance(img, pd.DataFrame):
+        df = img
         html_str = ""
         html_str += '<th style="text-align:center"><td style="vertical-align:top">'
         if title is not None:
             html_str += f'<h2 style="text-align: center;">{title}</h2>'
-        html_str += img.to_html(max_rows=kwargs.pop("max_rows", 30)).replace(
+        html_str += df.to_html(max_rows=kwargs.pop("max_rows", 30)).replace(
             "table", 'table style="display:inline"'
         )
         html_str += "</td></th>"

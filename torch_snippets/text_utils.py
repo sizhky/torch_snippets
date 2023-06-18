@@ -384,6 +384,8 @@ def get_line_data_from_word_data(df, line_gap=10, block_gap=10):
 
 
 def edit_distance_path(string1, string2):
+    if string1 is None or string2 is None:
+        return -1, []
     m = len(string1)
     n = len(string2)
 
