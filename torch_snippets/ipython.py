@@ -66,8 +66,8 @@ def backup_this_notebook(
         save_html_to = (
             parent(P(this_file_path)).resolve() / f"backups/{stem(this_file_path)}"
         )
-        files = [f for f in stems(Glob(save_html_to)) if f.isdigit()]
-        available_number = max([int(i) for i in files], default=-1) + 1
+        files = [f for f in stems(save_html_to) if f.split("__")[-1].isdigit()]
+        available_number = max([int(i.split("__")[-1]) for i in files], default=-1) + 1
         save_to = f"{save_html_to}/{stem(this_file_path)}__{available_number:04}.html"
     if override_previous_backup:
         if available_number != 0:

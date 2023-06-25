@@ -351,11 +351,11 @@ def to_absolute(df, height, width):
 
 
 # %% ../nbs/bounding_boxes.ipynb 17
-def merge_by_bb(df1, df2, suffixes=("_x", "_y")):
+def merge_by_bb(df1, df2, suffixes=("_x", "_y"), iou_threshold=0.1):
     """Merge df1 columns to df2 by using iou
     Make sure both df1 & df2 are relative or both absolute
     """
-    df1, df2 = [df.copy().reset_index(drop=True) for df in [df1, df2]]
+    # df1, df2 = [df.copy().reset_index(drop=True) for df in [df1, df2]]
     assert all([c in df1.columns for c in "xyXY"])
     assert all([c in df2.columns for c in "xyXY"])
     ious = iou(df2bbs(df1), df2bbs(df2))
@@ -377,6 +377,7 @@ def merge_by_bb(df1, df2, suffixes=("_x", "_y")):
     output["iou"] = ious
     output["isin"] = _isin[ixs, jxs]
     output["isin_r"] = _isin_r.T[ixs, jxs]
+    output = output.query("iou > @iou_threshold")
     return output
 
 

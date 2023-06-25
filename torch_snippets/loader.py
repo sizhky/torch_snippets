@@ -72,10 +72,6 @@ __all__ = [
 ]
 
 
-import lovely_tensors as lt
-
-lt.monkey_patch()
-
 from .logger import *
 from .bb_utils import *
 from pathlib import Path
@@ -93,6 +89,9 @@ try:
     from torch import optim
     from torch.nn import functional as F
     from torch.utils.data import Dataset, DataLoader
+    import lovely_tensors as lt
+
+    lt.monkey_patch()
 
     __all__ += ["torch", "nn", "F", "Dataset", "DataLoader", "optim"]
 except:
