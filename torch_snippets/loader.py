@@ -95,6 +95,10 @@ try:
 
     __all__ += ["torch", "nn", "F", "Dataset", "DataLoader", "optim"]
 except:
+    Warn(
+        "Unable to load torch and dependent libraries from torch-snippets. \n"
+        "Functionalities might be limited. pip install lovely-tensors in case there are torch related errors"
+    )
     ...
 import matplotlib  # ; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -318,7 +322,6 @@ def show(
     try:
         if isinstance(img, (str, Path)):
             img = read(str(img), 1)
-        if isinstance(img, torch.Tensor):
             img = img.cpu().detach().numpy().copy()
         if isinstance(img, PIL.Image.Image):
             img = np.array(img)
