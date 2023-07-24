@@ -44,10 +44,9 @@ from .bb_utils import split_bb_to_xyXY, to_absolute, to_relative
 
 output_notebook()
 
-
 # %% ../nbs/interactive_show.ipynb 2
 def to_networkx(
-    data: "torch_geometric.data.Data",
+    data,
     node_attrs: Optional[Iterable[str]] = None,
     edge_attrs: Optional[Iterable[str]] = None,
     graph_attrs: Optional[Iterable[str]] = None,

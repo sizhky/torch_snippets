@@ -32,7 +32,16 @@ __all__ = [
 from fastcore.basics import patch_to
 from fastcore.foundation import L
 from functools import wraps
-from .loader import choose as ts_choose, Tqdm, os, logger, Info, Debug, Warn, Excep
+from torch_snippets.loader import (
+    choose as ts_choose,
+    Tqdm,
+    os,
+    logger,
+    Info,
+    Debug,
+    Warn,
+    Excep,
+)
 from pathlib import Path
 import hashlib, shutil
 import glob

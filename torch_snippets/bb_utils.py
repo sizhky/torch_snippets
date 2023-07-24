@@ -350,7 +350,7 @@ def to_absolute(df, height, width):
     return df
 
 
-# %% ../nbs/bounding_boxes.ipynb 17
+# %% ../nbs/bounding_boxes.ipynb 18
 def merge_by_bb(df1, df2, suffixes=("_x", "_y"), iou_threshold=0.1):
     """Merge df1 columns to df2 by using iou
     Make sure both df1 & df2 are relative or both absolute

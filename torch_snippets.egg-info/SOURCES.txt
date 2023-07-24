@@ -12,6 +12,7 @@ torch_snippets/adapters.py
 torch_snippets/bb_utils.py
 torch_snippets/bokeh_loader.py
 torch_snippets/charts.py
+torch_snippets/dates.py
 torch_snippets/decorators.py
 torch_snippets/fastcores.py
 torch_snippets/imgaug_loader.py
@@ -39,3 +40,4 @@ torch_snippets/thinc_parser/__init__.py
 torch_snippets/thinc_parser/parser.py
 torch_snippets/trainer/__init__.py
 torch_snippets/trainer/capsule.py
+torch_snippets/trainer/config.py

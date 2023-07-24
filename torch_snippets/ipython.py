@@ -29,7 +29,6 @@ from .logger import Info, Warn
 from .loader import show, pd
 from itertools import chain, cycle
 
-
 # %% ../nbs/jupyter_notebook.ipynb 3
 def is_in_notebook():
     try:

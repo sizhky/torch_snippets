@@ -213,6 +213,7 @@ d = {
                 "torch_snippets/charts.py",
             )
         },
+        "torch_snippets.dates": {},
         "torch_snippets.decorators": {
             "torch_snippets.decorators.check_kwargs_not_none": (
                 "decorators.html#check_kwargs_not_none",
@@ -672,6 +673,10 @@ d = {
                 "registry.html#parse_string",
                 "torch_snippets/registry.py",
             ),
+            "torch_snippets.registry.tryeval": (
+                "registry.html#tryeval",
+                "torch_snippets/registry.py",
+            ),
         },
         "torch_snippets.sklegos": {
             "torch_snippets.sklegos.Cat2Num": (
@@ -882,6 +887,40 @@ d = {
             "torch_snippets.trainer.capsule.validate": (
                 "capsule.html#validate",
                 "torch_snippets/trainer/capsule.py",
+            ),
+        },
+        "torch_snippets.trainer.config": {
+            "torch_snippets.trainer.config.DeepLearningConfig": (
+                "config.html#deeplearningconfig",
+                "torch_snippets/trainer/config.py",
+            ),
+            "torch_snippets.trainer.config.DeepLearningConfig.__getitem__": (
+                "config.html#deeplearningconfig.__getitem__",
+                "torch_snippets/trainer/config.py",
+            ),
+            "torch_snippets.trainer.config.DeepLearningConfig.__repr__": (
+                "config.html#deeplearningconfig.__repr__",
+                "torch_snippets/trainer/config.py",
+            ),
+            "torch_snippets.trainer.config.DeepLearningConfig.from_ini_file": (
+                "config.html#deeplearningconfig.from_ini_file",
+                "torch_snippets/trainer/config.py",
+            ),
+            "torch_snippets.trainer.config.DeepLearningConfig.keys": (
+                "config.html#deeplearningconfig.keys",
+                "torch_snippets/trainer/config.py",
+            ),
+            "torch_snippets.trainer.config.GenericConfig": (
+                "config.html#genericconfig",
+                "torch_snippets/trainer/config.py",
+            ),
+            "torch_snippets.trainer.config.GenericConfig.__init__": (
+                "config.html#genericconfig.__init__",
+                "torch_snippets/trainer/config.py",
+            ),
+            "torch_snippets.trainer.config.GenericConfig.from_ini_file": (
+                "config.html#genericconfig.from_ini_file",
+                "torch_snippets/trainer/config.py",
             ),
         },
     },
