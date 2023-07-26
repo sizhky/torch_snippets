@@ -385,8 +385,8 @@ d = {
                 "logging.html#get_console",
                 "torch_snippets/logger.py",
             ),
-            "torch_snippets.logger.reset_logger_width": (
-                "logging.html#reset_logger_width",
+            "torch_snippets.logger.reset_logger": (
+                "logging.html#reset_logger",
                 "torch_snippets/logger.py",
             ),
         },

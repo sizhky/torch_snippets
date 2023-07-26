@@ -4,22 +4,23 @@
 __all__ = [
     "console",
     "print",
+    "reset_logger_width",
     "logger",
     "Debug",
     "Info",
     "Warn",
     "Excep",
     "get_console",
-    "reset_logger_width",
+    "reset_logger",
     "enter_exit",
 ]
 
-# %% ../nbs/logging.ipynb 2
+# %% ../nbs/logging.ipynb 3
 from rich.console import Console
 from rich.theme import Theme
 from loguru import logger
 from datetime import datetime
-from fastcore.basics import patch_to
+from fastcore.basics import patch_to, ifnone
 from rich.logging import RichHandler
 from pathlib import Path
 
@@ -28,7 +29,7 @@ from pathlib import Path
 from functools import wraps
 import time
 
-# %% ../nbs/logging.ipynb 3
+# %% ../nbs/logging.ipynb 4
 def get_console(width=None):
     return Console(
         width=width,
@@ -47,7 +48,7 @@ def get_console(width=None):
 console = get_console()
 print = console.print
 
-# %% ../nbs/logging.ipynb 6
+# %% ../nbs/logging.ipynb 7
 @patch_to(RichHandler)
 def render(
     self,
@@ -75,17 +76,38 @@ def render(
     return log_renderable
 
 
-logger.configure(
-    handlers=[
-        {
-            "sink": RichHandler(
-                rich_tracebacks=True, console=console, tracebacks_show_locals=False
-            ),
-            "format": "<level>{message}</level>",
-            "backtrace": True,
-        }
-    ]
-)
+def reset_logger(level="INFO", width=120, silent=True):
+    if level is not None:
+        [logger.remove() for _ in range(100)]
+        logger.configure(
+            handlers=[
+                {
+                    "sink": RichHandler(
+                        rich_tracebacks=True,
+                        console=console,
+                        tracebacks_show_locals=False,
+                    ),
+                    "format": "<level>{message}</level>",
+                    "backtrace": True,
+                    "level": level,
+                }
+            ],
+        )
+    if width is not None:
+        for handler_id in logger._core.handlers:
+            try:
+                handler = logger._core.handlers[handler_id]
+                handler._sink._handler.console = get_console(width=width)
+            except:
+                ...
+    if not silent:
+        logger.info(f"reset logger's console width to {width} and level to {level}!")
+
+
+reset_logger_width = lambda width: reset_logger(width=width)
+
+reset_logger(width=100, silent=True)
+reset_logger(width=100, silent=True)
 
 logger = logger
 
@@ -93,22 +115,6 @@ Debug = lambda x, depth=0: logger.opt(depth=depth + 1).log("DEBUG", x)
 Info = lambda x, depth=0: logger.opt(depth=depth + 1).log("INFO", x)
 Warn = lambda x, depth=0: logger.opt(depth=depth + 1).log("WARNING", x)
 Excep = lambda x, depth=0: logger.opt(depth=depth + 1).log("ERROR", x)
-
-# %% ../nbs/logging.ipynb 9
-def reset_logger_width(logger, width):
-    for handler_id in logger._core.handlers:
-        try:
-            handler = logger._core.handlers[handler_id]
-            handler._sink._handler.console = get_console(width=width)
-            logger.info(f"reset logger's console width to {width}!")
-        except:
-            ...
-
-
-# Excep("TESTING {1,2,3}")
-# if is_in_notebook():
-#     reset_logger_width(logger, 115)
-# Excep("TESTING {1,2,3}")
 
 # %% ../nbs/logging.ipynb 10
 def enter_exit(func):

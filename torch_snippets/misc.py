@@ -5,7 +5,7 @@ __all__ = ["Timer", "timeit", "io"]
 
 # %% ../nbs/misc.ipynb 2
 import time
-from .logger import Info
+from .logger import Debug
 from .inspector import inspect
 
 # %% ../nbs/misc.ipynb 3
@@ -47,7 +47,7 @@ def timeit(func):
     def inner(*args, **kwargs):
         s = time.time()
         o = func(*args, **kwargs)
-        Info(f"{time.time() - s:.2f} seconds to execute `{func.__name__}`")
+        Debug(f"{time.time() - s:.2f} seconds to execute `{func.__name__}`")
         return o
 
     return inner
@@ -57,7 +57,7 @@ def io(func):
     def inner(*args, **kwargs):
         s = time.time()
         o = func(*args, **kwargs)
-        Info(f"Args: {inspect(args)}\nKWargs: {inspect(kwargs)}\nOutput: {inspect(o)}")
+        Debug(f"Args: {inspect(args)}\nKWargs: {inspect(kwargs)}\nOutput: {inspect(o)}")
         return o
 
     return inner

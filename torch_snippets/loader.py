@@ -63,7 +63,7 @@ __all__ = [
     "Warn",
     "Debug",
     "Excep",
-    "reset_logger_width",
+    "reset_logger",
     "display",
     "typedispatch",
     "defaultdict",
