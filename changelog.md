@@ -1,6 +1,10 @@
 # Changelog
 
-#### 0.5
+#### 0.502
+
+bugfix in attrdict.map
+
+#### 0.500
 
 All notebooks are formatted with black
 `parse` can parse python expressions

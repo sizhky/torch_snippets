@@ -76,7 +76,7 @@ def render(
     return log_renderable
 
 
-def reset_logger(level="INFO", width=120, silent=True):
+def reset_logger(level="INFO", width=172, silent=True):
     if level is not None:
         [logger.remove() for _ in range(100)]
         logger.configure(

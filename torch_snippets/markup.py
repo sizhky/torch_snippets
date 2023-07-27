@@ -131,7 +131,7 @@ class AttrDict(object):
             if isinstance(v, AttrDict):
                 v.map(func)
             elif isinstance(v, (L, tuple, list, set, frozenset)):
-                v = [func(_v) for _v in v if isinstance(_v, AttrDict)]
+                v = [_v.map(func) if isinstance(_v, AttrDict) else func(_v) for _v in v]
             else:
                 v = func(v)
             self[k] = v
