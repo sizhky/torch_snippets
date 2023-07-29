@@ -1,4 +1,4 @@
-__version__ = "0.502"
+__version__ = "0.503"
 from .loader import *
 from .paths import *
 from .markup import *
@@ -8,6 +8,7 @@ from .pdf_loader import PDF
 from .ipython import *
 from .decorators import *
 from .misc import *
+from .dates import *
 
 try:
     from .torch_loader import *

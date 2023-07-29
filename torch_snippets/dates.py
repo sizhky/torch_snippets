@@ -1,7 +1,6 @@
-import datetime
+from datetime import datetime
 from torch_snippets.loader import flatten, Debug
 from itertools import combinations_with_replacement
-from torch_snippets import io
 
 x = flatten(
     [
@@ -23,14 +22,13 @@ x = x + [_x.replace("%m", "%-m") for _x in x]
 ALL_DATE_FORMATS = x + ["%Y-%m-%d %H:%M:%S"]
 
 
-@io
 def make_uniform_date_format(value, target_fmt="%d.%m.%Y", mode="raise"):
     available_modes = ["raise", "return", "default"]
-    if isinstance(value, datetime.datetime):
+    if isinstance(value, datetime):
         return value.strftime(target_fmt)
     for fmt in ALL_DATE_FORMATS:
         try:
-            output = datetime.datetime.strptime(value, fmt).strftime(target_fmt)
+            output = datetime.strptime(value, fmt).strftime(target_fmt)
             Debug(f"{value=}, {output=}, {fmt=}")
             return output
         except:
@@ -45,3 +43,17 @@ def make_uniform_date_format(value, target_fmt="%d.%m.%Y", mode="raise"):
         raise NotImplementedError(
             f"`mode` can only be one of {available_modes} (Case sensitive)"
         )
+
+
+def are_dates_equal(date1, date2):
+    try:
+        date1 = make_uniform_date_format(date1)
+        date2 = make_uniform_date_format(date2)
+
+        return date1 == date2
+    except:
+        return False
+
+
+def today(fmt="%Y%m%d"):
+    return datetime.today().strftime(fmt)

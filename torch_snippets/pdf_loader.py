@@ -5,6 +5,7 @@ __all__ = ["PDF"]
 
 # %% ../nbs/pdf.ipynb 2
 from .loader import np, subplots, show, resize, L, Image
+from fastcore.basics import ifnone
 import fitz
 
 # %% ../nbs/pdf.ipynb 3
@@ -13,15 +14,16 @@ class PDF:
     Use `show` function to see the images
     **WIP**"""
 
-    def __init__(self, path, dfs=None):
+    def __init__(self, path, dfs=None, dpi=150):
         self.path = path
+        self.dpi = dpi
         self.doc = fitz.open(path)
         self.ims = L([self.get_image(page_no) for page_no in range(len(self))])
         self.dfs = L(dfs) if dfs is not None else L([None] * len(self))
 
-    def get_image(self, page_no):
+    def get_image(self, page_no, dpi=None):
         page = self.doc.load_page(page_no)
-        pix = page.get_pixmap(dpi=150)
+        pix = page.get_pixmap(dpi=ifnone(dpi, self.dpi))
         mode = "RGBA" if pix.alpha else "RGB"
         img = Image.frombytes(mode, [pix.width, pix.height], pix.samples)
         return img

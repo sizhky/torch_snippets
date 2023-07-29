@@ -328,6 +328,7 @@ def show(
     try:
         if isinstance(img, (str, Path)):
             img = read(str(img), 1)
+        if isinstance(img, torch.Tensor):
             img = img.cpu().detach().numpy().copy()
         if isinstance(img, PIL.Image.Image):
             img = np.array(img)

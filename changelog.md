@@ -1,5 +1,12 @@
 # Changelog
 
+#### 0.503
+
+bugfix in `loader.show`
+add `today` function to dates
+add `are_equal_dates` to dates
+add dpi option to pdf
+
 #### 0.502
 
 bugfix in attrdict.map
