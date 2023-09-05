@@ -9,8 +9,8 @@ from ..loader import *
 from ..torch_loader import *
 from ..paths import loaddill, dumpdill, makedir, parent
 from ..load_defaults import exists
+from ..markup import AttrDict
 
-# %% ../../nbs/capsule.ipynb 3
 try:
     import mmcv
     from mmcv.parallel.data_container import DataContainer
@@ -18,17 +18,18 @@ except ImportError:
     DataContainer = None
 
 
+# %% ../../nbs/capsule.ipynb 3
 def to(item, device):
     if item is None:
         return None
     elif isinstance(item, (torch.Tensor, nn.Module)):
         return item.to(device)
-    elif isinstance(item, dict):
-        return {k: to(v, device) for k, v in item.items()}
+    elif isinstance(item, (AttrDict, dict)):
+        return type(item)({k: to(v, device) for k, v in item.items()})
     elif isinstance(item, (list, tuple)):
-        return [to(_item, device) for _item in item]
+        return type(item([to(_item, device) for _item in item]))
     elif DataContainer is not None and isinstance(item, DataContainer):
-        return [to(_item, device) for _item in item.data]
+        return DataContainer([to(_item, device) for _item in item.data])
     else:
         # logger.warning(f"function is not implemented for {type(item)}")
         return item

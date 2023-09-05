@@ -273,4 +273,4 @@ def ishow(im, df, additional_attrs=None, **kwargs):
     if additional_attrs is None:
         additional_attrs = [c for c in df.columns if c not in [*"xyXY"]]
     G.add_nodes_from(df2graph_nodes(df, additional_attrs=additional_attrs))
-    viz2(G, im=im, tooltips=additional_attrs, pos="pos")
+    viz2(G, im=im, tooltips=additional_attrs, pos="pos", **kwargs)

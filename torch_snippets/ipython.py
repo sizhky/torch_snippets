@@ -118,9 +118,16 @@ def display_dfs_side_by_side(*args, titles=cycle([""]), max_rows=50):
     display_html(html_str, raw=True)
 
 
-def show_big_dataframe(df):
-    with pd.option_context("display.max_columns", 1000, "display.max_colwidth", 1000):
-        show(df)
+def show_big_dataframe(df, max_rows=30):
+    with pd.option_context(
+        "display.max_columns",
+        1000,
+        "display.max_colwidth",
+        1000,
+        "display.max_rows",
+        max_rows,
+    ):
+        show(df, max_rows=max_rows)
 
 
 # %% ../nbs/jupyter_notebook.ipynb 7

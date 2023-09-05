@@ -41,3 +41,4 @@ torch_snippets/thinc_parser/parser.py
 torch_snippets/trainer/__init__.py
 torch_snippets/trainer/capsule.py
 torch_snippets/trainer/config.py
+torch_snippets/trainer/hooks.py

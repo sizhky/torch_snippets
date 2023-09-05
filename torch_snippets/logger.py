@@ -13,6 +13,9 @@ __all__ = [
     "get_console",
     "reset_logger",
     "enter_exit",
+    "get_logger_level",
+    "debug_mode",
+    "in_debug_mode",
 ]
 
 # %% ../nbs/logging.ipynb 3
@@ -23,6 +26,7 @@ from datetime import datetime
 from fastcore.basics import patch_to, ifnone
 from rich.logging import RichHandler
 from pathlib import Path
+from contextlib import contextmanager
 
 # from torch_snippets.ipython import is_in_notebook
 
@@ -71,7 +75,9 @@ def render(
         level=level,
         path=path,
         line_no=f"{record.funcName}:{record.lineno}",
-        link_path=record.pathname if self.enable_link_path else None,
+        link_path=f"{record.pathname}:{record.lineno}"
+        if self.enable_link_path
+        else None,
     )
     return log_renderable
 
@@ -89,7 +95,7 @@ def reset_logger(level="INFO", width=172, silent=True):
                     ),
                     "format": "<level>{message}</level>",
                     "backtrace": True,
-                    "level": level,
+                    "level": level.upper(),
                 }
             ],
         )
@@ -106,8 +112,7 @@ def reset_logger(level="INFO", width=172, silent=True):
 
 reset_logger_width = lambda width: reset_logger(width=width)
 
-reset_logger(width=100, silent=True)
-reset_logger(width=100, silent=True)
+reset_logger()
 
 logger = logger
 
@@ -135,3 +140,25 @@ def enter_exit(func):
         return o
 
     return function_timer
+
+
+# %% ../nbs/logging.ipynb 13
+def get_logger_level():
+    lv = [
+        l
+        for l, v in logger._core.levels_lookup.items()
+        if v[2] == logger._core.min_level
+    ][0]
+    return lv.lower()
+
+
+@contextmanager
+def debug_mode():
+    lv = get_logger_level()
+    reset_logger("DEBUG")
+    yield
+    reset_logger(lv)
+
+
+def in_debug_mode():
+    return get_logger_level() == "debug"

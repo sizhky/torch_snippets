@@ -377,12 +377,24 @@ d = {
                 "logging.html#richhandler.render",
                 "torch_snippets/logger.py",
             ),
+            "torch_snippets.logger.debug_mode": (
+                "logging.html#debug_mode",
+                "torch_snippets/logger.py",
+            ),
             "torch_snippets.logger.enter_exit": (
                 "logging.html#enter_exit",
                 "torch_snippets/logger.py",
             ),
             "torch_snippets.logger.get_console": (
                 "logging.html#get_console",
+                "torch_snippets/logger.py",
+            ),
+            "torch_snippets.logger.get_logger_level": (
+                "logging.html#get_logger_level",
+                "torch_snippets/logger.py",
+            ),
+            "torch_snippets.logger.in_debug_mode": (
+                "logging.html#in_debug_mode",
                 "torch_snippets/logger.py",
             ),
             "torch_snippets.logger.reset_logger": (
@@ -467,6 +479,10 @@ d = {
                 "markups.html#attrdict.values",
                 "torch_snippets/markup.py",
             ),
+            "torch_snippets.markup._default": (
+                "markups.html#_default",
+                "torch_snippets/markup.py",
+            ),
             "torch_snippets.markup.isnamedtupleinstance": (
                 "markups.html#isnamedtupleinstance",
                 "torch_snippets/markup.py",
@@ -525,6 +541,10 @@ d = {
             "torch_snippets.misc.io": ("misc.html#io", "torch_snippets/misc.py"),
             "torch_snippets.misc.timeit": (
                 "misc.html#timeit",
+                "torch_snippets/misc.py",
+            ),
+            "torch_snippets.misc.track2": (
+                "misc.html#track2",
                 "torch_snippets/misc.py",
             ),
         },
@@ -894,6 +914,10 @@ d = {
                 "config.html#deeplearningconfig",
                 "torch_snippets/trainer/config.py",
             ),
+            "torch_snippets.trainer.config.DeepLearningConfig.__contains__": (
+                "config.html#deeplearningconfig.__contains__",
+                "torch_snippets/trainer/config.py",
+            ),
             "torch_snippets.trainer.config.DeepLearningConfig.__getitem__": (
                 "config.html#deeplearningconfig.__getitem__",
                 "torch_snippets/trainer/config.py",
@@ -923,5 +947,6 @@ d = {
                 "torch_snippets/trainer/config.py",
             ),
         },
+        "torch_snippets.trainer.hooks": {},
     },
 }

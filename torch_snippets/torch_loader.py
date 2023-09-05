@@ -23,6 +23,7 @@ __all__ = [
     "save_torch_model_weights_from",
     "load_torch_model_weights_to",
     "detach",
+    "cat_with_padding",
 ]
 
 from typing import Union, List
@@ -436,3 +437,45 @@ def detach(i):
         return [detach(j) for j in i]
     else:
         return i.cpu().detach()
+
+
+def cat_with_padding(tensors, mode="constant", value=-100):
+    """
+    Concatenates a list of tensors with padding to make them compatible along 0th dimension.
+
+    Args:
+        tensors (list of torch.Tensor): List of tensors to be concatenated.
+        mode (str, optional): The padding mode. Default is "constant".
+        value (int, optional): The padding value for "constant" mode. Default is -100.
+
+    Returns:
+        torch.Tensor: Concatenated tensor with padding to match dimensions.
+
+    Note:
+        - All tensors should have the same dimension except for the stacking dimension.
+        - Padding is added to match the dimensions of the largest tensor in the specified stacking dimension.
+    """
+    assert all(
+        [tensors[0].ndim == t.ndim for t in tensors[1:]]
+    ), "All tensors should have the same number of dimensions"
+    sizes = [(t.size()[1:]) for t in tensors]
+    full_size = [max(s) for s in list(zip(*sizes))]
+    if full_size == []:
+        # Given tensors are just scalars
+        return torch.stack(tensors)
+
+    def make_padding(current_size, target_size):
+        o = ()
+        for curr_d, targ_d in zip(current_size[::-1], target_size[::-1]):
+            diff_d = targ_d - curr_d
+            o = o + (0, diff_d)
+        return o
+
+    out = torch.cat(
+        [
+            F.pad(x, make_padding(x.size()[1:], full_size), mode=mode, value=value)
+            for x in tensors
+        ],
+        dim=0,
+    )
+    return out

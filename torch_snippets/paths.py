@@ -393,6 +393,7 @@ def dumpdill(obj, fpath, silent=False):
             "INFO",
             f'Dumped object of size ≈{fsize} @ "{fpath}" in {time.time()-start:.2e} seconds',
         )
+    return P(fpath)
 
 
 def loaddill(fpath):

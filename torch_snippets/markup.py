@@ -19,6 +19,7 @@ __all__ = [
 
 # %% ../nbs/markups.ipynb 2
 import json
+from json import JSONEncoder
 import jsonlines
 import yaml
 
@@ -30,6 +31,14 @@ from typing import Union
 from .thinc_parser.parser import Config
 
 # %% ../nbs/markups.ipynb 3
+def _default(self, obj):
+    return getattr(obj.__class__, "to_json", _default.default)(obj)
+
+
+_default.default = JSONEncoder().default
+JSONEncoder.default = _default
+
+
 def isnamedtupleinstance(x):
     _type = type(x)
     bases = _type.__bases__

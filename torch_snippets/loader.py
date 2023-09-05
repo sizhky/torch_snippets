@@ -64,21 +64,24 @@ __all__ = [
     "Debug",
     "Excep",
     "reset_logger",
+    "get_logger_level",
+    "in_debug_mode",
+    "debug_mode",
     "display",
     "typedispatch",
     "defaultdict",
     "Counter",
     "dcopy",
     "patch_to",
+    "split",
 ]
 
 
 from .logger import *
 from .bb_utils import *
 from pathlib import Path
-from fastcore.foundation import L
 from fastcore.dispatch import typedispatch
-from fastcore.basics import patch_to
+from fastcore.all import delegates, patch_to, L
 
 import glob, numpy as np, pandas as pd, tqdm, os, sys, re
 from IPython.display import display, display_html
@@ -103,6 +106,13 @@ try:
     import lovely_tensors as lt
 
     lt.monkey_patch()
+except:
+    ...
+
+try:
+    from sklearn.model_selection import train_test_split
+
+    __all__ += ["train_test_split"]
 except:
     ...
 
@@ -305,6 +315,7 @@ def _jitter(i):
     return i + np.random.randint(4)
 
 
+@delegates(plt.imshow)
 def show(
     img=None,
     ax=None,
@@ -321,6 +332,7 @@ def show(
     df=None,
     pts=None,
     conns=None,
+    interactive=False,
     **kwargs,
 ):
     "show an image"
@@ -341,7 +353,9 @@ def show(
         html_str += '<th style="text-align:center"><td style="vertical-align:top">'
         if title is not None:
             html_str += f'<h2 style="text-align: center;">{title}</h2>'
-        html_str += df.to_html(max_rows=kwargs.pop("max_rows", 30)).replace(
+        max_rows = kwargs.pop("max_rows", 30)
+        max_rows = 10000 if max_rows == -1 else max_rows
+        html_str += df.to_html(max_rows=max_rows).replace(
             "table", 'table style="display:inline"'
         )
         html_str += "</td></th>"
@@ -358,6 +372,13 @@ def show(
     if img.max() == 255:
         img = img.astype(np.uint8)
     h, w = img.shape[:2]
+
+    if interactive:
+        from .interactive_show import ishow
+
+        ishow(img, df=df)
+        return
+
     if sz is None:
         if w < 50:
             sz = 1
@@ -413,7 +434,10 @@ def show(
             if isinstance(bbs, torch.Tensor):
                 bbs = bbs.cpu().detach().numpy()
             bbs = bbs.astype(np.uint32).tolist()
-        _x_ = np.array(bbs).max()
+        if len(bbs) > 0:
+            _x_ = np.array(bbs).max()
+        else:
+            raise ValueError("Trying to plot with 0 bounding boxes...")
         rel = True if _x_ < 1.5 else False
         if rel:
             bbs = [BB(bb).absolute((h, w)) for bb in bbs]
@@ -745,14 +769,32 @@ def get_all(self, condition):
     return sublist
 
 
-def batchify(items, batch_size=32):
-    "yield `batch_size` items at a time"
-    head = 0
+def batchify(items, *rest, batch_size=32):
+    """
+    Yield batches of `batch_size` items at a time from one or more sequences.
+
+    Parameters:
+        items (iterable): The main sequence of items to be batchified.
+        *rest (iterable, optional): Additional sequences that should have the same length as `items`.
+        batch_size (int, optional): The number of items per batch.
+
+    Yields:
+        tuple: A tuple containing batches of items from `items` and optionally from the additional sequences.
+    """
     n = len(items)
+    if len(rest) > 0:
+        assert all(
+            [n == len(_rest) for _rest in rest]
+        ), "batchify can only work with equal length containers"
+    head = 0
     while head < n:
         tail = head + batch_size
         batch = items[head:tail]
-        yield batch
+        if rest:
+            rest_ = [list(_rest[head:tail]) for _rest in rest]
+            yield batch, *rest_
+        else:
+            yield batch
         head = tail
 
 
@@ -781,3 +823,23 @@ def phasify(items, n_phases: int):
     iterators = defaultdict(L)
     [iterators[ix % n_phases].append(item) for ix, item in enumerate(items)]
     return L(iterators.values())
+
+
+def split(items, splits, random_state=10):
+    ks, vs = lzip(*splits.items())
+    if any([v == -1 for v in vs]):
+        assert list(vs).count(-1) == 1, f"Only atmost one `-1` is allowed"
+        vs = [v if v != -1 else -sum(vs) for v in vs]
+    Info(vs)
+    assert sum(vs) == 1, f"Split percentages should add to 1, {sum(vs)=}"
+    np.random.seed(random_state)
+    assignments = np.random.choice(ks, size=len(items), p=vs)
+    o = {k: [] for k in ks}
+    for item, assigned in zip(items, assignments):
+        o[assigned].append(item)
+    return o
+
+
+@patch_to(L)
+def to_json(self):
+    return list(self)

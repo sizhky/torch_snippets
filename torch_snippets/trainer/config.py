@@ -20,6 +20,9 @@ class DeepLearningConfig:
     def __getitem__(self, key):
         return getattr(self, key)
 
+    def __contains__(self, key):
+        return key in self.input_variables
+
     @classmethod
     def from_ini_file(cls, filepath, *, config_root=None):
         config = parse(filepath)

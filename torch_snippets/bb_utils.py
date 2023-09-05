@@ -44,8 +44,8 @@ class BB:
         elif len(bb) == 1:
             ((x, y, X, Y),) = bb
         rel = True if max(x, y, X, Y) < 1 else False
-        if not rel:
-            x, y, X, Y = map(lambda i: int(round(i)), (x, y, X, Y))
+        # if not rel:
+        #    x, y, X, Y = map(lambda i: int(round(i)), (x, y, X, Y))
         self.bb = x, y, X, Y
         self.x, self.y, self.X, self.Y = x, y, X, Y
         self.xc, self.yc = (self.x + self.X) / 2, (self.y + self.Y) / 2
@@ -314,8 +314,8 @@ def is_relative(df):
     return not is_absolute(df)
 
 
-def to_relative(df, height, width):
-    if is_relative(df):
+def to_relative(df, height, width, force=False):
+    if not force and is_relative(df):
         return df
     df = df.copy()
     if "x" not in df.columns and "bb" in df.columns:
@@ -332,8 +332,8 @@ def to_relative(df, height, width):
     return df
 
 
-def to_absolute(df, height, width):
-    if is_absolute(df):
+def to_absolute(df, height, width, force=False):
+    if not force and is_absolute(df):
         return df
     df = df.copy()
     if "x" not in df.columns and "bb" in df.columns:

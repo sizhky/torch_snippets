@@ -1,5 +1,23 @@
 # Changelog
 
+#### 0.504
+
+🧹 `phasify` loads by default
+🧹 `show_big_dataframe` can show more rows
+🎉 add a new submodule `trainer.hooks`
+🧹 `show` delegated kwargs to `plt.imshow` for a better readme
+🎉 `batchify` can batchify multiple containers at once
+🎉 `cat_with_padding` new function in `torch_loader`
+🧹 `L` is json compatible
+🐞 `BB` will not decide if something is relative/absolute
+🎉 `__contains__` for config
+🎉 `to` works on `AttrDict`
+👶🏼 `track2` is a better version of `track` uses corouties
+👶🏼 `debug_mode` temporarily activates `DEBUG` mode on
+👶🏼 `if in_debug_mode():` lets you know if `DEBUG` mode is on
+🧹 `reset_logger` can accept lowercase levels also
+🧹 `dumpdill` will return a Path after dumping
+
 #### 0.503
 
 bugfix in `loader.show`
