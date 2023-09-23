@@ -1,11 +1,17 @@
-__version__ = "0.504"
+__version__ = "0.507"
 from .loader import *
 from .paths import *
 from .markup import *
 from .inspector import *
 from .load_defaults import *
 from .pdf_loader import PDF
-from .ipython import *
+from .logger import *
+
+try:
+    from .ipython import *
+except:
+    ...
+
 from .decorators import *
 from .misc import *
 from .dates import *

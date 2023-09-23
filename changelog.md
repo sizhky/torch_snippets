@@ -1,5 +1,19 @@
 # Changelog
 
+#### 0.506
+
+Info, Debug, Warn and Excep will format ouputs separated by a `;` when args are passed
+`notify_waiting` is a new function that letting you know some process is running for an unknown amount of time
+optional `delay` during `shutdown_current_notebook`
+Info, Debug, Warn and Excep will all have `X_mode` and `in_X_mode` functions much like in_debug_mode and debug_mode
+`__init__` will auto pull from logger now
+Better non-linear `Timer` (and `Report` and `track2`)
+
+#### 0.505
+
+🧹 `Info`, `Debug`, `Warn` and `Excep` will accept args (instead of a single arg)
+🧹 `show` will show h4 headers instead of h2 for dataframe titles
+
 #### 0.504
 
 🧹 `phasify` loads by default

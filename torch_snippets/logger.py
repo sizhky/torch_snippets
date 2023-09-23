@@ -10,15 +10,25 @@ __all__ = [
     "Info",
     "Warn",
     "Excep",
+    "warn_mode",
+    "info_mode",
+    "debug_mode",
+    "excep_mode",
+    "in_warn_mode",
+    "in_info_mode",
+    "in_debug_mode",
+    "in_excep_mode",
+    "frames",
     "get_console",
     "reset_logger",
     "enter_exit",
     "get_logger_level",
-    "debug_mode",
-    "in_debug_mode",
+    "logger_mode",
+    "in_logger_mode",
+    "notify_waiting",
 ]
 
-# %% ../nbs/logging.ipynb 3
+# %% ../nbs/logging.ipynb 4
 from rich.console import Console
 from rich.theme import Theme
 from loguru import logger
@@ -27,13 +37,15 @@ from fastcore.basics import patch_to, ifnone
 from rich.logging import RichHandler
 from pathlib import Path
 from contextlib import contextmanager
+from rich._spinners import SPINNERS
+import random
 
 # from torch_snippets.ipython import is_in_notebook
 
 from functools import wraps
 import time
 
-# %% ../nbs/logging.ipynb 4
+# %% ../nbs/logging.ipynb 5
 def get_console(width=None):
     return Console(
         width=width,
@@ -52,7 +64,7 @@ def get_console(width=None):
 console = get_console()
 print = console.print
 
-# %% ../nbs/logging.ipynb 7
+# %% ../nbs/logging.ipynb 8
 @patch_to(RichHandler)
 def render(
     self,
@@ -116,12 +128,20 @@ reset_logger()
 
 logger = logger
 
-Debug = lambda x, depth=0: logger.opt(depth=depth + 1).log("DEBUG", x)
-Info = lambda x, depth=0: logger.opt(depth=depth + 1).log("INFO", x)
-Warn = lambda x, depth=0: logger.opt(depth=depth + 1).log("WARNING", x)
-Excep = lambda x, depth=0: logger.opt(depth=depth + 1).log("ERROR", x)
+Debug = lambda *x, depth=0: logger.opt(depth=depth + 1).log(
+    "DEBUG", x[0] if len(x) == 1 else "; ".join([str(i) for i in x])
+)
+Info = lambda *x, depth=0: logger.opt(depth=depth + 1).log(
+    "INFO", x[0] if len(x) == 1 else "; ".join([str(i) for i in x])
+)
+Warn = lambda *x, depth=0: logger.opt(depth=depth + 1).log(
+    "WARNING", x[0] if len(x) == 1 else "; ".join([str(i) for i in x])
+)
+Excep = lambda *x, depth=0: logger.opt(depth=depth + 1).log(
+    "ERROR", x[0] if len(x) == 1 else "; ".join([str(i) for i in x])
+)
 
-# %% ../nbs/logging.ipynb 10
+# %% ../nbs/logging.ipynb 11
 def enter_exit(func):
     """
     Logs the time taken to execute a function along with entry & exit time stamps
@@ -142,7 +162,7 @@ def enter_exit(func):
     return function_timer
 
 
-# %% ../nbs/logging.ipynb 13
+# %% ../nbs/logging.ipynb 14
 def get_logger_level():
     lv = [
         l
@@ -153,12 +173,67 @@ def get_logger_level():
 
 
 @contextmanager
-def debug_mode():
+def logger_mode(level):
     lv = get_logger_level()
-    reset_logger("DEBUG")
+    reset_logger(level.upper())
     yield
-    reset_logger(lv)
+    reset_logger(lv.upper())
 
 
-def in_debug_mode():
-    return get_logger_level() == "debug"
+def in_logger_mode(level):
+    return get_logger_level() == level
+
+
+warn_mode = lambda: logger_mode("warning")
+info_mode = lambda: logger_mode("info")
+debug_mode = lambda: logger_mode("debug")
+excep_mode = lambda: logger_mode("error")
+
+in_warn_mode = lambda: in_logger_mode("warning")
+in_info_mode = lambda: in_logger_mode("info")
+in_debug_mode = lambda: in_logger_mode("debug")
+in_excep_mode = lambda: in_logger_mode("error")
+
+# %% ../nbs/logging.ipynb 17
+frames = [
+    "Guess the anime (while you wait): 🍥🍃🔥🥋🦊🍜🌆🌄    ",  # Naruto
+    "Guess the anime (while you wait): 🐉💥🥋🚀🔥🐲🌌🍃    ",  # Dragon Ball Z
+    "Guess the anime (while you wait): 👒☠️⛵🏴‍☠️🍖🍗🌊🏝️🐒  ",  # One Piece
+    "Guess the anime (while you wait): 🪶🏰🧑‍🔬🦿🪓🌅🐦👹    ",  # Attack on Titan
+    "Guess the anime (while you wait): 📓✒️🧑‍⚖️☠️🕊️🔍🌃      ",  # Death Note
+    "Guess the anime (while you wait): 🔧🔮⚗️🤖👁️‍🗨️💥🔥      ",  # Fullmetal Alchemist
+    "Guess the anime (while you wait): 🦸‍♂️🦸‍♀️💥🏫🌟🌆🔥      ",  # My Hero Academia
+    "Guess the anime (while you wait): 🤖🌃🌌🛰️🪐👁️‍🗨️💥      ",  # Neon Genesis Evangelion
+    "Guess the anime (while you wait): 🤠🚀🌌🎷🌟🔫💰      ",  # Cowboy Bebop
+    "Guess the anime (while you wait): 👧🐉🏯🌟🍜🛁🌌      ",  # Spirited Away
+    "Guess the movie (while you wait): 🌌🚀🌠🪐🤖👽🔱✨🚁🌑",  # Star Wars
+    "Guess the movie (while you wait): 🧙🏰🌋🗡️👑🐉🪶🍃🦅💍",  # The Lord of the Rings
+    "Guess the movie (while you wait): 🧙‍♂️⚡🏰🪄🦉🔮🚂🐍🧹📚",  # Harry Potter
+    "Guess the movie (while you wait): 🌿🌏🚁💎💫🌞🦋🐉🍃🔶",  # Avatar
+    "Guess the movie (while you wait): 🏴‍☠️⚓🦜🌊💰🚢🔫🌴🗺️🔪",  # Pirates of the Caribbean
+    "Guess the movie (while you wait): 🕶️🌐💊🏙️🧑‍💻🔫🪑🕊️🦹‍♂️🔵",  # The Matrix
+    "Guess the movie (while you wait): 🦸‍♂️🦸‍♀️🌟🦹‍♂️🦹‍♀️💥🌆🤖🔨🛡️",  # The Avengers
+    "Guess the movie (while you wait): 🦖🦕🌴🪶🪶🪶🚁🧑‍🔬🪶🧑‍🔬",  # Jurassic Park
+    "Guess the movie (while you wait): 🦁👑🌅🌴🐗🐾🎶👑🦏🐘",  # The Lion King
+    "Guess the movie (while you wait): 🧸🤠🚀🧒🐍🪁🎈🎉🤖👾",  # Toy Story
+    "Guess the movie (while you wait): ❄️👑⛄❄️🧝‍♀️🦌🏰🎶🏔️🌬️",  # Frozen
+    "Guess the movie (while you wait): 🚢🌊❄️💔🎻🔱⚓🚢🌟🌅",  # Titanic
+    "Guess the movie (while you wait): 🚲👽🌕🌱🌌🌠🌟🪐👨‍🔬🛸",  # E.T. the Extra-Terrestrial
+    "Guess the movie (while you wait): 📜🗝️🏢🔓🧱🧔💰🚶‍♂️⛏️🌅",  # The Shawshank Redemption
+    "Guess the movie (while you wait): 🏃🌳🎓🏈🍫🏅🍤🚌🍤🦐",  # Forrest Gump
+    "Guess the movie (while you wait): 🍊🎩👨‍👩‍👦🔫🍷🇮🇹🕶️📝🚬💔",  # The Godfather
+]
+
+
+@contextmanager
+def notify_waiting(message):
+    random.shuffle(frames)
+    SPINNERS["guess"] = {"interval": 3000, "frames": frames}
+
+    status = console.status(f"[red]\n{message:10}", spinner="guess")
+    with status as _:
+        s = time.perf_counter()
+        yield
+        time_taken = time.perf_counter() - s
+        time.sleep(0.1)
+    Info(f"{message} - Completed in {time_taken:.2f} s")

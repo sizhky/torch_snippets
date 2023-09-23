@@ -17,7 +17,6 @@ try:
 except ImportError:
     DataContainer = None
 
-
 # %% ../../nbs/capsule.ipynb 3
 def to(item, device):
     if item is None:

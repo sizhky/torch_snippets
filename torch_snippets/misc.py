@@ -11,36 +11,37 @@ from fastcore.basics import ifnone
 
 # %% ../nbs/misc.ipynb 3
 class Timer:
-    def __init__(self, N):
+    def __init__(self, N, smooth=True):
         "print elapsed time every iteration and print out remaining time"
         "assumes this timer is called exactly N times or less"
-        self.start = time.time()
+        self.tok = self.start = time.time()
         self.N = N
         self.ix = 0
+        self.smooth = smooth
 
     def __call__(self, ix=None, info=None):
         ix = self.ix if ix is None else ix
         info = "" if info is None else f"{info}\t"
-        elapsed = time.time() - self.start
-        speed = elapsed / (ix + 1)
-        unit = "s/iter"
-        if speed < 1:
-            speed = 1 / speed
-            unit = "iters/s"
+        tik = time.time()
+        elapsed = tik - self.start
+        ielapsed = tik - self.tok
+        ispeed = ielapsed
+
+        iunit = "s/iter"
+        if ispeed < 1:
+            ispeed = 1 / ispeed
+            iunit = "iters/s"
+
+        iremaining = (self.N - (ix + 1)) * ielapsed
+        iestimate = iremaining + elapsed
+
         print(
-            "{}{}/{} ({:.2f}s - {:.2f}s remaining - {:.2f} {}){}".format(
-                info,
-                ix + 1,
-                self.N,
-                elapsed,
-                (self.N - ix) * (elapsed / (ix + 1)),
-                speed,
-                unit,
-                " " * 10,
-            ),
+            f"{info}{ix+1}/{self.N} ({elapsed:.2f}s - {iremaining:.2f}s remaining - {ispeed:.2f} {iunit})"
+            + " " * 10,
             end="\r",
         )
         self.ix += 1
+        self.tok = tik
 
 
 def track2(iterable, *, total=None):
@@ -56,7 +57,7 @@ def track2(iterable, *, total=None):
             yield  # Just to ensure the send operation stops
 
 
-# %% ../nbs/misc.ipynb 9
+# %% ../nbs/misc.ipynb 10
 def timeit(func):
     def inner(*args, **kwargs):
         s = time.time()

@@ -157,5 +157,7 @@ def h6(text):
 
 # %% ../nbs/jupyter_notebook.ipynb 8
 # Function to shut down the current notebook session
-def shutdown_current_notebook():
+def shutdown_current_notebook(delay: int = None):
+    if delay:
+        time.sleep(delay)
     os.kill(os.getpid(), 9)

@@ -377,10 +377,6 @@ d = {
                 "logging.html#richhandler.render",
                 "torch_snippets/logger.py",
             ),
-            "torch_snippets.logger.debug_mode": (
-                "logging.html#debug_mode",
-                "torch_snippets/logger.py",
-            ),
             "torch_snippets.logger.enter_exit": (
                 "logging.html#enter_exit",
                 "torch_snippets/logger.py",
@@ -393,8 +389,16 @@ d = {
                 "logging.html#get_logger_level",
                 "torch_snippets/logger.py",
             ),
-            "torch_snippets.logger.in_debug_mode": (
-                "logging.html#in_debug_mode",
+            "torch_snippets.logger.in_logger_mode": (
+                "logging.html#in_logger_mode",
+                "torch_snippets/logger.py",
+            ),
+            "torch_snippets.logger.logger_mode": (
+                "logging.html#logger_mode",
+                "torch_snippets/logger.py",
+            ),
+            "torch_snippets.logger.notify_waiting": (
+                "logging.html#notify_waiting",
                 "torch_snippets/logger.py",
             ),
             "torch_snippets.logger.reset_logger": (

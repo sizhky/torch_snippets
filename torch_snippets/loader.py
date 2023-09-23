@@ -59,6 +59,7 @@ __all__ = [
     "xywh2xyXY",
     "df2bbs",
     "bbs2df",
+    # ---- Logging funcs ---- #
     "Info",
     "Warn",
     "Debug",
@@ -352,7 +353,7 @@ def show(
         html_str = ""
         html_str += '<th style="text-align:center"><td style="vertical-align:top">'
         if title is not None:
-            html_str += f'<h2 style="text-align: center;">{title}</h2>'
+            html_str += f'<h4 style="text-align: center;">{title}</h4>'
         max_rows = kwargs.pop("max_rows", 30)
         max_rows = 10000 if max_rows == -1 else max_rows
         html_str += df.to_html(max_rows=max_rows).replace(
