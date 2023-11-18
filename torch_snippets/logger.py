@@ -94,23 +94,24 @@ def render(
     return log_renderable
 
 
-def reset_logger(level="INFO", width=172, silent=True):
+def reset_logger(level="INFO", width=172, silent=True, disable_stdout=False):
     if level is not None:
         [logger.remove() for _ in range(100)]
-        logger.configure(
-            handlers=[
-                {
-                    "sink": RichHandler(
-                        rich_tracebacks=True,
-                        console=console,
-                        tracebacks_show_locals=False,
-                    ),
-                    "format": "<level>{message}</level>",
-                    "backtrace": True,
-                    "level": level.upper(),
-                }
-            ],
-        )
+        if not disable_stdout:
+            logger.configure(
+                handlers=[
+                    {
+                        "sink": RichHandler(
+                            rich_tracebacks=True,
+                            console=console,
+                            tracebacks_show_locals=False,
+                        ),
+                        "format": "<level>{message}</level>",
+                        "backtrace": True,
+                        "level": level.upper(),
+                    }
+                ],
+            )
     if width is not None:
         for handler_id in logger._core.handlers:
             try:
@@ -230,10 +231,10 @@ def notify_waiting(message):
     random.shuffle(frames)
     SPINNERS["guess"] = {"interval": 3000, "frames": frames}
 
-    status = console.status(f"[red]\n{message:10}", spinner="guess")
+    status = console.status(f"[red]\n{message:10}", spinner="clock")
     with status as _:
         s = time.perf_counter()
         yield
         time_taken = time.perf_counter() - s
         time.sleep(0.1)
-    Info(f"{message} - Completed in {time_taken:.2f} s")
+    Info(f"{message} - Completed in {time_taken:.2f} s", depth=1)

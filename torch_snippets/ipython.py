@@ -5,6 +5,7 @@ __all__ = [
     "is_in_notebook",
     "save_notebook",
     "backup_this_notebook",
+    "backup_all_notebooks",
     "display_dfs_side_by_side",
     "show_big_dataframe",
     "h1",
@@ -60,6 +61,7 @@ def backup_this_notebook(
     override_previous_backup=False,
     changelog=None,
     exclude_input=False,
+    force_save_notebook=True,
 ):
     if save_html_to is None:
         save_html_to = (
@@ -80,7 +82,8 @@ def backup_this_notebook(
             raise ValueError("Aborting")
         save_to = f"{save_html_to}/{stem(this_file_path)}__{available_number:04}.html"
     Info(f"Backing up this version of notebook to {save_to}")
-    save_notebook(this_file_path)
+    if force_save_notebook:
+        save_notebook(this_file_path)
     this_notebook = nbformat.reads(
         json.dumps(read_json(this_file_path)),
         as_version=4,
@@ -103,6 +106,14 @@ def backup_this_notebook(
     changelog_file.write_lines(changelog.split("\n"), mode="a+")
     Info(f"Success! Visit {changelog_file} for detailed changes")
     return save_to
+
+
+def backup_all_notebooks(
+    folder,
+):
+    all_notebooks = P(folder).Glob("*.ipynb")
+    for notebook in all_notebooks:
+        backup_this_notebook(notebook, force_save_notebook=False)
 
 
 # %% ../nbs/jupyter_notebook.ipynb 6

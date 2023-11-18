@@ -3,6 +3,7 @@
 # %% auto 0
 __all__ = [
     "P",
+    "common_items",
     "dill",
     "input_to_str",
     "output_to_path",
@@ -41,6 +42,7 @@ from torch_snippets.loader import (
     Debug,
     Warn,
     Excep,
+    common,
 )
 from pathlib import Path
 import hashlib, shutil
@@ -313,6 +315,8 @@ def remove_duplicates(files):
     # !rm ./x
     return
 
+
+common_items = lambda *fldrs: sorted(common(*[stems(fldr) for fldr in fldrs]))
 
 # %% ../nbs/paths.ipynb 26
 def readlines(fpath, silent=False, encoding=None):

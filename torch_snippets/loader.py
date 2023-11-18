@@ -123,6 +123,8 @@ import matplotlib.patheffects as path_effects
 import pdb, datetime
 from typing import Union, Tuple
 
+plt.rcParams["axes.edgecolor"] = "black"
+
 E = enumerate
 
 try:

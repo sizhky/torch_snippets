@@ -324,7 +324,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </blockquote>
 <p>Utility to call a dictionary like an object FEATURES: 0. Get and Set any key (or a nested key) like it’s an object, tab-completion supported <code>self.key1.key2[0].key3</code> … 1. Keys and Values are recursively parsed as AttrDicts 2. Formatting with self.pretty() 3. Convert everything to dict at any time via <code>self.to_dict()</code> 3. Recursively drop keys using <code>self.drop(key)</code> from a json object 4. Recursively call a function on all values at all levels using <code>map</code></p>
 <p>GOTCHAS: 1. Due to enforcing a <code>self.key</code> format all integer keys are converted to strings implicitly. 2. You can still call <code>self[int]</code> but this internally converts the int to string</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-11-09T05:45:44.804393Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-11-09T05:45:44.804089Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-11-09T05:45:44.810340Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-11-09T05:45:44.809389Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-11-09T05:45:44.804365Z&quot;}" data-tags="[]" data-execution_count="5">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-11-09T05:45:44.804393Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-11-09T05:45:44.804089Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-11-09T05:45:44.810340Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-11-09T05:45:44.809389Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-11-09T05:45:44.804365Z&quot;}" data-tags="[]" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>xx <span class="op">=</span> AttrDict({<span class="st">"a"</span>: <span class="dv">1</span>, <span class="st">"b"</span>: [{<span class="st">"c"</span>: <span class="dv">2</span>, <span class="st">"d"</span>: <span class="dv">4</span>}, {<span class="st">"e"</span>: <span class="dv">3</span>}]})</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(xx.b[<span class="dv">0</span>]))</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(xx.to_dict()[<span class="st">"b"</span>][<span class="dv">0</span>]))</span>
@@ -353,7 +353,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </pre>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-11-08T13:08:03.471944Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-11-08T13:08:03.471639Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-11-08T13:08:03.479329Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-11-08T13:08:03.478390Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-11-08T13:08:03.471915Z&quot;}" data-tags="[]" data-execution_count="6">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-11-08T13:08:03.471944Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-11-08T13:08:03.471639Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-11-08T13:08:03.479329Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-11-08T13:08:03.478390Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-11-08T13:08:03.471915Z&quot;}" data-tags="[]" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> {<span class="st">"abc"</span>: {<span class="st">"b"</span>: <span class="dv">10</span>, <span class="st">"c"</span>: <span class="dv">11</span>}, <span class="st">"d"</span>: {<span class="st">"e"</span>: {<span class="st">"f"</span>: [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>]}}}</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> AttrDict(x)</span>
@@ -402,6 +402,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </pre>
 </div>
 </div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> {<span class="st">"abc"</span>: {<span class="st">"b"</span>: <span class="dv">10</span>, <span class="st">"c"</span>: <span class="dv">11</span>}, <span class="st">"d"</span>: {<span class="st">"e"</span>: {<span class="st">"f"</span>: [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>]}}}</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> AttrDict(x)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y.abc[[<span class="st">"b"</span>, <span class="st">"c"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>{'b': 10, 'c': 11}</code></pre>
+</div>
+</div>
 <hr>
 </section>
 <section id="write_json" class="level3">
@@ -416,15 +424,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <pre><code> read_json (fpath)</code></pre>
 </blockquote>
-<div class="cell" data-tags="[]" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> [<span class="dv">1</span>, {<span class="dv">1</span>: <span class="dv">1</span>, <span class="dv">2</span>: <span class="dv">2</span>}, <span class="dv">3</span>]</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>pretty_json({<span class="dv">1</span>: <span class="dv">1</span>, <span class="dv">2</span>: <span class="dv">2</span>})</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>pretty_json(d)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> write_json(d, <span class="st">"/tmp/test.json"</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(f)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>read_json(f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> [<span class="dv">1</span>, {<span class="dv">1</span>: <span class="dv">1</span>, <span class="dv">2</span>: <span class="dv">2</span>}, <span class="dv">3</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pretty_json({<span class="dv">1</span>: <span class="dv">1</span>, <span class="dv">2</span>: <span class="dv">2</span>})</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pretty_json(d)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> write_json(d, <span class="st">"/tmp/test.json"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(f)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>read_json(f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/21/22 01:15:05] </span><span style="color: #008000; text-decoration-color: #008000">DEBUG   </span>                                                               <a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_70174/3923293551.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3923293551.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_70174/3923293551.py#<module>:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:3</span></a>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="font-weight: bold">{</span>                                                             <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
@@ -490,7 +498,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="write_xml" class="level3">
 <h3 class="anchored" data-anchor-id="write_xml">write_xml</h3>
 <blockquote class="blockquote">
-<pre><code> write_xml (data:Union[torch_snippets.markup.AttrDict,dict],
+<pre><code> write_xml (data:Union[__main__.AttrDict,dict],
             file_path:Union[str,pathlib.Path])</code></pre>
 </blockquote>
 <hr>

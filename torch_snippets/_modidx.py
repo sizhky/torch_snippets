@@ -312,6 +312,10 @@ d = {
             ),
         },
         "torch_snippets.ipython": {
+            "torch_snippets.ipython.backup_all_notebooks": (
+                "jupyter_notebook.html#backup_all_notebooks",
+                "torch_snippets/ipython.py",
+            ),
             "torch_snippets.ipython.backup_this_notebook": (
                 "jupyter_notebook.html#backup_this_notebook",
                 "torch_snippets/ipython.py",

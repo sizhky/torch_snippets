@@ -1,5 +1,13 @@
 # Changelog
 
+#### 0.507
+
+🧹 import only important functins from `dates.py`
+🎉 add `backup_all_notebooks` that backs up every notebook present in a specific folder
+🎉 `reset_logger` can disable stdout logging if needed, using `disable_stdout=True` kwarg (False by default)
+`common_items` will take a list of folders and return common stems from the folders
+images will show a black border when grid is True
+
 #### 0.506
 
 Info, Debug, Warn and Excep will format ouputs separated by a `;` when args are passed

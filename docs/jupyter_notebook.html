@@ -282,6 +282,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
   <ul>
   <li><a href="#is_in_notebook" id="toc-is_in_notebook" class="nav-link active" data-scroll-target="#is_in_notebook">is_in_notebook</a></li>
+  <li><a href="#backup_all_notebooks" id="toc-backup_all_notebooks" class="nav-link" data-scroll-target="#backup_all_notebooks">backup_all_notebooks</a></li>
   <li><a href="#backup_this_notebook" id="toc-backup_this_notebook" class="nav-link" data-scroll-target="#backup_this_notebook">backup_this_notebook</a></li>
   <li><a href="#save_notebook" id="toc-save_notebook" class="nav-link" data-scroll-target="#save_notebook">save_notebook</a></li>
   <li><a href="#show_big_dataframe" id="toc-show_big_dataframe" class="nav-link" data-scroll-target="#show_big_dataframe">show_big_dataframe</a></li>
@@ -330,12 +331,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </blockquote>
 <hr>
 </section>
+<section id="backup_all_notebooks" class="level3">
+<h3 class="anchored" data-anchor-id="backup_all_notebooks">backup_all_notebooks</h3>
+<blockquote class="blockquote">
+<pre><code> backup_all_notebooks (folder)</code></pre>
+</blockquote>
+<hr>
+</section>
 <section id="backup_this_notebook" class="level3">
 <h3 class="anchored" data-anchor-id="backup_this_notebook">backup_this_notebook</h3>
 <blockquote class="blockquote">
 <pre><code> backup_this_notebook (this_file_path, save_html_to=None,
                        override_previous_backup=False, changelog=None,
-                       exclude_input=False)</code></pre>
+                       exclude_input=False, force_save_notebook=True)</code></pre>
 </blockquote>
 <hr>
 </section>
@@ -345,7 +353,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code> save_notebook (file_path)</code></pre>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>backup_this_notebook(<span class="st">"jupyter_notebook.ipynb"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>backup_this_notebook(<span class="st">"jupyter_notebook.ipynb"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 </section>
@@ -360,7 +368,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="display_dfs_side_by_side">display_dfs_side_by_side</h3>
 <blockquote class="blockquote">
 <pre><code> display_dfs_side_by_side (*args, titles=&lt;itertools.cycle object at
-                           0x7f88f1237100&gt;, max_rows=50)</code></pre>
+                           0x7f915b1867c0&gt;, max_rows=50)</code></pre>
 </blockquote>
 <hr>
 </section>

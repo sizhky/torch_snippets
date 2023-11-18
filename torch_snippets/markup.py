@@ -101,7 +101,11 @@ class AttrDict(object):
         else:
             return AttrDict(value) if isinstance(value, dict) else value
 
-    __getitem__ = lambda self, x: getattr(self, str(x))
+    __getitem__ = (
+        lambda self, x: AttrDict({_x: self[_x] for _x in x})
+        if isinstance(x, (list, L))
+        else getattr(self, str(x))
+    )
     __setitem__ = lambda self, k, v: setattr(self, str(k), self._wrap(v))
 
     def update(self, dict):
@@ -203,7 +207,7 @@ def pretty_json(
         print(dump)
 
 
-# %% ../nbs/markups.ipynb 7
+# %% ../nbs/markups.ipynb 8
 def read_json(fpath):
     import json
 
@@ -212,9 +216,13 @@ def read_json(fpath):
 
 
 def write_json(obj, fpath, silent=False):
+    from datetime import datetime, date
+
     def set_default(obj):
         if isinstance(obj, set):
             return list(obj)
+        if isinstance(obj, (datetime, date)):
+            return obj.isoformat()
         raise TypeError
 
     if not silent:
@@ -224,7 +232,7 @@ def write_json(obj, fpath, silent=False):
     return P(fpath)
 
 
-# %% ../nbs/markups.ipynb 9
+# %% ../nbs/markups.ipynb 10
 def write_jsonl(items, dest, mode="w"):
     makedir(parent(dest))
     with jsonlines.open(dest, mode) as writer:
@@ -239,7 +247,7 @@ def read_jsonl(file):
     return [json.loads(line) for line in readlines(file, silent=True)]
 
 
-# %% ../nbs/markups.ipynb 10
+# %% ../nbs/markups.ipynb 11
 def read_yaml(file):
     with open(file, "r") as stream:
         try:
@@ -253,7 +261,7 @@ def write_yaml(content, fpath):
         yaml.dump(content, outfile, default_flow_style=False)
 
 
-# %% ../nbs/markups.ipynb 11
+# %% ../nbs/markups.ipynb 12
 def read_xml(file_path: Union[str, P]) -> AttrDict:
     "Read xml data as a dictionary"
     with open(str(file_path)) as xml_file:
@@ -271,5 +279,5 @@ def write_xml(data: Union[AttrDict, dict], file_path: Union[str, P]):
         xml_file.write(data)
 
 
-# %% ../nbs/markups.ipynb 12
+# %% ../nbs/markups.ipynb 13
 Config = Config
