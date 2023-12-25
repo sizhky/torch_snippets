@@ -1,9 +1,9 @@
 package:
   name: torch_snippets
-  version: '0.516'
+  version: '0.517'
 source:
-  sha256: e8085ad6d1adc834a0ba1a267361dbeee148cfe2f117d2b6332137cdc2b39a76
-  url: https://files.pythonhosted.org/packages/fe/39/743bb8dd223dad384b7e83c2618658caa9c56256985833767c75400016be/torch_snippets-0.516.tar.gz
+  sha256: aa7ed4b2b1a755e90d7983d8e159a1f9784fe7aa6c361845c45117c02b3368cb
+  url: https://files.pythonhosted.org/packages/40/62/d2d4b822f6e71c7f93f3f6ceb0326c88b5c64888b71d7bd0df8ceacfc3fb/torch_snippets-0.517.tar.gz
 about:
   description: "# Utilities for simple needs\n\n\n\n## torch snippets does a lot of\
     \ default importing for you\nWhether it is numpy, pandas, matplotlib or the useful\

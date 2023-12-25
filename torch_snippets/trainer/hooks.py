@@ -107,15 +107,33 @@ def detach_hooks(handles):
 
 @contextmanager
 def hook_context_for(module, hook_fn, **kwargs):
-    hook_fn = partial(hook_fn, **kwargs)
-    handles = attach_hooks(module, hook_fn)
-    yield module
-    detach_hooks(handles)
+    try:
+        hook_fn = partial(hook_fn, **kwargs)
+        handles = attach_hooks(module, hook_fn)
+        yield module
+        detach_hooks(handles)
+    except Exception as e:
+        Warn(f"Error: {e}")
+    finally:
+        try:
+            detach_hooks(handles)
+        except:
+            # nothing needs to be done
+            ...
 
 
 @contextmanager
 def print_module_ios_for(module, print_only=None):
-    _print_shapes_hook = partial(print_shapes_hook, keep=print_only)
-    handles = attach_hooks(module, _print_shapes_hook)
-    yield module
-    detach_hooks(handles)
+    try:
+        _print_shapes_hook = partial(print_shapes_hook, keep=print_only)
+        handles = attach_hooks(module, _print_shapes_hook)
+        yield module
+        detach_hooks(handles)
+    except Exception as e:
+        Warn(f"Error: {e}")
+    finally:
+        try:
+            detach_hooks(handles)
+        except:
+            # nothing needs to be done
+            ...
