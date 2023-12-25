@@ -1,5 +1,9 @@
 # Changelog
 
+#### 0.514
+
+🐞 minor change in `print_shapes_hook`
+
 #### 0.513
 
 🎉 print_module_io_for automates attaching and detaching hooks

@@ -74,13 +74,15 @@ def print_shapes_hook(module, input, kwargs, output, skip=None, keep=None):
             input = {str(i + 1): v for i, v in enumerate(input)}
             print(AD(input).summary(depth=1))
         else:
-            print(input)
+            input = {1: input}
+            print(AD(input).summary(depth=1))
         print("Outputs: ")
         if isinstance(output, (list, tuple, set)):
             output = {str(i + 1): v for i, v in enumerate(output)}
             print(AD(output).summary(depth=1))
         else:
-            print(output)
+            output = {1: output}
+            print(AD(output).summary(depth=1))
         line()
     except Exception as e:
         print(f"ERROR: {e} @ {name}")
