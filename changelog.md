@@ -1,5 +1,9 @@
 # Changelog
 
+#### 0.516
+
+🐞 `attach` will add hook to the input module as well (not just the children)
+
 #### 0.514
 
 🐞 minor change in `print_shapes_hook`

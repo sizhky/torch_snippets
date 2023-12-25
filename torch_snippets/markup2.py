@@ -285,7 +285,10 @@ class AttrDict(object):
                     item = torch.tensor(item)
                 return f"{s * d}{key} - {item} - {hash_tensor(item)}\n"
             else:
-                return f"{s * d}{key} - {type(item).__name__}\n"
+                if isinstance(item, (int, float, complex, str)):
+                    return f"{s * d}{key} - {item} ({type(item).__name__})\n"
+                else:
+                    return f"{s * d}{key} - {type(item).__name__}\n"
 
         def summarize_collection(key, collection, path, d, s):
             summary_str = f"{s * (d - 1)}{key}\n"

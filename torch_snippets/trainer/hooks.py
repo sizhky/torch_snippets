@@ -74,14 +74,14 @@ def print_shapes_hook(module, input, kwargs, output, skip=None, keep=None):
             input = {str(i + 1): v for i, v in enumerate(input)}
             print(AD(input).summary(depth=1))
         else:
-            input = {1: input}
+            input = {"1": input}
             print(AD(input).summary(depth=1))
         print("Outputs: ")
         if isinstance(output, (list, tuple, set)):
             output = {str(i + 1): v for i, v in enumerate(output)}
             print(AD(output).summary(depth=1))
         else:
-            output = {1: output}
+            output = {"1": output}
             print(AD(output).summary(depth=1))
         line()
     except Exception as e:
@@ -90,7 +90,7 @@ def print_shapes_hook(module, input, kwargs, output, skip=None, keep=None):
 
 def attach_hooks(model, hook=print_shapes_hook):
     """Function to attach the hooks and return handles"""
-    handles = []
+    handles = [model.register_forward_hook(hook, with_kwargs=True)]
     for layer in model.children():
         handle = layer.register_forward_hook(hook, with_kwargs=True)
         handles.append(handle)
