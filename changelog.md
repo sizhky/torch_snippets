@@ -1,5 +1,41 @@
 # Changelog
 
+#### 0.513
+
+🎉 print_module_io_for automates attaching and detaching hooks
+🎉 AD2 avoids rich printing
+
+#### 0.512
+
+🐞 `attach_hooks` will accept any custom hook
+
+#### 0.511
+
+🎉 Make `markup2.AD.__repr__` the summary
+🎉 Expose `markup2.AD` as `AD2`
+🎉 Make `icecream` a requirement
+🎉 Min python is 3.8
+
+#### 0.510
+
+🎉 New IO hooks system in `torch_snippets.trainer.hooks`
+🎉 Updated markup2.AD.summary and add print_summary methods
+
+#### 0.509
+
+🎉 Experimental `AD` in torch_snippets.markup2 that infers variable names E.g. - `(p=10; AD(p) == {'p': 10})`
+🐞 `isin` will not add +1 (useful for both absolute and relative boxes now)
+🐞 `write_json` will support numpy, torch and AttrDict
+
+#### 0.508
+
+🎉 add `find_address` to `AttrDict` that can return all path locations for a specific key
+🎉 add `summary` to `AttrDict` that can give an outline of the dictionary
+🎉 add `write_summary` to `AttrDict` that writes the summary to a textfile
+🎉 `show` can now show bb colors `{"r": (255, 0, 0), "g": (0, 255, 0), "b": (0, 0, 255), "y": (255, 0, 255)}` if `df` has column called `color`
+🎉 `AD` is an alias for `AttrDict`
+🎉 `AD` can directly consume kwargs
+
 #### 0.507
 
 🧹 import only important functins from `dates.py`

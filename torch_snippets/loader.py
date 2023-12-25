@@ -134,6 +134,20 @@ try:
 except:
     logger.warning("Skipping cv2 import")
 
+from fastcore.foundation import coll_repr, is_array
+
+
+@patch_to(L)
+def _repr_pretty_(self, p, cycle):
+    p.text(
+        "..."
+        if cycle
+        else repr(self.items)
+        if is_array(self.items)
+        else coll_repr(self, 20)
+    )
+
+
 import time
 from collections import defaultdict, Counter
 from copy import deepcopy as dcopy
@@ -405,14 +419,14 @@ def show(
         if isinstance(df, (str, Path)):
             df = str(df)
             df = pd.read_csv(df) if df.endswith("csv") else pd.read_parquet(df)
-        try:
-            text_col = kwargs.pop("text_col", "text")
-            if text_col == "ixs":
-                texts = df.index.tolist()
-            else:
-                texts = df[text_col]
-        except:
-            pass
+
+        text_col = kwargs.pop("text_col", "text")
+        if text_col == "ixs":
+            texts = df.index.tolist()
+        elif text_col is not None and text_col in df.columns:
+            texts = df[text_col]
+        if "color" in df.columns:
+            bb_colors = df["color"].tolist()
         bbs = df2bbs(df)  # assumes df has 'x,y,X,Y' columns or a single 'bb' column
     kwargs.pop("text_col") if "text_col" in kwargs else ...
     if isinstance(texts, pd.core.series.Series):
@@ -454,7 +468,7 @@ def show(
         img = C(img) if len(img.shape) == 2 else img
         [rect(img, tuple(bb), c=bb_colors[ix], th=th) for ix, bb in enumerate(bbs)]
     text_sz = text_sz if text_sz else (max(sz) * 3 // 5)
-    if texts is not None:
+    if texts is not None or texts == "ixs":
         if hasattr(texts, "shape"):
             if isinstance(texts, torch.Tensor):
                 texts = texts.cpu().detach().numpy()

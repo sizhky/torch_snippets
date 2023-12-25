@@ -229,6 +229,7 @@ d = {
             ),
         },
         "torch_snippets.fastcores": {},
+        "torch_snippets.icecream": {},
         "torch_snippets.imgaug_loader": {
             "torch_snippets.imgaug_loader.bbs2imgaugbbs": (
                 "imgaug_loader.html#bbs2imgaugbbs",
@@ -455,6 +456,14 @@ d = {
                 "markups.html#attrdict.drop",
                 "torch_snippets/markup.py",
             ),
+            "torch_snippets.markup.AttrDict.fetch": (
+                "markups.html#attrdict.fetch",
+                "torch_snippets/markup.py",
+            ),
+            "torch_snippets.markup.AttrDict.find_address": (
+                "markups.html#attrdict.find_address",
+                "torch_snippets/markup.py",
+            ),
             "torch_snippets.markup.AttrDict.get": (
                 "markups.html#attrdict.get",
                 "torch_snippets/markup.py",
@@ -475,6 +484,10 @@ d = {
                 "markups.html#attrdict.pretty",
                 "torch_snippets/markup.py",
             ),
+            "torch_snippets.markup.AttrDict.summary": (
+                "markups.html#attrdict.summary",
+                "torch_snippets/markup.py",
+            ),
             "torch_snippets.markup.AttrDict.to_dict": (
                 "markups.html#attrdict.to_dict",
                 "torch_snippets/markup.py",
@@ -485,6 +498,10 @@ d = {
             ),
             "torch_snippets.markup.AttrDict.values": (
                 "markups.html#attrdict.values",
+                "torch_snippets/markup.py",
+            ),
+            "torch_snippets.markup.AttrDict.write_summary": (
+                "markups.html#attrdict.write_summary",
                 "torch_snippets/markup.py",
             ),
             "torch_snippets.markup._default": (
@@ -534,6 +551,156 @@ d = {
             "torch_snippets.markup.write_yaml": (
                 "markups.html#write_yaml",
                 "torch_snippets/markup.py",
+            ),
+        },
+        "torch_snippets.markup2": {
+            "torch_snippets.markup2.AttrDict": (
+                "markups.html#attrdict",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.__contains__": (
+                "markups.html#attrdict.__contains__",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.__delitem__": (
+                "markups.html#attrdict.__delitem__",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.__dir__": (
+                "markups.html#attrdict.__dir__",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.__eq__": (
+                "markups.html#attrdict.__eq__",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.__init__": (
+                "markups.html#attrdict.__init__",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.__iter__": (
+                "markups.html#attrdict.__iter__",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.__len__": (
+                "markups.html#attrdict.__len__",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.__repr__": (
+                "markups.html#attrdict.__repr__",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict._wrap": (
+                "markups.html#attrdict._wrap",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.drop": (
+                "markups.html#attrdict.drop",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.fetch": (
+                "markups.html#attrdict.fetch",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.find_address": (
+                "markups.html#attrdict.find_address",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.get": (
+                "markups.html#attrdict.get",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.items": (
+                "markups.html#attrdict.items",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.keys": (
+                "markups.html#attrdict.keys",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.map": (
+                "markups.html#attrdict.map",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.pretty": (
+                "markups.html#attrdict.pretty",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.print_summary": (
+                "markups.html#attrdict.print_summary",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.summary": (
+                "markups.html#attrdict.summary",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.to_dict": (
+                "markups.html#attrdict.to_dict",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.update": (
+                "markups.html#attrdict.update",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.values": (
+                "markups.html#attrdict.values",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.AttrDict.write_summary": (
+                "markups.html#attrdict.write_summary",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2._default": (
+                "markups.html#_default",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.hash_tensor": (
+                "markups.html#hash_tensor",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.isnamedtupleinstance": (
+                "markups.html#isnamedtupleinstance",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.pretty_json": (
+                "markups.html#pretty_json",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.read_json": (
+                "markups.html#read_json",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.read_jsonl": (
+                "markups.html#read_jsonl",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.read_xml": (
+                "markups.html#read_xml",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.read_yaml": (
+                "markups.html#read_yaml",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.unpack": (
+                "markups.html#unpack",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.write_json": (
+                "markups.html#write_json",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.write_jsonl": (
+                "markups.html#write_jsonl",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.write_xml": (
+                "markups.html#write_xml",
+                "torch_snippets/markup2.py",
+            ),
+            "torch_snippets.markup2.write_yaml": (
+                "markups.html#write_yaml",
+                "torch_snippets/markup2.py",
             ),
         },
         "torch_snippets.misc": {
@@ -589,6 +756,10 @@ d = {
                 "paths.html#p.write_lines",
                 "torch_snippets/paths.py",
             ),
+            "torch_snippets.paths.common_items": (
+                "paths.html#common_items",
+                "torch_snippets/paths.py",
+            ),
             "torch_snippets.paths.dumpdill": (
                 "paths.html#dumpdill",
                 "torch_snippets/paths.py",
@@ -601,6 +772,10 @@ d = {
             ),
             "torch_snippets.paths.fname2": (
                 "paths.html#fname2",
+                "torch_snippets/paths.py",
+            ),
+            "torch_snippets.paths.folder_summary": (
+                "paths.html#folder_summary",
                 "torch_snippets/paths.py",
             ),
             "torch_snippets.paths.input_to_str": (

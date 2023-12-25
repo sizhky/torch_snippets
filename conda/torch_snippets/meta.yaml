@@ -1,9 +1,9 @@
 package:
   name: torch_snippets
-  version: '0.507'
+  version: '0.513'
 source:
-  sha256: e08b504bf7acf5f510336573b2014ce08b533199023a850111823623788c08ab
-  url: https://files.pythonhosted.org/packages/db/59/61de774df04a6e09b8192dd40395f73a1da1806157f6132d5ec34dcd82d9/torch_snippets-0.507.tar.gz
+  sha256: 02d595115791c0f81d3a096a3f52fd9af1bc90488f3bfa1670e2081ac3eb25af
+  url: https://files.pythonhosted.org/packages/99/7c/2b06de2e9c6b920ab83ac7e8c7e5437d5a344fb996d5a8a75aa23037f077/torch_snippets-0.513.tar.gz
 about:
   description: "# Utilities for simple needs\n\n\n\n## torch snippets does a lot of\
     \ default importing for you\nWhether it is numpy, pandas, matplotlib or the useful\
@@ -121,6 +121,7 @@ requirements:
   - pymupdf
   - nbconvert
   - nbformat
+  - icecream
   run:
   - pip
   - python
@@ -155,6 +156,7 @@ requirements:
   - pymupdf
   - nbconvert
   - nbformat
+  - icecream
 test:
   imports:
   - torch_snippets

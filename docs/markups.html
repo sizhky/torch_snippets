@@ -128,10 +128,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="torch_snippets - Markups">
-<meta property="og:description" content="Utility to call a dictionary like an object FEATURES: 0. Get and Set any key (or a nested key) like it’s an object, tab-completion supported self.key1.key2[0].key3 … 1.">
+<meta property="og:description" content="Utility class to interact with a dictionary as if it were an object. AD is an alias to this class">
 <meta property="og:site-name" content="torch_snippets">
 <meta name="twitter:title" content="torch_snippets - Markups">
-<meta name="twitter:description" content="Utility to call a dictionary like an object FEATURES: 0. Get and Set any key (or a nested key) like it’s an object, tab-completion supported self.key1.key2[0].key3 … 1.">
+<meta name="twitter:description" content="Utility class to interact with a dictionary as if it were an object. AD is an alias to this class">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -320,15 +320,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="attrdict" class="level3">
 <h3 class="anchored" data-anchor-id="attrdict">AttrDict</h3>
 <blockquote class="blockquote">
-<pre><code> AttrDict (data)</code></pre>
+<pre><code> AttrDict (data=None, **kwargs)</code></pre>
 </blockquote>
-<p>Utility to call a dictionary like an object FEATURES: 0. Get and Set any key (or a nested key) like it’s an object, tab-completion supported <code>self.key1.key2[0].key3</code> … 1. Keys and Values are recursively parsed as AttrDicts 2. Formatting with self.pretty() 3. Convert everything to dict at any time via <code>self.to_dict()</code> 3. Recursively drop keys using <code>self.drop(key)</code> from a json object 4. Recursively call a function on all values at all levels using <code>map</code></p>
-<p>GOTCHAS: 1. Due to enforcing a <code>self.key</code> format all integer keys are converted to strings implicitly. 2. You can still call <code>self[int]</code> but this internally converts the int to string</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-11-09T05:45:44.804393Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-11-09T05:45:44.804089Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-11-09T05:45:44.810340Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-11-09T05:45:44.809389Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-11-09T05:45:44.804365Z&quot;}" data-tags="[]" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>xx <span class="op">=</span> AttrDict({<span class="st">"a"</span>: <span class="dv">1</span>, <span class="st">"b"</span>: [{<span class="st">"c"</span>: <span class="dv">2</span>, <span class="st">"d"</span>: <span class="dv">4</span>}, {<span class="st">"e"</span>: <span class="dv">3</span>}]})</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(xx.b[<span class="dv">0</span>]))</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(xx.to_dict()[<span class="st">"b"</span>][<span class="dv">0</span>]))</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>xx.pretty()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Utility class to interact with a dictionary as if it were an object. <code>AD</code> is an alias to this class</p>
+<p>FEATURES: 0. Access and modify keys (including nested keys) as if they were object attributes, supporting tab-completion. Example: <code>self.key1.key2[0].key3</code> 1. Keys and values are recursively converted to AttrDict instances. 2. Pretty-print the dictionary using <code>self.pretty()</code>. 3. Convert the entire structure to a regular dictionary at any time using <code>self.to_dict()</code>. 3. Recursively remove keys using <code>self.drop(key)</code> from a JSON object. 4. Apply a function to all values at all levels using <code>map</code>.</p>
+<p>GOTCHAS: 1. All integer keys are implicitly converted to strings due to the enforced <code>self.key</code> format. 2. You can still use <code>self[int]</code>, but this internally converts the integer to a string.</p>
+<p>METHODS: - <code>items()</code>: Return the items of the AttrDict as key-value pairs. - <code>keys()</code>: Return the keys of the AttrDict. - <code>values()</code>: Return the values of the AttrDict. - <code>update(dict)</code>: Update the AttrDict with key-value pairs from another dictionary. - <code>get(key, default=None)</code>: Get the value associated with a key, with an optional default value. - <code>__iter__()</code>: Allow iteration over the keys of the AttrDict. - <code>__len__()</code>: Return the number of keys in the AttrDict. - <code>__repr__()</code>: Return a string representation of the AttrDict. - <code>__dir__()</code>: List the keys of the AttrDict as attributes. - <code>__contains__(key)</code>: Check if a key exists in the AttrDict. - <code>__delitem__(key)</code>: Delete a key from the AttrDict. - <code>map(func)</code>: Apply a function to all values in the AttrDict. - <code>drop(key)</code>: Recursively remove a key and its values from the AttrDict. - <code>to_dict()</code>: Convert the AttrDict and its nested structure to a regular dictionary. - <code>pretty(print_with_logger=False, *args, **kwargs)</code>: Pretty-print the AttrDict as JSON. - <code>__eq__(other)</code>: Compare the AttrDict with another dictionary for equality. - <code>find_address(key, current_path="")</code>: Find and return all addresses (paths) of a given key in the AttrDict. - <code>summary(current_path='', summary_str='', depth=0, sep='  ')</code>: Generate a summary of the structure and values in the AttrDict. - <code>write_summary(to, **kwargs)</code>: Write the summary to a file or stream. - <code>fetch(addr)</code>: Retrieve a value at a specified address (path).</p>
+<p>PARAMETERS: - <code>data</code> (dict, optional): Initial data to populate the AttrDict.</p>
+<p>USAGE: - Create an AttrDict instance by providing an optional initial dictionary, and then access and manipulate its contents as if they were object attributes.</p>
+<p>EXAMPLE:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>my_dict <span class="op">=</span> {<span class="st">'name'</span>: <span class="st">'John'</span>, <span class="st">'age'</span>: <span class="dv">30</span>, <span class="st">'address'</span>: {<span class="st">'city'</span>: <span class="st">'New York'</span>, <span class="st">'zip'</span>: <span class="st">'10001'</span>}}</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>attr_dict <span class="op">=</span> AttrDict(my_dict)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(attr_dict.name)  <span class="co"># Access values like attributes</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>attr_dict.address.city <span class="op">=</span> <span class="st">'Los Angeles'</span>  <span class="co"># Modify nested values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-11-09T05:45:44.804393Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-11-09T05:45:44.804089Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-11-09T05:45:44.810340Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-11-09T05:45:44.809389Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-11-09T05:45:44.804365Z&quot;}" data-tags="[]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>xx <span class="op">=</span> AttrDict({<span class="st">"a"</span>: <span class="dv">1</span>, <span class="st">"b"</span>: [{<span class="st">"c"</span>: <span class="dv">2</span>, <span class="st">"d"</span>: <span class="dv">4</span>}, {<span class="st">"e"</span>: <span class="dv">3</span>}]})</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(xx.b[<span class="dv">0</span>]))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(xx.to_dict()[<span class="st">"b"</span>][<span class="dv">0</span>]))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>xx.pretty()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; text-decoration-color: #ff00ff; font-weight: bold">class</span><span style="color: #000000; text-decoration-color: #000000"> </span><span style="color: #008000; text-decoration-color: #008000">'__main__.AttrDict'</span><span style="font-weight: bold">&gt;</span>
 </pre>
@@ -353,30 +362,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </pre>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-11-08T13:08:03.471944Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-11-08T13:08:03.471639Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-11-08T13:08:03.479329Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-11-08T13:08:03.478390Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-11-08T13:08:03.471915Z&quot;}" data-tags="[]" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> {<span class="st">"abc"</span>: {<span class="st">"b"</span>: <span class="dv">10</span>, <span class="st">"c"</span>: <span class="dv">11</span>}, <span class="st">"d"</span>: {<span class="st">"e"</span>: {<span class="st">"f"</span>: [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>]}}}</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> AttrDict(x)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> y.abc.b <span class="op">==</span> <span class="dv">10</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> y.d.e.f <span class="op">==</span> [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>]</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>y.d.e.g <span class="op">=</span> <span class="dv">11</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># del y.abc.c</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># OR</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> y[<span class="st">"abc"</span>][<span class="st">"c"</span>]</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> y.to_dict() <span class="op">==</span> {</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"abc"</span>: {<span class="st">"b"</span>: <span class="dv">10</span>},</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"d"</span>: {<span class="st">"e"</span>: {<span class="st">"f"</span>: [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>], <span class="st">"g"</span>: <span class="dv">11</span>}},</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>y.pretty(indent<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">"abc"</span> <span class="kw">in</span> y</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">"def"</span> <span class="kw">not</span> <span class="kw">in</span> y</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"e"</span> <span class="kw">in</span> y.d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-11-08T13:08:03.471944Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-11-08T13:08:03.471639Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-11-08T13:08:03.479329Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-11-08T13:08:03.478390Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-11-08T13:08:03.471915Z&quot;}" data-tags="[]" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> {<span class="st">"abc"</span>: {<span class="st">"b"</span>: <span class="dv">10</span>, <span class="st">"c"</span>: <span class="dv">11</span>}, <span class="st">"d"</span>: {<span class="st">"e"</span>: {<span class="st">"f"</span>: [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>]}}}</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> AttrDict(x)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> y.abc.b <span class="op">==</span> <span class="dv">10</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> y.d.e.f <span class="op">==</span> [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>y.d.e.g <span class="op">=</span> <span class="dv">11</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># del y.abc.c</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># OR</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> y[<span class="st">"abc"</span>][<span class="st">"c"</span>]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> y.to_dict() <span class="op">==</span> {</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"abc"</span>: {<span class="st">"b"</span>: <span class="dv">10</span>},</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"d"</span>: {<span class="st">"e"</span>: {<span class="st">"f"</span>: [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>], <span class="st">"g"</span>: <span class="dv">11</span>}},</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>y.pretty(indent<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">"abc"</span> <span class="kw">in</span> y</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">"def"</span> <span class="kw">not</span> <span class="kw">in</span> y</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"e"</span> <span class="kw">in</span> y.d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">{</span>
   <span style="color: #008000; text-decoration-color: #008000">"abc"</span>: <span style="font-weight: bold">{</span>
@@ -402,11 +411,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </pre>
 </div>
 </div>
-<div class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> {<span class="st">"abc"</span>: {<span class="st">"b"</span>: <span class="dv">10</span>, <span class="st">"c"</span>: <span class="dv">11</span>}, <span class="st">"d"</span>: {<span class="st">"e"</span>: {<span class="st">"f"</span>: [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>]}}}</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> AttrDict(x)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y.abc[[<span class="st">"b"</span>, <span class="st">"c"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> {<span class="st">"abc"</span>: {<span class="st">"b"</span>: <span class="dv">10</span>, <span class="st">"c"</span>: <span class="dv">11</span>}, <span class="st">"d"</span>: {<span class="st">"e"</span>: {<span class="st">"f"</span>: [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>]}}}</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> AttrDict(x)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>y.abc[[<span class="st">"b"</span>, <span class="st">"c"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>{'b': 10, 'c': 11}</code></pre>
 </div>
 </div>
@@ -424,44 +433,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <pre><code> read_json (fpath)</code></pre>
 </blockquote>
-<div class="cell" data-tags="[]">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> [<span class="dv">1</span>, {<span class="dv">1</span>: <span class="dv">1</span>, <span class="dv">2</span>: <span class="dv">2</span>}, <span class="dv">3</span>]</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pretty_json({<span class="dv">1</span>: <span class="dv">1</span>, <span class="dv">2</span>: <span class="dv">2</span>})</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pretty_json(d)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> write_json(d, <span class="st">"/tmp/test.json"</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(f)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>read_json(f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/21/22 01:15:05] </span><span style="color: #008000; text-decoration-color: #008000">DEBUG   </span>                                                               <a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_70174/3923293551.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3923293551.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_70174/3923293551.py#<module>:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:3</span></a>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="font-weight: bold">{</span>                                                             <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             <span style="color: #008000; text-decoration-color: #008000">"1"</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,                                                   <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             <span style="color: #008000; text-decoration-color: #008000">"2"</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>                                                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="font-weight: bold">}</span>                                                             <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-</pre>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> torch</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> AD(a<span class="op">=</span>torch.Tensor([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]), b<span class="op">=</span><span class="st">"hello"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    write_json(d, <span class="st">"/tmp/tmp.json"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(readlines(<span class="st">"/tmp/tmp.json"</span>)))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ModuleNotFoundError:</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[12/25/23 16:41:38] INFO     loaded 8 lines                                                                                        &lt;ipython-input-1-e6d68859b80d&gt;:&lt;module&gt;:6
+{
+"a": [
+1.0,
+2.0,
+3.0
+],
+"b": "hello"
+}</code></pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #008000; text-decoration-color: #008000">DEBUG   </span>                                                               <a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_70174/3923293551.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3923293551.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_70174/3923293551.py#<module>:4" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:4</span></a>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="font-weight: bold">[</span>                                                             <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             <span style="font-weight: bold">{</span>                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                 <span style="color: #008000; text-decoration-color: #008000">"1"</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,                                               <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                 <span style="color: #008000; text-decoration-color: #008000">"2"</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>                                                <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             <span style="font-weight: bold">}</span>,                                                        <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span>                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="font-weight: bold">]</span>                                                             <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                        </span>
-</pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #008000; text-decoration-color: #008000">DEBUG   </span> Dumping json to <span style="color: #800080; text-decoration-color: #800080">/tmp/</span><span style="color: #ff00ff; text-decoration-color: #ff00ff">test.json</span>                                <a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_70174/3923293551.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3923293551.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_70174/3923293551.py#<module>:6" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:6</span></a>
-</pre>
-</div>
+<div class="cell" data-tags="[]" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> [<span class="dv">1</span>, {<span class="dv">1</span>: <span class="dv">1</span>, <span class="dv">2</span>: <span class="dv">2</span>}, <span class="dv">3</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>pretty_json({<span class="dv">1</span>: <span class="dv">1</span>, <span class="dv">2</span>: <span class="dv">2</span>})</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>pretty_json(d)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> write_json(d, <span class="st">"/tmp/test.json"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(f)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>read_json(f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #800080; text-decoration-color: #800080">/tmp/</span><span style="color: #ff00ff; text-decoration-color: #ff00ff">test.json</span>
 </pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>[1, {'1': 1, '2': 2}, 3]</code></pre>
 </div>
 </div>
@@ -509,6 +515,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code> read_xml (file_path:Union[str,pathlib.Path])</code></pre>
 </blockquote>
 <p>Read xml data as a dictionary</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>{'abc': {'b': 10, 'c': 11}, 'd': {'e': {'f': [2, {'abc': 'pqrs'}, 2.234]}}}</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">abc
+        b - int
+        c - int
+d
+        e
+                f - L
+
+</pre>
+</div>
+</div>
 
 
 </section>

@@ -102,7 +102,7 @@ class BB:
 
     def absolute(self, dim: Tuple[int, int]):
         h, w = dim
-        return BB(self.x * w, self.y * h, self.X * w, self.Y * h)
+        return BB(int(self.x * w), int(self.y * h), int(self.X * w), int(self.Y * h))
 
     def local_to(self, _bb):
         x, y, X, Y = self
@@ -391,8 +391,8 @@ def isin(bboxes1, bboxes2, return_matrix=True):
     yA = np.maximum(y11, np.transpose(y21))
     xB = np.minimum(x12, np.transpose(x22))
     yB = np.minimum(y12, np.transpose(y22))
-    interArea = np.maximum((xB - xA + 1), 0) * np.maximum((yB - yA + 1), 0)
-    boxAArea = (x12 - x11 + 1) * (y12 - y11 + 1)
+    interArea = np.maximum((xB - xA), 0) * np.maximum((yB - yA), 0)
+    boxAArea = (x12 - x11) * (y12 - y11)
     output = interArea / boxAArea
     if return_matrix:
         return output

@@ -282,6 +282,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#list_zip" id="toc-list_zip" class="nav-link" data-scroll-target="#list_zip">list_zip</a></li>
   <li><a href="#unzip_file" id="toc-unzip_file" class="nav-link" data-scroll-target="#unzip_file">unzip_file</a></li>
   <li><a href="#zip_files" id="toc-zip_files" class="nav-link" data-scroll-target="#zip_files">zip_files</a></li>
+  <li><a href="#folder_summary" id="toc-folder_summary" class="nav-link" data-scroll-target="#folder_summary">folder_summary</a></li>
+  <li><a href="#common_items" id="toc-common_items" class="nav-link" data-scroll-target="#common_items">common_items</a></li>
   <li><a href="#remove_duplicates" id="toc-remove_duplicates" class="nav-link" data-scroll-target="#remove_duplicates">remove_duplicates</a></li>
   <li><a href="#md5" id="toc-md5" class="nav-link" data-scroll-target="#md5">md5</a></li>
   <li><a href="#path.write_lines" id="toc-path.write_lines" class="nav-link" data-scroll-target="#path.write_lines">Path.write_lines</a></li>
@@ -681,6 +683,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <hr>
 </section>
+<section id="folder_summary" class="level3">
+<h3 class="anchored" data-anchor-id="folder_summary">folder_summary</h3>
+<blockquote class="blockquote">
+<pre><code> folder_summary (thing)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="common_items" class="level3">
+<h3 class="anchored" data-anchor-id="common_items">common_items</h3>
+<blockquote class="blockquote">
+<pre><code> common_items (*fldrs, verbose=True)</code></pre>
+</blockquote>
+<hr>
+</section>
 <section id="remove_duplicates" class="level3">
 <h3 class="anchored" data-anchor-id="remove_duplicates">remove_duplicates</h3>
 <blockquote class="blockquote">
@@ -695,7 +711,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code> md5 (fname)</code></pre>
 </blockquote>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-08-06T11:25:35.234831Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-08-06T11:25:35.234497Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-08-06T11:25:35.241253Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-08-06T11:25:35.240149Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-08-06T11:25:35.234798Z&quot;}" data-tags="[]" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>md5(<span class="st">"paths.ipynb"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>md5(<span class="st">"paths.ipynb"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
 <pre><code>'e09ac0bed28afa6d7ef602401dd790cc'</code></pre>
 </div>
@@ -749,14 +765,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code> readlines (fpath, silent=False, encoding=None)</code></pre>
 </blockquote>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-08-06T11:24:27.772922Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-08-06T11:24:27.772181Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-08-06T11:24:27.792839Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-08-06T11:24:27.791454Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-08-06T11:24:27.772856Z&quot;}" data-tags="[]" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> P(<span class="st">"tmp.txt"</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>x.touch()</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>x.write_lines([i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>)])</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>lines <span class="op">=</span> x.read_lines()</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> lines <span class="op">==</span> [<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>)]</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>logger.info(x.size())</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>x.rm(confirm_prompt<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> P(<span class="st">"tmp.txt"</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>x.touch()</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>x.write_lines([i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>)])</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>lines <span class="op">=</span> x.read_lines()</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> lines <span class="op">==</span> [<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>)]</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>logger.info(x.size())</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>x.rm(confirm_prompt<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[10/14/22 18:03:22] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> loaded <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1000</span> lines                                          <a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_94033/1600187089.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1600187089.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_94033/1600187089.py#read_lines:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">read_lines:13</span></a>
 </pre>
@@ -803,11 +819,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </blockquote>
 <p>Dump a python object as a dill file (better replacement to pickle)</p>
 <div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-08-06T11:24:27.824269Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-08-06T11:24:27.823710Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-08-06T11:24:27.837678Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-08-06T11:24:27.836308Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-08-06T11:24:27.824220Z&quot;}" data-tags="[]" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> P(<span class="st">"test.tmp"</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>dumpdill([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], p)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> loaddill(p)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>p.rm(confirm_prompt<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> y <span class="op">==</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> P(<span class="st">"test.tmp"</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>dumpdill([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], p)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> loaddill(p)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>p.rm(confirm_prompt<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> y <span class="op">==</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[10/14/22 18:03:24] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Dumped object of size ≈<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> KB @ <span style="color: #008000; text-decoration-color: #008000">"test.tmp"</span> in <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">6.44e-04</span>     <a href="file:///var/folders/cp/1fbgq2n922j8ztdsq6551vldkr5sdy/T/ipykernel_94033/554288780.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">554288780.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:&lt;cell line: 2&gt;:2</span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         seconds                                                  <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                             </span>

@@ -3,7 +3,6 @@
 # %% auto 0
 __all__ = [
     "P",
-    "common_items",
     "dill",
     "input_to_str",
     "output_to_path",
@@ -22,6 +21,8 @@ __all__ = [
     "list_zip",
     "md5",
     "remove_duplicates",
+    "common_items",
+    "folder_summary",
     "readlines",
     "writelines",
     "rename_batch",
@@ -185,9 +186,9 @@ def stem(fpath):
 @input_to_str
 def stems(folder, silent=False):
     if isinstance(folder, (str, P)):
-        return [stem(str(x)) for x in Glob(folder, silent=silent)]
+        return L([stem(str(x)) for x in Glob(folder, silent=silent)])
     if isinstance(folder, list):
-        return [stem(x) for x in folder]
+        return L([stem(x) for x in folder])
 
 
 P.stems = lambda self: stems(self.ls())
@@ -316,7 +317,26 @@ def remove_duplicates(files):
     return
 
 
-common_items = lambda *fldrs: sorted(common(*[stems(fldr) for fldr in fldrs]))
+def common_items(*fldrs, verbose=True):
+    fldr_items = [stems(fldr) for fldr in fldrs]
+    o = sorted(common(*fldr_items))
+    if verbose:
+        Info(
+            f"Returning {len(o)} common items from folders of {[len(_f) for _f in fldr_items]} items each"
+        )
+    return o
+
+
+def folder_summary(thing):
+    things = Glob(thing)
+    info = []
+    for thing in things:
+        if thing.is_dir():
+            info.append(f"{thing} - {len(Glob(thing))} items")
+        else:
+            info.append(f"{thing} - {thing.size()}")
+    return "\n".join(info)
+
 
 # %% ../nbs/paths.ipynb 26
 def readlines(fpath, silent=False, encoding=None):

@@ -28,3 +28,4 @@ pre-commit
 pymupdf
 nbconvert
 nbformat
+icecream

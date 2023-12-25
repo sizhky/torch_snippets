@@ -2,6 +2,8 @@ from ..loader import *
 from ..torch_loader import *
 from fastcore.basics import ifnone
 from functools import partial
+from ..markup2 import AD
+from contextlib import contextmanager
 
 
 class IOHook:
@@ -49,3 +51,69 @@ class IOHook:
     def remove_hooks(self):
         for handle in self.hook_handles:
             handle.remove()
+
+
+# skip = {'SiLU', 'LayerNorm'}
+# keep = {'CrossAttnDownBlock2D', 'CrossAttnUpBlock2D', 'UNetMidBlock2DCrossAttn', 'UpBlock2D', 'DownBlock2D'}
+def print_shapes_hook(module, input, kwargs, output, skip=None, keep=None):
+    from builtins import print
+
+    skip = set() if skip is None else set(skip)  # Modules to exclude while printing
+    keep = set() if keep is None else set(keep)  # Modules to include while printing
+    try:
+        name = module.__class__.__name__
+        if name in skip:
+            return
+        if name not in keep:
+            return
+        print(f"Module Name: {name}")
+        print(f"Input Kwargs: ")
+        print(AD(kwargs).summary(depth=1))
+        print(f"Input Args:")
+        if isinstance(input, (list, tuple, set)):
+            input = {str(i + 1): v for i, v in enumerate(input)}
+            print(AD(input).summary(depth=1))
+        else:
+            print(input)
+        print("Outputs: ")
+        if isinstance(output, (list, tuple, set)):
+            output = {str(i + 1): v for i, v in enumerate(output)}
+            print(AD(output).summary(depth=1))
+        else:
+            print(output)
+        line()
+    except Exception as e:
+        print(f"ERROR: {e} @ {name}")
+
+
+def attach_hooks(model, hook=print_shapes_hook):
+    """Function to attach the hooks and return handles"""
+    handles = []
+    for layer in model.children():
+        handle = layer.register_forward_hook(hook, with_kwargs=True)
+        handles.append(handle)
+        if len(list(layer.children())) > 0:
+            handles.extend(attach_hooks(layer, hook=hook))
+    return handles
+
+
+def detach_hooks(handles):
+    """Function to detach hooks"""
+    for handle in handles:
+        handle.remove()
+
+
+@contextmanager
+def hook_context_for(module, hook_fn, **kwargs):
+    hook_fn = partial(hook_fn, **kwargs)
+    handles = attach_hooks(module, hook_fn)
+    yield module
+    detach_hooks(handles)
+
+
+@contextmanager
+def print_module_ios_for(module, print_only=None):
+    _print_shapes_hook = partial(print_shapes_hook, keep=print_only)
+    handles = attach_hooks(module, _print_shapes_hook)
+    yield module
+    detach_hooks(handles)

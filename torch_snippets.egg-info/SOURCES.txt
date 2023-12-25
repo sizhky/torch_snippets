@@ -15,6 +15,7 @@ torch_snippets/charts.py
 torch_snippets/dates.py
 torch_snippets/decorators.py
 torch_snippets/fastcores.py
+torch_snippets/icecream.py
 torch_snippets/imgaug_loader.py
 torch_snippets/inspector.py
 torch_snippets/interactive_show.py
@@ -23,6 +24,7 @@ torch_snippets/load_defaults.py
 torch_snippets/loader.py
 torch_snippets/logger.py
 torch_snippets/markup.py
+torch_snippets/markup2.py
 torch_snippets/misc.py
 torch_snippets/paths.py
 torch_snippets/pdf_loader.py

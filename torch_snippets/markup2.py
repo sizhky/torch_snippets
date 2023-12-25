@@ -30,6 +30,9 @@ from .logger import *
 import xmltodict
 from typing import Union
 from .thinc_parser.parser import Config
+from .icecream import ic
+import hashlib
+
 
 # %% ../nbs/markups.ipynb 3
 def _default(self, obj):
@@ -62,6 +65,15 @@ def unpack(obj):
         return tuple(unpack(value) for value in obj)
     else:
         return obj
+
+
+def hash_tensor(tensor):
+    try:
+        tensor_str = tensor.cpu().detach().numpy().tobytes()
+    except:
+        ...
+    hash_obj = hashlib.sha256(tensor_str)
+    return "ID:#" + hash_obj.hexdigest()[:6]
 
 
 class AttrDict(object):
@@ -118,10 +130,26 @@ class AttrDict(object):
     ```
     """
 
-    def __init__(self, data=None, **kwargs):
-        if data is None:
-            data = {}
-        data = {**data, **kwargs}
+    forbidden = set(":,'\"}{")
+
+    def __init__(self, *args, data=None, **kwargs):
+        data = {} if data is None else data
+        if len(args) == 1 and isinstance(args[0], (dict, AttrDict)):
+            data = args[0]
+            args = {}
+        else:
+            _args = dict(ic.io(*args)) if len(args) > 0 else {}
+            args = {}
+            for k, v in _args.items():
+                if any(c in self.forbidden for c in k):
+                    assert isinstance(
+                        v, (dict, AttrDict)
+                    ), f"Input `{v}` can't be a list"
+                    data = {**v, **data}
+                else:
+                    args = {**{k: v}, **args}
+
+        data = {**kwargs, **data, **args}
         for name, value in data.items():
             setattr(self, str(name), self._wrap(value))
 
@@ -141,7 +169,7 @@ class AttrDict(object):
                 value = L(value)
             return value
         else:
-            return AttrDict(value) if isinstance(value, dict) else value
+            return AttrDict(data=value) if isinstance(value, dict) else value
 
     __getitem__ = (
         lambda self, x: AttrDict({_x: self[_x] for _x in x})
@@ -165,9 +193,10 @@ class AttrDict(object):
         return len(self.keys())
 
     def __repr__(self):
-        return "{%s}" % str(
-            ", ".join("'%s': %s" % (k, repr(v)) for (k, v) in self.__dict__.items())
-        )
+        # return "{%s}" % str(
+        #     ", ".join("'%s': %s" % (k, repr(v)) for (k, v) in self.__dict__.items())
+        # )
+        return self.summary()
 
     def __dir__(self):
         return self.__dict__.keys()
@@ -218,7 +247,7 @@ class AttrDict(object):
         )
 
     def __eq__(self, other):
-        return AttrDict(other).to_dict() == self.to_dict()
+        return AttrDict(data=other).to_dict() == self.to_dict()
 
     def find_address(self, key, current_path=""):
         addresses = []
@@ -240,55 +269,41 @@ class AttrDict(object):
                         addresses.extend(item.find_address(key, f"{new_path}.{i}"))
         return addresses
 
-    def summary(self, current_path="", summary_str="", depth=0, sep="\t"):
-        tab = sep * depth
-        for k in self.keys():
-            if current_path:
-                new_path = f"{current_path}.{k}"
-            else:
-                new_path = k
+    def summary(self, current_path="", depth=0, sep="\t"):
+        def format_path(path, key):
+            return f"{path}.{key}" if path else key
 
-            if isinstance(self[k], AttrDict):
-                summary_str += f"{tab}{k}\n"
-                summary_str = self[k].summary(new_path, summary_str, depth + 1, sep=sep)
-            elif isinstance(self[k], (list, tuple, set, frozenset)):
-                summary_str += f"{tab}{k}\n"
-                for i, item in enumerate(self[k]):
-                    summary_str += f"{tab}{sep}{i}\n"
-                    if isinstance(item, AttrDict):
-                        summary_str = item.summary(
-                            f"{new_path}.{i}", summary_str, depth + 2, sep=sep
-                        )
-                    elif isinstance(item, (list, tuple, set, frozenset)):
-                        nested_path = f"{new_path}.{i}"
-                        nested_summary_str = ""
-                        for j, nested_item in enumerate(item):
-                            summary_str += f"{tab}{sep}{sep}{j}\n"
-                            if isinstance(nested_item, AttrDict):
-                                nested_summary_str = nested_item.summary(
-                                    f"{nested_path}.{j}",
-                                    nested_summary_str,
-                                    depth + 3,
-                                    sep=sep,
-                                )
-                            elif isinstance(nested_item, (list, tuple, set, frozenset)):
-                                nested_list_path = f"{nested_path}.{j}"
-                                for idx, nested_list_item in enumerate(nested_item):
-                                    if isinstance(nested_list_item, AttrDict):
-                                        nested_summary_str = nested_list_item.summary(
-                                            f"{nested_list_path}.{idx}",
-                                            nested_summary_str,
-                                            depth + 4,
-                                            sep=sep,
-                                        )
-                        if nested_summary_str:
-                            summary_str += nested_summary_str
-                    else:
-                        summary_str += f"{tab}{sep}{k} - {type(self[k]).__name__}\n"
-            else:
-                summary_str += f"{tab}{k} - {type(self[k]).__name__}\n"
+        def format_item(key, item, path, d, s):
+            import torch, numpy as np
 
+            if isinstance(item, AttrDict):
+                return f"{sep*depth}{key}\n" + item.summary(path, depth + 1, sep)
+            elif isinstance(item, (list, tuple, set, frozenset)):
+                return summarize_collection(key, item, path, d + 1, s)
+            elif isinstance(item, (torch.Tensor, np.ndarray)):
+                if isinstance(item, np.ndarray):
+                    item = torch.tensor(item)
+                return f"{s * d}{key} - {item} - {hash_tensor(item)}\n"
+            else:
+                return f"{s * d}{key} - {type(item).__name__}\n"
+
+        def summarize_collection(key, collection, path, d, s):
+            summary_str = f"{s * (d - 1)}{key}\n"
+            for i, item in enumerate(collection):
+                item_path = format_path(path, i)
+                summary_str += format_item(i, item, item_path, d, s)
+            return summary_str
+
+        summary_str = ""
+        for key in self.keys():
+            new_path = format_path(current_path, key)
+            summary_str += format_item(key, self[key], new_path, depth, sep)
         return summary_str
+
+    def print_summary(self, **kwargs):
+        from builtins import print
+
+        print(self.summary(**kwargs))
 
     def write_summary(self, to, **kwargs):
         writelines(self.summary(**kwargs).split("\n"), to)
@@ -347,25 +362,13 @@ def read_json(fpath):
 
 def write_json(obj, fpath, silent=False):
     from datetime import datetime, date
-    import numpy as np
 
     def set_default(obj):
-        if isinstance(obj, AD):
-            return obj.to_dict()
         if isinstance(obj, set):
             return list(obj)
-        try:
-            import torch
-
-            if isinstance(obj, torch.Tensor):
-                obj = obj.cpu().detach().numpy()
-        except:
-            ...
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
         if isinstance(obj, (datetime, date)):
             return obj.isoformat()
-        raise TypeError(f"Can't serialize `{type(obj)}`: {obj}")
+        raise TypeError
 
     if not silent:
         logger.opt(depth=1).log("DEBUG", f"Dumping json to {fpath}")
@@ -374,7 +377,7 @@ def write_json(obj, fpath, silent=False):
     return P(fpath)
 
 
-# %% ../nbs/markups.ipynb 11
+# %% ../nbs/markups.ipynb 10
 def write_jsonl(items, dest, mode="w"):
     makedir(parent(dest))
     with jsonlines.open(dest, mode) as writer:
@@ -389,7 +392,7 @@ def read_jsonl(file):
     return [json.loads(line) for line in readlines(file, silent=True)]
 
 
-# %% ../nbs/markups.ipynb 12
+# %% ../nbs/markups.ipynb 11
 def read_yaml(file):
     with open(file, "r") as stream:
         try:
@@ -403,11 +406,11 @@ def write_yaml(content, fpath):
         yaml.dump(content, outfile, default_flow_style=False)
 
 
-# %% ../nbs/markups.ipynb 13
+# %% ../nbs/markups.ipynb 12
 def read_xml(file_path: Union[str, P]) -> AttrDict:
     "Read xml data as a dictionary"
     with open(str(file_path)) as xml_file:
-        data = AttrDict(xmltodict.parse(xml_file.read()))
+        data = AttrDict(data=xmltodict.parse(xml_file.read()))
     return data
 
 
@@ -421,5 +424,49 @@ def write_xml(data: Union[AttrDict, dict], file_path: Union[str, P]):
         xml_file.write(data)
 
 
-# %% ../nbs/markups.ipynb 14
+# %% ../nbs/markups.ipynb 13
 Config = Config
+
+if __name__ == "__main__":
+    assert AD({}) == {}
+
+    p = 1
+    q = {"a": 10}
+    s = AD(p, q, a=20, b=30)
+    assert s == {"a": 20, "b": 30, "p": 1, "q": {"a": 10}}
+
+    s = AD(p, **q, b=30)
+    assert s == {"a": 10, "b": 30, "p": 1}
+
+    p = {"b": 222}
+    assert AD(p, {"a": 2, "b": 2}, {"bb": 2, "a": 3, "b": 3}, a=20, b=30) == {
+        "a": 2,
+        "b": 2,
+        "bb": 2,
+        "p": {"b": 222},
+    }
+
+    d1 = {"c": 1}
+    d2 = {"c": 2}
+    d3 = {"c": 3}
+    l = [1, 2, 3]
+    assert AD(l, {"c": 100}, d1, d2, d3, d1={"c": 10}, d2={"c": 20}).to_dict() == {
+        "l": [1, 2, 3],
+        "d1": {"c": 1},
+        "d2": {"c": 2},
+        "c": 100,
+        "d3": {"c": 3},
+    }
+
+    a = 20
+    b = 30
+    assert AD(a, b).to_dict() == {"a": 20, "b": 30}
+
+    p = 10
+    q = {"a": 1}
+    assert AD(p, q) == {"p": 10, "q": {"a": 1}}
+    assert AD(p, {"a": 1}) == {"p": 10, "a": 1}
+
+    x = {"a": 1, "b": 2, "c": 3}
+    assert AD(x).to_dict() == {"x": {"a": 1, "b": 2, "c": 3}}
+    assert AD(**x).to_dict() == {"a": 1, "b": 2, "c": 3}
