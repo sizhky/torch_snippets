@@ -1,4 +1,4 @@
-__version__ = "0.517"
+__version__ = "0.518"
 from .loader import *
 from .paths import *
 from .markup import *
@@ -6,7 +6,7 @@ from .inspector import *
 from .load_defaults import *
 from .pdf_loader import PDF
 from .logger import *
-from .markup2 import AD as AD2
+from .markup2 import AD
 
 try:
     from .ipython import *

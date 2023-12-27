@@ -24,7 +24,7 @@ from json import JSONEncoder
 import jsonlines
 import yaml
 
-from .loader import BB, L, np
+from .loader import BB, L, np, pd
 from .paths import *
 from .logger import *
 import xmltodict
@@ -284,6 +284,8 @@ class AttrDict(object):
                 if isinstance(item, np.ndarray):
                     item = torch.tensor(item)
                 return f"{s * d}{key} - {item} - {hash_tensor(item)}\n"
+            elif isinstance(item, pd.DataFrame):
+                return f"{s * d}{key} - {type(item).__name__} - shape {item.shape}\n"
             else:
                 if isinstance(item, (int, float, complex, str)):
                     return f"{s * d}{key} - {item} ({type(item).__name__})\n"

@@ -4,6 +4,7 @@ from fastcore.basics import ifnone
 from functools import partial
 from ..markup2 import AD
 from contextlib import contextmanager
+import traceback
 
 
 class IOHook:
@@ -68,6 +69,9 @@ def print_shapes_hook(module, input, kwargs, output, skip=None, keep=None):
             return
         print(f"Module Name: {name}")
         print(f"Input Kwargs: ")
+        if "keys" in kwargs:  # kwargs literlly has the key called `key`
+            kwargs["keys_"] = kwargs["keys"]
+            del kwargs["keys"]
         print(AD(kwargs).summary(depth=1))
         print(f"Input Args:")
         if isinstance(input, (list, tuple, set)):
@@ -130,7 +134,7 @@ def print_module_ios_for(module, print_only=None):
         yield module
         detach_hooks(handles)
     except Exception as e:
-        Warn(f"Error: {e}")
+        Warn(f"Error: {e}\n{traceback.format_exc()}")
     finally:
         try:
             detach_hooks(handles)

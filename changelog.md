@@ -1,5 +1,14 @@
 # Changelog
 
+#### 0.519
+
+🎉 `print_folder_summary`
+
+#### 0.518
+
+🧹 import `AD` from markup2 by default
+🎉 pandas dataframe summary in AD.summary
+
 #### 0.517
 
 🐞 `print_shapes_hook` will gracefully fail
