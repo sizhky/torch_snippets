@@ -269,34 +269,43 @@ class AttrDict(object):
                         addresses.extend(item.find_address(key, f"{new_path}.{i}"))
         return addresses
 
-    def summary(self, current_path="", depth=0, sep="\t"):
+    def summary(self, current_path="", depth=0, sep="\t", max_items=10):
         def format_path(path, key):
             return f"{path}.{key}" if path else key
 
-        def format_item(key, item, path, d, s):
+        def format_item(key, item, path, depth, sep):
             import torch, numpy as np
 
-            if isinstance(item, AttrDict):
+            if isinstance(item, AttrDict) or hasattr(item, "keys"):
+                item = AttrDict(**item)
                 return f"{sep*depth}{key}\n" + item.summary(path, depth + 1, sep)
-            elif isinstance(item, (list, tuple, set, frozenset)):
-                return summarize_collection(key, item, path, d + 1, s)
+            elif isinstance(item, (list, tuple, set, frozenset, L)):
+                return summarize_collection(key, item, path, depth + 1, sep)
             elif isinstance(item, (torch.Tensor, np.ndarray)):
                 if isinstance(item, np.ndarray):
                     item = torch.tensor(item)
-                return f"{s * d}{key} - {item} - {hash_tensor(item)}\n"
+                return f"{sep * depth}{key} - {item} - {hash_tensor(item)}\n"
             elif isinstance(item, pd.DataFrame):
-                return f"{s * d}{key} - {type(item).__name__} - shape {item.shape}\n"
+                return (
+                    f"{sep * depth}{key} - {type(item).__name__} - shape {item.shape}\n"
+                )
             else:
                 if isinstance(item, (int, float, complex, str)):
-                    return f"{s * d}{key} - {item} ({type(item).__name__})\n"
+                    return f"{sep * depth}{key} - {item} ({type(item).__name__})\n"
                 else:
-                    return f"{s * d}{key} - {type(item).__name__}\n"
+                    return f"{sep * depth}{key} - {type(item).__name__}\n"
 
         def summarize_collection(key, collection, path, d, s):
             summary_str = f"{s * (d - 1)}{key}\n"
             for i, item in enumerate(collection):
                 item_path = format_path(path, i)
-                summary_str += format_item(i, item, item_path, d, s)
+                if i < max_items:
+                    summary_str += format_item(i, item, item_path, d, s)
+                else:
+                    summary_str += (
+                        f"{s*d}... {len(collection) - max_items} more items ...\n"
+                    )
+                    break
             return summary_str
 
         summary_str = ""

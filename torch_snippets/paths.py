@@ -3,6 +3,7 @@
 # %% auto 0
 __all__ = [
     "P",
+    "print_folder_summary",
     "dill",
     "input_to_str",
     "output_to_path",
@@ -337,6 +338,8 @@ def folder_summary(thing):
             info.append(f"{thing} - {thing.size()}")
     return "\n".join(info)
 
+
+print_folder_summary = lambda x: print(folder_summary(x))
 
 # %% ../nbs/paths.ipynb 26
 def readlines(fpath, silent=False, encoding=None):

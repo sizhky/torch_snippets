@@ -798,6 +798,7 @@ def batchify(items, *rest, batch_size=32):
     Yields:
         tuple: A tuple containing batches of items from `items` and optionally from the additional sequences.
     """
+    raise NotImplementedError
     n = len(items)
     if len(rest) > 0:
         assert all(
@@ -809,7 +810,8 @@ def batchify(items, *rest, batch_size=32):
         batch = items[head:tail]
         if rest:
             rest_ = [list(_rest[head:tail]) for _rest in rest]
-            yield batch, *rest_
+            # yield batch, *rest_
+            yield None
         else:
             yield batch
         head = tail
@@ -848,7 +850,7 @@ def split(items, splits, random_state=10):
         assert list(vs).count(-1) == 1, f"Only atmost one `-1` is allowed"
         vs = [v if v != -1 else -sum(vs) for v in vs]
     Info(vs)
-    assert sum(vs) == 1, f"Split percentages should add to 1, {sum(vs)=}"
+    assert sum(vs) == 1, f"Split percentages should add to 1, received sum={sum(vs)}"
     np.random.seed(random_state)
     assignments = np.random.choice(ks, size=len(items), p=vs)
     o = {k: [] for k in ks}

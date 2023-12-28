@@ -1,5 +1,9 @@
 # Changelog
 
+#### 0.520
+
+🧹 Back to min python version 3.7
+
 #### 0.519
 
 🎉 `print_folder_summary`
