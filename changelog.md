@@ -1,5 +1,10 @@
 # Changelog
 
+#### 0.521
+
+🐞 `read` loads color image by default
+🧹 `video` utils are present in torch_snippets.video
+
 #### 0.520
 
 🧹 Back to min python version 3.7

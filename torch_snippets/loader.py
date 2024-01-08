@@ -235,7 +235,7 @@ from tqdm import trange
 now = lambda: str(datetime.datetime.now())[:-10].replace(" ", "_")
 
 
-def read(fname, mode=0):
+def read(fname, mode=1):
     img = cv2.imread(str(fname), mode)
     if mode == 1:
         img = img[..., ::-1]  # BGR to RGB

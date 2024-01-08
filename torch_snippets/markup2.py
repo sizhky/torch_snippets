@@ -32,6 +32,7 @@ from typing import Union
 from .thinc_parser.parser import Config
 from .icecream import ic
 import hashlib
+from collections.abc import Mapping
 
 
 # %% ../nbs/markups.ipynb 3
@@ -134,7 +135,7 @@ class AttrDict(object):
 
     def __init__(self, *args, data=None, **kwargs):
         data = {} if data is None else data
-        if len(args) == 1 and isinstance(args[0], (dict, AttrDict)):
+        if len(args) == 1 and isinstance(args[0], Mapping):
             data = args[0]
             args = {}
         else:
@@ -269,7 +270,7 @@ class AttrDict(object):
                         addresses.extend(item.find_address(key, f"{new_path}.{i}"))
         return addresses
 
-    def summary(self, current_path="", depth=0, sep="\t", max_items=10):
+    def summary(self, current_path="", depth=0, sep="  ", max_items=10):
         def format_path(path, key):
             return f"{path}.{key}" if path else key
 

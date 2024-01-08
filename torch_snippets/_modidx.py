@@ -1131,5 +1131,6 @@ d = {
             ),
         },
         "torch_snippets.trainer.hooks": {},
+        "torch_snippets.video": {},
     },
 }
