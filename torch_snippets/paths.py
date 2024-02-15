@@ -24,6 +24,7 @@ __all__ = [
     "remove_duplicates",
     "common_items",
     "folder_summary",
+    "tree",
     "readlines",
     "writelines",
     "rename_batch",
@@ -50,6 +51,7 @@ from pathlib import Path
 import hashlib, shutil
 import glob
 import dill, time
+import subprocess
 
 # %% ../nbs/paths.ipynb 3
 def input_to_str(func):
@@ -340,6 +342,23 @@ def folder_summary(thing):
 
 
 print_folder_summary = lambda x: print(folder_summary(x))
+
+
+def tree(folder_path, *additional_flags):
+    import subprocess
+    from builtins import print
+
+    try:
+        # Construct the command by combining "tree" with the folder path and additional flags
+        command = ["tree", folder_path]
+        command.extend(additional_flags)
+
+        # Run the command and capture the output
+        result = subprocess.check_output(command, universal_newlines=True)
+        return print(result)
+    except subprocess.CalledProcessError as e:
+        return f"Error: {e}"
+
 
 # %% ../nbs/paths.ipynb 26
 def readlines(fpath, silent=False, encoding=None):

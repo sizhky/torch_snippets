@@ -1,10 +1,12 @@
-from ..loader import *
-from ..torch_loader import *
-from fastcore.basics import ifnone
-from functools import partial
-from ..markup2 import AD
-from contextlib import contextmanager
 import traceback
+from contextlib import contextmanager
+from functools import partial
+
+from fastcore.basics import ifnone
+
+from ..loader import *
+from ..markup2 import AD
+from ..torch_loader import *
 
 
 class IOHook:
@@ -56,7 +58,9 @@ class IOHook:
 
 # skip = {'SiLU', 'LayerNorm'}
 # keep = {'CrossAttnDownBlock2D', 'CrossAttnUpBlock2D', 'UNetMidBlock2DCrossAttn', 'UpBlock2D', 'DownBlock2D'}
-def print_shapes_hook(module, input, kwargs, output, skip=None, keep=None):
+def print_shapes_hook(
+    module, input, kwargs, output, skip=None, keep=None, child_name=""
+):
     from builtins import print
 
     skip = set() if skip is None else set(skip)  # Modules to exclude while printing
@@ -65,9 +69,10 @@ def print_shapes_hook(module, input, kwargs, output, skip=None, keep=None):
         name = module.__class__.__name__
         if name in skip:
             return
-        if name not in keep:
+        if keep != {"all"} and name not in keep:
             return
-        print(f"Module Name: {name}")
+        line()
+        print(f"Module Name: {name}. Child Name: {child_name}")
         print(f"Input Kwargs: ")
         if "keys" in kwargs:  # kwargs literlly has the key called `key`
             kwargs["keys_"] = kwargs["keys"]
@@ -92,14 +97,35 @@ def print_shapes_hook(module, input, kwargs, output, skip=None, keep=None):
         print(f"ERROR: {e} @ {name}")
 
 
-def attach_hooks(model, hook=print_shapes_hook):
+def attach_hooks(
+    model,
+    hook=print_shapes_hook,
+    required_children=None,
+    print_only=None,
+    parent_name="",
+):
     """Function to attach the hooks and return handles"""
-    handles = [model.register_forward_hook(hook, with_kwargs=True)]
-    for layer in model.children():
-        handle = layer.register_forward_hook(hook, with_kwargs=True)
-        handles.append(handle)
+    # handles = [model.register_forward_hook(hook, with_kwargs=True)]
+    handles = []
+    for child_name, layer in model.named_children():
+        _child_name = f"{parent_name}.{child_name}" if parent_name != "" else child_name
+        if required_children is not None and _child_name in required_children:
+            _hook = partial(
+                print_shapes_hook,
+                keep={layer.__class__.__name__},
+                child_name=_child_name,
+            )
+            handle = layer.register_forward_hook(_hook, with_kwargs=True)
+            handles.append(handle)
         if len(list(layer.children())) > 0:
-            handles.extend(attach_hooks(layer, hook=hook))
+            handles.extend(
+                attach_hooks(
+                    layer,
+                    hook=hook,
+                    required_children=required_children,
+                    parent_name=_child_name,
+                )
+            )
     return handles
 
 
@@ -127,10 +153,17 @@ def hook_context_for(module, hook_fn, **kwargs):
 
 
 @contextmanager
-def print_module_ios_for(module, print_only=None):
+def print_module_ios_for(module, print_only={}, required_children=None):
+    if print_only is None:
+        print_only = {module.__class__.__name__}
     try:
-        _print_shapes_hook = partial(print_shapes_hook, keep=print_only)
-        handles = attach_hooks(module, _print_shapes_hook)
+        # _print_shapes_hook = partial(print_shapes_hook, keep=print_only)
+        handles = attach_hooks(
+            module,
+            print_shapes_hook,
+            required_children=required_children,
+            print_only=print_only,
+        )
         yield module
         detach_hooks(handles)
     except Exception as e:

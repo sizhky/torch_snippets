@@ -1,5 +1,17 @@
 # Changelog
 
+#### 0.523
+🧹 `print_module_ios_for` has better targeted functionality where you need to give submodules name
+
+#### 0.522
+🐞 minor bugfix in `AD2` where data keyword misbehaves
+🧹 `video` has better size functionality
+🎉 `if all is given in print_ios_for_module, all modules are printed`
+🎉 `AD2.dict` is an alias for `AD2.to_dict`
+🎉 better `AD2.summary` for pandas dataframes and `AD2.summary` respects max_items for keys as well
+🎉 new alias `pd.read_pqt` for `pd.read_parquet`
+🐞 wrap `tree` into python
+
 #### 0.521
 
 🐞 `read` loads color image by default

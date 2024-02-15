@@ -18,21 +18,23 @@ __all__ = [
     "write_xml",
 ]
 
+import hashlib
+
 # %% ../nbs/markups.ipynb 2
 import json
+from collections.abc import Mapping
 from json import JSONEncoder
+from typing import Union
+
 import jsonlines
+import xmltodict
 import yaml
 
-from .loader import BB, L, np, pd
-from .paths import *
-from .logger import *
-import xmltodict
-from typing import Union
-from .thinc_parser.parser import Config
 from .icecream import ic
-import hashlib
-from collections.abc import Mapping
+from .loader import BB, L, np, pd
+from .logger import *
+from .paths import *
+from .thinc_parser.parser import Config
 
 
 # %% ../nbs/markups.ipynb 3
@@ -75,6 +77,16 @@ def hash_tensor(tensor):
         ...
     hash_obj = hashlib.sha256(tensor_str)
     return "ID:#" + hash_obj.hexdigest()[:6]
+
+
+def hash_pandas_dataframe(input):
+    try:
+        from pandas.util import hash_pandas_object
+
+        h = hash_pandas_object(input, index=True).values
+        return "ID:#" + hashlib.sha256(h).hexdigest()[:6]
+    except:
+        return "ID:#<uncomputable>"
 
 
 class AttrDict(object):
@@ -133,10 +145,10 @@ class AttrDict(object):
 
     forbidden = set(":,'\"}{")
 
-    def __init__(self, *args, data=None, **kwargs):
-        data = {} if data is None else data
+    def __init__(self, *args, given_input_to_ad=None, **kwargs):
+        given_input_to_ad = {} if given_input_to_ad is None else given_input_to_ad
         if len(args) == 1 and isinstance(args[0], Mapping):
-            data = args[0]
+            given_input_to_ad = args[0]
             args = {}
         else:
             _args = dict(ic.io(*args)) if len(args) > 0 else {}
@@ -146,12 +158,12 @@ class AttrDict(object):
                     assert isinstance(
                         v, (dict, AttrDict)
                     ), f"Input `{v}` can't be a list"
-                    data = {**v, **data}
+                    given_input_to_ad = {**v, **given_input_to_ad}
                 else:
                     args = {**{k: v}, **args}
 
-        data = {**kwargs, **data, **args}
-        for name, value in data.items():
+        given_input_to_ad = {**kwargs, **given_input_to_ad, **args}
+        for name, value in given_input_to_ad.items():
             setattr(self, str(name), self._wrap(value))
 
     def items(self):
@@ -170,7 +182,9 @@ class AttrDict(object):
                 value = L(value)
             return value
         else:
-            return AttrDict(data=value) if isinstance(value, dict) else value
+            return (
+                AttrDict(given_input_to_ad=value) if isinstance(value, dict) else value
+            )
 
     __getitem__ = (
         lambda self, x: AttrDict({_x: self[_x] for _x in x})
@@ -194,10 +208,7 @@ class AttrDict(object):
         return len(self.keys())
 
     def __repr__(self):
-        # return "{%s}" % str(
-        #     ", ".join("'%s': %s" % (k, repr(v)) for (k, v) in self.__dict__.items())
-        # )
-        return self.summary()
+        return f"\n```↯ AttrDict ↯\n{self.summary()}\n```\n"
 
     def __dir__(self):
         return self.__dict__.keys()
@@ -248,7 +259,7 @@ class AttrDict(object):
         )
 
     def __eq__(self, other):
-        return AttrDict(data=other).to_dict() == self.to_dict()
+        return AttrDict(given_input_to_ad=other).to_dict() == self.to_dict()
 
     def find_address(self, key, current_path=""):
         addresses = []
@@ -275,8 +286,12 @@ class AttrDict(object):
             return f"{path}.{key}" if path else key
 
         def format_item(key, item, path, depth, sep):
-            import torch, numpy as np
+            import numpy as np
+            import pandas as pd
+            import torch
 
+            if isinstance(item, (pd.DataFrame,)):
+                return f"{sep * depth}{key} - {type(item).__name__} - shape {item.shape} - columns {item.columns} - {hash_pandas_dataframe(item)}\n"
             if isinstance(item, AttrDict) or hasattr(item, "keys"):
                 item = AttrDict(**item)
                 return f"{sep*depth}{key}\n" + item.summary(path, depth + 1, sep)
@@ -286,10 +301,7 @@ class AttrDict(object):
                 if isinstance(item, np.ndarray):
                     item = torch.tensor(item)
                 return f"{sep * depth}{key} - {item} - {hash_tensor(item)}\n"
-            elif isinstance(item, pd.DataFrame):
-                return (
-                    f"{sep * depth}{key} - {type(item).__name__} - shape {item.shape}\n"
-                )
+
             else:
                 if isinstance(item, (int, float, complex, str)):
                     return f"{sep * depth}{key} - {item} ({type(item).__name__})\n"
@@ -310,7 +322,12 @@ class AttrDict(object):
             return summary_str
 
         summary_str = ""
-        for key in self.keys():
+        for ix, key in enumerate(self.keys()):
+            if ix >= max_items:
+                summary_str += (
+                    f"{sep*depth} ... {len(self.keys()) - max_items} more keys ...\n"
+                )
+                break
             new_path = format_path(current_path, key)
             summary_str += format_item(key, self[key], new_path, depth, sep)
         return summary_str
@@ -337,6 +354,7 @@ class AttrDict(object):
 
 
 AD = AttrDict
+AD.dict = AD.to_dict
 
 
 def pretty_json(
@@ -376,7 +394,7 @@ def read_json(fpath):
 
 
 def write_json(obj, fpath, silent=False):
-    from datetime import datetime, date
+    from datetime import date, datetime
 
     def set_default(obj):
         if isinstance(obj, set):
@@ -425,7 +443,7 @@ def write_yaml(content, fpath):
 def read_xml(file_path: Union[str, P]) -> AttrDict:
     "Read xml data as a dictionary"
     with open(str(file_path)) as xml_file:
-        data = AttrDict(data=xmltodict.parse(xml_file.read()))
+        data = AttrDict(given_input_to_ad=xmltodict.parse(xml_file.read()))
     return data
 
 

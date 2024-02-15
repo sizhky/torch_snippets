@@ -78,23 +78,30 @@ __all__ = [
 ]
 
 
-from .logger import *
-from .bb_utils import *
+import glob
+import os
+import re
+import sys
 from pathlib import Path
-from fastcore.dispatch import typedispatch
-from fastcore.all import delegates, patch_to, L
 
-import glob, numpy as np, pandas as pd, tqdm, os, sys, re
-from IPython.display import display, display_html
+import numpy as np
+import pandas as pd
 import PIL
+import tqdm
+from fastcore.all import L, delegates, patch_to
+from fastcore.dispatch import typedispatch
+from IPython.display import display, display_html
 from PIL import Image
+
+from .bb_utils import *
+from .logger import *
 
 try:
     import torch
     import torch.nn as nn
     from torch import optim
     from torch.nn import functional as F
-    from torch.utils.data import Dataset, DataLoader
+    from torch.utils.data import DataLoader, Dataset
 
     __all__ += ["torch", "nn", "F", "Dataset", "DataLoader", "optim"]
 except:
@@ -117,15 +124,19 @@ try:
 except:
     ...
 
+import datetime
+import pdb
+from typing import Tuple, Union
+
 import matplotlib  # ; matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
-import pdb, datetime
-from typing import Union, Tuple
+import matplotlib.pyplot as plt
 
 plt.rcParams["axes.edgecolor"] = "black"
 
+# Aliases
 E = enumerate
+pd.read_pqt = pd.read_parquet
 
 try:
     import cv2
@@ -149,7 +160,7 @@ def _repr_pretty_(self, p, cycle):
 
 
 import time
-from collections import defaultdict, Counter
+from collections import Counter, defaultdict
 from copy import deepcopy as dcopy
 
 from rich.progress import track as _track

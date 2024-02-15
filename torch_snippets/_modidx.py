@@ -654,6 +654,10 @@ d = {
                 "markups.html#_default",
                 "torch_snippets/markup2.py",
             ),
+            "torch_snippets.markup2.hash_pandas_dataframe": (
+                "markups.html#hash_pandas_dataframe",
+                "torch_snippets/markup2.py",
+            ),
             "torch_snippets.markup2.hash_tensor": (
                 "markups.html#hash_tensor",
                 "torch_snippets/markup2.py",
@@ -824,6 +828,7 @@ d = {
                 "paths.html#stems",
                 "torch_snippets/paths.py",
             ),
+            "torch_snippets.paths.tree": ("paths.html#tree", "torch_snippets/paths.py"),
             "torch_snippets.paths.unzip_file": (
                 "paths.html#unzip_file",
                 "torch_snippets/paths.py",
