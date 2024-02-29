@@ -375,7 +375,7 @@ def write_json(obj, fpath, silent=False):
 
 
 # %% ../nbs/markups.ipynb 11
-def write_jsonl(items, dest, mode="w"):
+def write_jsonl(items, dest, mode="a"):
     makedir(parent(dest))
     with jsonlines.open(dest, mode) as writer:
         writer.write_all(items)

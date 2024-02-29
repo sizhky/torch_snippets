@@ -147,7 +147,7 @@ class AttrDict(object):
 
     def __init__(self, *args, given_input_to_ad=None, **kwargs):
         given_input_to_ad = {} if given_input_to_ad is None else given_input_to_ad
-        if len(args) == 1 and isinstance(args[0], Mapping):
+        if len(args) == 1 and isinstance(args[0], (Mapping, AttrDict)):
             given_input_to_ad = args[0]
             args = {}
         else:
@@ -304,7 +304,15 @@ class AttrDict(object):
 
             else:
                 if isinstance(item, (int, float, complex, str)):
-                    return f"{sep * depth}{key} - {item} ({type(item).__name__})\n"
+                    is_multiline = False
+                    if isinstance(item, str):
+                        is_multiline = "\n" in str
+                        if len(item) > 200:
+                            item = item[:100] + "..." + item[-100:]
+                        if is_multiline:
+                            item = f"```{item}```"
+                    multiline = "" if is_multiline else "Multiline "
+                    return f"{sep * depth}{key} - {item} ({multiline}{type(item).__name__})\n"
                 else:
                     return f"{sep * depth}{key} - {type(item).__name__}\n"
 
@@ -411,7 +419,7 @@ def write_json(obj, fpath, silent=False):
 
 
 # %% ../nbs/markups.ipynb 10
-def write_jsonl(items, dest, mode="w"):
+def write_jsonl(items, dest, mode="a"):
     makedir(parent(dest))
     with jsonlines.open(dest, mode) as writer:
         writer.write_all(items)

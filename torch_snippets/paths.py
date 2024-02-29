@@ -375,7 +375,7 @@ def read_lines(self, silent=False, encoding=None):
     return readlines(self, silent=silent, encoding=encoding)
 
 
-def writelines(lines, file, mode="w"):
+def writelines(lines, file, mode="a"):
     makedir(parent(file))
     failed = []
     with open(file, mode) as f:

@@ -1,7 +1,13 @@
 # Changelog
 
+#### 0.524
+🐞 all write modes are 'a' by default to avoid accidental overwriting
+🧹 AD writes better string summary (support for multiline)
+
 #### 0.523
 🧹 `print_module_ios_for` has better targeted functionality where you need to give submodules name
+🎉 `clean_gpu_mem` and `get_latest_checkpoint` functions in torch_loader
+🧹 `minor bugfix in AD`
 
 #### 0.522
 🐞 minor bugfix in `AD2` where data keyword misbehaves
