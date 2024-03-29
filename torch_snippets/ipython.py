@@ -6,6 +6,7 @@ __all__ = [
     "save_notebook",
     "backup_this_notebook",
     "backup_all_notebooks",
+    "backup_folders_of_nbs",
     "display_dfs_side_by_side",
     "show_big_dataframe",
     "h1",
@@ -57,30 +58,38 @@ def save_notebook(file_path):
 
 def backup_this_notebook(
     this_file_path,
-    save_html_to=None,
+    save_html_to_dir=None,
     override_previous_backup=False,
     changelog=None,
     exclude_input=False,
     force_save_notebook=True,
 ):
-    if save_html_to is None:
-        save_html_to = (
+    if save_html_to_dir is None:
+        save_html_to_dir = (
             parent(P(this_file_path)).resolve() / f"backups/{stem(this_file_path)}"
         )
-        files = [f for f in stems(save_html_to) if f.split("__")[-1].isdigit()]
+        files = [f for f in stems(save_html_to_dir) if f.split("__")[-1].isdigit()]
         available_number = max([int(i.split("__")[-1]) for i in files], default=-1) + 1
-        save_to = f"{save_html_to}/{stem(this_file_path)}__{available_number:04}.html"
-    if override_previous_backup:
-        if available_number != 0:
-            available_number -= 1
-        if (
-            input(
-                f"Are you sure you want to override `{save_html_to}/{stem(this_file_path)}__{available_number:04}.html` ? [y/n]"
-            ).lower()
-            != "y"
-        ):
-            raise ValueError("Aborting")
-        save_to = f"{save_html_to}/{stem(this_file_path)}__{available_number:04}.html"
+        save_to = (
+            f"{save_html_to_dir}/{stem(this_file_path)}__{available_number:04}.html"
+        )
+        if override_previous_backup:
+            if available_number != 0:
+                available_number -= 1
+            if (
+                input(
+                    f"Are you sure you want to override `{save_html_to_dir}/{stem(this_file_path)}__{available_number:04}.html` ? [y/n]"
+                ).lower()
+                != "y"
+            ):
+                raise ValueError("Aborting")
+            save_to = (
+                f"{save_html_to_dir}/{stem(this_file_path)}__{available_number:04}.html"
+            )
+    else:
+        save_to = f"{save_html_to_dir}/{stem(this_file_path)}.html"
+        force_save_notebook = False
+    makedir(parent(save_to))
     Info(f"Backing up this version of notebook to {save_to}")
     if force_save_notebook:
         save_notebook(this_file_path)
@@ -93,14 +102,13 @@ def backup_this_notebook(
     if exclude_input:
         html_exporter.exclude_input = True
     (body, resources) = html_exporter.from_notebook_node(this_notebook)
-    makedir(save_html_to)
-    writelines([body], save_to)
+    writelines([body], save_to, mode="w")
     if changelog is None:
         Warn(
             "Use `changelog` argument to the devs know what is important in the backup"
         )
         changelog = ""
-    changelog_file = P(save_html_to) / "changelog.md"
+    changelog_file = P(save_html_to_dir) / "changelog.md"
     changelog_file.touch()
     changelog = f"\n## {stem(save_to)}\n{changelog}"
     changelog_file.write_lines(changelog.split("\n"), mode="a+")
@@ -108,12 +116,21 @@ def backup_this_notebook(
     return save_to
 
 
-def backup_all_notebooks(
-    folder,
-):
+def backup_all_notebooks(folder):
     all_notebooks = P(folder).Glob("*.ipynb")
     for notebook in all_notebooks:
         backup_this_notebook(notebook, force_save_notebook=False)
+
+
+def backup_folders_of_nbs(src, dest):
+    if os.path.exists(dest):
+        P(dest).rmtree()
+    all_notebooks = Glob(f"{src}/*/*.ipynb")
+    for nb in all_notebooks:
+        _dest = f"{dest}/{parent(nb)}"
+        backup_this_notebook(nb, _dest)
+    for f in Glob(f"{dest}/*/changelog.md"):
+        f.rm(confirm_prompt=False)
 
 
 # %% ../nbs/jupyter_notebook.ipynb 6

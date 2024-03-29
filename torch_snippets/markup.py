@@ -291,7 +291,7 @@ class AttrDict(object):
         return summary_str
 
     def write_summary(self, to, **kwargs):
-        writelines(self.summary(**kwargs).split("\n"), to)
+        writelines(self.summary(**kwargs).split("\n"), to, "w")
 
     def fetch(self, addr):
         if isinstance(addr, (list, L)):

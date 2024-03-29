@@ -1,5 +1,15 @@
 # Changelog
 
+#### 0.530
+☠️ Stop using rich's print and revert back to builtin print
+🐞 Decouple AD and torch
+🎉 Add a new chart - spider / radar
+#### 0.529
+🧹 change code to remove future warnings in text_utils
+
+#### 0.528
+🐞 AD string summary was buggy
+
 #### 0.524
 🐞 all write modes are 'a' by default to avoid accidental overwriting
 🧹 AD writes better string summary (support for multiline)

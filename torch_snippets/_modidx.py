@@ -211,7 +211,11 @@ d = {
             "torch_snippets.charts.confusion_matrix": (
                 "charts.html#confusion_matrix",
                 "torch_snippets/charts.py",
-            )
+            ),
+            "torch_snippets.charts.spider": (
+                "charts.html#spider",
+                "torch_snippets/charts.py",
+            ),
         },
         "torch_snippets.dates": {},
         "torch_snippets.decorators": {
@@ -315,6 +319,10 @@ d = {
         "torch_snippets.ipython": {
             "torch_snippets.ipython.backup_all_notebooks": (
                 "jupyter_notebook.html#backup_all_notebooks",
+                "torch_snippets/ipython.py",
+            ),
+            "torch_snippets.ipython.backup_folders_of_nbs": (
+                "jupyter_notebook.html#backup_folders_of_nbs",
                 "torch_snippets/ipython.py",
             ),
             "torch_snippets.ipython.backup_this_notebook": (

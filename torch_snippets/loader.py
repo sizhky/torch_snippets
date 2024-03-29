@@ -78,10 +78,10 @@ __all__ = [
 ]
 
 
-import glob
 import os
 import re
 import sys
+from builtins import print
 from pathlib import Path
 
 import numpy as np
@@ -128,7 +128,6 @@ import datetime
 import pdb
 from typing import Tuple, Union
 
-import matplotlib  # ; matplotlib.use('Agg')
 import matplotlib.patheffects as path_effects
 import matplotlib.pyplot as plt
 
@@ -159,7 +158,6 @@ def _repr_pretty_(self, p, cycle):
     )
 
 
-import time
 from collections import Counter, defaultdict
 from copy import deepcopy as dcopy
 
@@ -858,7 +856,7 @@ def phasify(items, n_phases: int):
 def split(items, splits, random_state=10):
     ks, vs = lzip(*splits.items())
     if any([v == -1 for v in vs]):
-        assert list(vs).count(-1) == 1, f"Only atmost one `-1` is allowed"
+        assert list(vs).count(-1) == 1, "Only atmost one `-1` is allowed"
         vs = [v if v != -1 else -sum(vs) for v in vs]
     Info(vs)
     assert sum(vs) == 1, f"Split percentages should add to 1, received sum={sum(vs)}"

@@ -3,7 +3,6 @@
 # %% auto 0
 __all__ = [
     "console",
-    "print",
     "reset_logger_width",
     "logger",
     "Debug",
@@ -62,7 +61,7 @@ def get_console(width=None):
 
 
 console = get_console()
-print = console.print
+# print = console.print
 
 # %% ../nbs/logging.ipynb 8
 @patch_to(RichHandler)

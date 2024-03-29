@@ -9,11 +9,12 @@ __all__ = [
 ]
 import string
 
-import pandas as pd, numpy as np
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from fuzzywuzzy import fuzz
 from sklearn.cluster import dbscan
-from statistics import mean
-import matplotlib.pyplot as plt
 
 from torch_snippets import *
 
@@ -173,7 +174,7 @@ def find_lines_for_bbs(bbs, eps=20):
         lctr += 1
     line__[-1] = -1
     # Created a dictionary to check if the numbering goes wrong
-    df["line"] = df.line_.map(lambda x: line__[x])
+    df["line"] = df.line_.map(lambda x: float(line__[x]))
     df_.index = df_.index.map(lambda x: line__[x])
     # Mapped the row numbers with the dictionary numbers
     for row in range(len(df)):
@@ -345,7 +346,6 @@ def find_match(word, words, N=1, lower=False):
 
 
 from difflib import SequenceMatcher as SM
-from nltk.util import ngrams
 
 
 def fuzzyfind(needle, hay):
@@ -372,10 +372,10 @@ def get_line_data_from_word_data(df, line_gap=10, block_gap=10):
     df = find_blocks(df, eps=block_gap)
     df = df.groupby("line_block").agg(
         {
-            "x": min,
-            "y": min,
-            "X": max,
-            "Y": max,
+            "x": "min",
+            "y": "min",
+            "X": "max",
+            "Y": "max",
             "text": lambda x: " ".join(x),
             **{c: lambda x: list(x) for c in df.columns if c not in [*"xyXY", "text"]},
         }

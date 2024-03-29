@@ -288,7 +288,15 @@ class AttrDict(object):
         def format_item(key, item, path, depth, sep):
             import numpy as np
             import pandas as pd
-            import torch
+
+            try:
+                import torch
+            except ModuleNotFoundError:
+
+                class Torch:
+                    Tensor = type(None)
+
+                torch = Torch()
 
             if isinstance(item, (pd.DataFrame,)):
                 return f"{sep * depth}{key} - {type(item).__name__} - shape {item.shape} - columns {item.columns} - {hash_pandas_dataframe(item)}\n"
@@ -297,7 +305,9 @@ class AttrDict(object):
                 return f"{sep*depth}{key}\n" + item.summary(path, depth + 1, sep)
             elif isinstance(item, (list, tuple, set, frozenset, L)):
                 return summarize_collection(key, item, path, depth + 1, sep)
-            elif isinstance(item, (torch.Tensor, np.ndarray)):
+            elif torch.Tensor != type(None) and isinstance(
+                item, (torch.Tensor, np.ndarray)
+            ):
                 if isinstance(item, np.ndarray):
                     item = torch.tensor(item)
                 return f"{sep * depth}{key} - {item} - {hash_tensor(item)}\n"
@@ -306,12 +316,17 @@ class AttrDict(object):
                 if isinstance(item, (int, float, complex, str)):
                     is_multiline = False
                     if isinstance(item, str):
-                        is_multiline = "\n" in str
-                        if len(item) > 200:
-                            item = item[:100] + "..." + item[-100:]
+                        is_multiline = "\n" in item
+                        _sep = (
+                            " ...\n...\n...\n...\n... " if is_multiline else "........."
+                        )
+                        if len(item) > 250:
+                            item = item[:100] + _sep + item[-100:]
                         if is_multiline:
-                            item = f"```{item}```"
-                    multiline = "" if is_multiline else "Multiline "
+                            _item = item.split("\n")
+                            _item = "\n".join([f"{sep*(depth+1)}{l}" for l in _item])
+                            item = f"↓\n{sep*(depth+1)}```\n{_item}\n{sep*(depth+1)}```"
+                    multiline = "" if not is_multiline else "Multiline "
                     return f"{sep * depth}{key} - {item} ({multiline}{type(item).__name__})\n"
                 else:
                     return f"{sep * depth}{key} - {type(item).__name__}\n"
