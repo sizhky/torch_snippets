@@ -19,10 +19,11 @@ __all__ = [
 ]
 
 # %% ../nbs/markups.ipynb 2
-import json
+import json, os
 from json import JSONEncoder
 import jsonlines
 import yaml
+
 
 from .loader import BB, L, np
 from .paths import *
@@ -174,7 +175,16 @@ class AttrDict(object):
 
     def __contains__(self, key):
         key = str(key)
-        return key in self.__dict__.keys()
+        if "." not in key:
+            return key in self.__dict__.keys()
+        else:
+            d = self
+            for _k in key.split("."):
+                try:
+                    d = d[_k]
+                except AttributeError:
+                    return False
+            return True
 
     def __delitem__(self, key):
         key = str(key)
@@ -240,54 +250,82 @@ class AttrDict(object):
                         addresses.extend(item.find_address(key, f"{new_path}.{i}"))
         return addresses
 
-    def summary(self, current_path="", summary_str="", depth=0, sep="\t"):
-        tab = sep * depth
-        for k in self.keys():
-            if current_path:
-                new_path = f"{current_path}.{k}"
-            else:
-                new_path = k
+    def summary(self, current_path="", depth=0, sep="  ", max_items=10):
+        max_items = int(os.environ.get("AD_MAX_ITEMS", max_items))
+        sep = os.environ.get("AD_SEP", sep)
 
-            if isinstance(self[k], AttrDict):
-                summary_str += f"{tab}{k}\n"
-                summary_str = self[k].summary(new_path, summary_str, depth + 1, sep=sep)
-            elif isinstance(self[k], (list, tuple, set, frozenset)):
-                summary_str += f"{tab}{k}\n"
-                for i, item in enumerate(self[k]):
-                    summary_str += f"{tab}{sep}{i}\n"
-                    if isinstance(item, AttrDict):
-                        summary_str = item.summary(
-                            f"{new_path}.{i}", summary_str, depth + 2, sep=sep
+        def format_path(path, key):
+            return f"{path}.{key}" if path else key
+
+        def format_item(key, item, path, depth, sep):
+            import numpy as np
+            import pandas as pd
+
+            try:
+                import torch
+            except ModuleNotFoundError:
+
+                class Torch:
+                    Tensor = type(None)
+
+                torch = Torch()
+
+            if isinstance(item, (pd.DataFrame,)):
+                return f"{sep * depth}{key} - {type(item).__name__} - shape {item.shape} - columns {item.columns} - {hash_pandas_dataframe(item)}\n"
+            if isinstance(item, AttrDict) or hasattr(item, "keys"):
+                item = AttrDict(**item)
+                return f"{sep*depth}{key}\n" + item.summary(path, depth + 1, sep)
+            elif isinstance(item, (list, tuple, set, frozenset, L)):
+                return summarize_collection(key, item, path, depth + 1, sep)
+            elif isinstance(item, (torch.Tensor, np.ndarray)):
+                is_np = False
+                if isinstance(item, np.ndarray):
+                    is_np = True
+                    item = torch.tensor(item)
+                is_np = "🔦" if not is_np else "np."
+                return f"{sep * depth}{key} - {is_np}{item} - {hash_tensor(item)}\n"
+
+            else:
+                if isinstance(item, (int, float, complex, str)):
+                    is_multiline = False
+                    if isinstance(item, str):
+                        is_multiline = "\n" in item
+                        _sep = (
+                            " ...\n...\n...\n...\n... " if is_multiline else "........."
                         )
-                    elif isinstance(item, (list, tuple, set, frozenset)):
-                        nested_path = f"{new_path}.{i}"
-                        nested_summary_str = ""
-                        for j, nested_item in enumerate(item):
-                            summary_str += f"{tab}{sep}{sep}{j}\n"
-                            if isinstance(nested_item, AttrDict):
-                                nested_summary_str = nested_item.summary(
-                                    f"{nested_path}.{j}",
-                                    nested_summary_str,
-                                    depth + 3,
-                                    sep=sep,
-                                )
-                            elif isinstance(nested_item, (list, tuple, set, frozenset)):
-                                nested_list_path = f"{nested_path}.{j}"
-                                for idx, nested_list_item in enumerate(nested_item):
-                                    if isinstance(nested_list_item, AttrDict):
-                                        nested_summary_str = nested_list_item.summary(
-                                            f"{nested_list_path}.{idx}",
-                                            nested_summary_str,
-                                            depth + 4,
-                                            sep=sep,
-                                        )
-                        if nested_summary_str:
-                            summary_str += nested_summary_str
-                    else:
-                        summary_str += f"{tab}{sep}{k} - {type(self[k]).__name__}\n"
-            else:
-                summary_str += f"{tab}{k} - {type(self[k]).__name__}\n"
+                        if len(item) > 250:
+                            item = item[:100] + _sep + item[-100:]
+                        if is_multiline:
+                            _item = item.split("\n")
+                            _item = "\n".join([f"{sep*(depth+1)}{l}" for l in _item])
+                            item = f"↓\n{sep*(depth+1)}```\n{_item}\n{sep*(depth+1)}```"
+                    multiline = "" if not is_multiline else "Multiline "
+                    return f"{sep * depth}{key} - {item} ({multiline}{type(item).__name__})\n"
+                else:
+                    return f"{sep * depth}{key} - {type(item).__name__}\n"
 
+        def summarize_collection(key, collection, path, d, s):
+            summary_str = f"{s * (d - 1)}{key}\n"
+            for i, item in enumerate(collection):
+                item_path = format_path(path, i)
+                if i < max_items:
+                    summary_str += format_item(i, item, item_path, d, s)
+                else:
+                    summary_str += (
+                        f"{s*d}... {len(collection) - max_items} more items ...\n"
+                    )
+                    break
+            return summary_str
+
+        summary_str = ""
+        for ix, key in enumerate(self.keys()):
+            if ix >= max_items:
+                summary_str += (
+                    f"{sep*depth} ... {len(self.keys()) - max_items} more keys ...\n"
+                )
+                break
+            new_path = format_path(current_path, key)
+            summary_str += format_item(key, self[key], new_path, depth, sep)
         return summary_str
 
     def write_summary(self, to, **kwargs):

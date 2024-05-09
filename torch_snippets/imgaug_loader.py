@@ -26,6 +26,19 @@ from torch_snippets.bb_utils import (
 
 # %% ../nbs/imgaug_loader.ipynb 3
 def do(img, bbs=None, aug=None, cval=255):
+    """
+    Apply image augmentation to the input image and bounding boxes.
+
+    Args:
+        img (numpy.ndarray or PIL.Image.Image): The input image.
+        bbs (pandas.DataFrame or None): The bounding boxes associated with the image.
+        aug (imgaug.augmenters.Augmenter or None): The image augmentation object.
+        cval (int): The constant value used for padding.
+
+    Returns:
+        tuple or PIL.Image.Image: If `bbs` is None, returns the augmented image.
+        Otherwise, returns a tuple containing the augmented image and the augmented bounding boxes.
+    """
     if isinstance(img, PIL.Image.Image):
         _Image = True
         img = np.array(img)
@@ -72,16 +85,52 @@ def do(img, bbs=None, aug=None, cval=255):
 
 
 def bw(img, bbs):
+    """
+    Applies grayscale augmentation to the input image.
+
+    Args:
+        img (numpy.ndarray): The input image.
+        bbs (list): List of bounding boxes associated with the image.
+
+    Returns:
+        numpy.ndarray: The augmented image.
+
+    """
     aug = iaa.Grayscale()
     return do(img, bbs, aug)
 
 
 def rotate(img, bbs=None, angle=None, cval=255):
+    """
+    Rotate the input image and bounding boxes (if provided) by a given angle.
+
+    Args:
+        img (numpy.ndarray): The input image.
+        bbs (list, optional): List of bounding boxes. Defaults to None.
+        angle (float, optional): The angle of rotation in degrees. Defaults to None.
+        cval (int, optional): The constant value used to fill the empty space after rotation. Defaults to 255.
+
+    Returns:
+        numpy.ndarray: The rotated image.
+    """
     aug = iaa.Rotate(angle, cval=cval, fit_output=True)
     return do(img, bbs=bbs, aug=aug)
 
 
 def pad(img, bbs, sz=None, deltas=None, cval=0):
+    """
+    Pad an image and its bounding boxes.
+
+    Args:
+        img (numpy.ndarray or PIL.Image.Image): The input image.
+        bbs (list): List of bounding boxes.
+        sz (tuple, optional): The desired size of the output image. If provided, the image will be padded to this size. Defaults to None.
+        deltas (tuple, optional): The amount of padding to be applied on each side of the image. If provided, sz will be ignored. Defaults to None.
+        cval (int, optional): The value used for padding. Defaults to 0.
+
+    Returns:
+        numpy.ndarray: The padded image.
+    """
     if isinstance(img, np.ndarray):
         h, w = img.shape[:2]
     else:
@@ -95,6 +144,30 @@ def pad(img, bbs, sz=None, deltas=None, cval=0):
 
 
 def get_size(sz, h, w):
+    """
+    Calculate the target size (height and width) based on the input size and resize parameters.
+
+    Args:
+        sz (tuple, list, float, int): The resize parameters. It can be one of the following:
+            - (tuple, list): A tuple or list containing a signal and target size (H, W).
+                             The signal can be either 'at-least' or 'at-most'.
+                             The target size represents the desired size of the image.
+            - float: A float value representing the fraction of the input size.
+            - int: An integer value representing the target size.
+            - tuple: A tuple containing the target size (H, W).
+                     The target size can be -1 to maintain the aspect ratio of the input size.
+            - float: A float value representing the target size as a fraction of the input size.
+
+        h (int): The height of the input size.
+        w (int): The width of the input size.
+
+    Returns:
+        tuple: A tuple containing the target size (H, W).
+
+    Raises:
+        AssertionError: If the resize type is not 'at-least' or 'at-most'.
+
+    """
     if isinstance(sz, (tuple, list)) and isinstance(sz[0], str):
         signal, (H, W) = sz
         assert signal in "at-least,at-most".split(
@@ -129,6 +202,19 @@ def get_size(sz, h, w):
 
 
 def rescale(im, bbs, sz):
+    """
+    Rescales the input image and bounding boxes to the specified size.
+
+    Args:
+        im (PIL.Image.Image or numpy.ndarray): The input image.
+        bbs (list): List of bounding boxes.
+        sz (tuple): The target size (height, width) to resize the image.
+
+    Returns:
+        PIL.Image.Image: The resized image.
+        list: The resized bounding boxes.
+
+    """
     if isinstance(im, PIL.Image.Image):
         to_pil = True
         im = np.array(im)
@@ -144,11 +230,33 @@ def rescale(im, bbs, sz):
 
 
 def crop(img, bbs, deltas):
+    """
+    Crop the image and bounding boxes using the specified deltas.
+
+    Args:
+        img (numpy.ndarray): The input image.
+        bbs (list): List of bounding boxes.
+        deltas (tuple or list): The crop deltas in the form of (top, right, bottom, left).
+
+    Returns:
+        numpy.ndarray: The cropped image.
+        list: The cropped bounding boxes.
+    """
     aug = iaa.Crop(deltas)
     return do(img, bbs, aug)
 
 
 def imgaugbbs2bbs(bbs):
+    """
+    Converts a list of imgaug bounding boxes to a list of custom BB objects.
+
+    Args:
+        bbs (list): A list of imgaug bounding boxes.
+
+    Returns:
+        list: A list of custom BB objects.
+
+    """
     if bbs is None:
         return None
     return [
@@ -158,6 +266,16 @@ def imgaugbbs2bbs(bbs):
 
 
 def bbs2imgaugbbs(bbs, img):
+    """
+    Convert a list of bounding boxes to an imgaug BoundingBoxesOnImage object.
+
+    Args:
+        bbs (list): List of bounding boxes in the format [(x1, y1, x2, y2), ...].
+        img (numpy.ndarray): Input image.
+
+    Returns:
+        imgaug.BoundingBoxesOnImage: BoundingBoxesOnImage object representing the bounding boxes on the image.
+    """
     if bbs is None:
         return None
     return BoundingBoxesOnImage(

@@ -171,6 +171,15 @@ class BB:
 
 # %% ../nbs/bounding_boxes.ipynb 8
 def df2bbs(df):
+    """
+    Convert a DataFrame to bounding boxes.
+
+    Parameters:
+    df (pd.DataFrame): The DataFrame to convert.
+
+    Returns:
+    list: A list of bounding boxes.
+    """
     if "bb" in df.columns:
         try:
             return bbfy(df["bb"].values.tolist())
@@ -180,19 +189,56 @@ def df2bbs(df):
 
 
 def bbs2df(bbs):
+    """
+    Convert bounding boxes to a DataFrame.
+
+    Parameters:
+    bbs (list): The bounding boxes to convert.
+
+    Returns:
+    pd.DataFrame: A DataFrame representing the bounding boxes.
+    """
     bbs = [list(bb) for bb in bbs]
     return pd.DataFrame(bbs, columns=["x", "y", "X", "Y"])
 
 
 def bbfy(bbs):
+    """
+    Convert bounding boxes to BB objects.
+
+    Parameters:
+    bbs (list): The bounding boxes to convert.
+
+    Returns:
+    list: A list of BB objects.
+    """
     return [BB(bb) for bb in bbs]
 
 
 def jitter(bbs, noise):
+    """
+    Add noise to bounding boxes. Useful when you have a lot of overlapping boxes.
+
+    Parameters:
+    bbs (list): The bounding boxes to add noise to.
+    noise (float): The amount of noise to add.
+
+    Returns:
+    list: A list of bounding boxes with added noise.
+    """
     return [BB(bb).jitter(noise) for bb in bbs]
 
 
 def compute_eps(eps):
+    """
+    Compute epsilon values for bounding box manipulation.
+
+    Parameters:
+    eps (float or tuple): The epsilon value(s) to compute.
+
+    Returns:
+    tuple: A tuple of epsilon values.
+    """
     if isinstance(eps, tuple):
         if len(eps) == 4:
             epsx, epsy, epsX, epsY = eps
@@ -205,7 +251,16 @@ def compute_eps(eps):
 
 
 def enlarge_bbs(bbs, eps=0.2):
-    "enlarge all `bbs` by `eps` fraction (i.e., eps*100 percent)"
+    """
+    Enlarge bounding boxes by a certain fraction.
+
+    Parameters:
+    bbs (list): The bounding boxes to enlarge.
+    eps (float, optional): The fraction to enlarge by. Defaults to 0.2.
+
+    Returns:
+    list: A list of enlarged bounding boxes.
+    """
     bbs = bbfy(bbs)
     epsx, epsy, epsX, epsY = compute_eps(eps)
     bbs = bbfy(bbs)
@@ -217,7 +272,16 @@ def enlarge_bbs(bbs, eps=0.2):
 
 
 def shrink_bbs(bbs, eps=0.2):
-    "shrink all `bbs` by `eps` fraction (i.e., eps*100 percent)"
+    """
+    Shrink bounding boxes by a certain fraction.
+
+    Parameters:
+    bbs (list): The bounding boxes to shrink.
+    eps (float, optional): The fraction to shrink by. Defaults to 0.2.
+
+    Returns:
+    list: A list of shrunk bounding boxes.
+    """
     bbs = bbfy(bbs)
     epsx, epsy, epsX, epsY = compute_eps(eps)
     bbs = bbfy(bbs)
@@ -230,6 +294,17 @@ def shrink_bbs(bbs, eps=0.2):
 
 # %% ../nbs/bounding_boxes.ipynb 9
 def iou(bboxes1, bboxes2):
+    """
+    Calculates the Intersection over Union (IoU) between two sets of bounding boxes.
+
+    Args:
+        bboxes1 (list or numpy array): The first set of bounding boxes in the format [x, y, X, Y].
+        bboxes2 (list or numpy array): The second set of bounding boxes in the format [x, y, X, Y].
+
+    Returns:
+        numpy array: The IoU between each pair of bounding boxes.
+
+    """
     bboxes1 = np.array(bboxes1)
     bboxes2 = np.array(bboxes2)
     x11, y11, x12, y12 = np.split(bboxes1, 4, axis=1)
@@ -246,6 +321,17 @@ def iou(bboxes1, bboxes2):
 
 
 def compute_distance_matrix(bboxes1, bboxes2):
+    """
+    Compute the distance matrix between two sets of bounding boxes.
+
+    Parameters:
+    - bboxes1 (list): List of bounding boxes in the format [x, y, X, Y].
+    - bboxes2 (list): List of bounding boxes in the format [x, y, X, Y].
+
+    Returns:
+    - distance_matrix (ndarray): 2D array containing the Euclidean distances between all pairs of bounding boxes.
+    """
+
     # Convert the bounding box lists to NumPy arrays
     bboxes1 = np.array(bboxes1)
     bboxes2 = np.array(bboxes2)
@@ -264,7 +350,17 @@ def compute_distance_matrix(bboxes1, bboxes2):
 
 
 def compute_distances(df1, df2, shrink_factors=(1, 1)):
-    """Return euclidean distance mxn matrix for all boxes from df1 with all boxes from df2"""
+    """
+    Compute the Euclidean distance matrix between bounding boxes in df1 and df2.
+
+    Parameters:
+    - df1 (DataFrame): The first DataFrame containing bounding boxes.
+    - df2 (DataFrame): The second DataFrame containing bounding boxes.
+    - shrink_factors (tuple, optional): The shrink factors to apply to the bounding boxes. Default is (1, 1).
+
+    Returns:
+    - distances (ndarray): The Euclidean distance matrix between the bounding boxes in df1 and df2.
+    """
     sx, sy = shrink_factors
     bbs1 = np.array(df2bbs(df1)) / np.array([sx, sy, sx, sy])
     bbs2 = np.array(df2bbs(df2)) / np.array([sx, sy, sx, sy])
@@ -275,7 +371,18 @@ def compute_distances(df1, df2, shrink_factors=(1, 1)):
 
 # %% ../nbs/bounding_boxes.ipynb 10
 def split_bb_to_xyXY(df):
-    "convert bb column to separate x,y,X,Y columns"
+    """
+    Convert the 'bb' column in the DataFrame to separate 'x', 'y', 'X', 'Y' columns.
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing the bounding box information.
+
+    Returns:
+        pd.DataFrame: The DataFrame with separate 'x', 'y', 'X', 'Y' columns.
+
+    Raises:
+        AssertionError: If the input is not a DataFrame or if the 'bb' column is missing.
+    """
     df = df.copy()
     assert isinstance(df, pd.DataFrame)
     if all([item in df.columns for item in "xyXY"]):
@@ -294,7 +401,18 @@ def split_bb_to_xyXY(df):
 
 
 def combine_xyXY_to_bb(df):
-    "combine `x,y,X,Y` to `bb` column"
+    """
+    Combine `x`, `y`, `X`, `Y` columns into a single `bb` column.
+
+    Args:
+        df (pandas.DataFrame): The input DataFrame containing `x`, `y`, `X`, `Y` columns.
+
+    Returns:
+        pandas.DataFrame: The modified DataFrame with the `bb` column.
+
+    Raises:
+        AssertionError: If any of the columns `x`, `y`, `X`, `Y` are missing in the DataFrame.
+    """
     df = df.copy()
     assert all(
         [item in df.columns for item in "xyXY"]
@@ -305,16 +423,47 @@ def combine_xyXY_to_bb(df):
 
 
 def is_absolute(df):
+    """
+    Check if the bounding boxes in the given DataFrame are absolute.
+
+    Args:
+        df (pandas.DataFrame): The DataFrame containing bounding box coordinates.
+
+    Returns:
+        bool: True if the maximum value of the bounding box coordinates is greater than 1.1, False otherwise.
+    """
     bbs = df2bbs(df)
     bbs = np.array(bbs)
     return bbs.max() > 1.1
 
 
 def is_relative(df):
+    """
+    Check if the bounding box coordinates in the DataFrame are relative.
+
+    Args:
+        df (pandas.DataFrame): The DataFrame containing bounding box coordinates.
+
+    Returns:
+        bool: True if the bounding box coordinates are relative, False otherwise.
+    """
     return not is_absolute(df)
 
 
 def to_relative(df, height, width, force=False):
+    """
+    Converts bounding box coordinates in a DataFrame to relative coordinates.
+
+    Args:
+        df (pandas.DataFrame): The DataFrame containing bounding box coordinates.
+        height (int): The height of the image.
+        width (int): The width of the image.
+        force (bool, optional): If True, forces conversion even if the coordinates are already relative.
+                                Defaults to False.
+
+    Returns:
+        pandas.DataFrame: The DataFrame with bounding box coordinates converted to relative coordinates.
+    """
     if not force and is_relative(df):
         return df
     df = df.copy()
@@ -333,6 +482,18 @@ def to_relative(df, height, width, force=False):
 
 
 def to_absolute(df, height, width, force=False):
+    """
+    Converts bounding box coordinates from relative to absolute values.
+
+    Args:
+        df (pandas.DataFrame): The DataFrame containing the bounding box coordinates.
+        height (int): The height of the image.
+        width (int): The width of the image.
+        force (bool, optional): If True, forces the conversion even if the coordinates are already in absolute values. Defaults to False.
+
+    Returns:
+        pandas.DataFrame: The DataFrame with the bounding box coordinates converted to absolute values.
+    """
     if not force and is_absolute(df):
         return df
     df = df.copy()

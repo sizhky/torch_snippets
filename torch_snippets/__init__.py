@@ -1,4 +1,4 @@
-__version__ = "0.530"
+__version__ = "0.532"
 from .loader import *
 from .paths import *
 from .markup import *

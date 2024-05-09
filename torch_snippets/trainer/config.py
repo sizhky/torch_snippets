@@ -10,6 +10,28 @@ import inspect as inspect_builtin
 
 # %% ../../nbs/config.ipynb 2
 class DeepLearningConfig:
+    """
+    A configuration class for deep learning models.
+
+    This class provides methods to access and manipulate configuration settings.
+
+    Attributes:
+        input_variables (list): List of input variables defined in the class constructor.
+
+    Methods:
+        keys(): Returns the list of input variables.
+        __getitem__(key): Returns the value of the specified key.
+        __contains__(key): Checks if the specified key is present in the input variables.
+        from_ini_file(filepath, config_root=None): Creates an instance of the class from an INI file.
+        __repr__(): Returns a string representation of the class.
+
+    Example usage:
+        config = DeepLearningConfig()
+        config.from_ini_file('config.ini')
+        print(config.keys())
+        print(config['learning_rate'])
+    """
+
     def keys(self):
         if not hasattr(self, "input_variables"):
             self.input_variables = inspect_builtin.signature(

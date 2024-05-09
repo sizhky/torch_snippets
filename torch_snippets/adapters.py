@@ -27,6 +27,14 @@ def np_2_b64(image: np.ndarray) -> str:
 
 
 def b64_2_np(input: str) -> np.ndarray:
+    """Converts a base64 encoded image to a NumPy array.
+
+    Args:
+        input (str): The base64 encoded image.
+
+    Returns:
+        np.ndarray: The NumPy array representation of the image in RGB format.
+    """
     input = bytes(input, "utf-8")
     input = base64.b64decode(input)
     img_nparr = np.frombuffer(input, np.uint8)
@@ -69,6 +77,17 @@ def file_2_bytes(fpath):
 def _process(
     df: pd.DataFrame, label_column="readable_label", default_label="Background"
 ):
+    """
+    Process the given DataFrame and convert it into a list of records.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame to be processed.
+        label_column (str, optional): The column name for the label. Defaults to "readable_label".
+        default_label (str, optional): The default label value. Defaults to "Background".
+
+    Returns:
+        list: A list of records, where each record is a dictionary representing a row in the DataFrame.
+    """
     df["@xbr"] = df["X"]
     df["@xtl"] = df["x"]
     df["@ybr"] = df["Y"]
@@ -118,6 +137,22 @@ def csvs_2_cvat(
     default_label="Background",
     extension="jpg",
 ):
+    """
+    Convert CSV annotations to CVAT XML format.
+
+    Args:
+        images_folder (str): Path to the folder containing the images.
+        csvs_folder (str): Path to the folder containing the CSV annotations.
+        xml_output_file (str): Path to the output XML file.
+        items (list, optional): List of items to process. If None, all items will be processed. Defaults to None.
+        parquet (bool, optional): Whether the annotations are stored in Parquet format. Defaults to False.
+        relative_df (bool, optional): Whether the bounding box coordinates in the CSV are relative to the image size. Defaults to True.
+        default_label (str, optional): Default label for the bounding boxes. Defaults to "Background".
+        extension (str, optional): Image file extension. Defaults to "jpg".
+
+    Returns:
+        None
+    """
     images_folder, csvs_folder = [P(_) for _ in [images_folder, csvs_folder]]
     data = AttrDict({"annotations": {"image": []}})
     if items is None:
@@ -144,6 +179,16 @@ def csvs_2_cvat(
 
 
 def _get_attribute_columns(column):
+    """
+    Get attribute columns from a given column.
+
+    Args:
+        column (pandas.Series): The input column.
+
+    Returns:
+        set: A set of attribute columns extracted from the input column.
+    """
+
     def _get_columns_from_row(item):
         if item != item:
             return []
@@ -157,6 +202,16 @@ def _get_attribute_columns(column):
 
 
 def _get_attribute_data(item, column_name):
+    """
+    Retrieves the attribute data for a given item and column name.
+
+    Parameters:
+    - item: The item to retrieve the attribute data from.
+    - column_name: The name of the column to retrieve the attribute data for.
+
+    Returns:
+    - The attribute data for the given item and column name, or np.nan if not found.
+    """
     if item != item:
         return item
     if isinstance(item, dict):
@@ -173,6 +228,15 @@ def _get_attribute_data(item, column_name):
 
 
 def _cvat_ann_2_csv(ann):
+    """
+    Convert CVAT annotation to a pandas DataFrame in CSV format.
+
+    Args:
+        ann (dict): CVAT annotation dictionary.
+
+    Returns:
+        pandas.DataFrame: DataFrame containing the converted annotation data in CSV format.
+    """
     if "box" not in ann:
         return pd.DataFrame()
     if isinstance(ann.box, AttrDict):
@@ -206,8 +270,21 @@ def _cvat_ann_2_csv(ann):
 
 
 def cvat_2_csvs(xmlfile, csvs_folder):
+    """
+    Convert CVAT XML annotations to CSV files.
+
+    Args:
+        xmlfile (str): Path to the CVAT XML file.
+        csvs_folder (str): Path to the folder where the CSV files will be saved.
+
+    Returns:
+        None
+    """
     data = read_xml(xmlfile)
-    for item in data.annotations.image:
+    items = data.annotations.image
+    if not isinstance(items, list):
+        items = [items]
+    for item in items:
         try:
             df = _cvat_ann_2_csv(item)
             save_at = f'{csvs_folder}/{stem(item["@name"])}.csv'

@@ -1,9 +1,14 @@
 # Changelog
 
+#### 0.531
+🎉 AD `__contains__` can do a nested `in` 'x.y.z' in AD(x={'y': {'z': 10}}) == True
+
 #### 0.530
 ☠️ Stop using rich's print and revert back to builtin print
 🐞 Decouple AD and torch
 🎉 Add a new chart - spider / radar
+🎉 Add scp client with download upload functionality
+
 #### 0.529
 🧹 change code to remove future warnings in text_utils
 

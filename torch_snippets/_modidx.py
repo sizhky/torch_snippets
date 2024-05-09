@@ -208,12 +208,20 @@ d = {
             ),
         },
         "torch_snippets.charts": {
+            "torch_snippets.charts.UpSetAltair": (
+                "charts.html#upsetaltair",
+                "torch_snippets/charts.py",
+            ),
             "torch_snippets.charts.confusion_matrix": (
                 "charts.html#confusion_matrix",
                 "torch_snippets/charts.py",
             ),
             "torch_snippets.charts.spider": (
                 "charts.html#spider",
+                "torch_snippets/charts.py",
+            ),
+            "torch_snippets.charts.upsetaltair_top_level_configuration": (
+                "charts.html#upsetaltair_top_level_configuration",
                 "torch_snippets/charts.py",
             ),
         },
@@ -894,6 +902,7 @@ d = {
                 "torch_snippets/registry.py",
             ),
         },
+        "torch_snippets.scp": {},
         "torch_snippets.sklegos": {
             "torch_snippets.sklegos.Cat2Num": (
                 "sklegos.html#cat2num",

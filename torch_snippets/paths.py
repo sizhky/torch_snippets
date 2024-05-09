@@ -344,20 +344,20 @@ def folder_summary(thing):
 print_folder_summary = lambda x: print(folder_summary(x))
 
 
-def tree(folder_path, *additional_flags):
-    import subprocess
+def tree(directory):
     from builtins import print
 
+    # Construct the shell command
+    shell_command = f"tree \"{directory}\" --filelimit=20 | sed 's/├/ /g; s/└/ /g; s/|/ /g; s/`/ /g; s/-/─/g; s/│/ /g; s/+/ /g'"
+    # Execute the shell command
     try:
-        # Construct the command by combining "tree" with the folder path and additional flags
-        command = ["tree", folder_path]
-        command.extend(additional_flags)
-
-        # Run the command and capture the output
-        result = subprocess.check_output(command, universal_newlines=True)
-        return print(result)
+        result = subprocess.run(
+            shell_command, shell=True, capture_output=True, text=True
+        )
+        # Print the output
+        print(result.stdout)
     except subprocess.CalledProcessError as e:
-        return f"Error: {e}"
+        print(f"Error executing command: {e}")
 
 
 # %% ../nbs/paths.ipynb 26

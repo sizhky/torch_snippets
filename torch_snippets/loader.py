@@ -366,13 +366,18 @@ def show(
     try:
         if isinstance(img, (str, Path)):
             img = read(str(img), 1)
-        if isinstance(img, torch.Tensor):
-            img = img.cpu().detach().numpy().copy()
+        try:
+            import torch
+
+            if isinstance(img, torch.Tensor):
+                img = img.cpu().detach().numpy().copy()
+        except ModuleNotFoundError:
+            pass
         if isinstance(img, PIL.Image.Image):
             img = np.array(img)
-
     except Exception as e:
-        print(e)
+        Warn(e)
+
     if isinstance(img, pd.DataFrame):
         df = img
         html_str = ""

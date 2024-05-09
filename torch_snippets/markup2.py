@@ -22,6 +22,7 @@ import hashlib
 
 # %% ../nbs/markups.ipynb 2
 import json
+import os
 from collections.abc import Mapping
 from json import JSONEncoder
 from typing import Union
@@ -215,7 +216,16 @@ class AttrDict(object):
 
     def __contains__(self, key):
         key = str(key)
-        return key in self.__dict__.keys()
+        if "." not in key:
+            return key in self.__dict__.keys()
+        else:
+            d = self
+            for _k in key.split("."):
+                try:
+                    d = d[_k]
+                except AttributeError:
+                    return False
+            return True
 
     def __delitem__(self, key):
         key = str(key)
@@ -282,6 +292,9 @@ class AttrDict(object):
         return addresses
 
     def summary(self, current_path="", depth=0, sep="  ", max_items=10):
+        max_items = int(os.environ.get("AD_MAX_ITEMS", max_items))
+        sep = os.environ.get("AD_SEP", sep)
+
         def format_path(path, key):
             return f"{path}.{key}" if path else key
 
@@ -305,12 +318,13 @@ class AttrDict(object):
                 return f"{sep*depth}{key}\n" + item.summary(path, depth + 1, sep)
             elif isinstance(item, (list, tuple, set, frozenset, L)):
                 return summarize_collection(key, item, path, depth + 1, sep)
-            elif torch.Tensor != type(None) and isinstance(
-                item, (torch.Tensor, np.ndarray)
-            ):
+            elif isinstance(item, (torch.Tensor, np.ndarray)):
+                is_np = False
                 if isinstance(item, np.ndarray):
+                    is_np = True
                     item = torch.tensor(item)
-                return f"{sep * depth}{key} - {item} - {hash_tensor(item)}\n"
+                is_np = "🔦" if not is_np else "np."
+                return f"{sep * depth}{key} - {is_np}{item} - {hash_tensor(item)}\n"
 
             else:
                 if isinstance(item, (int, float, complex, str)):
