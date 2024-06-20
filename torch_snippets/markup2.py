@@ -334,6 +334,7 @@ class AttrDict(object):
                     is_multiline = False
                     ogitem = item
                     if isinstance(item, (str, P)):
+                        item = str(item)
                         is_multiline = "\n" in item
                         _sep = (
                             " ...\n...\n...\n...\n... " if is_multiline else "........."

@@ -1,4 +1,7 @@
 # Changelog
+#### 0.535
+🐞 `AD` hotfix
+
 #### 0.534
 🎉 `store_scrap` is a new way to store on disk and show jupyter cell outputs in other notebooks.  
 Best for presenting complex analyses without worrying about running time-consuming notebooks

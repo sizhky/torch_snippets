@@ -22,6 +22,7 @@ from .thinc_parser.parser import Config
 def _default(self, obj):
     import numpy as np
     from datetime import datetime, date
+
     if isinstance(obj, P):
         return str(obj)
     if isinstance(obj, (AD, AD2)):
@@ -30,6 +31,7 @@ def _default(self, obj):
         return list(obj)
     try:
         import torch
+
         if isinstance(obj, torch.Tensor):
             obj = obj.cpu().detach().numpy()
     except:
@@ -39,7 +41,6 @@ def _default(self, obj):
     if isinstance(obj, (datetime, date)):
         return obj.isoformat()
     return getattr(obj.__class__, "__json__", _default.default)(obj)
-
 
 
 _default.default = JSONEncoder().default
@@ -149,8 +150,8 @@ class AttrDict(object):
         else:
             return AttrDict(value) if isinstance(value, dict) else value
 
-    __getitem__ = (
-        lambda self, x: AttrDict({_x: self[_x] for _x in x})
+    __getitem__ = lambda self, x: (
+        AttrDict({_x: self[_x] for _x in x})
         if isinstance(x, (list, L))
         else getattr(self, str(x))
     )
@@ -258,7 +259,8 @@ class AttrDict(object):
 
     def summary(self, current_path="", depth=0, sep="  ", max_items=10):
         max_items = int(os.environ.get("AD_MAX_ITEMS", max_items))
-        if max_items == -1: max_items = 1e3
+        if max_items == -1:
+            max_items = 1e3
         sep = os.environ.get("AD_SEP", sep)
 
         def format_path(path, key):
@@ -299,6 +301,7 @@ class AttrDict(object):
                     is_multiline = False
                     ogitem = item
                     if isinstance(item, (str, P)):
+                        item = str(item)
                         is_multiline = "\n" in item
                         _sep = (
                             " ...\n...\n...\n...\n... " if is_multiline else "........."
@@ -356,6 +359,7 @@ class AttrDict(object):
 
 AD = AttrDict
 
+
 def decompose(i):
     print(
         AD(
@@ -363,6 +367,7 @@ def decompose(i):
             type=str(type(i)),
         )
     )
+
 
 def pretty_json(
     i, fpath=None, indent=4, print_with_logger=True, return_as_string=False
