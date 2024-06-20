@@ -152,9 +152,7 @@ def _repr_pretty_(self, p, cycle):
     p.text(
         "..."
         if cycle
-        else repr(self.items)
-        if is_array(self.items)
-        else coll_repr(self, 20)
+        else repr(self.items) if is_array(self.items) else coll_repr(self, 20)
     )
 
 
@@ -352,13 +350,14 @@ def show(
     texts=None,
     bb_colors=None,
     cmap="gray",
-    grid=False,
-    save_path=None,
-    text_sz=None,
-    df=None,
+    grid: bool = False,
+    save_path: str = None,
+    text_sz: int = None,
+    df: pd.DataFrame = None,
     pts=None,
     conns=None,
-    interactive=False,
+    interactive: bool = False,
+    jitter: int = None,
     **kwargs,
 ):
     "show an image"
@@ -472,6 +471,8 @@ def show(
         rel = True if _x_ < 1.5 else False
         if rel:
             bbs = [BB(bb).absolute((h, w)) for bb in bbs]
+        if jitter:
+            bbs = [bb.jitter(jitter) for bb in bbs]
         bb_colors = (
             [[randint(255) for _ in range(3)] for _ in range(len(bbs))]
             if bb_colors == "random"

@@ -40,7 +40,7 @@ from .thinc_parser.parser import Config
 
 # %% ../nbs/markups.ipynb 3
 def _default(self, obj):
-    return getattr(obj.__class__, "to_json", _default.default)(obj)
+    return getattr(obj.__class__, "__json__", _default.default)(obj)
 
 
 _default.default = JSONEncoder().default
@@ -72,6 +72,9 @@ def unpack(obj):
 
 
 def hash_tensor(tensor):
+    import torch
+
+    assert isinstance(tensor, torch.Tensor)
     try:
         tensor_str = tensor.cpu().detach().numpy().tobytes()
     except:
@@ -98,8 +101,8 @@ class AttrDict(object):
     0. Access and modify keys (including nested keys) as if they were object attributes, supporting tab-completion.
        Example: `self.key1.key2[0].key3`
     1. Keys and values are recursively converted to AttrDict instances.
-    2. Pretty-print the dictionary using `self.pretty()`.
-    3. Convert the entire structure to a regular dictionary at any time using `self.to_dict()`.
+    2. Pretty-print the dictionary using `print`.
+    3. Convert the entire structure to a regular dictionary at any time using `self.to_dict() / self.dict()`.
     3. Recursively remove keys using `self.drop(key)` from a JSON object.
     4. Apply a function to all values at all levels using `map`.
 
@@ -117,7 +120,7 @@ class AttrDict(object):
     - `__len__()`: Return the number of keys in the AttrDict.
     - `__repr__()`: Return a string representation of the AttrDict.
     - `__dir__()`: List the keys of the AttrDict as attributes.
-    - `__contains__(key)`: Check if a key exists in the AttrDict.
+    - `__contains__(key)`: Check if a key exists in the AttrDict, use 'a.b.c' notation to directly check for a nested attribute.
     - `__delitem__(key)`: Delete a key from the AttrDict.
     - `map(func)`: Apply a function to all values in the AttrDict.
     - `drop(key)`: Recursively remove a key and its values from the AttrDict.
@@ -144,7 +147,7 @@ class AttrDict(object):
     ```
     """
 
-    forbidden = set(":,'\"}{")
+    forbidden = set(":,'\"}{.")
 
     def __init__(self, *args, given_input_to_ad=None, **kwargs):
         given_input_to_ad = {} if given_input_to_ad is None else given_input_to_ad
@@ -187,8 +190,8 @@ class AttrDict(object):
                 AttrDict(given_input_to_ad=value) if isinstance(value, dict) else value
             )
 
-    __getitem__ = (
-        lambda self, x: AttrDict({_x: self[_x] for _x in x})
+    __getitem__ = lambda self, x: (
+        AttrDict({_x: self[_x] for _x in x})
         if isinstance(x, (list, L))
         else getattr(self, str(x))
     )
@@ -327,21 +330,22 @@ class AttrDict(object):
                 return f"{sep * depth}{key} - {is_np}{item} - {hash_tensor(item)}\n"
 
             else:
-                if isinstance(item, (int, float, complex, str)):
+                if isinstance(item, (int, float, complex, str, P)):
                     is_multiline = False
-                    if isinstance(item, str):
+                    ogitem = item
+                    if isinstance(item, (str, P)):
                         is_multiline = "\n" in item
                         _sep = (
                             " ...\n...\n...\n...\n... " if is_multiline else "........."
                         )
-                        if len(item) > 250:
-                            item = item[:100] + _sep + item[-100:]
+                        if len(item) > 100:
+                            item = item[:35] + _sep + item[-35:]
                         if is_multiline:
                             _item = item.split("\n")
                             _item = "\n".join([f"{sep*(depth+1)}{l}" for l in _item])
                             item = f"↓\n{sep*(depth+1)}```\n{_item}\n{sep*(depth+1)}```"
                     multiline = "" if not is_multiline else "Multiline "
-                    return f"{sep * depth}{key} - {item} ({multiline}{type(item).__name__})\n"
+                    return f"{sep * depth}{key} - {item} ({multiline}{type(ogitem).__name__})\n"
                 else:
                     return f"{sep * depth}{key} - {type(item).__name__}\n"
 
@@ -492,6 +496,15 @@ def write_xml(data: Union[AttrDict, dict], file_path: Union[str, P]):
         assert isinstance(data, dict), "Function only supports dicts for now"
         data = xmltodict.unparse(data, pretty=True)
         xml_file.write(data)
+
+
+def decompose(i):
+    print(
+        AD(
+            {k: getattr(i, k) for k in dir(i) if not k.startswith("_")},
+            type=str(type(i)),
+        )
+    )
 
 
 # %% ../nbs/markups.ipynb 13

@@ -1,13 +1,12 @@
 Metadata-Version: 2.1
-Name: torch-snippets
-Version: 0.532
+Name: torch_snippets
+Version: 0.534
 Summary: One line functions for common tasks
 Home-page: https://github.com/sizhky/torch_snippets/tree/master/
 Author: Yeshwanth Reddy
 Author-email: 1992chinna@gmail.com
 License: Apache Software License 2.0
 Keywords: snippets,torch
-Platform: UNKNOWN
 Classifier: Development Status :: 3 - Alpha
 Classifier: Intended Audience :: Developers
 Classifier: License :: OSI Approved :: Apache Software License
@@ -18,6 +17,37 @@ Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
 License-File: LICENSE.txt
+Requires-Dist: fastcore
+Requires-Dist: matplotlib
+Requires-Dist: Pillow
+Requires-Dist: altair
+Requires-Dist: dill
+Requires-Dist: ipython
+Requires-Dist: loguru
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: tqdm
+Requires-Dist: rich
+Requires-Dist: PyYAML
+Requires-Dist: catalogue
+Requires-Dist: confection
+Requires-Dist: pydantic
+Requires-Dist: typing
+Requires-Dist: srsly
+Requires-Dist: typing_extensions
+Requires-Dist: wasabi
+Requires-Dist: jsonlines
+Requires-Dist: imgaug>=0.4.0
+Requires-Dist: xmltodict
+Requires-Dist: fuzzywuzzy
+Requires-Dist: scikit-learn
+Requires-Dist: nltk
+Requires-Dist: python-Levenshtein
+Requires-Dist: pre-commit
+Requires-Dist: pymupdf
+Requires-Dist: nbconvert
+Requires-Dist: nbformat
+Requires-Dist: icecream
 
 # Utilities for simple needs
 

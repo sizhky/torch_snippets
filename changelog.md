@@ -1,4 +1,19 @@
 # Changelog
+#### 0.534
+🎉 `store_scrap` is a new way to store on disk and show jupyter cell outputs in other notebooks.  
+Best for presenting complex analyses without worrying about running time-consuming notebooks
+🎉 Add support for `P` in AD `summary` and `write_json`
+🎉 `__json__` supports custom objects' serializability
+🎉 `write_json` is compatible with above feature
+🎉 `AD_MAX_ITEMS` if given as -1 will change it to 1000
+🐞 `iou` will parse input dataframes more gracefully
+🐞 `AD` minor bug fix
+🎉 `tree` has a better default
+🎉 New functions `folder_structure_to_dict` and `folder_structure_to_json` in `paths`
+🎉 Add `jitter` (int) argument to `show` so that bounding boxes can be a bit jittered
+🎉 Add support for changing `spinner` in `notify_waiting`
+🎉 `dumpdill` can print a custom message (see `store_scrap` in paths.py)
+
 
 #### 0.531
 🎉 AD `__contains__` can do a nested `in` 'x.y.z' in AD(x={'y': {'z': 10}}) == True

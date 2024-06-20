@@ -102,6 +102,7 @@ def attach_hooks(
     hook=print_shapes_hook,
     required_children=None,
     print_only=None,
+    all_children=False,
     parent_name="",
 ):
     """Function to attach the hooks and return handles"""
@@ -109,9 +110,13 @@ def attach_hooks(
     handles = []
     for child_name, layer in model.named_children():
         _child_name = f"{parent_name}.{child_name}" if parent_name != "" else child_name
-        if required_children is not None and _child_name in required_children:
+        if (
+            all_children
+            or (required_children is not None and _child_name in required_children)
+            or (layer.__class__.__name__ in print_only)
+        ):
             _hook = partial(
-                print_shapes_hook,
+                hook,
                 keep={layer.__class__.__name__},
                 child_name=_child_name,
             )
@@ -123,7 +128,9 @@ def attach_hooks(
                     layer,
                     hook=hook,
                     required_children=required_children,
+                    print_only=print_only,
                     parent_name=_child_name,
+                    all_children=all_children,
                 )
             )
     return handles

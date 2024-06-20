@@ -37,7 +37,6 @@ torch_snippets/video.py
 torch_snippets.egg-info/PKG-INFO
 torch_snippets.egg-info/SOURCES.txt
 torch_snippets.egg-info/dependency_links.txt
-torch_snippets.egg-info/entry_points.txt
 torch_snippets.egg-info/not-zip-safe
 torch_snippets.egg-info/requires.txt
 torch_snippets.egg-info/top_level.txt
@@ -47,3 +46,4 @@ torch_snippets/trainer/__init__.py
 torch_snippets/trainer/capsule.py
 torch_snippets/trainer/config.py
 torch_snippets/trainer/hooks.py
+torch_snippets/trainer/neural_graph.py

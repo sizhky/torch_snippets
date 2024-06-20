@@ -16,8 +16,7 @@ else:
 class Decorator(Protocol):
     """Protocol to mark a function as returning its child with identical signature."""
 
-    def __call__(self, name: str) -> Callable[[_DIn], _DIn]:
-        ...
+    def __call__(self, name: str) -> Callable[[_DIn], _DIn]: ...
 
 
 class registry(confection.registry):
