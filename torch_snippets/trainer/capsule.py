@@ -23,7 +23,9 @@ def to(item, device):
         return None
     elif isinstance(item, (torch.Tensor, nn.Module)):
         return item.to(device)
-    elif isinstance(item, (AttrDict, dict)):
+    elif isinstance(item, (AttrDict, dict)) or all(
+        [hasattr(item, "keys"), hasattr(item, "values"), hasattr(item, "items")]
+    ):
         return type(item)({k: to(v, device) for k, v in item.items()})
     elif isinstance(item, (list, tuple)):
         return type(item([to(_item, device) for _item in item]))

@@ -339,6 +339,20 @@ def _jitter(i):
     return i + np.random.randint(4)
 
 
+def is_in_notebook():
+    try:
+        import importlib
+
+        # Test adapted from tqdm.autonotebook: https://github.com/tqdm/tqdm/blob/master/tqdm/autonotebook.py
+        get_ipython = sys.modules["IPython"].get_ipython
+        if "IPKernelApp" not in get_ipython().config:
+            raise ImportError("console")
+
+        return importlib.util.find_spec("IPython") is not None
+    except (AttributeError, ImportError, KeyError):
+        return False
+
+
 @delegates(plt.imshow)
 def show(
     img=None,
@@ -379,17 +393,23 @@ def show(
 
     if isinstance(img, pd.DataFrame):
         df = img
-        html_str = ""
-        html_str += '<th style="text-align:center"><td style="vertical-align:top">'
-        if title is not None:
-            html_str += f'<h4 style="text-align: center;">{title}</h4>'
         max_rows = kwargs.pop("max_rows", 30)
         max_rows = 10000 if max_rows == -1 else max_rows
-        html_str += df.to_html(max_rows=max_rows).replace(
-            "table", 'table style="display:inline"'
-        )
-        html_str += "</td></th>"
-        display_html(html_str, raw=True)
+        if is_in_notebook():
+            html_str = ""
+            html_str += '<th style="text-align:center"><td style="vertical-align:top">'
+            if title is not None:
+                html_str += f'<h4 style="text-align: center;">{title}</h4>'
+            html_str += (
+                df.to_html(max_rows=max_rows)
+                .replace("table", 'table style="display:inline"')
+                .replace(' style="display:inline"', "")
+            )
+            html_str += "</td></th>"
+            display_html(html_str, raw=True)
+        else:
+            o = df.to_markdown()
+            print(o)
         return
     if not isinstance(img, np.ndarray):
         display(img)
@@ -433,7 +453,7 @@ def show(
             df = str(df)
             df = pd.read_csv(df) if df.endswith("csv") else pd.read_parquet(df)
 
-        text_col = kwargs.pop("text_col", "text")
+        text_col = kwargs.pop("text_col", "info" if "info" in df.columns else "text")
         if text_col == "ixs":
             texts = df.index.tolist()
         elif text_col is not None and text_col in df.columns:

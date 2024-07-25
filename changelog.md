@@ -1,4 +1,29 @@
 # Changelog
+#### 0.537
+✨ `AD` let's you know if a collection is list, set or tuple
+✨ NEW DEFAULT: use `info` column to show text else `text`
+🐞 fix a bug where `P` misbehaves in `AD` when it doesn't exist
+🐞 fix a bug in `show` tables
+🐞 `logger_mode` context will gracefully exit
+✨ `to` is compatible with `transformers.BatchFeature`
+⏮️ Revert back `P` as the code is incompatible with py312
+
+#### 0.536
+🆕 `parse`ing a .ini file will add a `META` key by default which has `file` and `name` information. This header can be used in the file variables without creating META to begin with
+🆕 `parse` will merge a base config if a `META.base` key is found. Works recursively on base files (base of base etc...)
+🆕 `P` can tab complete existing file path name and access that file as an attribute
+💡 Did you know parse can perform arithmetic?
+✨ `registry` and `parse` are imported by default
+✨ `jitter` can work on `pd.DataFrame` directly
+🔨 `bbs2df` clips negative coordinates
+✨ Using 🏷️ to denote data-type in `AD`
+🐞 `AD2` is `AD` now
+🐞 `AD` preserves dict order during serialization
+✨ `warn_on_fail` decorator gives you a free try catch
+✨ `show`ing a dataframe of the correct format inside and outside jupyter environments
+🐞 `AD` has improved `get`, `update`, `map` and new `write_config`, `trymap` and `__json__`
+✨ `P` has two new properties `.sz` for size of file and `.tree` to print the tree
+
 #### 0.535
 🐞 `AD` hotfix
 

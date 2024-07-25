@@ -2,6 +2,7 @@ website:
   sidebar:
     contents:
       - index.ipynb
+      - AttrDict.ipynb
       - adapters.ipynb
       - bokeh_plotting.ipynb
       - bounding_boxes.ipynb

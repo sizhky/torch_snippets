@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: torch_snippets
-Version: 0.535
+Version: 0.537
 Summary: One line functions for common tasks
 Home-page: https://github.com/sizhky/torch_snippets/tree/master/
 Author: Yeshwanth Reddy
@@ -48,6 +48,7 @@ Requires-Dist: pymupdf
 Requires-Dist: nbconvert
 Requires-Dist: nbformat
 Requires-Dist: icecream
+Requires-Dist: mergedeep
 
 # Utilities for simple needs
 

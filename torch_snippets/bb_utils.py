@@ -179,6 +179,9 @@ def bbs2df(bbs):
     pd.DataFrame: A DataFrame representing the bounding boxes.
     """
     bbs = [list(bb) for bb in bbs]
+    bbs = np.array(bbs).clip(0, 1e10)
+    if bbs.max() > 1.0:  # data frame is absolute
+        bbs = bbs.astype(np.uint16)
     return pd.DataFrame(bbs, columns=["x", "y", "X", "Y"])
 
 
@@ -195,18 +198,27 @@ def bbfy(bbs):
     return [BB(bb) for bb in bbs]
 
 
-def jitter(bbs, noise):
+def jitter(input, noise):
     """
     Add noise to bounding boxes. Useful when you have a lot of overlapping boxes.
 
     Parameters:
-    bbs (list): The bounding boxes to add noise to.
+    input (list of bounding boxes, or pd.DataFrame with xyXY columns): The bounding boxes to add noise to.
     noise (float): The amount of noise to add.
 
     Returns:
     list: A list of bounding boxes with added noise.
     """
-    return [BB(bb).jitter(noise) for bb in bbs]
+    is_df = isinstance(input, pd.DataFrame)
+    bbs = df2bbs(input) if is_df else input
+    output = [BB(bb).jitter(noise) for bb in bbs]
+    if is_df:
+        input = input.copy()
+        _df = bbs2df(output)
+        for c in "xyXY":
+            input[c] = _df[c]
+        output = input
+    return output
 
 
 def compute_eps(eps):
@@ -285,9 +297,9 @@ def iou(bboxes1, bboxes2):
 
     """
     if isinstance(bboxes1, pd.DataFrame):
-        bboxes1 = bboxes1[[*'xyXY']]
+        bboxes1 = bboxes1[[*"xyXY"]]
     if isinstance(bboxes2, pd.DataFrame):
-        bboxes2 = bboxes2[[*'xyXY']]
+        bboxes2 = bboxes2[[*"xyXY"]]
     bboxes1 = np.array(bboxes1)
     bboxes2 = np.array(bboxes2)
     x11, y11, x12, y12 = np.split(bboxes1, 4, axis=1)

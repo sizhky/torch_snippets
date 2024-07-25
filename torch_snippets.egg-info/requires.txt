@@ -29,3 +29,4 @@ pymupdf
 nbconvert
 nbformat
 icecream
+mergedeep

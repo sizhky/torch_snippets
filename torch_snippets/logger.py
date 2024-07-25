@@ -64,9 +64,9 @@ def render(
         level=level,
         path=path,
         line_no=f"{record.funcName}:{record.lineno}",
-        link_path=f"{record.pathname}:{record.lineno}"
-        if self.enable_link_path
-        else None,
+        link_path=(
+            f"{record.pathname}:{record.lineno}" if self.enable_link_path else None
+        ),
     )
     return log_renderable
 
@@ -151,10 +151,12 @@ def get_logger_level():
 
 @contextmanager
 def logger_mode(level):
-    lv = get_logger_level()
-    reset_logger(level.upper())
-    yield
-    reset_logger(lv.upper())
+    try:
+        lv = get_logger_level()
+        reset_logger(level.upper())
+        yield
+    finally:
+        reset_logger(lv.upper())
 
 
 def in_logger_mode(level):

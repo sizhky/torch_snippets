@@ -19,6 +19,7 @@ __all__ = [
 ]
 
 import hashlib
+from copy import deepcopy
 
 # %% ../nbs/markups.ipynb 2
 import json
@@ -40,6 +41,26 @@ from .thinc_parser.parser import Config
 
 # %% ../nbs/markups.ipynb 3
 def _default(self, obj):
+    import numpy as np
+    from datetime import datetime, date
+
+    if isinstance(obj, P):
+        return str(obj)
+    if isinstance(obj, AD):
+        return obj.to_dict()
+    if isinstance(obj, (set, L)):
+        return list(obj)
+    try:
+        import torch
+
+        if isinstance(obj, torch.Tensor):
+            obj = obj.cpu().detach().numpy()
+    except:
+        ...
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
     return getattr(obj.__class__, "__json__", _default.default)(obj)
 
 
@@ -71,7 +92,7 @@ def unpack(obj):
         return obj
 
 
-def hash_tensor(tensor):
+def hash_tensor(tensor, n=8):
     import torch
 
     assert isinstance(tensor, torch.Tensor)
@@ -80,7 +101,7 @@ def hash_tensor(tensor):
     except:
         ...
     hash_obj = hashlib.sha256(tensor_str)
-    return "ID:#" + hash_obj.hexdigest()[:6]
+    return "ID:#" + hash_obj.hexdigest()[:n]
 
 
 def hash_pandas_dataframe(input):
@@ -157,7 +178,8 @@ class AttrDict(object):
         else:
             _args = dict(ic.io(*args)) if len(args) > 0 else {}
             args = {}
-            for k, v in _args.items():
+            for k in reversed(list(_args.keys())):
+                v = _args[k]
                 if any(c in self.forbidden for c in k):
                     assert isinstance(
                         v, (dict, AttrDict)
@@ -166,9 +188,17 @@ class AttrDict(object):
                 else:
                     args = {**{k: v}, **args}
 
-        given_input_to_ad = {**kwargs, **given_input_to_ad, **args}
+        assert not any(
+            k in list(kwargs.keys()) for k in args.keys()
+        ), "Keys in args and kwargs overlap"
+        given_input_to_ad = {**args, **given_input_to_ad, **kwargs}
         for name, value in given_input_to_ad.items():
             setattr(self, str(name), self._wrap(value))
+
+    def __call__(self, **kwargs):
+        o = deepcopy(self)
+        for key in kwargs:
+            o[key] = kwargs[key]
 
     def items(self):
         return self.__dict__.items()
@@ -178,6 +208,9 @@ class AttrDict(object):
 
     def values(self):
         return self.__dict__.values()
+
+    def __json__(self):
+        return self.to_dict()
 
     def _wrap(self, value):
         if isinstance(value, (L, tuple, list, set, frozenset)):
@@ -197,13 +230,13 @@ class AttrDict(object):
     )
     __setitem__ = lambda self, k, v: setattr(self, str(k), self._wrap(v))
 
-    def update(self, dict):
-        for k, v in dict.items():
+    def update(self, input):
+        input = AD(input)
+        for k, v in input.items():
             self[k] = v
 
     def get(self, key, default=None):
-        key = str(key)
-        return self[key] if key in self else default
+        return self.fetch(key) if key in self else default
 
     def __iter__(self):
         return iter(self.keys())
@@ -234,16 +267,40 @@ class AttrDict(object):
         key = str(key)
         del self.__dict__[key]
 
-    def map(self, func):
-        for k in dir(self):
-            v = self[k]
+    def map(self, func, _try=False):
+        if _try:
+
+            def tryfunc(func):
+                def inner(x):
+                    try:
+                        o = func(x)
+                    except:
+                        o = x
+                    return o
+
+                return inner
+
+            _func = tryfunc(func)
+
+        else:
+            _func = func
+
+        d = deepcopy(self)
+        for k in dir(d):
+            v = d[k]
             if isinstance(v, AttrDict):
-                v.map(func)
+                v = v.map(_func)
             elif isinstance(v, (L, tuple, list, set, frozenset)):
-                v = [_v.map(func) if isinstance(_v, AttrDict) else func(_v) for _v in v]
+                v = [
+                    _v.map(_func) if isinstance(_v, AttrDict) else _func(_v) for _v in v
+                ]
             else:
-                v = func(v)
-            self[k] = v
+                v = _func(v)
+            d[k] = v
+        return d
+
+    def trymap(self, func):
+        return self.map(func, _try=True)
 
     def drop(self, key):
         if key in self:
@@ -257,7 +314,7 @@ class AttrDict(object):
 
     def to_dict(self):
         d = {}
-        for k in dir(self):
+        for k in self.__dict__.keys():  # can't use dir here
             v = self[k]
             if isinstance(v, AttrDict):
                 v = v.to_dict()
@@ -265,6 +322,8 @@ class AttrDict(object):
                 v = [_v.to_dict() if isinstance(_v, AttrDict) else _v for _v in v]
             d[k] = v
         return d
+
+    dict = to_dict
 
     def pretty(self, print_with_logger=False, *args, **kwargs):
         pretty_json(
@@ -310,7 +369,7 @@ class AttrDict(object):
             except ModuleNotFoundError:
 
                 class Torch:
-                    Tensor = type(None)
+                    Tensor = type(...)
 
                 torch = Torch()
 
@@ -330,28 +389,29 @@ class AttrDict(object):
                 return f"{sep * depth}{key} - {is_np}{item} - {hash_tensor(item)}\n"
 
             else:
-                if isinstance(item, (int, float, complex, str, P)):
-                    is_multiline = False
-                    ogitem = item
-                    if isinstance(item, (str, P)):
-                        item = str(item)
-                        is_multiline = "\n" in item
-                        _sep = (
-                            " ...\n...\n...\n...\n... " if is_multiline else "........."
-                        )
-                        if len(item) > 100:
-                            item = item[:35] + _sep + item[-35:]
-                        if is_multiline:
-                            _item = item.split("\n")
-                            _item = "\n".join([f"{sep*(depth+1)}{l}" for l in _item])
-                            item = f"↓\n{sep*(depth+1)}```\n{_item}\n{sep*(depth+1)}```"
-                    multiline = "" if not is_multiline else "Multiline "
-                    return f"{sep * depth}{key} - {item} ({multiline}{type(ogitem).__name__})\n"
-                else:
-                    return f"{sep * depth}{key} - {type(item).__name__}\n"
+                is_multiline = False
+                ogitem = item
+                if isinstance(item, (str, P)):
+                    item = str(item)
+                    is_multiline = "\n" in item
+                    _sep = " ...\n...\n...\n...\n... " if is_multiline else "........."
+                    if len(item) > 100:
+                        item = item[:35] + _sep + item[-35:]
+                    if is_multiline:
+                        _item = item.split("\n")
+                        _item = "\n".join([f"{sep*(depth+1)}{l}" for l in _item])
+                        item = f"↓\n{sep*(depth+1)}```\n{_item}\n{sep*(depth+1)}```"
+                multiline = "" if not is_multiline else "Multiline "
+                return f"{sep * depth}{key} - {item} (🏷️ {multiline}{type(ogitem).__name__})\n"
 
         def summarize_collection(key, collection, path, d, s):
-            summary_str = f"{s * (d - 1)}{key}\n"
+            if isinstance(collection, (L, list)):
+                info = "[]"
+            elif isinstance(collection, tuple):
+                info = "()"
+            else:
+                info = "{}"
+            summary_str = f"{s * (d - 1)}{key}{info}\n"
             for i, item in enumerate(collection):
                 item_path = format_path(path, i)
                 if i < max_items:
@@ -393,6 +453,16 @@ class AttrDict(object):
             except:
                 o = o[p]
         return o
+
+    def write_config(self, to):
+        c = Config(self.dict())
+        c.to_disk(to)
+        return P(to)
+
+    def slice(self, key):
+        ks = self.find_address(key)
+        vs = self.fetch(ks)
+        return AttrDict(dict(zip(ks, vs)))
 
 
 AD = AttrDict
