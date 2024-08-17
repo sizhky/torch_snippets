@@ -130,7 +130,7 @@ def show_big_dataframe(df, max_rows=30):
         "display.max_rows",
         max_rows,
     ):
-        show(df, max_rows=max_rows)
+        show(df, max_rows=max_rows, frame_count=2)
 
 # %% ../nbs/jupyter_notebook.ipynb 7
 def h1(text):

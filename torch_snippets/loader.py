@@ -239,7 +239,8 @@ def Tqdm(x, total=None, desc=None):
 
 from tqdm import trange
 
-now = lambda: str(datetime.datetime.now())[:-10].replace(" ", "_")
+old_now = lambda: str(datetime.datetime.now())[:-10].replace(" ", "_")
+now = lambda: f"{datetime.datetime.now():%Y%m%d-%H%M}"
 
 
 def read(fname, mode=1):
@@ -372,6 +373,7 @@ def show(
     conns=None,
     interactive: bool = False,
     jitter: int = None,
+    frame_count: int = 1,
     **kwargs,
 ):
     "show an image"
@@ -391,6 +393,16 @@ def show(
     except Exception as e:
         Warn(e)
 
+    if title is None:
+        import inspect as I
+
+        frame = I.currentframe()
+        for _ in range(frame_count):
+            frame = frame.f_back
+        for var_name, var_val in frame.f_locals.items():
+            if var_val is img and var_name != "_" and not var_name.strip("_").isdigit():
+                title = var_name
+
     if isinstance(img, pd.DataFrame):
         df = img
         max_rows = kwargs.pop("max_rows", 30)
@@ -399,7 +411,7 @@ def show(
             html_str = ""
             html_str += '<th style="text-align:center"><td style="vertical-align:top">'
             if title is not None:
-                html_str += f'<h4 style="text-align: center;">{title}</h4>'
+                html_str += f'<h3 style="text-align: center;">{title}</h3>'
             html_str += (
                 df.to_html(max_rows=max_rows)
                 .replace("table", 'table style="display:inline"')
@@ -833,7 +845,6 @@ def batchify(items, *rest, batch_size=32):
     Yields:
         tuple: A tuple containing batches of items from `items` and optionally from the additional sequences.
     """
-    raise NotImplementedError
     n = len(items)
     if len(rest) > 0:
         assert all(

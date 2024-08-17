@@ -1,4 +1,13 @@
 # Changelog
+#### 0.538
+🎉 `tryy` a new decorator to wrap try except with optional default return as well as print stack trace if need be
+✨ `Timer` can given time-remaning approximation based on both instantaneous or average speed
+✨ `logging_mode` functions can be used as both context managers and decorators
+✨ better formatting for `now()`
+✨ `show` auto generates a title if possible
+✨ `show` function includes a `framecount` parameter to specify which frame of the stack it should search for the title. See its usage in `show_big_dataframe`
+✨ `yolo_2_df` and `df_2_yolo` functions in adapters
+
 #### 0.537
 ✨ `AD` let's you know if a collection is list, set or tuple
 ✨ NEW DEFAULT: use `info` column to show text else `text`

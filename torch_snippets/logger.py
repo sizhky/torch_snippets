@@ -150,13 +150,37 @@ def get_logger_level():
 
 
 @contextmanager
-def logger_mode(level):
+def _logger_mode_context(level):
+    lv = get_logger_level()
     try:
-        lv = get_logger_level()
         reset_logger(level.upper())
         yield
     finally:
         reset_logger(lv.upper())
+
+
+def logger_mode(level):
+    if callable(level):
+        # Used as a decorator without arguments
+        func = level
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            with _logger_mode_context("DEBUG"):
+                return func(*args, **kwargs)
+
+        return wrapper
+    else:
+        # Used as a decorator with arguments or as a context manager
+        def decorator(func):
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                with _logger_mode_context(level):
+                    return func(*args, **kwargs)
+
+            return wrapper
+
+        return _logger_mode_context(level) if not callable(level) else decorator
 
 
 def in_logger_mode(level):
