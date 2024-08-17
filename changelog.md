@@ -1,4 +1,7 @@
 # Changelog
+#### 0.538.1
+✨ slightly better error printing in `tryy`
+
 #### 0.538
 🎉 `tryy` a new decorator to wrap try except with optional default return as well as print stack trace if need be
 ✨ `Timer` can given time-remaning approximation based on both instantaneous or average speed

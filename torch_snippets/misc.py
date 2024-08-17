@@ -113,7 +113,7 @@ def tryy(func=None, *, output_to_return_on_fail=None, print_traceback=False):
                 return f(*args, **kwargs)
             except Exception as e:
                 if not print_traceback:
-                    tb = str(e)
+                    tb = f"{type(e).__name__}: {str(e)}"
                 else:
                     import traceback
 
