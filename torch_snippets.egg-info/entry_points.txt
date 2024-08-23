@@ -1,0 +1,2 @@
+[console_scripts]
+ts = torch_snippets.cli:cli

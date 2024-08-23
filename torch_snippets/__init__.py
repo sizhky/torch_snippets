@@ -1,4 +1,4 @@
-__version__ = "0.538.1"
+__version__ = "0.539"
 from .loader import *
 from .paths import *
 from .markup import *
@@ -22,3 +22,6 @@ try:
     from .torch_loader import *
 except Exception as e:
     ...
+
+from .s3_loader import *
+from .zen import *

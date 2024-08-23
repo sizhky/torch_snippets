@@ -26,7 +26,7 @@ import json
 import os
 from collections.abc import Mapping
 from json import JSONEncoder
-from typing import Union
+from typing import Union, List
 
 import jsonlines
 import xmltodict
@@ -112,6 +112,13 @@ def hash_pandas_dataframe(input):
         return "ID:#" + hashlib.sha256(h).hexdigest()[:6]
     except:
         return "ID:#<uncomputable>"
+
+
+def is_attrdict_like(input):
+    o = isinstance(input, (Mapping, AttrDict)) or all(
+        [hasattr(input, k) for k in ["keys", "values", "items"]]
+    )
+    return o
 
 
 class AttrDict(object):
@@ -238,6 +245,20 @@ class AttrDict(object):
     def get(self, key, default=None):
         return self.fetch(key) if key in self else default
 
+    def set(self, key, value):
+        if "." in key:
+            _keys = key.split(".")
+            leaf = _keys[-1]
+        else:
+            _keys = [key]
+            leaf = key
+        for _key in _keys:
+            if _key not in self and key != leaf:
+                self[_key] = AD()
+            if _key == leaf:
+                self[_key] = value
+            self = self[_key]
+
     def __iter__(self):
         return iter(self.keys())
 
@@ -355,6 +376,8 @@ class AttrDict(object):
 
     def summary(self, current_path="", depth=0, sep="  ", max_items=10):
         max_items = int(os.environ.get("AD_MAX_ITEMS", max_items))
+        if os.environ.get("AD_SHOW_TAB_STOPS", False):
+            sep = "⋮ "
         sep = os.environ.get("AD_SEP", sep)
 
         def format_path(path, key):
@@ -384,7 +407,10 @@ class AttrDict(object):
                 is_np = False
                 if isinstance(item, np.ndarray):
                     is_np = True
-                    item = torch.tensor(item)
+                    try:
+                        item = torch.tensor(item)
+                    except:
+                        item = torch.tensor(item.copy())
                 is_np = "🔦" if not is_np else "np."
                 return f"{sep * depth}{key} - {is_np}{item} - {hash_tensor(item)}\n"
 
@@ -440,7 +466,7 @@ class AttrDict(object):
         print(self.summary(**kwargs))
 
     def write_summary(self, to, **kwargs):
-        writelines(self.summary(**kwargs).split("\n"), to)
+        writelines(self.summary(sep="\t", **kwargs).split("\n"), to, mode="w")
 
     def fetch(self, addr):
         if isinstance(addr, (list, L)):
@@ -454,6 +480,87 @@ class AttrDict(object):
                 o = o[p]
         return o
 
+    def merge_addersses(self, ADs):
+        """Given a list of ADs, merge them into a single AD, which recursively merging the addresses
+        E.g. When input is
+        ```↯ AttrDict ↯
+        01f3daf0-f33a-11ee-a30b-129eb4343ebc.metrics.old.0.recall - 0.5 (🏷️ float)
+        ```
+        ,
+        ```↯ AttrDict ↯
+        01f3daf0-f33a-11ee-a30b-129eb4343ebc.metrics.new.0.recall - 0.7566584022717563 (🏷️ float)
+        ```
+        ,
+        ```↯ AttrDict ↯
+        01f3daf0-f33a-11ee-a30b-129eb4343ebc.metrics.new.1.recall - 0.8080808080808081 (🏷️ float)
+        ```
+        ,
+        ```↯ AttrDict ↯
+        01f3db47-f33a-11ee-a30d-129eb4343ebc.metrics.old.0.recall - 0.5 (🏷️ float)
+        ```
+        Output will be
+        ```↯ AttrDict ↯
+        01f3daf0-f33a-11ee-a30b-129eb4343ebc
+          metrics
+            old[]
+              0
+                recall - 0.5 (🏷️ float)
+            new[]
+              0
+                recall - 0.7566584022717563 (🏷️ float)
+              1
+                recall - 0.8080808080808081 (🏷️ float)
+        01f3db47-f33a-11ee-a30d-129eb4343ebc
+          metrics
+            old[]
+              0
+                recall - 0.5 (🏷️ float)
+        ```
+        """
+        o = AttrDict()
+        for ad in ADs:
+            for k in ad.keys():
+                o.set(k, ad[k])
+        return o
+
+    def flatten(self):
+        """Flatten the AD into a single level AD with keys as dot combined keys"""
+        o = AttrDict()
+        for k in self.keys():
+            v = self[k]
+            if is_attrdict_like(v):
+                v = v.flatten()
+                for _k in v.keys():
+                    o[f"{k}.{_k}"] = v[_k]
+            elif isinstance(v, (list, tuple, set, frozenset, L)):
+                for i, _v in enumerate(v):
+                    if is_attrdict_like(_v):
+                        _v = _v.flatten()
+                        for _k, __v in _v.items():
+                            o[f"{k}.{i}.{_k}"] = __v
+                    else:
+                        o[f"{k}.{i}"] = _v
+            else:
+                o[k] = v
+        return o
+
+    def fetch2(self, *, key=None, addrs=None):
+        """given dot notation address/addresses fetch the value while maintaining the original structure"""
+        if key is not None:
+            addrs = self.find_address(key)
+        if isinstance(addrs, (list, L)):
+            return self.merge_addersses(
+                L([self.fetch2(addrs=_addr) for _addr in addrs])
+            )
+
+        o = self
+        for p in addrs.split("."):
+            try:
+                o = o[int(p)]
+            except:
+                o = o[p]
+        return AttrDict({addrs: o})
+
     def write_config(self, to):
         c = Config(self.dict())
         c.to_disk(to)
@@ -463,6 +570,12 @@ class AttrDict(object):
         ks = self.find_address(key)
         vs = self.fetch(ks)
         return AttrDict(dict(zip(ks, vs)))
+
+    def flatten_and_make_dataframe(self):
+        import pandas as pd
+
+        df = pd.DataFrame([(*k.split("."), v) for k, v in self.flatten().items()])
+        return df
 
 
 AD = AttrDict

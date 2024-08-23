@@ -5,10 +5,11 @@ __all__ = ['Timer', 'track2', 'summarize_input', 'timeit', 'io', 'tryy']
 
 # %% ../nbs/misc.ipynb 2
 import time
-from .logger import Debug, Excep, debug_mode
+from .logger import Debug, Excep, debug_mode, Info
 from .markup2 import AD
 from functools import wraps
 from fastcore.basics import ifnone
+from fastcore.foundation import L
 
 # %% ../nbs/misc.ipynb 3
 class Timer:
@@ -106,8 +107,20 @@ def io(func):
     return inner
 
 # %% ../nbs/misc.ipynb 12
-def tryy(func=None, *, output_to_return_on_fail=None, print_traceback=False):
+def tryy(
+    func=None,
+    *,
+    output_to_return_on_fail=None,
+    silence_errors=False,
+    print_traceback=False,
+    store_errors: bool = True,
+):
     def decorator(f):
+        if isinstance(store_errors, bool) and store_errors:
+            error_store = []
+        elif isinstance(store_errors, (list, L)):
+            error_store = store_errors
+
         def inner(*args, **kwargs):
             try:
                 return f(*args, **kwargs)
@@ -118,11 +131,31 @@ def tryy(func=None, *, output_to_return_on_fail=None, print_traceback=False):
                     import traceback
 
                     tb = traceback.format_exc()
-                Excep(
-                    f"Error for `{f.__name__}` with \n{summarize_input(args, kwargs)}\n{tb}"
-                )
+                if not silence_errors:
+                    Excep(
+                        f"Error for `{f.__name__}` with \n{summarize_input(args, kwargs)}\n{tb}"
+                    )
+                if store_errors is not None:
+                    error_store.append(
+                        AD(
+                            func=f.__name__,
+                            args=args,
+                            kwargs=kwargs,
+                            tb=tb,
+                            err_type=type(e).__name__,
+                        )
+                    )
                 return output_to_return_on_fail
 
+        inner.F = f  # Store reference to the original function
+        inner.error_store = error_store
+
+        def error_summary():
+            import pandas as pd
+
+            return pd.DataFrame([e.dict() for e in error_store])
+
+        inner.error_summary = error_summary
         return inner
 
     if callable(func):

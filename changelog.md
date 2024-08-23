@@ -1,4 +1,18 @@
 # Changelog
+#### 0.539
+✨ set `AD_SHOW_TAB_STOPS` env variable to anything to print with tab-stops (only recommended to see on REPL. Default is good for storing files)
+✨ `crop_from_bb` has `padding` (px,py,pX,pY)
+🐞 minor bugfix in `AD`
+🎉 `AD` has a `fetch2` which preserves json structure while fetching all the leafs of the same name
+🎉 `AD` has a `flatten` which flattens all nested jsons into flat dictionary with '.' combined key names
+🎉 `AD` has a `flatten_and_make_dataframe` which creates one column for each nesting
+✨ `tryy` will store all its errors and can be accessed by calling `<func>.error_summary()`
+🎉 torch snippets as a new cli function called `ts`, thanks to the wonderful `Typer`. Try 
+  `ts time` 
+  `ts zen-of python` 
+  `ts zen-of c++`
+  `ts --help`
+
 #### 0.538.1
 ✨ slightly better error printing in `tryy`
 

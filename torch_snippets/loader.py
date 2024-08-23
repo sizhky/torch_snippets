@@ -256,13 +256,18 @@ def readPIL(fname, mode="RGB"):
     return Image.open(str(fname)).convert(mode.upper())
 
 
-def crop_from_bb(im, bb):
+def crop_from_bb(im, bb, padding=None):
     if isinstance(bb, list):
-        return [crop_from_bb(im, _bb) for _bb in bb]
+        return [crop_from_bb(im, _bb, padding=padding) for _bb in bb]
     x, y, X, Y = bb
+    px, py, pX, pY = padding
     if max(x, y, X, Y) < 1.5:
         h, w = im.shape[:2]
         x, y, X, Y = BB(bb).absolute((h, w))
+    y = max(0, y - py)
+    Y = min(h, Y + pY)
+    x = max(0, x - px)
+    X = min(w, X + pX)
     return im.copy()[y:Y, x:X]
 
 
