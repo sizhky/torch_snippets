@@ -6,7 +6,6 @@ __all__ = ['PDF']
 # %% ../nbs/pdf.ipynb 2
 from .loader import np, subplots, show, resize, L, Image
 from fastcore.basics import ifnone
-import fitz
 
 # %% ../nbs/pdf.ipynb 3
 class PDF:
@@ -15,6 +14,8 @@ class PDF:
     **WIP**"""
 
     def __init__(self, path, dfs=None, dpi=150):
+        import fitz
+
         self.path = path
         self.dpi = dpi
         self.doc = fitz.open(path)

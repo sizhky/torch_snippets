@@ -2,10 +2,10 @@
 
 # %% auto 0
 __all__ = ['valid_methods', 'P', 'ls', 'print_folder_summary', 'dill', 'input_to_str', 'output_to_path', 'process_f', 'get_fs',
-           'P0', 'stem', 'stems', 'remove_file', 'isdir', 'makedir', 'fname', 'fname2', 'parent', 'extn', 'Glob',
+           'P0', 'stem', 'stems', 'extn', 'remove_file', 'isdir', 'makedir', 'fname', 'fname2', 'parent', 'Glob',
            'find', 'zip_files', 'unzip_file', 'list_zip', 'md5', 'remove_duplicates', 'common_items', 'folder_summary',
-           'readlines', 'writelines', 'tree', 'folder_structure_to_dict', 'folder_structure_to_json', 'rename_batch',
-           'dumpdill', 'loaddill']
+           'readlines', 'readfile', 'writelines', 'tree', 'folder_structure_to_dict', 'folder_structure_to_json',
+           'rename_batch', 'dumpdill', 'loaddill']
 
 # %% ../nbs/paths.ipynb 2
 from fastcore.basics import patch_to
@@ -162,7 +162,7 @@ def __dir__(self):
     fs = get_fs(self)
     return self.__og_dir__() + list(fs.keys())
 
-# %% ../nbs/paths.ipynb 9
+# %% ../nbs/paths.ipynb 8
 @patch_to(P)
 def rmtree(self, prompt="Really remove `{self}` and its contents? [y/n] ", force=False):
     if force:
@@ -185,6 +185,15 @@ def size(self):
 @patch_to(P, as_prop=True)
 def sz(self):
     return self.size()
+
+
+@patch_to(P, as_prop=True)
+def extn(self):
+    return self.suffix.replace(".", "")
+
+
+def extn(fpath):
+    return P(fpath).extn
 
 
 @patch_to(P)
@@ -238,7 +247,7 @@ def rm(
         if not silent:
             logger.info(f"Aborting delete: {self}")
 
-# %% ../nbs/paths.ipynb 22
+# %% ../nbs/paths.ipynb 21
 def isdir(fpath):
     return os.path.isdir(fpath)
 
@@ -270,10 +279,6 @@ def parent(fpath):
         return "./"
     else:
         return out
-
-
-def extn(x):
-    return P(x).extn()
 
 
 @input_to_str
@@ -321,7 +326,7 @@ def find(
         else:
             return filtered_items
 
-# %% ../nbs/paths.ipynb 24
+# %% ../nbs/paths.ipynb 23
 import zipfile
 import tarfile
 
@@ -359,7 +364,7 @@ def list_zip(file):
             elements.append(elem)
     return elements
 
-# %% ../nbs/paths.ipynb 26
+# %% ../nbs/paths.ipynb 25
 def md5(fname):
     hash_md5 = hashlib.md5()
     with open(fname, "rb") as f:
@@ -406,11 +411,12 @@ def folder_summary(thing):
 
 print_folder_summary = lambda x: print(folder_summary(x))
 
-# %% ../nbs/paths.ipynb 28
-def readlines(fpath, silent=False, encoding=None):
+# %% ../nbs/paths.ipynb 27
+def readlines(fpath, silent=False, encoding=None, _strip=True):
     with open(fpath, "r", encoding=encoding) as f:
         lines = f.read().split("\n")
-        lines = [l.strip() for l in lines if l.strip() != ""]
+        if _strip:
+            lines = [l.strip() for l in lines if l.strip() != ""]
         if not silent:
             logger.opt(depth=1).log("INFO", f"loaded {len(lines)} lines")
         return lines
@@ -419,6 +425,16 @@ def readlines(fpath, silent=False, encoding=None):
 @patch_to(P)
 def read_lines(self, silent=False, encoding=None):
     return readlines(self, silent=silent, encoding=encoding)
+
+
+def readfile(*args, **kwargs):
+    kwargs.pop("_strip", None)
+    return "\n".join(readlines(*args, _strip=False, **kwargs)).strip()
+
+
+@patch_to(P)
+def read_file(self, **kwargs):
+    return readfile(self, **kwargs)
 
 
 def writelines(lines, file, mode):
@@ -441,7 +457,7 @@ def writelines(lines, file, mode):
 def write_lines(self, lines, mode):
     return writelines(lines, self, mode)
 
-# %% ../nbs/paths.ipynb 30
+# %% ../nbs/paths.ipynb 29
 def tree(directory="./", filelimit=50, to=None):
     from builtins import print
 
@@ -469,7 +485,7 @@ def _tree(self, filelimit=50, to=None):
 
 P.tree = P._tree
 
-# %% ../nbs/paths.ipynb 33
+# %% ../nbs/paths.ipynb 31
 def folder_structure_to_dict(path):
     """
     Recursively constructs a nested dictionary that represents the folder structure.
@@ -495,7 +511,7 @@ def folder_structure_to_json(path, output_file=None):
     with open(output_file, "w") as f:
         json.dump(folder_dict, f, indent=4)
 
-# %% ../nbs/paths.ipynb 35
+# %% ../nbs/paths.ipynb 33
 def rename_batch(folder, func, debug=False, one_file=False):
     from torch_snippets.loader import now
 
@@ -520,7 +536,7 @@ def rename_batch(folder, func, debug=False, one_file=False):
         if one_file:
             break
 
-# %% ../nbs/paths.ipynb 36
+# %% ../nbs/paths.ipynb 34
 dill = dill
 
 

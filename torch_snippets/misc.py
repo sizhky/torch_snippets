@@ -5,7 +5,7 @@ __all__ = ['Timer', 'track2', 'summarize_input', 'timeit', 'io', 'tryy']
 
 # %% ../nbs/misc.ipynb 2
 import time
-from .logger import Debug, Excep, debug_mode, Info
+from .logger import Debug, Excep, debug_mode, Info, Trace
 from .markup2 import AD
 from functools import wraps
 from fastcore.basics import ifnone
@@ -75,7 +75,7 @@ def track2(iterable, *, total=None):
         if info is not None:
             yield  # Just to ensure the send operation stops
 
-# %% ../nbs/misc.ipynb 10
+# %% ../nbs/misc.ipynb 11
 def summarize_input(args, kwargs, outputs=None):
     o = AD(args, kwargs)
     if outputs is not None:
@@ -87,26 +87,42 @@ def timeit(func):
     def inner(*args, **kwargs):
         s = time.time()
         o = func(*args, **kwargs)
-        Debug(f"{time.time() - s:.2f} seconds to execute `{func.__name__}`")
+        Info(f"{time.time() - s:.2f} seconds to execute `{func.__name__}`")
         return o
 
     return inner
 
 
-def io(func):
-    def inner(*args, **kwargs):
-        s = time.time()
-        o = func(*args, **kwargs)
-        info = f"""
+def io(func=None, *, level="debug"):
+    logfuncs = {
+        "debug": lambda i: Debug(i, depth=1),
+        "info": lambda i: Info(i, depth=1),
+        "trace": lambda i: Trace(i, depth=1),
+    }
+    try:
+        logfunc = logfuncs[level.lower()]
+    except KeyError:
+        raise ValueError(f"level should be one of {list(logfuncs.keys())}")
+
+    def decorator(func):
+        def inner(*args, **kwargs):
+            s = time.time()
+            o = func(*args, **kwargs)
+            info = f"""
 {time.time() - s:.2f} seconds to execute `{func.__name__}`
 {summarize_input(args=args, kwargs=kwargs, outputs=o)}
-        """
-        Debug(info, depth=1)
-        return o
+            """
+            logfunc(info)
+            return o
 
-    return inner
+        return inner
 
-# %% ../nbs/misc.ipynb 12
+    if func is None:
+        return decorator
+    else:
+        return decorator(func)
+
+# %% ../nbs/misc.ipynb 19
 def tryy(
     func=None,
     *,

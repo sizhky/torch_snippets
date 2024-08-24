@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.313">
+<meta name="generator" content="quarto-1.5.53">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>torch_snippets - Markups</title>
+<title>Markups – torch_snippets</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,11 +17,12 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -32,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -46,43 +47,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -108,7 +79,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -117,21 +94,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="torch_snippets - Markups">
-<meta property="og:description" content="Utility class to interact with a dictionary as if it were an object. AD is an alias to this class">
-<meta property="og:site-name" content="torch_snippets">
-<meta name="twitter:title" content="torch_snippets - Markups">
-<meta name="twitter:description" content="Utility class to interact with a dictionary as if it were an object. AD is an alias to this class">
+<meta property="og:title" content="Markups – torch_snippets">
+<meta property="og:description" content="One line functions for common tasks">
+<meta property="og:site_name" content="torch_snippets">
+<meta name="twitter:title" content="Markups – torch_snippets">
+<meta name="twitter:description" content="One line functions for common tasks">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -139,149 +115,182 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">torch_snippets</span>
     </a>
   </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Markups</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./markups.html">Markups</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Utilities for simple needs</a>
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Utilities for simple needs</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./adapters.html" class="sidebar-item-text sidebar-link">Adapters</a>
+  <div class="sidebar-item-container"> 
+  <a href="./AttrDict.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AttrDict.html</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./bokeh_plotting.html" class="sidebar-item-text sidebar-link">Bokeh Plots</a>
+  <div class="sidebar-item-container"> 
+  <a href="./adapters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adapters</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./bounding_boxes.html" class="sidebar-item-text sidebar-link">Bounding Box</a>
+  <div class="sidebar-item-container"> 
+  <a href="./bokeh_plotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bokeh Plots</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./capsule.html" class="sidebar-item-text sidebar-link">Capsule (Tutorial)</a>
+  <div class="sidebar-item-container"> 
+  <a href="./bounding_boxes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bounding Box</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./charts.html" class="sidebar-item-text sidebar-link">Altair</a>
+  <div class="sidebar-item-container"> 
+  <a href="./capsule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Capsule (Tutorial)</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./config.html" class="sidebar-item-text sidebar-link">config.html</a>
+  <div class="sidebar-item-container"> 
+  <a href="./charts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Altair and Other Charts</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./decorators.html" class="sidebar-item-text sidebar-link">Decorator Utilites</a>
+  <div class="sidebar-item-container"> 
+  <a href="./config.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">config.html</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./imgaug_loader.html" class="sidebar-item-text sidebar-link">Imgaug</a>
+  <div class="sidebar-item-container"> 
+  <a href="./decorators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Decorator Utilites</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./inspector.html" class="sidebar-item-text sidebar-link">Inspect</a>
+  <div class="sidebar-item-container"> 
+  <a href="./imgaug_loader.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imgaug</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./interactive_show.html" class="sidebar-item-text sidebar-link">interactive_show.html</a>
+  <div class="sidebar-item-container"> 
+  <a href="./inspector.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inspect</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./jupyter_notebook.html" class="sidebar-item-text sidebar-link">Jupyter Notebooks</a>
+  <div class="sidebar-item-container"> 
+  <a href="./interactive_show.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">interactive_show.html</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./load_defautls.html" class="sidebar-item-text sidebar-link">File Exists</a>
+  <div class="sidebar-item-container"> 
+  <a href="./jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jupyter Notebooks</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./logging.html" class="sidebar-item-text sidebar-link">Rich Logging and printing</a>
+  <div class="sidebar-item-container"> 
+  <a href="./load_defautls.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">File Exists</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./markups.html" class="sidebar-item-text sidebar-link active">Markups</a>
+  <div class="sidebar-item-container"> 
+  <a href="./logging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rich Logging and printing</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./misc.html" class="sidebar-item-text sidebar-link">Miscellaneous</a>
+  <div class="sidebar-item-container"> 
+  <a href="./markups.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Markups</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./paths.html" class="sidebar-item-text sidebar-link">Paths</a>
+  <div class="sidebar-item-container"> 
+  <a href="./misc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Miscellaneous</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./pdf.html" class="sidebar-item-text sidebar-link">PDF</a>
+  <div class="sidebar-item-container"> 
+  <a href="./paths.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paths</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./registry.html" class="sidebar-item-text sidebar-link">Registry</a>
+  <div class="sidebar-item-container"> 
+  <a href="./pdf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PDF</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./report.html" class="sidebar-item-text sidebar-link">Report</a>
+  <div class="sidebar-item-container"> 
+  <a href="./registry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Registry</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./show.html" class="sidebar-item-text sidebar-link">Show</a>
+  <div class="sidebar-item-container"> 
+  <a href="./report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Report</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./sklegos.html" class="sidebar-item-text sidebar-link">SK-Legos</a>
+  <div class="sidebar-item-container"> 
+  <a href="./show.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Show</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sklegos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SK-Legos</span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
-
+   
   <ul>
   <li><a href="#attrdict" id="toc-attrdict" class="nav-link active" data-scroll-target="#attrdict">AttrDict</a></li>
   <li><a href="#write_json" id="toc-write_json" class="nav-link" data-scroll-target="#write_json">write_json</a></li>
@@ -293,76 +302,82 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#write_xml" id="toc-write_xml" class="nav-link" data-scroll-target="#write_xml">write_xml</a></li>
   <li><a href="#read_xml" id="toc-read_xml" class="nav-link" data-scroll-target="#read_xml">read_xml</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Markups</h1>
+<h1 class="title">Markups</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-
-
-
+    
+  
+    
   </div>
+  
 
 
 </header>
+
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
 <hr>
 <section id="attrdict" class="level3">
 <h3 class="anchored" data-anchor-id="attrdict">AttrDict</h3>
 <blockquote class="blockquote">
-<pre><code> AttrDict (data=None, **kwargs)</code></pre>
+<pre><code> AttrDict (*args, given_input_to_ad=None, **kwargs)</code></pre>
 </blockquote>
-<p>Utility class to interact with a dictionary as if it were an object. <code>AD</code> is an alias to this class</p>
-<p>FEATURES: 0. Access and modify keys (including nested keys) as if they were object attributes, supporting tab-completion. Example: <code>self.key1.key2[0].key3</code> 1. Keys and values are recursively converted to AttrDict instances. 2. Pretty-print the dictionary using <code>self.pretty()</code>. 3. Convert the entire structure to a regular dictionary at any time using <code>self.to_dict()</code>. 3. Recursively remove keys using <code>self.drop(key)</code> from a JSON object. 4. Apply a function to all values at all levels using <code>map</code>.</p>
+<p>*Utility class to interact with a dictionary as if it were an object. <code>AD</code> is an alias to this class</p>
+<p>FEATURES: 0. Access and modify keys (including nested keys) as if they were object attributes, supporting tab-completion. Example: <code>self.key1.key2[0].key3</code> 1. Keys and values are recursively converted to AttrDict instances. 2. Pretty-print the dictionary using <code>print</code>. 3. Convert the entire structure to a regular dictionary at any time using <code>self.to_dict() / self.dict()</code>. 3. Recursively remove keys using <code>self.drop(key)</code> from a JSON object. 4. Apply a function to all values at all levels using <code>map</code>.</p>
 <p>GOTCHAS: 1. All integer keys are implicitly converted to strings due to the enforced <code>self.key</code> format. 2. You can still use <code>self[int]</code>, but this internally converts the integer to a string.</p>
-<p>METHODS: - <code>items()</code>: Return the items of the AttrDict as key-value pairs. - <code>keys()</code>: Return the keys of the AttrDict. - <code>values()</code>: Return the values of the AttrDict. - <code>update(dict)</code>: Update the AttrDict with key-value pairs from another dictionary. - <code>get(key, default=None)</code>: Get the value associated with a key, with an optional default value. - <code>__iter__()</code>: Allow iteration over the keys of the AttrDict. - <code>__len__()</code>: Return the number of keys in the AttrDict. - <code>__repr__()</code>: Return a string representation of the AttrDict. - <code>__dir__()</code>: List the keys of the AttrDict as attributes. - <code>__contains__(key)</code>: Check if a key exists in the AttrDict. - <code>__delitem__(key)</code>: Delete a key from the AttrDict. - <code>map(func)</code>: Apply a function to all values in the AttrDict. - <code>drop(key)</code>: Recursively remove a key and its values from the AttrDict. - <code>to_dict()</code>: Convert the AttrDict and its nested structure to a regular dictionary. - <code>pretty(print_with_logger=False, *args, **kwargs)</code>: Pretty-print the AttrDict as JSON. - <code>__eq__(other)</code>: Compare the AttrDict with another dictionary for equality. - <code>find_address(key, current_path="")</code>: Find and return all addresses (paths) of a given key in the AttrDict. - <code>summary(current_path='', summary_str='', depth=0, sep='  ')</code>: Generate a summary of the structure and values in the AttrDict. - <code>write_summary(to, **kwargs)</code>: Write the summary to a file or stream. - <code>fetch(addr)</code>: Retrieve a value at a specified address (path).</p>
+<p>METHODS: - <code>items()</code>: Return the items of the AttrDict as key-value pairs. - <code>keys()</code>: Return the keys of the AttrDict. - <code>values()</code>: Return the values of the AttrDict. - <code>update(dict)</code>: Update the AttrDict with key-value pairs from another dictionary. - <code>get(key, default=None)</code>: Get the value associated with a key, with an optional default value. - <code>__iter__()</code>: Allow iteration over the keys of the AttrDict. - <code>__len__()</code>: Return the number of keys in the AttrDict. - <code>__repr__()</code>: Return a string representation of the AttrDict. - <code>__dir__()</code>: List the keys of the AttrDict as attributes. - <code>__contains__(key)</code>: Check if a key exists in the AttrDict, use ‘a.b.c’ notation to directly check for a nested attribute. - <code>__delitem__(key)</code>: Delete a key from the AttrDict. - <code>map(func)</code>: Apply a function to all values in the AttrDict. - <code>drop(key)</code>: Recursively remove a key and its values from the AttrDict. - <code>to_dict()</code>: Convert the AttrDict and its nested structure to a regular dictionary. - <code>pretty(print_with_logger=False, *args, **kwargs)</code>: Pretty-print the AttrDict as JSON. - <code>__eq__(other)</code>: Compare the AttrDict with another dictionary for equality. - <code>find_address(key, current_path="")</code>: Find and return all addresses (paths) of a given key in the AttrDict. - <code>summary(current_path='', summary_str='', depth=0, sep='  ')</code>: Generate a summary of the structure and values in the AttrDict. - <code>write_summary(to, **kwargs)</code>: Write the summary to a file or stream. - <code>fetch(addr)</code>: Retrieve a value at a specified address (path).</p>
 <p>PARAMETERS: - <code>data</code> (dict, optional): Initial data to populate the AttrDict.</p>
 <p>USAGE: - Create an AttrDict instance by providing an optional initial dictionary, and then access and manipulate its contents as if they were object attributes.</p>
 <p>EXAMPLE:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>my_dict <span class="op">=</span> {<span class="st">'name'</span>: <span class="st">'John'</span>, <span class="st">'age'</span>: <span class="dv">30</span>, <span class="st">'address'</span>: {<span class="st">'city'</span>: <span class="st">'New York'</span>, <span class="st">'zip'</span>: <span class="st">'10001'</span>}}</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>attr_dict <span class="op">=</span> AttrDict(my_dict)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(attr_dict.name)  <span class="co"># Access values like attributes</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>attr_dict.address.city <span class="op">=</span> <span class="st">'Los Angeles'</span>  <span class="co"># Modify nested values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-11-09T05:45:44.804393Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-11-09T05:45:44.804089Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-11-09T05:45:44.810340Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-11-09T05:45:44.809389Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-11-09T05:45:44.804365Z&quot;}" data-tags="[]" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>xx <span class="op">=</span> AttrDict({<span class="st">"a"</span>: <span class="dv">1</span>, <span class="st">"b"</span>: [{<span class="st">"c"</span>: <span class="dv">2</span>, <span class="st">"d"</span>: <span class="dv">4</span>}, {<span class="st">"e"</span>: <span class="dv">3</span>}]})</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(xx.b[<span class="dv">0</span>]))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(xx.to_dict()[<span class="st">"b"</span>][<span class="dv">0</span>]))</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>xx.pretty()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; text-decoration-color: #ff00ff; font-weight: bold">class</span><span style="color: #000000; text-decoration-color: #000000"> </span><span style="color: #008000; text-decoration-color: #008000">'__main__.AttrDict'</span><span style="font-weight: bold">&gt;</span>
-</pre>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>attr_dict.address.city <span class="op">=</span> <span class="st">'Los Angeles'</span>  <span class="co"># Modify nested values</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>```<span class="op">*</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>::: {<span class="co">#bfb4146f-90bf-42bc-bf40-69fb6d612ea2 .cell tags='[]' execution_count=5}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>``` {.python .cell<span class="op">-</span>code}</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>xx <span class="op">=</span> AttrDict({<span class="st">"a"</span>: <span class="dv">1</span>, <span class="st">"b"</span>: [{<span class="st">"c"</span>: <span class="dv">2</span>, <span class="st">"d"</span>: <span class="dv">4</span>}, {<span class="st">"e"</span>: <span class="dv">3</span>}], <span class="st">"f"</span>: {<span class="st">"g"</span>: {<span class="st">"h"</span>: <span class="dv">20</span>}}})</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(xx.b[<span class="dv">0</span>]))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(xx.to_dict()[<span class="st">"b"</span>][<span class="dv">0</span>]))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"f.g.h"</span> <span class="kw">in</span> xx)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>xx.pretty()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'torch_snippets.markup2.AttrDict'&gt;
+&lt;class 'dict'&gt;
+True
+{
+    "a": 1,
+    "b": [
+        {
+            "c": 2,
+            "d": 4
+        },
+        {
+            "e": 3
+        }
+    ],
+    "f": {
+        "g": {
+            "h": 20
+        }
+    }
+}</code></pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; text-decoration-color: #ff00ff; font-weight: bold">class</span><span style="color: #000000; text-decoration-color: #000000"> </span><span style="color: #008000; text-decoration-color: #008000">'dict'</span><span style="font-weight: bold">&gt;</span>
-</pre>
-</div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">{</span>
-    <span style="color: #008000; text-decoration-color: #008000">"a"</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span>,
-    <span style="color: #008000; text-decoration-color: #008000">"b"</span>: <span style="font-weight: bold">[</span>
-        <span style="font-weight: bold">{</span>
-            <span style="color: #008000; text-decoration-color: #008000">"c"</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,
-            <span style="color: #008000; text-decoration-color: #008000">"d"</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">4</span>
-        <span style="font-weight: bold">}</span>,
-        <span style="font-weight: bold">{</span>
-            <span style="color: #008000; text-decoration-color: #008000">"e"</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span>
-        <span style="font-weight: bold">}</span>
-    <span style="font-weight: bold">]</span>
-<span style="font-weight: bold">}</span>
-</pre>
-</div>
-</div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2021-11-08T13:08:03.471944Z&quot;,&quot;iopub.status.busy&quot;:&quot;2021-11-08T13:08:03.471639Z&quot;,&quot;iopub.status.idle&quot;:&quot;2021-11-08T13:08:03.479329Z&quot;,&quot;shell.execute_reply&quot;:&quot;2021-11-08T13:08:03.478390Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2021-11-08T13:08:03.471915Z&quot;}" data-tags="[]" data-execution_count="6">
+<p>:::</p>
+<div id="7c5c6a5f-0b72-4e47-8dcf-c8f68e6cfaba" class="cell" data-tags="[]" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> {<span class="st">"abc"</span>: {<span class="st">"b"</span>: <span class="dv">10</span>, <span class="st">"c"</span>: <span class="dv">11</span>}, <span class="st">"d"</span>: {<span class="st">"e"</span>: {<span class="st">"f"</span>: [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>]}}}</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> AttrDict(x)</span>
@@ -386,37 +401,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">"abc"</span> <span class="kw">in</span> y</span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">"def"</span> <span class="kw">not</span> <span class="kw">in</span> y</span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"e"</span> <span class="kw">in</span> y.d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">{</span>
-  <span style="color: #008000; text-decoration-color: #008000">"abc"</span>: <span style="font-weight: bold">{</span>
-    <span style="color: #008000; text-decoration-color: #008000">"b"</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span>
-  <span style="font-weight: bold">}</span>,
-  <span style="color: #008000; text-decoration-color: #008000">"d"</span>: <span style="font-weight: bold">{</span>
-    <span style="color: #008000; text-decoration-color: #008000">"e"</span>: <span style="font-weight: bold">{</span>
-      <span style="color: #008000; text-decoration-color: #008000">"f"</span>: <span style="font-weight: bold">[</span>
-        <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span>,
-        <span style="font-weight: bold">{</span>
-          <span style="color: #008000; text-decoration-color: #008000">"abc"</span>: <span style="color: #008000; text-decoration-color: #008000">"pqrs"</span>
-        <span style="font-weight: bold">}</span>,
-        <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2.234</span>
-      <span style="font-weight: bold">]</span>,
-      <span style="color: #008000; text-decoration-color: #008000">"g"</span>: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">11</span>
-    <span style="font-weight: bold">}</span>
-  <span style="font-weight: bold">}</span>
-<span style="font-weight: bold">}</span>
-</pre>
-</div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-style: italic">True</span>
-</pre>
+<div class="cell-output cell-output-stdout">
+<pre><code>{
+  "abc": {
+    "b": 10
+  },
+  "d": {
+    "e": {
+      "f": [
+        2,
+        {
+          "abc": "pqrs"
+        },
+        2.234
+      ],
+      "g": 11
+    }
+  }
+}
+True</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> {<span class="st">"abc"</span>: {<span class="st">"b"</span>: <span class="dv">10</span>, <span class="st">"c"</span>: <span class="dv">11</span>}, <span class="st">"d"</span>: {<span class="st">"e"</span>: {<span class="st">"f"</span>: [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>]}}}</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> AttrDict(x)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>y.abc[[<span class="st">"b"</span>, <span class="st">"c"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="74fbdc3d" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> {<span class="st">"abc"</span>: {<span class="st">"b"</span>: <span class="dv">10</span>, <span class="st">"c"</span>: <span class="dv">11</span>}, <span class="st">"d"</span>: {<span class="st">"e"</span>: {<span class="st">"f"</span>: [<span class="dv">2</span>, {<span class="st">"abc"</span>: <span class="st">"pqrs"</span>}, <span class="fl">2.234</span>]}}}</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> AttrDict(x)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>y.abc[[<span class="st">"b"</span>, <span class="st">"c"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
-<pre><code>{'b': 10, 'c': 11}</code></pre>
+<pre><code>
+```↯ AttrDict ↯
+b - 10 (🏷️ int)
+c - 11 (🏷️ int)
+
+```</code></pre>
 </div>
 </div>
 <hr>
@@ -433,28 +449,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <pre><code> read_json (fpath)</code></pre>
 </blockquote>
-<div class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> torch</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> AD(a<span class="op">=</span>torch.Tensor([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]), b<span class="op">=</span><span class="st">"hello"</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    write_json(d, <span class="st">"/tmp/tmp.json"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(readlines(<span class="st">"/tmp/tmp.json"</span>)))</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ModuleNotFoundError:</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[01/08/24 14:35:24] INFO     loaded 8 lines                                                                                        &lt;ipython-input-1-e6d68859b80d&gt;:&lt;module&gt;:6
-{
-"a": [
-1.0,
-2.0,
-3.0
-],
-"b": "hello"
-}</code></pre>
+<div id="c0b81073" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> torch</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> AD(a<span class="op">=</span>torch.Tensor([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]), b<span class="op">=</span><span class="st">"hello"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    write_json(d, <span class="st">"/tmp/tmp.json"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(readlines(<span class="st">"/tmp/tmp.json"</span>)))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<div class="cell" data-tags="[]" data-execution_count="9">
+<div id="2f9a8810-5782-4bcc-a34f-33f04c855ada" class="cell" data-tags="[]" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> [<span class="dv">1</span>, {<span class="dv">1</span>: <span class="dv">1</span>, <span class="dv">2</span>: <span class="dv">2</span>}, <span class="dv">3</span>]</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>pretty_json({<span class="dv">1</span>: <span class="dv">1</span>, <span class="dv">2</span>: <span class="dv">2</span>})</span>
@@ -463,11 +468,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> write_json(d, <span class="st">"/tmp/test.json"</span>)</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(f)</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>read_json(f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #800080; text-decoration-color: #800080">/tmp/</span><span style="color: #ff00ff; text-decoration-color: #ff00ff">test.json</span>
-</pre>
+<div class="cell-output cell-output-stdout">
+<pre><code>/tmp/test.json</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>[1, {'1': 1, '2': 2}, 3]</code></pre>
 </div>
 </div>
@@ -483,7 +487,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="write_jsonl" class="level3">
 <h3 class="anchored" data-anchor-id="write_jsonl">write_jsonl</h3>
 <blockquote class="blockquote">
-<pre><code> write_jsonl (items, dest, mode='w')</code></pre>
+<pre><code> write_jsonl (items, dest, mode='a')</code></pre>
 </blockquote>
 <hr>
 </section>
@@ -504,7 +508,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="write_xml" class="level3">
 <h3 class="anchored" data-anchor-id="write_xml">write_xml</h3>
 <blockquote class="blockquote">
-<pre><code> write_xml (data:Union[__main__.AttrDict,dict],
+<pre><code> write_xml (data:Union[torch_snippets.markup2.AttrDict,dict],
             file_path:Union[str,pathlib.Path])</code></pre>
 </blockquote>
 <hr>
@@ -514,24 +518,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <pre><code> read_xml (file_path:Union[str,pathlib.Path])</code></pre>
 </blockquote>
-<p>Read xml data as a dictionary</p>
-<div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="17">
+<p><em>Read xml data as a dictionary</em></p>
+<div id="29d6ac9b-d92a-4204-b04e-6339c752c4c7" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>y.to_dict()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>{'abc': {'b': 10, 'c': 11}, 'd': {'e': {'f': [2, {'abc': 'pqrs'}, 2.234]}}}</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">abc
-        b - int
-        c - int
+<div id="a517bff5" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>
+```↯ AttrDict ↯
+abc
+  b - 10 (🏷️ int)
+  c - 11 (🏷️ int)
 d
-        e
-                f - L
+  e
+    f
+      0 - 2 (🏷️ int)
+      1
+        abc - pqrs (🏷️ str)
+      2 - 2.234 (🏷️ float)
 
-</pre>
+```</code></pre>
 </div>
 </div>
 
@@ -558,7 +568,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       toggleBodyColorMode(bsSheetEl);
     }
   }
-  toggleBodyColorPrimary();
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -566,12 +576,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
     }
-  });
-  clipboard.on('success', function(e) {
+    return false;
+  }
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -585,11 +598,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
       button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button,
-        { trigger: "manual",
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
           offset: [0, -8]});
-      tooltip.show();
+      tooltip.show();    
     }
     setTimeout(function() {
       if (tooltip) {
@@ -603,11 +616,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/sizhky\.github\.io\/torch_snippets\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -617,9 +669,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
-    window.tippy(el, config);
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
   for (var i=0; i<noterefs.length; i++) {
@@ -630,9 +691,245 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -676,4 +973,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

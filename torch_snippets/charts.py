@@ -11,6 +11,8 @@ alt = alt
 Chart = Chart
 from .loader import *
 
+init_plt()
+
 # %% ../nbs/charts.ipynb 5
 def confusion_matrix(df=None, truth=None, pred=None, mapping=None, save_to=None):
     """
@@ -123,6 +125,8 @@ def spider(
     Example usage:
     spider(df, id_column='model', title='Spider Chart', max_values={'category1': 10, 'category2': 20}, padding=1.5)
     """
+    import matplotlib.pyplot as plt
+
     if id_column is None:
         df = df.copy().reset_index(names="index")
         id_column = "index"

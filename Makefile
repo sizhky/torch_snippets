@@ -33,3 +33,8 @@ dist: clean
 
 clean:
 	rm -rf dist
+
+profile-time:
+	kernprof -l torch_snippets/__module_timing__.py
+	mkdir -p debug
+	python -m line_profiler -tm "__module_timing__.py.lprof" | tee debug/profile_time.txt

@@ -1,0 +1,865 @@
+Timer unit: 1e-06 s
+
+Total time: 1.52525 s
+File: /Users/yeshwanth/Code/Personal/torch_snippets/torch_snippets/loader.py
+Function: main at line 80
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    80                                           @profile
+    81                                           def main():
+    82         1          2.0      2.0      0.0      import os
+    83         1          1.0      1.0      0.0      import re
+    84         1          0.0      0.0      0.0      import sys
+    85         1          1.0      1.0      0.0      from builtins import print
+    86         1       5648.0   5648.0      0.4      from pathlib import Path
+    87                                           
+    88         1      51714.0  51714.0      3.4      import numpy as np
+    89         1     383233.0 383233.0     25.1      import pandas as pd
+    90         1        501.0    501.0      0.0      import PIL
+    91         1       4032.0   4032.0      0.3      import tqdm
+    92         1     211611.0 211611.0     13.9      from fastcore.all import L, delegates, patch_to
+    93         1          1.0      1.0      0.0      from fastcore.dispatch import typedispatch
+    94         1      22352.0  22352.0      1.5      from PIL import Image
+    95                                           
+    96                                               # from .bb_utils import *
+    97                                               # from .logger import *
+    98                                               
+    99         1        290.0    290.0      0.0      from .bb_utils import randint,BB,df2bbs, bbs2df,bbfy,jitter,compute_eps,enlarge_bbs,shrink_bbs,iou,compute_distance_matrix,compute_distances,split_bb_to_xyXY,combine_xyXY_to_bb,is_absolute,is_relative,to_relative,to_absolute,merge_by_bb,isin
+   100         1     839398.0 839398.0     55.0      from .logger import logger, Info, Warn, Debug, Excep, reset_logger, get_logger_level, in_debug_mode, debug_mode
+   101                                           
+   102                                               # TODO : Put them in torch_loader
+   103                                               # import torch
+   104                                               # import torch.nn as nn
+   105                                               # from torch import optim
+   106                                               # from torch.nn import functional as F
+   107                                               # from torch.utils.data import DataLoader, Dataset
+   108                                               # import lovely_tensors as lt
+   109                                               # lt.monkey_patch()
+   110                                               # __all__ += ["torch", "nn", "F", "Dataset", "DataLoader", "optim"]
+   111                                           
+   112         1          1.0      1.0      0.0      import datetime
+   113         1          0.0      0.0      0.0      import pdb
+   114         1          0.0      0.0      0.0      from typing import Tuple, Union
+   115                                           
+   116                                               # Aliases
+   117         1          0.0      0.0      0.0      E = enumerate
+   118         1          2.0      2.0      0.0      pd.read_pqt = pd.read_parquet
+   119                                           
+   120         1          2.0      2.0      0.0      from fastcore.foundation import coll_repr, is_array
+   121                                           
+   122                                           
+   123         2         12.0      6.0      0.0      @patch_to(L)
+   124         2          0.0      0.0      0.0      def _repr_pretty_(self, p, cycle):
+   125                                                   p.text(
+   126                                                       "..."
+   127                                                       if cycle
+   128                                                       else repr(self.items) if is_array(self.items) else coll_repr(self, 20)
+   129                                                   )
+   130                                           
+   131                                           
+   132         1          2.0      2.0      0.0      from collections import Counter, defaultdict
+   133         1          2.0      2.0      0.0      from copy import deepcopy as dcopy
+   134                                           
+   135         1       5844.0   5844.0      0.4      from rich.progress import track as _track
+   136                                           
+   137         1          1.0      1.0      0.0      track = lambda iterator, description="": _track(iterator, description=description)
+   138                                           
+   139                                           
+   140         1          1.0      1.0      0.0      old_line = lambda N=66: print("=" * N)
+   141                                           
+   142                                           
+   143         1          0.0      0.0      0.0      def line(string="", lw=66, upper=True, pad="\N{Box Drawings Double Horizontal}"):
+   144                                                   i = string.center(lw, pad)
+   145                                                   if upper:
+   146                                                       i = i.upper()
+   147                                                   print(i)
+   148                                           
+   149                                           
+   150         1          1.0      1.0      0.0      def lines(n=3, string="", **kwargs):
+   151                                                   assert n // 2 == (n - 1) // 2, "`n` should be odd"
+   152                                                   for _ in range(n // 2):
+   153                                                       line(**kwargs)
+   154                                                   line(string=string, **kwargs)
+   155                                                   for _ in range(n // 2):
+   156                                                       line(**kwargs)
+   157                                           
+   158                                           
+   159         1          0.0      0.0      0.0      def see(*X, N=66):
+   160                                                   list(map(lambda x: print("=" * N + "\n{}".format(x)), X)) + [print("=" * N)]
+   161                                           
+   162                                           
+   163         1          0.0      0.0      0.0      def flatten(lists):
+   164                                                   return [y for x in lists for y in x]
+   165                                           
+   166                                           
+   167         1          0.0      0.0      0.0      unique = lambda l: list(sorted(set(l)))
+   168         1          0.0      0.0      0.0      nunique = lambda l: len(set(l))
+   169                                           
+   170                                           
+   171         2        189.0     94.5      0.0      @typedispatch
+   172         2          0.0      0.0      0.0      def choose(List, n=1):
+   173                                                   if n == 1:
+   174                                                       return List[randint(len(List))]
+   175                                                   else:
+   176                                                       return L([choose(List) for _ in range(n)])
+   177                                           
+   178                                           
+   179         2         46.0     23.0      0.0      @typedispatch
+   180         2          1.0      0.5      0.0      def choose(i: dict, n=1):
+   181                                                   keys = list(i.keys())
+   182                                                   return choose(keys, n=n)
+   183                                           
+   184                                           
+   185         2         36.0     18.0      0.0      @typedispatch
+   186         2          1.0      0.5      0.0      def choose(i: set, n=1):
+   187                                                   i = list(i)
+   188                                                   return choose(i, n=n)
+   189                                           
+   190                                           
+   191         2         52.0     26.0      0.0      @typedispatch
+   192         2          1.0      0.5      0.0      def choose(i: pd.DataFrame, n=1):
+   193                                                   o = i.sample(n)
+   194                                                   if n == 1:
+   195                                                       return o.squeeze()
+   196                                                   return o
+   197                                           
+   198                                           
+   199         1          0.0      0.0      0.0      rand = lambda n=6: "".join(
+   200                                                   choose(list("1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), n=n)
+   201                                               )
+   202                                           
+   203                                           
+   204         1          1.0      1.0      0.0      randint = lambda high: np.random.randint(high)
+   205         1          3.0      3.0      0.0      randint = np.random.randint
+   206                                           
+   207                                           
+   208         1          0.0      0.0      0.0      def Tqdm(x, total=None, desc=None):
+   209                                                   total = len(x) if total is None else total
+   210                                                   return tqdm.tqdm(x, total=total, desc=desc)
+   211                                           
+   212                                           
+   213         1          3.0      3.0      0.0      from tqdm import trange
+   214                                           
+   215         1          0.0      0.0      0.0      old_now = lambda: str(datetime.datetime.now())[:-10].replace(" ", "_")
+   216         1          0.0      0.0      0.0      now = lambda: f"{datetime.datetime.now():%Y%m%d-%H%M}"
+   217                                           
+   218                                           
+   219         1          0.0      0.0      0.0      def read(fname, mode=1):
+   220                                                   init_cv2()
+   221                                                   img = cv2.imread(str(fname), mode)
+   222                                                   if mode == 1:
+   223                                                       img = img[..., ::-1]  # BGR to RGB
+   224                                                   return img
+   225                                           
+   226                                           
+   227         1          0.0      0.0      0.0      def readPIL(fname, mode="RGB"):
+   228                                                   if mode.lower() == "bw":
+   229                                                       mode = "L"
+   230                                                   return Image.open(str(fname)).convert(mode.upper())
+   231                                           
+   232                                           
+   233         1          1.0      1.0      0.0      def crop_from_bb(im, bb, padding=None):
+   234                                                   if isinstance(bb, list):
+   235                                                       return [crop_from_bb(im, _bb, padding=padding) for _bb in bb]
+   236                                                   x, y, X, Y = bb
+   237                                                   px, py, pX, pY = padding
+   238                                                   if max(x, y, X, Y) < 1.5:
+   239                                                       h, w = im.shape[:2]
+   240                                                       x, y, X, Y = BB(bb).absolute((h, w))
+   241                                                   y = max(0, y - py)
+   242                                                   Y = min(h, Y + pY)
+   243                                                   x = max(0, x - px)
+   244                                                   X = min(w, X + pX)
+   245                                                   return im.copy()[y:Y, x:X]
+   246                                           
+   247                                           
+   248         1          1.0      1.0      0.0      def rect(im, bb, c=None, th=2):
+   249                                                   init_cv2()
+   250                                                   c = "g" if c is None else c
+   251                                                   _d = {"r": (255, 0, 0), "g": (0, 255, 0), "b": (0, 0, 255), "y": (255, 0, 255)}
+   252                                                   c = _d[c] if isinstance(c, str) else c
+   253                                                   x, y, X, Y = bb
+   254                                                   cv2.rectangle(im, (x, y), (X, Y), c, th)
+   255                                           
+   256                                           
+   257         1          1.0      1.0      0.0      def B(im, th=180):
+   258                                                   "Binarize Image"
+   259                                                   return 255 * (im > th).astype(np.uint8)
+   260                                           
+   261                                           
+   262         1          1.0      1.0      0.0      def C(im):
+   263                                                   "make bw into 3 channels"
+   264                                                   if im.shape == 3:
+   265                                                       return im
+   266                                                   else:
+   267                                                       return np.repeat(im[..., None], 3, 2)
+   268                                           
+   269                                           
+   270         1          2.0      2.0      0.0      def common_old(a, b):
+   271                                                   """Wrapper around set intersection"""
+   272                                                   x = set(a).intersection(set(b))
+   273                                                   logger.opt(depth=1).log(
+   274                                                       "INFO",
+   275                                                       f"{len(x)} items found common from containers of {len(a)} and {len(b)} items respectively",
+   276                                                   )
+   277                                                   return set(sorted(x))
+   278                                           
+   279                                           
+   280         1          1.0      1.0      0.0      def common(*items, silent=True):
+   281                                                   """Wrapper around set intersection"""
+   282                                                   x = set(items[0])
+   283                                                   for item in items[1:]:
+   284                                                       x = set(item).intersection(x)
+   285                                                   lens = [str(len(i)) for i in items]
+   286                                                   if not silent:
+   287                                                       logger.opt(depth=1).log(
+   288                                                           "INFO",
+   289                                                           f"{len(x)} items found common from containers of {', '.join(lens)} items respectively",
+   290                                                       )
+   291                                                   return set(sorted(x))
+   292                                           
+   293                                           
+   294         1          1.0      1.0      0.0      def diff(a, b, rev=False, silent=False):
+   295                                                   if not rev:
+   296                                                       o = set(sorted(set(a) - set(b)))
+   297                                                   else:
+   298                                                       o = set(sorted(set(b) - set(a)))
+   299                                                   if not silent:
+   300                                                       logger.opt(depth=1).log("INFO", f"{len(o)} items found to differ")
+   301                                                   return o
+   302                                           
+   303                                           
+   304         1          1.0      1.0      0.0      def puttext(im, string, org, scale=1, color=(255, 0, 0), thickness=2):
+   305                                                   x, y = org
+   306                                                   org = x, int(y + 30 * scale)
+   307                                                   cv2.putText(im, str(string), org, cv2.FONT_HERSHEY_COMPLEX, scale, color, thickness)
+   308                                           
+   309                                           
+   310         1          3.0      3.0      0.0      def rotate(im, angle, pad=None, return_type=np.ndarray, bbs=None):
+   311                                                   pad = np.median(np.array(im)) if pad is None else pad
+   312                                                   pad = int(pad)
+   313                                                   if isinstance(im, np.ndarray):
+   314                                                       im = Image.fromarray(im)
+   315                                                   im = im.rotate(angle, expand=1, fillcolor=(pad, pad, pad))
+   316                                                   return np.array(im)
+   317                                           
+   318                                           
+   319         1          1.0      1.0      0.0      def _jitter(i):
+   320                                                   return i + np.random.randint(4)
+   321                                           
+   322                                           
+   323         1          1.0      1.0      0.0      def is_in_notebook():
+   324                                                   try:
+   325                                                       import importlib
+   326                                           
+   327                                                       # Test adapted from tqdm.autonotebook: https://github.com/tqdm/tqdm/blob/master/tqdm/autonotebook.py
+   328                                                       get_ipython = sys.modules["IPython"].get_ipython
+   329                                                       if "IPKernelApp" not in get_ipython().config:
+   330                                                           raise ImportError("console")
+   331                                           
+   332                                                       return importlib.util.find_spec("IPython") is not None
+   333                                                   except (AttributeError, ImportError, KeyError):
+   334                                                       return False
+   335                                           
+   336         1          1.0      1.0      0.0      def init_plt():
+   337                                                   import matplotlib.patheffects as path_effects
+   338                                                   import matplotlib.pyplot as plt
+   339                                                   plt.rcParams["axes.edgecolor"] = "black"
+   340                                                   globals().update(locals())
+   341                                           
+   342         1          1.0      1.0      0.0      def init_cv2():
+   343                                                   import cv2
+   344                                                   globals().update(locals())
+   345                                           
+   346         8         10.0      1.2      0.0      def show(
+   347         1          1.0      1.0      0.0          img=None,
+   348         1          1.0      1.0      0.0          ax=None,
+   349         1          1.0      1.0      0.0          title=None,
+   350         1          1.0      1.0      0.0          sz=None,
+   351         1          1.0      1.0      0.0          bbs=None,
+   352         1          1.0      1.0      0.0          confs=None,
+   353         1          1.0      1.0      0.0          texts=None,
+   354         1          1.0      1.0      0.0          bb_colors=None,
+   355         1          1.0      1.0      0.0          cmap="gray",
+   356         2          3.0      1.5      0.0          grid: bool = False,
+   357         2          3.0      1.5      0.0          save_path: str = None,
+   358         2          3.0      1.5      0.0          text_sz: int = None,
+   359         2          2.0      1.0      0.0          df: pd.DataFrame = None,
+   360         1          1.0      1.0      0.0          pts=None,
+   361         1          1.0      1.0      0.0          conns=None,
+   362         2          3.0      1.5      0.0          interactive: bool = False,
+   363         2          2.0      1.0      0.0          jitter: int = None,
+   364         2          2.0      1.0      0.0          frame_count: int = 1,
+   365                                                   **kwargs,
+   366                                               ):
+   367                                                   "show an image"
+   368                                                   from IPython.display import display, display_html
+   369                                                   init_plt()
+   370                                           
+   371                                                   try:
+   372                                                       if isinstance(img, (str, Path)):
+   373                                                           img = read(str(img), 1)
+   374                                                       try:
+   375                                                           import torch
+   376                                                           if isinstance(img, torch.Tensor):
+   377                                                               img = img.cpu().detach().numpy().copy()
+   378                                                       except ModuleNotFoundError:
+   379                                                           pass
+   380                                                       if isinstance(img, PIL.Image.Image):
+   381                                                           img = np.array(img)
+   382                                                   except Exception as e:
+   383                                                       Warn(e)
+   384                                           
+   385                                                   if title is None:
+   386                                                       import inspect as I
+   387                                           
+   388                                                       frame = I.currentframe()
+   389                                                       for _ in range(frame_count):
+   390                                                           frame = frame.f_back
+   391                                                       for var_name, var_val in frame.f_locals.items():
+   392                                                           if var_val is img and var_name != "_" and not var_name.strip("_").isdigit():
+   393                                                               title = var_name
+   394                                           
+   395                                                   if isinstance(img, pd.DataFrame):
+   396                                                       df = img
+   397                                                       max_rows = kwargs.pop("max_rows", 30)
+   398                                                       max_rows = 10000 if max_rows == -1 else max_rows
+   399                                                       if is_in_notebook():
+   400                                                           html_str = ""
+   401                                                           html_str += '<th style="text-align:center"><td style="vertical-align:top">'
+   402                                                           if title is not None:
+   403                                                               html_str += f'<h3 style="text-align: center;">{title}</h3>'
+   404                                                           html_str += (
+   405                                                               df.to_html(max_rows=max_rows)
+   406                                                               .replace("table", 'table style="display:inline"')
+   407                                                               .replace(' style="display:inline"', "")
+   408                                                           )
+   409                                                           html_str += "</td></th>"
+   410                                                           display_html(html_str, raw=True)
+   411                                                       else:
+   412                                                           o = df.to_markdown()
+   413                                                           print(o)
+   414                                                       return
+   415                                                   if not isinstance(img, np.ndarray):
+   416                                                       display(img)
+   417                                                       return
+   418                                           
+   419                                                   if len(img.shape) == 3 and len(img) == 3:
+   420                                                       # this is likely a torch tensor
+   421                                                       img = img.transpose(1, 2, 0)
+   422                                                   img = np.copy(img)
+   423                                                   if img.max() == 255:
+   424                                                       img = img.astype(np.uint8)
+   425                                                   h, w = img.shape[:2]
+   426                                           
+   427                                                   if interactive:
+   428                                                       from .interactive_show import ishow
+   429                                           
+   430                                                       ishow(img, df=df)
+   431                                                       return
+   432                                           
+   433                                                   if sz is None:
+   434                                                       if w < 50:
+   435                                                           sz = 1
+   436                                                       elif w < 150:
+   437                                                           sz = 2
+   438                                                       elif w < 300:
+   439                                                           sz = 5
+   440                                                       elif w < 600:
+   441                                                           sz = 10
+   442                                                       else:
+   443                                                           sz = 20
+   444                                                   if isinstance(sz, int):
+   445                                                       sz = (sz, sz)
+   446                                                   if ax is None:
+   447                                                       fig, ax = plt.subplots(figsize=kwargs.get("figsize", sz))
+   448                                                       _show = True
+   449                                                   else:
+   450                                                       _show = False
+   451                                           
+   452                                                   if df is not None:
+   453                                                       if isinstance(df, (str, Path)):
+   454                                                           df = str(df)
+   455                                                           df = pd.read_csv(df) if df.endswith("csv") else pd.read_parquet(df)
+   456                                           
+   457                                                       text_col = kwargs.pop("text_col", "info" if "info" in df.columns else "text")
+   458                                                       if text_col == "ixs":
+   459                                                           texts = df.index.tolist()
+   460                                                       elif text_col is not None and text_col in df.columns:
+   461                                                           texts = df[text_col]
+   462                                                       if "color" in df.columns:
+   463                                                           bb_colors = df["color"].tolist()
+   464                                                       bbs = df2bbs(df)  # assumes df has 'x,y,X,Y' columns or a single 'bb' column
+   465                                                   kwargs.pop("text_col") if "text_col" in kwargs else ...
+   466                                                   if isinstance(texts, pd.core.series.Series):
+   467                                                       texts = texts.tolist()
+   468                                                   if confs:
+   469                                                       colors = [[255, 0, 0], [223, 111, 0], [191, 191, 0], [79, 159, 0], [0, 128, 0]]
+   470                                                       bb_colors = [colors[int(cnf * 5) - 1] for cnf in confs]
+   471                                                   if isinstance(bbs, np.ndarray):
+   472                                                       bbs = bbs.astype(np.uint16).tolist()
+   473                                                   if bbs is not None:
+   474                                                       if "th" in kwargs:
+   475                                                           th = kwargs.get("th")
+   476                                                           kwargs.pop("th")
+   477                                                       else:
+   478                                                           if w < 800:
+   479                                                               th = 2
+   480                                                           elif w < 1600:
+   481                                                               th = 3
+   482                                                           else:
+   483                                                               th = 4
+   484                                                       if hasattr(bbs, "shape"):
+   485                                                           if isinstance(bbs, torch.Tensor):
+   486                                                               bbs = bbs.cpu().detach().numpy()
+   487                                                           bbs = bbs.astype(np.uint32).tolist()
+   488                                                       if len(bbs) > 0:
+   489                                                           _x_ = np.array(bbs).max()
+   490                                                       else:
+   491                                                           raise ValueError("Trying to plot with 0 bounding boxes...")
+   492                                                       rel = True if _x_ < 1.5 else False
+   493                                                       if rel:
+   494                                                           bbs = [BB(bb).absolute((h, w)) for bb in bbs]
+   495                                                       if jitter:
+   496                                                           bbs = [bb.jitter(jitter) for bb in bbs]
+   497                                                       bb_colors = (
+   498                                                           [[randint(255) for _ in range(3)] for _ in range(len(bbs))]
+   499                                                           if bb_colors == "random"
+   500                                                           else bb_colors
+   501                                                       )
+   502                                                       bb_colors = [bb_colors] * len(bbs) if isinstance(bb_colors, str) else bb_colors
+   503                                                       bb_colors = [None] * len(bbs) if bb_colors is None else bb_colors
+   504                                                       img = C(img) if len(img.shape) == 2 else img
+   505                                                       [rect(img, tuple(bb), c=bb_colors[ix], th=th) for ix, bb in enumerate(bbs)]
+   506                                                   text_sz = text_sz if text_sz else (max(sz) * 3 // 5)
+   507                                                   if texts is not None or texts == "ixs":
+   508                                                       if hasattr(texts, "shape"):
+   509                                                           if isinstance(texts, torch.Tensor):
+   510                                                               texts = texts.cpu().detach().numpy()
+   511                                                           texts = texts.tolist()
+   512                                                       if texts == "ixs":
+   513                                                           texts = [i for i in range(len(bbs))]
+   514                                                       if callable(texts):
+   515                                                           texts = [texts(bb) for bb in bbs]
+   516                                                       assert len(texts) == len(bbs), "Expecting as many texts as bounding boxes"
+   517                                                       texts = list(map(str, texts))
+   518                                                       texts = ["*" if len(t.strip()) == 0 else t for t in texts]
+   519                                                       [
+   520                                                           puttext(ax, text.replace("$", "\$"), tuple(bbs[ix][:2]), size=text_sz)
+   521                                                           for ix, text in enumerate(texts)
+   522                                                       ]
+   523                                                   if title:
+   524                                                       ax.set_title(title, fontdict=kwargs.pop("fontdict", None))
+   525                                                   if pts:
+   526                                                       pts = np.array(pts)
+   527                                                       if pts.max() < 1.1:
+   528                                                           pts = (pts * np.array([[w, h]])).astype(np.uint16).tolist()
+   529                                                       ax.scatter(*zip(*pts), c=kwargs.pop("pts_color", "red"))
+   530                                                   if conns is not None:
+   531                                                       for start_ix, end_ix, meta in conns:
+   532                                                           _x, _y = bbs[start_ix].xc, bbs[start_ix].yc
+   533                                                           _X, _Y = bbs[end_ix].xc, bbs[end_ix].yc
+   534                                                           _dx, _dy = _X - _x, _Y - _y
+   535                                                           _xc, _yc = (_X + _x) // 2, (_Y + _y) // 2
+   536                                                           plt.arrow(
+   537                                                               _jitter(_x),
+   538                                                               _jitter(_y),
+   539                                                               _jitter(_dx),
+   540                                                               _jitter(_dy),
+   541                                                               length_includes_head=True,
+   542                                                               color="cyan",
+   543                                                               head_width=4,
+   544                                                               head_length=4,
+   545                                                               width=meta * 2,
+   546                                                           )
+   547                                                           if kwargs.get("conn_text", True):
+   548                                                               puttext(ax, f"{meta:.2f}", (_xc, _yc), size=text_sz)
+   549                                                       kwargs.pop("conn_text")
+   550                                                   ax.imshow(img, cmap=cmap, **kwargs)
+   551                                           
+   552                                                   if grid:
+   553                                                       ax.grid()
+   554                                                   else:
+   555                                                       ax.set_axis_off()
+   556                                           
+   557                                                   if save_path:
+   558                                                       fig.savefig(save_path)
+   559                                                       return
+   560                                                   if _show:
+   561                                                       plt.show()
+   562                                           
+   563                                           
+   564         1          2.0      2.0      0.0      def puttext(ax, string, org, size=15, color=(255, 0, 0), thickness=2):
+   565                                                   x, y = org
+   566                                                   va = "top" if y < 15 else "bottom"
+   567                                                   text = ax.text(x, y, str(string), color="red", ha="left", va=va, size=size)
+   568                                                   text.set_path_effects(
+   569                                                       [path_effects.Stroke(linewidth=3, foreground="white"), path_effects.Normal()]
+   570                                                   )
+   571                                           
+   572                                           
+   573         1          2.0      2.0      0.0      def subplots(ims, nc=5, figsize=(5, 5), silent=True, **kwargs):
+   574                                                   init_plt()
+   575                                                   if len(ims) == 0:
+   576                                                       return
+   577                                                   titles = kwargs.pop("titles", [None] * len(ims))
+   578                                                   if isinstance(titles, str):
+   579                                                       if titles == "ixs":
+   580                                                           titles = [str(i) for i in range(len(ims))]
+   581                                                       else:
+   582                                                           titles = titles.split(",")
+   583                                                   if len(ims) <= 5 and nc == 5:
+   584                                                       nc = len(ims)
+   585                                                   nr = (len(ims) // nc) if len(ims) % nc == 0 else (1 + len(ims) // nc)
+   586                                                   if not silent:
+   587                                                       logger.opt(depth=1).log(
+   588                                                           "INFO", f"plotting {len(ims)} images in a grid of {nr}x{nc} @ {figsize}"
+   589                                                       )
+   590                                                   figsize = kwargs.pop("sz", figsize)
+   591                                                   figsize = (figsize, figsize) if isinstance(figsize, int) else figsize
+   592                                                   fig, axes = plt.subplots(nr, nc, figsize=figsize)
+   593                                                   return_axes = kwargs.pop("return_axes", False)
+   594                                                   axes = axes.flat
+   595                                                   fig.suptitle(kwargs.pop("suptitle", ""))
+   596                                                   dfs = kwargs.pop("dfs", [None] * len(ims))
+   597                                                   bbss = kwargs.pop("bbss", [None] * len(ims))
+   598                                                   if "text_col" in kwargs:
+   599                                                       text_cols = [kwargs.pop("text_col")] * len(ims)
+   600                                                   else:
+   601                                                       text_cols = kwargs.pop("text_cols", [None] * len(ims))
+   602                                                   titles = titles.split(",") if isinstance(titles, str) else titles
+   603                                                   for ix, (im, ax) in enumerate(zip(ims, axes)):
+   604                                                       show(
+   605                                                           im,
+   606                                                           ax=ax,
+   607                                                           title=titles[ix],
+   608                                                           df=dfs[ix],
+   609                                                           bbs=bbss[ix],
+   610                                                           text_col=text_cols[ix],
+   611                                                           **kwargs,
+   612                                                       )
+   613                                                   blank = np.eye(100) + np.eye(100)[::-1]
+   614                                                   for ax in axes:
+   615                                                       show(blank, ax=ax)
+   616                                                   plt.tight_layout()
+   617                                                   if return_axes:
+   618                                                       return axes
+   619                                                   plt.show()
+   620                                           
+   621                                           
+   622         1         15.0     15.0      0.0      class L_old(list):
+   623                                                   def __getitem__(self, keys):
+   624                                                       if isinstance(keys, (int, slice)):
+   625                                                           return list.__getitem__(self, keys)
+   626                                                       return L([self[k] for k in keys])
+   627                                           
+   628                                                   def sample(self, n=1):
+   629                                                       return [self[randint(len(self))] for _ in range(n)]
+   630                                           
+   631                                           
+   632         1          2.0      2.0      0.0      uint = lambda im: (255 * im).astype(np.uint8)
+   633         1          1.0      1.0      0.0      Blank = lambda *sh: uint(np.ones(sh))
+   634                                           
+   635                                           
+   636         1          1.0      1.0      0.0      def pdfilter(df, column, condition, silent=True):
+   637                                                   if not callable(condition):
+   638                                                       if isinstance(condition, list):
+   639                                                           condition = lambda x: x in condition
+   640                                                       else:
+   641                                                           condition = lambda x: x == condition
+   642                                                   _df = df[df[column].map(condition)]
+   643                                                   if not silent:
+   644                                                       logger.opt(depth=1).log("DEBUG", f"Filtering {len(_df)} items out of {len(df)}")
+   645                                                   return _df
+   646                                           
+   647                                           
+   648         1          1.0      1.0      0.0      def pdsort(df, column, asc=True):
+   649                                                   df.sort_values(column, ascending=asc)
+   650                                           
+   651                                           
+   652         1          1.0      1.0      0.0      def set_logging_level(level):
+   653                                                   logger.remove()
+   654                                                   logger.add(sys.stderr, level=level)
+   655                                           
+   656                                           
+   657         1         28.0     28.0      0.0      def resize_old(im: np.ndarray, sz: Union[float, Tuple[int, int]]):
+   658                                                   init_cv2()
+   659                                                   h, w = im.shape[:2]
+   660                                                   if isinstance(sz, float):
+   661                                                       frac = sz
+   662                                                       H, W = [int(i * frac) for i in [h, w]]
+   663                                                   elif isinstance(sz, int):
+   664                                                       H, W = sz, sz
+   665                                                   elif isinstance(sz, tuple):
+   666                                                       if sz[0] == -1:
+   667                                                           _, W = sz
+   668                                                           f = W / w
+   669                                                           H = int(f * h)
+   670                                                       elif sz[1] == -1:
+   671                                                           H, _ = sz
+   672                                                           f = H / h
+   673                                                           W = int(f * w)
+   674                                                       else:
+   675                                                           H, W = sz
+   676                                                   return cv2.resize(im, (W, H))
+   677                                           
+   678                                           
+   679         3          4.0      1.3      0.0      def resize(
+   680         1         20.0     20.0      0.0          im: Union[np.ndarray, PIL.Image.Image],
+   681         1         45.0     45.0      0.0          sz: Union[float, Tuple[int, int], Tuple[str, Tuple[int, int]]],
+   682                                               ):
+   683                                                   """Resize an image based on info from sz
+   684                                                   *Aspect ratio is preserved
+   685                                                   Examples:
+   686                                                       >>> im = np.random.rand(100,100)
+   687                                                       >>> _im = resize(im, 50)                    ; assert _im.shape == (50,50)
+   688                                                       >>> _im = resize(im, 0.5)                   ; assert _im.shape == (50,50)   #*
+   689                                                       >>> _im = resize(im, (50,200))              ; assert _im.shape == (50,200)
+   690                                                       >>> _im = resize(im, (0.5,2.0))             ; assert _im.shape == (50,200)
+   691                                                       >>> _im = resize(im, (0.5,200))             ; assert _im.shape == (50,200)
+   692                                           
+   693                                                       >>> im = np.random.rand(50,100)
+   694                                                       >>> _im = resize(im, (-1, 200))             ; assert _im.shape == (100,200) #*
+   695                                                       >>> _im = resize(im, (100, -1))             ; assert _im.shape == (100,200) #*
+   696                                                       >>> _im = resize(im, ('at-least',(40,400))) ; assert _im.shape == (200,400) #*
+   697                                                       >>> _im = resize(im, ('at-least',(400,40))) ; assert _im.shape == (400,800) #*
+   698                                                       >>> _im = resize(im, ('at-most', (40,400))) ; assert _im.shape == (40,80)   #*
+   699                                                       >>> _im = resize(im, ('at-most', (400,40))) ; assert _im.shape == (20,40)   #*
+   700                                                   """
+   701                                                   if isinstance(im, PIL.Image.Image):
+   702                                                       im = np.array(im)
+   703                                                       to_pil = True
+   704                                                   else:
+   705                                                       to_pil = False
+   706                                                   h, w = im.shape[:2]
+   707                                                   if isinstance(sz, (tuple, list)) and isinstance(sz[0], str):
+   708                                                       signal, (H, W) = sz
+   709                                                       assert signal in "at-least,at-most".split(
+   710                                                           ","
+   711                                                       ), "Resize type must be one of `at-least` or `at-most`"
+   712                                                       if signal == "at-least":
+   713                                                           f = max(H / h, W / w)
+   714                                                       if signal == "at-most":
+   715                                                           f = min(H / h, W / w)
+   716                                                       H, W = [i * f for i in [h, w]]
+   717                                                   elif isinstance(sz, float):
+   718                                                       frac = sz
+   719                                                       H, W = [i * frac for i in [h, w]]
+   720                                                   elif isinstance(sz, int):
+   721                                                       H, W = sz, sz
+   722                                                   elif isinstance(sz, tuple):
+   723                                                       H, W = sz
+   724                                                       if H == -1:
+   725                                                           _, W = sz
+   726                                                           f = W / w
+   727                                                           H = f * h
+   728                                                       elif W == -1:
+   729                                                           H, _ = sz
+   730                                                           f = H / h
+   731                                                           W = f * w
+   732                                                       elif isinstance(H, float):
+   733                                                           H = H * h
+   734                                                       elif isinstance(W, float):
+   735                                                           W = W * h
+   736                                                   H, W = int(H), int(W)
+   737                                                   im = cv2.resize(im, (W, H))
+   738                                                   if to_pil:
+   739                                                       im = PIL.Image.fromarray(im)
+   740                                                   return im
+   741                                           
+   742                                           
+   743         1          1.0      1.0      0.0      def pad(im, sz, pad_value=255):
+   744                                                   h, w = im.shape[:2]
+   745                                                   IM = np.ones(sz) * pad_value
+   746                                                   IM[:h, :w] = im
+   747                                                   return IM
+   748                                           
+   749                                           
+   750         1          2.0      2.0      0.0      def xywh2xyXY(bbs):
+   751                                                   if len(bbs) == 4 and isinstance(bbs[0], int):
+   752                                                       x, y, w, h = bbs
+   753                                                       return BB(x, y, x + w, y + h)
+   754                                                   return [xywh2xyXY(bb) for bb in bbs]
+   755                                           
+   756                                           
+   757         1          2.0      2.0      0.0      def _store_attr(self, anno, **attrs):
+   758                                                   for n, v in attrs.items():
+   759                                                       if n in anno:
+   760                                                           v = anno[n](v)
+   761                                                       setattr(self, n, v)
+   762                                                       self.__stored_args__[n] = v
+   763                                           
+   764                                           
+   765         1          2.0      2.0      0.0      def store_attr(names=None, self=None, but=None, cast=False, **attrs):
+   766                                                   "Store params named in comma-separated `names` from calling context into attrs in `self`"
+   767                                                   fr = sys._getframe(1)
+   768                                                   args = fr.f_code.co_varnames[: fr.f_code.co_argcount]
+   769                                                   if self:
+   770                                                       args = ("self", *args)
+   771                                                   else:
+   772                                                       self = fr.f_locals[args[0]]
+   773                                                   if not hasattr(self, "__stored_args__"):
+   774                                                       self.__stored_args__ = {}
+   775                                                   anno = self.__class__.__init__.__annotations__ if cast else {}
+   776                                                   if attrs:
+   777                                                       return _store_attr(self, anno, **attrs)
+   778                                                   ns = re.split(", *", names) if names else args[1:]
+   779                                                   but = [] if not but else but
+   780                                                   _store_attr(self, anno, **{n: fr.f_locals[n] for n in ns if n not in but})
+   781                                           
+   782                                           
+   783         1          1.0      1.0      0.0      def makedir(x):
+   784                                                   os.makedirs(x, exist_ok=True)
+   785                                           
+   786                                           
+   787         1          1.0      1.0      0.0      def parent(fpath):
+   788                                                   out = "/".join(fpath.split("/")[:-1])
+   789                                                   if out == "":
+   790                                                       return "./"
+   791                                                   else:
+   792                                                       return out
+   793                                           
+   794                                           
+   795         1          2.0      2.0      0.0      def write(image, fpath):
+   796                                                   init_cv2()
+   797                                                   makedir(parent(fpath))
+   798                                                   cv2.imwrite(fpath, image)
+   799                                           
+   800                                           
+   801         1          2.0      2.0      0.0      def lzip(*x):
+   802                                                   return list(zip(*x))
+   803                                           
+   804                                           
+   805         2         12.0      6.0      0.0      @patch_to(L)
+   806         2          4.0      2.0      0.0      def first(self):
+   807                                                   if len(self) > 0:
+   808                                                       return self[0]
+   809                                                   else:
+   810                                                       return None
+   811                                           
+   812                                           
+   813         2          6.0      3.0      0.0      @patch_to(L)
+   814         2          5.0      2.5      0.0      def get(self, condition):
+   815                                                   sublist = self.filter(condition)
+   816                                                   if len(sublist) > 0:
+   817                                                       return sublist.first()
+   818                                                   else:
+   819                                                       return None
+   820                                           
+   821                                           
+   822         2          5.0      2.5      0.0      @patch_to(L)
+   823         2          3.0      1.5      0.0      def get_all(self, condition):
+   824                                                   sublist = self.filter(condition)
+   825                                                   return sublist
+   826                                           
+   827                                           
+   828         1          3.0      3.0      0.0      def batchify(items, *rest, batch_size=32):
+   829                                                   """
+   830                                                   Yield batches of `batch_size` items at a time from one or more sequences.
+   831                                           
+   832                                                   Parameters:
+   833                                                       items (iterable): The main sequence of items to be batchified.
+   834                                                       *rest (iterable, optional): Additional sequences that should have the same length as `items`.
+   835                                                       batch_size (int, optional): The number of items per batch.
+   836                                           
+   837                                                   Yields:
+   838                                                       tuple: A tuple containing batches of items from `items` and optionally from the additional sequences.
+   839                                                   """
+   840                                                   n = len(items)
+   841                                                   if len(rest) > 0:
+   842                                                       assert all(
+   843                                                           [n == len(_rest) for _rest in rest]
+   844                                                       ), "batchify can only work with equal length containers"
+   845                                                   head = 0
+   846                                                   while head < n:
+   847                                                       tail = head + batch_size
+   848                                                       batch = items[head:tail]
+   849                                                       if rest:
+   850                                                           rest_ = [list(_rest[head:tail]) for _rest in rest]
+   851                                                           # yield batch, *rest_
+   852                                                           yield None
+   853                                                       else:
+   854                                                           yield batch
+   855                                                       head = tail
+   856                                           
+   857                                           
+   858         1          2.0      2.0      0.0      def toss(frac: float, pass_=True, fail_=False):
+   859                                                   return [fail_, pass_][np.random.uniform() < frac]
+   860                                           
+   861                                           
+   862         1          4.0      4.0      0.0      def phasify(items, n_phases: int):
+   863                                                   """
+   864                                                   [Doc generated by AI]
+   865                                                   Distributes a list of items into multiple phases and returns a list of lists, each containing items from a specific phase.
+   866                                           
+   867                                                   Parameters:
+   868                                                       items (list): A list of items to be distributed among phases.
+   869                                                       n_phases (int): The number of phases to divide the items into.
+   870                                           
+   871                                                   Returns:
+   872                                                       list: A list of lists, where each sublist contains items assigned to a specific phase.
+   873                                           
+   874                                                   Example:
+   875                                                       items = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+   876                                                       n_phases = 3
+   877                                                       result = phasify(items, n_phases)
+   878                                                       # Output: [[1, 4, 7], [2, 5, 8], [3, 6, 9]]
+   879                                                   """
+   880                                                   iterators = defaultdict(L)
+   881                                                   [iterators[ix % n_phases].append(item) for ix, item in enumerate(items)]
+   882                                                   return L(iterators.values())
+   883                                           
+   884                                           
+   885         1          2.0      2.0      0.0      def split(items, splits, random_state=10):
+   886                                                   ks, vs = lzip(*splits.items())
+   887                                                   if any([v == -1 for v in vs]):
+   888                                                       assert list(vs).count(-1) == 1, "Only atmost one `-1` is allowed"
+   889                                                       vs = [v if v != -1 else -sum(vs) for v in vs]
+   890                                                   Info(vs)
+   891                                                   assert sum(vs) == 1, f"Split percentages should add to 1, received sum={sum(vs)}"
+   892                                                   np.random.seed(random_state)
+   893                                                   assignments = np.random.choice(ks, size=len(items), p=vs)
+   894                                                   o = {k: [] for k in ks}
+   895                                                   for item, assigned in zip(items, assignments):
+   896                                                       o[assigned].append(item)
+   897                                                   return o
+   898                                               
+   899         1          2.0      2.0      0.0      def train_test_split(*args, **kwargs):
+   900                                                   # This is done mainly to save time and memory during imports
+   901                                                   from sklearn.model_selection import train_test_split as tts
+   902                                                   return tts(*args, **kwargs)
+   903                                           
+   904         2          7.0      3.5      0.0      @patch_to(L)
+   905         2          4.0      2.0      0.0      def to_json(self):
+   906                                                   return list(self)
+   907                                               
+   908         1         13.0     13.0      0.0      globals().update(locals())
+
+Total time: 2.28042 s
+File: torch_snippets/__module_timing__.py
+Function: main at line 1
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+     1                                           @profile
+     2                                           def main():
+     3         1    1531651.0    2e+06     67.2      from torch_snippets import loader
+     4         1      29099.0  29099.0      1.3      from torch_snippets import paths
+     5         1     110586.0 110586.0      4.8      from torch_snippets import markup
+     6         1        782.0    782.0      0.0      from torch_snippets import inspector
+     7         1        139.0    139.0      0.0      from torch_snippets import load_defaults
+     8         1     531506.0 531506.0     23.3      from torch_snippets import pdf_loader
+     9         1          1.0      1.0      0.0      from torch_snippets import logger
+    10         1          1.0      1.0      0.0      from torch_snippets import markup2
+    11         1          1.0      1.0      0.0      from torch_snippets import registry
+    12         1       1644.0   1644.0      0.1      from torch_snippets import ipython
+    13         1        162.0    162.0      0.0      from torch_snippets import decorators
+    14         1        180.0    180.0      0.0      from torch_snippets import misc
+    15         1        260.0    260.0      0.0      from torch_snippets import dates
+    16                                               # from torch_snippets import torch_loader
+    17         1      74279.0  74279.0      3.3      from torch_snippets import s3_loader
+    18         1        127.0    127.0      0.0      from torch_snippets import zen
+
+  1.53 seconds - /Users/yeshwanth/Code/Personal/torch_snippets/torch_snippets/loader.py:80 - main
+  2.28 seconds - torch_snippets/__module_timing__.py:1 - main

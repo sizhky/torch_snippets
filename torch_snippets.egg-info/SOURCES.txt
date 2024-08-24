@@ -6,6 +6,7 @@ settings.ini
 setup.cfg
 setup.py
 torch_snippets/__init__.py
+torch_snippets/__module_timing__.py
 torch_snippets/_modidx.py
 torch_snippets/_nbdev.py
 torch_snippets/adapters.py

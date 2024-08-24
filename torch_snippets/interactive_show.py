@@ -26,7 +26,7 @@ from bokeh.models import (
 )
 from bokeh.palettes import Spectral7
 import networkx as nx
-import torch
+
 import numpy as np
 from fastcore.basics import ifnone
 from typing import Optional, Any, Iterable, Union
@@ -43,6 +43,8 @@ def to_networkx(
     to_undirected: Optional[Union[bool, str]] = False,
     remove_self_loops: bool = False,
 ) -> Any:
+    import torch
+
     r"""Converts a :class:`torch_geometric.data.Data` instance to a
     :obj:`networkx.Graph` if :attr:`to_undirected` is set to :obj:`True`, or
     a directed :obj:`networkx.DiGraph` otherwise.
@@ -195,6 +197,8 @@ def plot_graph(g, output, im=None, **kwargs):
 
 
 def tonp(i):
+    import torch
+
     if isinstance(i, torch.Tensor):
         i = i.cpu().detach().numpy()
         return i
@@ -203,6 +207,8 @@ def tonp(i):
 
 
 def tolist(i):
+    import torch
+
     if isinstance(i, torch.Tensor):
         i = tonp(i)
     if isinstance(i, np.ndarray):

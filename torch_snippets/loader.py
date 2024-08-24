@@ -28,7 +28,6 @@ __all__ = [
     "pd",
     "pdfilter",
     "pdb",
-    "plt",
     "PIL",
     "print",
     "puttext",
@@ -41,7 +40,6 @@ __all__ = [
     "resize",
     "rotate",
     "see",
-    "set_logging_level",
     "show",
     "store_attr",
     "subplots",
@@ -68,15 +66,17 @@ __all__ = [
     "get_logger_level",
     "in_debug_mode",
     "debug_mode",
-    "display",
+    # "display",
     "typedispatch",
     "defaultdict",
     "Counter",
     "dcopy",
     "patch_to",
     "split",
+    "train_test_split",
+    "init_plt",
+    "init_cv2",
 ]
-
 
 import os
 import re
@@ -90,59 +90,42 @@ import PIL
 import tqdm
 from fastcore.all import L, delegates, patch_to
 from fastcore.dispatch import typedispatch
-from IPython.display import display, display_html
 from PIL import Image
 
-from .bb_utils import *
-from .logger import *
+# from .bb_utils import *
+# from .logger import *
 
-try:
-    import torch
-    import torch.nn as nn
-    from torch import optim
-    from torch.nn import functional as F
-    from torch.utils.data import DataLoader, Dataset
-
-    __all__ += ["torch", "nn", "F", "Dataset", "DataLoader", "optim"]
-except:
-    Warn(
-        "Unable to load torch and dependent libraries from torch-snippets. \n"
-        "Functionalities might be limited. pip install lovely-tensors in case there are torch related errors"
-    )
-
-try:
-    import lovely_tensors as lt
-
-    lt.monkey_patch()
-except:
-    ...
-
-try:
-    from sklearn.model_selection import train_test_split
-
-    __all__ += ["train_test_split"]
-except:
-    ...
+from .bb_utils import (
+    randint,
+    BB,
+    df2bbs,
+    bbs2df,
+    bbfy,
+    jitter,
+    enlarge_bbs,
+    shrink_bbs,
+    to_relative,
+    to_absolute,
+)
+from .logger import (
+    logger,
+    Info,
+    Warn,
+    Debug,
+    Excep,
+    reset_logger,
+    get_logger_level,
+    in_debug_mode,
+    debug_mode,
+)
 
 import datetime
 import pdb
 from typing import Tuple, Union
 
-import matplotlib.patheffects as path_effects
-import matplotlib.pyplot as plt
-
-plt.rcParams["axes.edgecolor"] = "black"
-
 # Aliases
 E = enumerate
 pd.read_pqt = pd.read_parquet
-
-try:
-    import cv2
-
-    __all__ += ["cv2"]
-except:
-    logger.warning("Skipping cv2 import")
 
 from fastcore.foundation import coll_repr, is_array
 
@@ -244,6 +227,7 @@ now = lambda: f"{datetime.datetime.now():%Y%m%d-%H%M}"
 
 
 def read(fname, mode=1):
+    init_cv2()
     img = cv2.imread(str(fname), mode)
     if mode == 1:
         img = img[..., ::-1]  # BGR to RGB
@@ -272,6 +256,7 @@ def crop_from_bb(im, bb, padding=None):
 
 
 def rect(im, bb, c=None, th=2):
+    init_cv2()
     c = "g" if c is None else c
     _d = {"r": (255, 0, 0), "g": (0, 255, 0), "b": (0, 0, 255), "y": (255, 0, 255)}
     c = _d[c] if isinstance(c, str) else c
@@ -292,17 +277,9 @@ def C(im):
         return np.repeat(im[..., None], 3, 2)
 
 
-def common_old(a, b):
-    """Wrapper around set intersection"""
-    x = set(a).intersection(set(b))
-    logger.opt(depth=1).log(
-        "INFO",
-        f"{len(x)} items found common from containers of {len(a)} and {len(b)} items respectively",
-    )
-    return set(sorted(x))
-
-
 def common(*items, silent=True):
+    from .logger import logger
+
     """Wrapper around set intersection"""
     x = set(items[0])
     for item in items[1:]:
@@ -317,6 +294,8 @@ def common(*items, silent=True):
 
 
 def diff(a, b, rev=False, silent=False):
+    from .logger import logger
+
     if not rev:
         o = set(sorted(set(a) - set(b)))
     else:
@@ -327,6 +306,7 @@ def diff(a, b, rev=False, silent=False):
 
 
 def puttext(im, string, org, scale=1, color=(255, 0, 0), thickness=2):
+    init_cv2()
     x, y = org
     org = x, int(y + 30 * scale)
     cv2.putText(im, str(string), org, cv2.FONT_HERSHEY_COMPLEX, scale, color, thickness)
@@ -359,7 +339,20 @@ def is_in_notebook():
         return False
 
 
-@delegates(plt.imshow)
+def init_plt():
+    import matplotlib.patheffects as path_effects
+    import matplotlib.pyplot as plt
+
+    plt.rcParams["axes.edgecolor"] = "black"
+    globals().update(locals())
+
+
+def init_cv2():
+    import cv2
+
+    globals().update(locals())
+
+
 def show(
     img=None,
     ax=None,
@@ -382,6 +375,9 @@ def show(
     **kwargs,
 ):
     "show an image"
+    from IPython.display import display, display_html
+
+    init_plt()
 
     try:
         if isinstance(img, (str, Path)):
@@ -578,6 +574,7 @@ def show(
 
 
 def puttext(ax, string, org, size=15, color=(255, 0, 0), thickness=2):
+    init_plt()
     x, y = org
     va = "top" if y < 15 else "bottom"
     text = ax.text(x, y, str(string), color="red", ha="left", va=va, size=size)
@@ -587,6 +584,7 @@ def puttext(ax, string, org, size=15, color=(255, 0, 0), thickness=2):
 
 
 def subplots(ims, nc=5, figsize=(5, 5), silent=True, **kwargs):
+    init_plt()
     if len(ims) == 0:
         return
     titles = kwargs.pop("titles", [None] * len(ims))
@@ -634,21 +632,13 @@ def subplots(ims, nc=5, figsize=(5, 5), silent=True, **kwargs):
     plt.show()
 
 
-class L_old(list):
-    def __getitem__(self, keys):
-        if isinstance(keys, (int, slice)):
-            return list.__getitem__(self, keys)
-        return L([self[k] for k in keys])
-
-    def sample(self, n=1):
-        return [self[randint(len(self))] for _ in range(n)]
-
-
 uint = lambda im: (255 * im).astype(np.uint8)
 Blank = lambda *sh: uint(np.ones(sh))
 
 
 def pdfilter(df, column, condition, silent=True):
+    from .logger import logger
+
     if not callable(condition):
         if isinstance(condition, list):
             condition = lambda x: x in condition
@@ -662,32 +652,6 @@ def pdfilter(df, column, condition, silent=True):
 
 def pdsort(df, column, asc=True):
     df.sort_values(column, ascending=asc)
-
-
-def set_logging_level(level):
-    logger.remove()
-    logger.add(sys.stderr, level=level)
-
-
-def resize_old(im: np.ndarray, sz: Union[float, Tuple[int, int]]):
-    h, w = im.shape[:2]
-    if isinstance(sz, float):
-        frac = sz
-        H, W = [int(i * frac) for i in [h, w]]
-    elif isinstance(sz, int):
-        H, W = sz, sz
-    elif isinstance(sz, tuple):
-        if sz[0] == -1:
-            _, W = sz
-            f = W / w
-            H = int(f * h)
-        elif sz[1] == -1:
-            H, _ = sz
-            f = H / h
-            W = int(f * w)
-        else:
-            H, W = sz
-    return cv2.resize(im, (W, H))
 
 
 def resize(
@@ -716,6 +680,7 @@ def resize(
         im = np.array(im)
         to_pil = True
     else:
+        init_cv2()
         to_pil = False
     h, w = im.shape[:2]
     if isinstance(sz, (tuple, list)) and isinstance(sz[0], str):
@@ -807,6 +772,7 @@ def parent(fpath):
 
 
 def write(image, fpath):
+    init_cv2()
     makedir(parent(fpath))
     cv2.imwrite(fpath, image)
 
@@ -908,6 +874,13 @@ def split(items, splits, random_state=10):
     for item, assigned in zip(items, assignments):
         o[assigned].append(item)
     return o
+
+
+def train_test_split(*args, **kwargs):
+    # This is done mainly to save time and memory during imports
+    from sklearn.model_selection import train_test_split as tts
+
+    return tts(*args, **kwargs)
 
 
 @patch_to(L)

@@ -4,12 +4,15 @@
 __all__ = ['to', 'train', 'validate', 'predict', 'Capsule']
 
 # %% ../../nbs/capsule.ipynb 2
+from .. import init_torch
+init_torch()
+
 from functools import wraps
 from ..loader import *
 from ..torch_loader import *
 from ..paths import loaddill, dumpdill, makedir, parent
 from ..load_defaults import exists
-from ..markup import AttrDict
+from ..markup2 import AttrDict
 
 try:
     import mmcv

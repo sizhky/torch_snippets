@@ -6,15 +6,11 @@ __all__ = ['save_notebook', 'backup_this_notebook', 'backup_all_notebooks', 'bac
 
 # %% ../nbs/jupyter_notebook.ipynb 2
 import os, sys, json, time, hashlib
-from IPython.display import display, Javascript, display_html, Markdown
-import nbformat
-from nbconvert import HTMLExporter
 from .paths import stems, Glob, parent, P, stem, dumpdill
 from .markup import read_json, writelines, makedir
 from .logger import Info, Warn
 from .loader import show, pd, is_in_notebook
 from itertools import chain, cycle
-from IPython.utils.capture import capture_output
 from contextlib import contextmanager
 
 # %% ../nbs/jupyter_notebook.ipynb 3
@@ -22,6 +18,8 @@ from contextlib import contextmanager
 
 # %% ../nbs/jupyter_notebook.ipynb 4
 def save_notebook(file_path):
+    from IPython.display import display, Javascript
+
     start_md5 = hashlib.md5(open(file_path, "rb").read()).hexdigest()
     display(Javascript("IPython.notebook.save_checkpoint();"))
     current_md5 = start_md5
@@ -40,6 +38,9 @@ def backup_this_notebook(
     exclude_input=False,
     force_save_notebook=True,
 ):
+    from nbconvert import HTMLExporter
+    import nbformat
+
     if save_html_to_dir is None:
         save_html_to_dir = (
             parent(P(this_file_path)).resolve() / f"backups/{stem(this_file_path)}"
@@ -110,6 +111,8 @@ def backup_folders_of_nbs(src, dest):
 
 # %% ../nbs/jupyter_notebook.ipynb 6
 def display_dfs_side_by_side(*args, titles=cycle([""]), max_rows=50):
+    from IPython.display import display_html
+
     html_str = ""
     for df, title in zip(args, chain(titles, cycle(["</br>"]))):
         html_str += '<th style="text-align:center"><td style="vertical-align:top">'
@@ -134,31 +137,45 @@ def show_big_dataframe(df, max_rows=30):
 
 # %% ../nbs/jupyter_notebook.ipynb 7
 def h1(text):
+    from IPython.display import Markdown
+
     show(Markdown(f"## {text}"))
 
 
 def h2(text):
+    from IPython.display import Markdown
+
     show(Markdown(f"## {text}"))
 
 
 def h3(text):
+    from IPython.display import Markdown
+
     show(Markdown(f"### {text}"))
 
 
 def h4(text):
+    from IPython.display import Markdown
+
     show(Markdown(f"#### {text}"))
 
 
 def h5(text):
+    from IPython.display import Markdown
+
     show(Markdown(f"##### {text}"))
 
 
 def h6(text):
+    from IPython.display import Markdown
+
     show(Markdown(f"###### {text}"))
 
 # %% ../nbs/jupyter_notebook.ipynb 8
 @contextmanager
 def store_scrap(at):
+    from IPython.utils.capture import capture_output
+
     with capture_output() as scrap:
         yield scrap
     dumpdill(

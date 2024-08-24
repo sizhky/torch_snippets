@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.313">
+<meta name="generator" content="quarto-1.5.53">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>torch_snippets - Miscellaneous</title>
+<title>Miscellaneous – torch_snippets</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,11 +17,12 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -32,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -46,47 +47,17 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -108,7 +79,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -117,21 +94,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="torch_snippets - Miscellaneous">
-<meta property="og:description" content="Use timer as a standalone class so you have full control on when to call a lap (most useful in while loops)…">
-<meta property="og:site-name" content="torch_snippets">
-<meta name="twitter:title" content="torch_snippets - Miscellaneous">
-<meta name="twitter:description" content="Use timer as a standalone class so you have full control on when to call a lap (most useful in while loops)…">
+<meta property="og:title" content="Miscellaneous – torch_snippets">
+<meta property="og:description" content="One line functions for common tasks">
+<meta property="og:site_name" content="torch_snippets">
+<meta name="twitter:title" content="Miscellaneous – torch_snippets">
+<meta name="twitter:description" content="One line functions for common tasks">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -139,211 +118,234 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">torch_snippets</span>
     </a>
   </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
           <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Miscellaneous</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./misc.html">Miscellaneous</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Utilities for simple needs</a>
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Utilities for simple needs</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./adapters.html" class="sidebar-item-text sidebar-link">Adapters</a>
+  <div class="sidebar-item-container"> 
+  <a href="./AttrDict.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AttrDict.html</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./bokeh_plotting.html" class="sidebar-item-text sidebar-link">Bokeh Plots</a>
+  <div class="sidebar-item-container"> 
+  <a href="./adapters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adapters</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./bounding_boxes.html" class="sidebar-item-text sidebar-link">Bounding Box</a>
+  <div class="sidebar-item-container"> 
+  <a href="./bokeh_plotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bokeh Plots</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./capsule.html" class="sidebar-item-text sidebar-link">Capsule (Tutorial)</a>
+  <div class="sidebar-item-container"> 
+  <a href="./bounding_boxes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bounding Box</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./charts.html" class="sidebar-item-text sidebar-link">Altair</a>
+  <div class="sidebar-item-container"> 
+  <a href="./capsule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Capsule (Tutorial)</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./config.html" class="sidebar-item-text sidebar-link">config.html</a>
+  <div class="sidebar-item-container"> 
+  <a href="./charts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Altair and Other Charts</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./decorators.html" class="sidebar-item-text sidebar-link">Decorator Utilites</a>
+  <div class="sidebar-item-container"> 
+  <a href="./config.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">config.html</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./imgaug_loader.html" class="sidebar-item-text sidebar-link">Imgaug</a>
+  <div class="sidebar-item-container"> 
+  <a href="./decorators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Decorator Utilites</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./inspector.html" class="sidebar-item-text sidebar-link">Inspect</a>
+  <div class="sidebar-item-container"> 
+  <a href="./imgaug_loader.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imgaug</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./interactive_show.html" class="sidebar-item-text sidebar-link">interactive_show.html</a>
+  <div class="sidebar-item-container"> 
+  <a href="./inspector.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inspect</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./jupyter_notebook.html" class="sidebar-item-text sidebar-link">Jupyter Notebooks</a>
+  <div class="sidebar-item-container"> 
+  <a href="./interactive_show.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">interactive_show.html</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./load_defautls.html" class="sidebar-item-text sidebar-link">File Exists</a>
+  <div class="sidebar-item-container"> 
+  <a href="./jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jupyter Notebooks</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./logging.html" class="sidebar-item-text sidebar-link">Rich Logging and printing</a>
+  <div class="sidebar-item-container"> 
+  <a href="./load_defautls.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">File Exists</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./markups.html" class="sidebar-item-text sidebar-link">Markups</a>
+  <div class="sidebar-item-container"> 
+  <a href="./logging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rich Logging and printing</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./misc.html" class="sidebar-item-text sidebar-link active">Miscellaneous</a>
+  <div class="sidebar-item-container"> 
+  <a href="./markups.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Markups</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./paths.html" class="sidebar-item-text sidebar-link">Paths</a>
+  <div class="sidebar-item-container"> 
+  <a href="./misc.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Miscellaneous</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./pdf.html" class="sidebar-item-text sidebar-link">PDF</a>
+  <div class="sidebar-item-container"> 
+  <a href="./paths.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paths</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./registry.html" class="sidebar-item-text sidebar-link">Registry</a>
+  <div class="sidebar-item-container"> 
+  <a href="./pdf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PDF</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./report.html" class="sidebar-item-text sidebar-link">Report</a>
+  <div class="sidebar-item-container"> 
+  <a href="./registry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Registry</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./show.html" class="sidebar-item-text sidebar-link">Show</a>
+  <div class="sidebar-item-container"> 
+  <a href="./report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Report</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container">
-  <a href="./sklegos.html" class="sidebar-item-text sidebar-link">SK-Legos</a>
+  <div class="sidebar-item-container"> 
+  <a href="./show.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Show</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sklegos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SK-Legos</span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
-
+   
   <ul>
   <li><a href="#warning-never-run-tracker.sendnone-as-this-will-skip-variables-silently" id="toc-warning-never-run-tracker.sendnone-as-this-will-skip-variables-silently" class="nav-link active" data-scroll-target="#warning-never-run-tracker.sendnone-as-this-will-skip-variables-silently">Warning! NEVER RUN <code>tracker.send(None)</code> as this will skip variables silently</a></li>
+  <li><a href="#try-catch-with-a-single-line" id="toc-try-catch-with-a-single-line" class="nav-link" data-scroll-target="#try-catch-with-a-single-line">Try Catch with a single line</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Miscellaneous</h1>
+<h1 class="title">Miscellaneous</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-
-
-
+    
+  
+    
   </div>
+  
 
 
 </header>
 
+
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<div class="cell" data-execution_count="74">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> track2(iterable, <span class="op">*</span>, total<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        total <span class="op">=</span> ifnone(total, <span class="bu">len</span>(iterable))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        ...</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    timer <span class="op">=</span> Timer(total)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> iterable:</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        info <span class="op">=</span> <span class="cf">yield</span> item</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        timer(info<span class="op">=</span>info)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> info <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">yield</span>  <span class="co"># Just to ensure the send operation stops</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>))</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>fact <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="bu">sum</span>(l) <span class="op">/</span> fact</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> track2(l):</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    time.sleep(i <span class="op">/</span> fact)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-2" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>fact <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="bu">sum</span>(l) <span class="op">/</span> fact</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> track2(l):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    time.sleep(i <span class="op">/</span> fact)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-1/10 (1.00s - 9.04s remaining - 1.00 s/iter)
-2/10 (1.91s - 7.20s remaining - 1.11 iters/s)
-3/10 (2.71s - 5.63s remaining - 1.24 iters/s)
-4/10 (3.41s - 4.21s remaining - 1.43 iters/s)
-5/10 (4.01s - 3.02s remaining - 1.66 iters/s)
-6/10 (4.52s - 2.01s remaining - 1.99 iters/s)
-7/10 (4.92s - 1.21s remaining - 2.47 iters/s)
-8/10 (5.23s - 0.61s remaining - 3.28 iters/s)
-9/10 (5.43s - 0.20s remaining - 4.90 iters/s)
-10/10 (5.53s - 0.00s remaining - 9.64 iters/s)          </code></pre>
+1/10 (1.01s - 9.05s remaining - 1.01 s/iter)          
+2/10 (1.91s - 7.63s remaining - 1.05 iters/s)          
+3/10 (2.71s - 6.33s remaining - 1.11 iters/s)          
+4/10 (3.42s - 5.12s remaining - 1.17 iters/s)          
+5/10 (4.02s - 4.02s remaining - 1.24 iters/s)          
+6/10 (4.52s - 3.01s remaining - 1.33 iters/s)          
+7/10 (4.92s - 2.11s remaining - 1.42 iters/s)          
+8/10 (5.23s - 1.31s remaining - 1.53 iters/s)          
+9/10 (5.43s - 0.60s remaining - 1.66 iters/s)          
+10/10 (5.53s - 0.00s remaining - 1.81 iters/s)          </code></pre>
 </div>
 </div>
 <p>Use timer as a standalone class so you have full control on when to call a lap (most useful in while loops)…</p>
-<div class="cell" data-execution_count="75">
+<div id="cell-4" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">100</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> Timer(N)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>info <span class="op">=</span> <span class="va">None</span></span>
@@ -355,16 +357,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>()</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        info <span class="op">=</span> <span class="ss">f"My Info: </span><span class="sc">{</span>i<span class="op">*</span><span class="fl">3.122</span><span class="sc">}</span><span class="ss">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>51/100 (5.25s - 5.05s remaining - 9.71 iters/s)
-My Info: 156.1  100/100 (10.31s - 0.00s remaining - 9.75 iters/s)          </code></pre>
+<pre><code>51/100 (5.28s - 5.07s remaining - 9.66 iters/s)          
+My Info: 156.1  100/100 (10.38s - 0.00s remaining - 9.63 iters/s)          </code></pre>
 </div>
 </div>
 <p>… or use track2 to directly track a loop</p>
-<div class="cell" data-execution_count="80">
+<div id="cell-6" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">100</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>info <span class="op">=</span> <span class="va">None</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> (tracker :<span class="op">=</span> track2(<span class="bu">range</span>(N), total<span class="op">=</span>N)):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> (tracker <span class="op">:=</span> track2(<span class="bu">range</span>(N), total<span class="op">=</span>N)):</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.1</span>)</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    info <span class="op">=</span> <span class="ss">f"My Info: </span><span class="sc">{</span>i<span class="op">*</span><span class="fl">3.122</span><span class="sc">:.2f}</span><span class="ss">"</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> N <span class="op">//</span> <span class="dv">2</span>:</span>
@@ -372,13 +374,13 @@ My Info: 156.1  100/100 (10.31s - 0.00s remaining - 9.75 iters/s)          </cod
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">&gt;=</span> N <span class="op">//</span> <span class="dv">2</span>:</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        tracker.send(info)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>50/100 (5.16s - 5.22s remaining - 9.58 iters/s)
-My Info: 309.08 100/100 (10.31s - 0.00s remaining - 9.75 iters/s)          </code></pre>
+<pre><code>50/100 (5.20s - 5.20s remaining - 9.61 iters/s)          
+My Info: 309.08 100/100 (10.36s - 0.00s remaining - 9.65 iters/s)          </code></pre>
 </div>
 </div>
 <section id="warning-never-run-tracker.sendnone-as-this-will-skip-variables-silently" class="level2">
 <h2 class="anchored" data-anchor-id="warning-never-run-tracker.sendnone-as-this-will-skip-variables-silently">Warning! NEVER RUN <code>tracker.send(None)</code> as this will skip variables silently</h2>
-<div class="cell" data-execution_count="7">
+<div id="cell-8" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">@io</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">@timeit</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> foo(a, b<span class="op">=</span><span class="va">None</span>):</span>
@@ -389,95 +391,436 @@ My Info: 309.08 100/100 (10.31s - 0.00s remaining - 9.75 iters/s)          </cod
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> a <span class="op">+</span> b</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>foo(<span class="dv">10</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>foo(<span class="dv">10</span>, b<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> debug_mode():</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    foo(<span class="dv">10</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    foo(<span class="dv">10</span>, b<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[08/23/24 17:39:53] </span><span style="color: #008000; text-decoration-color: #008000">DEBUG   </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.00</span> seconds to execute `foo`                                                                                            <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/1296653500.py:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1296653500.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/1296653500.py:16#inner:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:16</span></a>
 </pre>
 </div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">tuple of <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> items
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #008000; text-decoration-color: #008000">DEBUG   </span>                                                                                                                       <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/2064456364.py:12" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2064456364.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/2064456364.py:12#<module>:12" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:12</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.00</span> seconds to execute `inner`                                                                                       <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">args</span><span style="font-weight: bold">()</span>                                                                                                                <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                      <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         kwargs                                                                                                                <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         outputs - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">11</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                  <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                                                                               <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                                                                               <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
 </pre>
 </div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">        int: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[08/23/24 17:39:55] </span><span style="color: #008000; text-decoration-color: #008000">DEBUG   </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2.01</span> seconds to execute `foo`                                                                                            <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/1296653500.py:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1296653500.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/1296653500.py:16#inner:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:16</span></a>
 </pre>
 </div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #008000; text-decoration-color: #008000">DEBUG   </span>                                                                                                                       <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/2064456364.py:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2064456364.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/2064456364.py:13#<module>:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:13</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2.01</span> seconds to execute `inner`                                                                                       <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">args</span><span style="font-weight: bold">()</span>                                                                                                                <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                      <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         kwargs                                                                                                                <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           b - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">20</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                      <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         outputs - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">30</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                  <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                                                                               <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                                                                               <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
 </pre>
 </div>
+</div>
+</section>
+<section id="try-catch-with-a-single-line" class="level2">
+<h2 class="anchored" data-anchor-id="try-catch-with-a-single-line">Try Catch with a single line</h2>
+<div id="cell-10" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> x <span class="kw">is</span> <span class="va">None</span>  <span class="co"># tryy returns None by default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[08/23/24 17:48:03] </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> Error for `do` with                                                                                                      <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/1057038067.py:30" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1057038067.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/1057038067.py:30#inner:30" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:30</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">args</span><span style="font-weight: bold">()</span>                                                                                                                   <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         kwargs                                                                                                                   <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           c - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                                                                                  <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         ZeroDivisionError: division by zero                                                                                      <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 </pre>
 </div>
+</div>
+<p>Use your own default on failure</p>
+<div id="cell-12" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(output_to_return_on_fail<span class="op">=</span><span class="st">"😔"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">dict of <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> items
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[08/23/24 17:48:04] </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> Error for `do` with                                                                                                      <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/1057038067.py:30" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1057038067.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/1057038067.py:30#inner:30" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:30</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">args</span><span style="font-weight: bold">()</span>                                                                                                                   <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         kwargs                                                                                                                   <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           c - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                                                                                  <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         ZeroDivisionError: division by zero                                                                                      <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 </pre>
 </div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<pre><code>'😔'</code></pre>
+</div>
+</div>
+<p>Optionally print the full stacktrace if needed</p>
+<div id="cell-14" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(print_traceback<span class="op">=</span><span class="va">True</span>, output_to_return_on_fail<span class="op">=</span><span class="st">"😔"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[08/23/24 17:48:06] </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">ERROR   </span> Error for `do` with                                                                                                      <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/1057038067.py:30" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1057038067.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/1057038067.py:30#inner:30" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:30</span></a>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">args</span><span style="font-weight: bold">()</span>                                                                                                                   <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         kwargs                                                                                                                   <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           c - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                                                                                  <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         Traceback <span style="font-weight: bold">(</span>most recent call last<span style="font-weight: bold">)</span>:                                                                                       <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           File <span style="color: #008000; text-decoration-color: #008000">"/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/1057038067.py"</span>, line <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">21</span>, in inner               <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             return <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">f</span><span style="font-weight: bold">(</span>*args, **kwargs<span style="font-weight: bold">)</span>                                                                                            <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                    ^^^^^^^^^^^^^^^^^^                                                                                            <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           File <span style="color: #008000; text-decoration-color: #008000">"/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_28490/580638143.py"</span>, line <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span>, in do                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             return <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> <span style="color: #800080; text-decoration-color: #800080">/</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>                                                                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                    ~~^~~                                                                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         ZeroDivisionError: division by zero                                                                                      <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                                                                                  <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 </pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
-</pre>
+<div class="cell-output cell-output-display" data-execution_count="35">
+<pre><code>'😔'</code></pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">int: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">11</span>
-</pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
-</pre>
+<p>You can also silence the errors completely</p>
+<div id="cell-16" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(silence_errors<span class="op">=</span><span class="va">True</span>, output_to_return_on_fail<span class="op">=</span><span class="st">"😔"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="36">
+<pre><code>'😔'</code></pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
-</pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">tuple of <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> items
-</pre>
+<p>You can collect all your errors in a list</p>
+<div id="cell-18" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> []</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(silence_errors<span class="op">=</span><span class="va">True</span>, store_errors<span class="op">=</span>errors)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> random.randint(<span class="dv">0</span>, <span class="dv">100</span>) <span class="op">&lt;</span> <span class="dv">50</span>:</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"🤔"</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    do(<span class="dv">1</span>, random.randint(<span class="dv">0</span>, <span class="dv">10</span>), c<span class="op">=</span>random.randint(<span class="dv">0</span>, <span class="dv">100</span>))</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(errors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[
+```↯ AttrDict ↯
+func - do (🏷️ str)
+args()
+  0 - 1 (🏷️ int)
+  1 - 6 (🏷️ int)
+kwargs
+  c - 51 (🏷️ int)
+tb - ZeroDivisionError: division by zero (🏷️ str)
+err_type - ZeroDivisionError (🏷️ str)
+
+```
+, 
+```↯ AttrDict ↯
+func - do (🏷️ str)
+args()
+  0 - 1 (🏷️ int)
+  1 - 6 (🏷️ int)
+kwargs
+  c - 35 (🏷️ int)
+tb - NotImplementedError: 🤔 (🏷️ str)
+err_type - NotImplementedError (🏷️ str)
+
+```
+, 
+```↯ AttrDict ↯
+func - do (🏷️ str)
+args()
+  0 - 1 (🏷️ int)
+  1 - 1 (🏷️ int)
+kwargs
+  c - 3 (🏷️ int)
+tb - ZeroDivisionError: division by zero (🏷️ str)
+err_type - ZeroDivisionError (🏷️ str)
+
+```
+, 
+```↯ AttrDict ↯
+func - do (🏷️ str)
+args()
+  0 - 1 (🏷️ int)
+  1 - 8 (🏷️ int)
+kwargs
+  c - 76 (🏷️ int)
+tb - ZeroDivisionError: division by zero (🏷️ str)
+err_type - ZeroDivisionError (🏷️ str)
+
+```
+]</code></pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">        int: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span>
-</pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
-</pre>
+<p>There’s onlly one usecase where you would want to send in a list by yourself - when you want to append your errors to an existing list. The sensible default is to always store the errors, especially because this is a debugging tool.</p>
+<p>Just access all the errors in a dataframe like so</p>
+<div id="cell-20" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">10</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> []</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(silence_errors<span class="op">=</span><span class="va">True</span>, store_errors<span class="op">=</span>errors, output_to_return_on_fail<span class="op">=</span><span class="st">"😔"</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> c <span class="op">&lt;</span> <span class="dv">50</span>:</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"🤔"</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    do(<span class="dv">1</span>, random.randint(<span class="dv">0</span>, <span class="dv">10</span>), c<span class="op">=</span>random.randint(<span class="dv">0</span>, <span class="dv">100</span>))</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>do.error_summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">func</th>
+<th data-quarto-table-cell-role="th">args</th>
+<th data-quarto-table-cell-role="th">kwargs</th>
+<th data-quarto-table-cell-role="th">tb</th>
+<th data-quarto-table-cell-role="th">err_type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>do</td>
+<td>[1, 9]</td>
+<td>{'c': 4}</td>
+<td>ZeroDivisionError: division by zero</td>
+<td>ZeroDivisionError</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>do</td>
+<td>[1, 6]</td>
+<td>{'c': 61}</td>
+<td>NotImplementedError: 🤔</td>
+<td>NotImplementedError</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>do</td>
+<td>[1, 9]</td>
+<td>{'c': 1}</td>
+<td>ZeroDivisionError: division by zero</td>
+<td>ZeroDivisionError</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>do</td>
+<td>[1, 3]</td>
+<td>{'c': 59}</td>
+<td>NotImplementedError: 🤔</td>
+<td>NotImplementedError</td>
+</tr>
+</tbody>
+</table>
+
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
-</pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">dict of <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> items
-</pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">        B:
-        int: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">20</span>
-</pre>
+<p>and the actual list of errors like so</p>
+<div id="cell-22" class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>do.error_store</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="52">
+<pre><code>[
+ ```↯ AttrDict ↯
+ func - do (🏷️ str)
+ args()
+   0 - 1 (🏷️ int)
+   1 - 9 (🏷️ int)
+ kwargs
+   c - 4 (🏷️ int)
+ tb - ZeroDivisionError: division by zero (🏷️ str)
+ err_type - ZeroDivisionError (🏷️ str)
+ 
+ ```,
+ 
+ ```↯ AttrDict ↯
+ func - do (🏷️ str)
+ args()
+   0 - 1 (🏷️ int)
+   1 - 6 (🏷️ int)
+ kwargs
+   c - 61 (🏷️ int)
+ tb - NotImplementedError: 🤔 (🏷️ str)
+ err_type - NotImplementedError (🏷️ str)
+ 
+ ```,
+ 
+ ```↯ AttrDict ↯
+ func - do (🏷️ str)
+ args()
+   0 - 1 (🏷️ int)
+   1 - 9 (🏷️ int)
+ kwargs
+   c - 1 (🏷️ int)
+ tb - ZeroDivisionError: division by zero (🏷️ str)
+ err_type - ZeroDivisionError (🏷️ str)
+ 
+ ```,
+ 
+ ```↯ AttrDict ↯
+ func - do (🏷️ str)
+ args()
+   0 - 1 (🏷️ int)
+   1 - 3 (🏷️ int)
+ kwargs
+   c - 59 (🏷️ int)
+ tb - NotImplementedError: 🤔 (🏷️ str)
+ err_type - NotImplementedError (🏷️ str)
+ 
+ ```]</code></pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
-</pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
-</pre>
+<p>Finally, you want to run the function (without try) to reproduce the error and actually start debugging. Just use the <code>.F</code> attribute to access the original function that you created</p>
+<div id="cell-24" class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ix <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> do.error_store[ix]</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>do.F(<span class="op">*</span>data.args, <span class="op">**</span>data.kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ZeroDivisionError</span>                         Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[51], line 3</span>
+<span class="ansi-green-fg ansi-bold">      1</span> ix <span style="color:rgb(98,98,98)">=</span> <span style="color:rgb(98,98,98)">2</span>
+<span class="ansi-green-fg ansi-bold">      2</span> data <span style="color:rgb(98,98,98)">=</span> do<span style="color:rgb(98,98,98)">.</span>error_store[ix]
+<span class="ansi-green-fg">----&gt; 3</span> <span class="ansi-yellow-bg">do</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">F</span><span class="ansi-yellow-bg">(</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">data</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">data</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+
+Cell <span class="ansi-green-fg">In[49], line 9</span>, in <span class="ansi-cyan-fg">do</span><span class="ansi-blue-fg">(a, b, c)</span>
+<span class="ansi-green-fg ansi-bold">      6</span> <span style="color:rgb(175,0,255)">@tryy</span>(silence_errors<span style="color:rgb(98,98,98)">=</span><span style="font-weight:bold;color:rgb(0,135,0)">True</span>, store_errors<span style="color:rgb(98,98,98)">=</span>errors, output_to_return_on_fail<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">😔</span><span style="color:rgb(175,0,0)">"</span>)
+<span class="ansi-green-fg ansi-bold">      7</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span> <span style="color:rgb(0,0,255)">do</span>(a, b, c):
+<span class="ansi-green-fg ansi-bold">      8</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> c <span style="color:rgb(98,98,98)">&lt;</span> <span style="color:rgb(98,98,98)">50</span>:
+<span class="ansi-green-fg">----&gt; 9</span>         <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(98,98,98)" class="ansi-yellow-bg">1</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">/</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">0</span>
+<span class="ansi-green-fg ansi-bold">     10</span>     <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg ansi-bold">     11</span>         <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">NotImplementedError</span>(<span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">🤔</span><span style="color:rgb(175,0,0)">"</span>)
+
+<span class="ansi-red-fg">ZeroDivisionError</span>: division by zero</pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">int: <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">30</span>
-</pre>
 </div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">══════════════════════════════════════════════════════════════════
-</pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="7">
-<pre><code>30</code></pre>
+<div id="cell-25" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> deco(decorator):</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">@wraps</span>(decorator)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> wrapper(<span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> real_decorator(func):</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">@wraps</span>(func)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>            <span class="kw">def</span> inner_wrapper(<span class="op">*</span>fargs, <span class="op">**</span>fkwargs):</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> decorator(func, <span class="op">*</span>fargs, <span class="op">**</span>fkwargs)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> inner_wrapper</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(args) <span class="op">==</span> <span class="dv">1</span> <span class="kw">and</span> <span class="bu">callable</span>(args[<span class="dv">0</span>]) <span class="kw">and</span> <span class="kw">not</span> kwargs:</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Case when B is used without arguments</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> real_decorator(args[<span class="dv">0</span>])</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Case when B is used with arguments</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>            <span class="kw">def</span> custom_decorator(func):</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> decorator(func, <span class="op">**</span>kwargs)</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> custom_decorator</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> wrapper</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-26" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="at">@deco</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> B(func, <span class="op">*</span>args, deco_param<span class="op">=</span><span class="st">"default"</span>, <span class="op">**</span>kwargs):</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"B"</span>, deco_param, <span class="bu">print</span>(<span class="st">"args"</span>, <span class="op">*</span>args, <span class="st">"kwargs"</span>, <span class="op">**</span>kwargs))</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> func(<span class="op">*</span>args, <span class="op">**</span>kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-27" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="at">@B</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> C(a, b, c):</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"C"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> (b <span class="op">*</span> c)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>C(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>args 1 2 3 kwargs
+B default None
+C</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>7</code></pre>
+</div>
+</div>
+<div id="cell-28" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="at">@B</span>(deco_param<span class="op">=</span><span class="st">"new_param"</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> C(a, b, c):</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> (b <span class="op">*</span> c)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Testing</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(C(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))  <span class="co"># Outputs 'new_param' then the result 7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>args kwargs
+B new_param None</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[16], line 1</span>
+<span class="ansi-green-fg">----&gt; 1</span> <span style="color:rgb(175,0,255)" class="ansi-yellow-bg">@B</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">deco_param</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span style="color:rgb(175,0,0)" class="ansi-yellow-bg">"</span><span style="color:rgb(175,0,0)" class="ansi-yellow-bg">new_param</span><span style="color:rgb(175,0,0)" class="ansi-yellow-bg">"</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg ansi-bold">      2</span> <span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">def</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,0,255)" class="ansi-yellow-bg">C</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">a</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">c</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">:</span>
+<span class="ansi-green-fg ansi-bold">      3</span> <span class="ansi-yellow-bg">    </span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">return</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">a</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">+</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">b</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">c</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-style:italic;color:rgb(95,135,135)"># Testing</span>
+
+Cell <span class="ansi-green-fg">In[13], line 17</span>, in <span class="ansi-cyan-fg">deco.&lt;locals&gt;.wrapper.&lt;locals&gt;.custom_decorator</span><span class="ansi-blue-fg">(func)</span>
+<span class="ansi-green-fg ansi-bold">     16</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span> <span style="color:rgb(0,0,255)">custom_decorator</span>(func):
+<span class="ansi-green-fg">---&gt; 17</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">decorator</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">func</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+
+Cell <span class="ansi-green-fg">In[14], line 4</span>, in <span class="ansi-cyan-fg">B</span><span class="ansi-blue-fg">(func, deco_param, *args, **kwargs)</span>
+<span class="ansi-green-fg ansi-bold">      1</span> <span style="color:rgb(175,0,255)">@deco</span>
+<span class="ansi-green-fg ansi-bold">      2</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span> <span style="color:rgb(0,0,255)">B</span>(func, <span style="color:rgb(98,98,98)">*</span>args, deco_param<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">default</span><span style="color:rgb(175,0,0)">"</span>, <span style="color:rgb(98,98,98)">*</span><span style="color:rgb(98,98,98)">*</span>kwargs):
+<span class="ansi-green-fg ansi-bold">      3</span>     <span style="color:rgb(0,135,0)">print</span>(<span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">B</span><span style="color:rgb(175,0,0)">"</span>, deco_param, <span style="color:rgb(0,135,0)">print</span>(<span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">args</span><span style="color:rgb(175,0,0)">"</span>, <span style="color:rgb(98,98,98)">*</span>args, <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">kwargs</span><span style="color:rgb(175,0,0)">"</span>, <span style="color:rgb(98,98,98)">*</span><span style="color:rgb(98,98,98)">*</span>kwargs))
+<span class="ansi-green-fg">----&gt; 4</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">func</span><span class="ansi-yellow-bg">(</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-red-fg">TypeError</span>: C() missing 3 required positional arguments: 'a', 'b', and 'c'</pre>
+</div>
 </div>
 </div>
 
@@ -504,7 +847,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       toggleBodyColorMode(bsSheetEl);
     }
   }
-  toggleBodyColorPrimary();
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -512,12 +855,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
     }
-  });
-  clipboard.on('success', function(e) {
+    return false;
+  }
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -531,11 +877,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
       button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button,
-        { trigger: "manual",
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
           offset: [0, -8]});
-      tooltip.show();
+      tooltip.show();    
     }
     setTimeout(function() {
       if (tooltip) {
@@ -549,11 +895,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/sizhky\.github\.io\/torch_snippets\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -563,9 +948,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
-    window.tippy(el, config);
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
   for (var i=0; i<noterefs.length; i++) {
@@ -576,9 +970,245 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -622,4 +1252,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

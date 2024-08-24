@@ -1,4 +1,7 @@
 # Changelog
+#### 0.540
+✨ Made all imports lazy for a faster import experience
+
 #### 0.539
 ✨ set `AD_SHOW_TAB_STOPS` env variable to anything to print with tab-stops (only recommended to see on REPL. Default is good for storing files)
 ✨ `crop_from_bb` has `padding` (px,py,pX,pY)
