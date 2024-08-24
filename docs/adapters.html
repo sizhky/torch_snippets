@@ -267,6 +267,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#np_2_b64" id="toc-np_2_b64" class="nav-link" data-scroll-target="#np_2_b64">np_2_b64</a></li>
   <li><a href="#cvat_2_csvs" id="toc-cvat_2_csvs" class="nav-link" data-scroll-target="#cvat_2_csvs">cvat_2_csvs</a></li>
   <li><a href="#csvs_2_cvat" id="toc-csvs_2_cvat" class="nav-link" data-scroll-target="#csvs_2_cvat">csvs_2_cvat</a></li>
+  <li><a href="#yolo_2_df" id="toc-yolo_2_df" class="nav-link" data-scroll-target="#yolo_2_df">yolo_2_df</a></li>
+  <li><a href="#df_2_yolo" id="toc-df_2_yolo" class="nav-link" data-scroll-target="#df_2_yolo">df_2_yolo</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
@@ -406,6 +408,20 @@ ul.task-list li input[type="checkbox"] {
 <p>*Convert CSV annotations to CVAT XML format.</p>
 <p>Args: images_folder (str): Path to the folder containing the images. csvs_folder (str): Path to the folder containing the CSV annotations. xml_output_file (str): Path to the output XML file. items (list, optional): List of items to process. If None, all items will be processed. Defaults to None. parquet (bool, optional): Whether the annotations are stored in Parquet format. Defaults to False. relative_df (bool, optional): Whether the bounding box coordinates in the CSV are relative to the image size. Defaults to True. default_label (str, optional): Default label for the bounding boxes. Defaults to “Background”. extension (str, optional): Image file extension. Defaults to “jpg”.</p>
 <p>Returns: None*</p>
+<hr>
+</section>
+<section id="yolo_2_df" class="level3">
+<h3 class="anchored" data-anchor-id="yolo_2_df">yolo_2_df</h3>
+<blockquote class="blockquote">
+<pre><code> yolo_2_df (yolo, h, w, id2class, class_column)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="df_2_yolo" class="level3">
+<h3 class="anchored" data-anchor-id="df_2_yolo">df_2_yolo</h3>
+<blockquote class="blockquote">
+<pre><code> df_2_yolo (df, h, w, class2id, class_column)</code></pre>
+</blockquote>
 
 
 </section>

@@ -302,6 +302,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#path.cp" id="toc-path.cp" class="nav-link" data-scroll-target="#path.cp">Path.cp</a></li>
   <li><a href="#path.mv" id="toc-path.mv" class="nav-link" data-scroll-target="#path.mv">Path.mv</a></li>
   <li><a href="#path.sample" id="toc-path.sample" class="nav-link" data-scroll-target="#path.sample">Path.sample</a></li>
+  <li><a href="#extn" id="toc-extn" class="nav-link" data-scroll-target="#extn">extn</a></li>
+  <li><a href="#path.extn" id="toc-path.extn" class="nav-link" data-scroll-target="#path.extn">Path.extn</a></li>
   <li><a href="#path.sz" id="toc-path.sz" class="nav-link" data-scroll-target="#path.sz">Path.sz</a></li>
   <li><a href="#path.size" id="toc-path.size" class="nav-link" data-scroll-target="#path.size">Path.size</a></li>
   <li><a href="#path.rmtree" id="toc-path.rmtree" class="nav-link" data-scroll-target="#path.rmtree">Path.rmtree</a></li>
@@ -314,6 +316,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#md5" id="toc-md5" class="nav-link" data-scroll-target="#md5">md5</a></li>
   <li><a href="#path.write_lines" id="toc-path.write_lines" class="nav-link" data-scroll-target="#path.write_lines">Path.write_lines</a></li>
   <li><a href="#writelines" id="toc-writelines" class="nav-link" data-scroll-target="#writelines">writelines</a></li>
+  <li><a href="#path.read_file" id="toc-path.read_file" class="nav-link" data-scroll-target="#path.read_file">Path.read_file</a></li>
+  <li><a href="#readfile" id="toc-readfile" class="nav-link" data-scroll-target="#readfile">readfile</a></li>
   <li><a href="#path.read_lines" id="toc-path.read_lines" class="nav-link" data-scroll-target="#path.read_lines">Path.read_lines</a></li>
   <li><a href="#readlines" id="toc-readlines" class="nav-link" data-scroll-target="#readlines">readlines</a></li>
   <li><a href="#tree" id="toc-tree" class="nav-link" data-scroll-target="#tree">tree</a></li>
@@ -339,24 +343,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(P().ls())</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(P().resolve())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[» tmp.txt, » _quarto.yml, » decorators.ipynb, » markups.ipynb, » sidebar.yml, » AttrDict.ipynb, » interactive_show.ipynb, » load_defautls.ipynb, » sklegos.ipynb, » bounding_boxes.ipynb, » show.ipynb, » pdf.ipynb, » charts.ipynb, » paths.ipynb, » nbdev.yml, » tmp.csv, » jupyter_notebook.ipynb, » config.ipynb, » misc.ipynb, » registry.ipynb, » adapters.ipynb, » report.ipynb, » .ipynb_checkpoints, » capsule.ipynb, » logging.ipynb, » inspector.ipynb, » bokeh_plotting.ipynb, » index.ipynb, » imgaug_loader.ipynb]
-/Users/apple/Code/Personal/torch_snippets/nbs</code></pre>
+<pre><code>[» _quarto.yml, » decorators.ipynb, » markups.ipynb, » sidebar.yml, » AttrDict.ipynb, » interactive_show.ipynb, » load_defautls.ipynb, » sklegos.ipynb, » bounding_boxes.ipynb, » show.ipynb, » pdf.ipynb, » charts.ipynb, » paths.ipynb, » nbdev.yml, » tmp.csv, » jupyter_notebook.ipynb, » config.ipynb, » misc.ipynb, » registry.ipynb, » adapters.ipynb, » report.ipynb, » .ipynb_checkpoints, » capsule.ipynb, » logging.ipynb, » inspector.ipynb, » bokeh_plotting.ipynb, » index.ipynb, » imgaug_loader.ipynb]
+/Users/yeshwanth/Code/Personal/torch_snippets/nbs</code></pre>
 </div>
 </div>
-<div id="cell-3" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>touch tmp.txt tmp.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-3" class="cell" data-scrolled="true" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !touch tmp.txt tmp.csv</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># # x = P()</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># x.tmp__csv, x.tmp__txt, x.misc</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-4" class="cell" data-scrolled="true" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> P()</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x.tmp__csv, x.tmp__txt, x.misc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
-<pre><code>(» tmp.csv, » tmp.txt, » misc.ipynb)</code></pre>
-</div>
-</div>
-<div id="cell-5" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>rm tmp.txt tmp.misc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-4" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>rm tmp.txt tmp.misc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>rm: tmp.misc: No such file or directory</code></pre>
+<pre><code>rm: tmp.txt: No such file or directory
+rm: tmp.misc: No such file or directory</code></pre>
 </div>
 </div>
 <hr>
@@ -397,6 +397,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <hr>
 </section>
+<section id="extn" class="level3">
+<h3 class="anchored" data-anchor-id="extn">extn</h3>
+<blockquote class="blockquote">
+<pre><code> extn (fpath)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="path.extn" class="level3">
+<h3 class="anchored" data-anchor-id="path.extn">Path.extn</h3>
+<blockquote class="blockquote">
+<pre><code> Path.extn ()</code></pre>
+</blockquote>
+<hr>
+</section>
 <section id="path.sz" class="level3">
 <h3 class="anchored" data-anchor-id="path.sz">Path.sz</h3>
 <blockquote class="blockquote">
@@ -417,67 +431,67 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> Path.rmtree (prompt='Really remove `{self}` and its contents? [y/n] ',
               force=False)</code></pre>
 </blockquote>
-<div id="cell-14" class="cell" data-execution_count="10">
+<div id="cell-15" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> P(<span class="st">"test.txt"</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>p.touch()</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>logger.info(p.size())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[07/02/24 14:04:08] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> KB                                                                                                                   <a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/1417366103.py:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1417366103.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/1417366103.py:3#<module>:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:3</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[08/24/24 11:12:12] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> KB                                                                                                                   <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1417366103.py:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1417366103.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1417366103.py:3#<module>:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:3</span></a>
 </pre>
 </div>
 </div>
 <p>Path objects can be moved and copied</p>
-<div id="cell-16" class="cell" data-tags="[]" data-execution_count="11">
+<div id="cell-17" class="cell" data-tags="[]" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> p.mv(<span class="st">"test1.txt"</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> p.cp(<span class="st">"test2.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Path objects have a <code>size</code>, <code>extn</code> (extension) and <code>parent</code> attributes</p>
-<div id="cell-18" class="cell" data-execution_count="12">
+<div id="cell-19" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">isinstance</span>(q, P)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> q.size() <span class="op">==</span> <span class="st">"0 KB"</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">str</span>(p) <span class="op">==</span> <span class="st">"test1.txt"</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> p.extn() <span class="op">==</span> <span class="st">"txt"</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> p.extn <span class="op">==</span> <span class="st">"txt"</span></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> p.parent <span class="op">==</span> P()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>They can be deleted with/without a prompt</p>
-<div id="cell-20" class="cell" data-execution_count="13">
+<div id="cell-21" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>p.rm(force<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>q.rm(confirm_prompt<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Folders can be globbed with a default of everything</p>
-<div id="cell-22" class="cell" data-execution_count="14">
+<div id="cell-23" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> P(<span class="st">"../torch_snippets"</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> P().ls() <span class="op">==</span> P().Glob()</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>p.Glob(<span class="st">"*.py"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
-<pre><code>(#30) [» ../torch_snippets/misc.py,» ../torch_snippets/load_defaults.py,» ../torch_snippets/text_utils.py,» ../torch_snippets/_nbdev.py,» ../torch_snippets/paths.py,» ../torch_snippets/charts.py,» ../torch_snippets/pdf_loader.py,» ../torch_snippets/interactive_show.py,» ../torch_snippets/registry.py,» ../torch_snippets/markup2.py,» ../torch_snippets/_modidx.py,» ../torch_snippets/inspector.py,» ../torch_snippets/__init__.py,» ../torch_snippets/tmp.py,» ../torch_snippets/torch_loader.py,» ../torch_snippets/logger.py,» ../torch_snippets/markup.py,» ../torch_snippets/fastcores.py,» ../torch_snippets/sklegos.py,» ../torch_snippets/ipython.py...]</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>(#34) [» ../torch_snippets/misc.py,» ../torch_snippets/load_defaults.py,» ../torch_snippets/text_utils.py,» ../torch_snippets/_nbdev.py,» ../torch_snippets/paths.py,» ../torch_snippets/charts.py,» ../torch_snippets/pdf_loader.py,» ../torch_snippets/interactive_show.py,» ../torch_snippets/registry.py,» ../torch_snippets/markup2.py,» ../torch_snippets/_modidx.py,» ../torch_snippets/inspector.py,» ../torch_snippets/__init__.py,» ../torch_snippets/tmp.py,» ../torch_snippets/torch_loader.py,» ../torch_snippets/logger.py,» ../torch_snippets/markup.py,» ../torch_snippets/fastcores.py,» ../torch_snippets/sklegos.py,» ../torch_snippets/cli.py...]</code></pre>
 </div>
 </div>
 <p>You can sample a random file from the directory</p>
-<div id="cell-24" class="cell" data-execution_count="15">
+<div id="cell-25" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> p.sample(<span class="st">"*.py"</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>Info(<span class="ss">f"Sample file: `</span><span class="sc">{</span>q<span class="sc">}</span><span class="ss">`"</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>Info(<span class="ss">f"Sample file size: `</span><span class="sc">{</span>q<span class="sc">.</span>size()<span class="sc">}</span><span class="ss">`"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Sample file: `..<span style="color: #800080; text-decoration-color: #800080">/torch_snippets/</span><span style="color: #ff00ff; text-decoration-color: #ff00ff">load_defaults.py</span>`                                                                      <a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/1725593160.py:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1725593160.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/1725593160.py:2#<module>:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:2</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Sample file: `..<span style="color: #800080; text-decoration-color: #800080">/torch_snippets/</span><span style="color: #ff00ff; text-decoration-color: #ff00ff">logger.py</span>`                                                                             <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1725593160.py:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1725593160.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1725593160.py:2#<module>:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:2</span></a>
 </pre>
 </div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Sample file size: `<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> KB`                                                                                               <a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/1725593160.py:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1725593160.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/1725593160.py:3#<module>:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:3</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Sample file size: `<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">9</span> KB`                                                                                               <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1725593160.py:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1725593160.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1725593160.py:3#<module>:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:3</span></a>
 </pre>
 </div>
 </div>
-<div id="cell-25" class="cell" data-execution_count="16">
+<div id="cell-26" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    p.size()</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    logger.warning(e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> `..<span style="color: #800080; text-decoration-color: #800080">/</span><span style="color: #ff00ff; text-decoration-color: #ff00ff">torch_snippets</span>` is a directory                                                                                     <a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/1980994904.py:4" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1980994904.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/1980994904.py:4#<module>:4" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:4</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> `..<span style="color: #800080; text-decoration-color: #800080">/</span><span style="color: #ff00ff; text-decoration-color: #ff00ff">torch_snippets</span>` is a directory                                                                                     <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1980994904.py:4" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1980994904.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1980994904.py:4#<module>:4" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:4</span></a>
 </pre>
 </div>
 </div>
-<div id="cell-26" class="cell" data-tags="[]" data-execution_count="18">
+<div id="cell-27" class="cell" data-tags="[]" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> P(<span class="st">"test.txt"</span>)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>p.touch()</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> isdir(p) <span class="op">==</span> <span class="va">False</span></span>
@@ -514,7 +528,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <pre><code> zip_files (list_of_files, dest)</code></pre>
 </blockquote>
-<div id="cell-30" class="cell" data-execution_count="20">
+<div id="cell-31" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>touch test1.txt test2.txt</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> zip_files(P().Glob(<span class="st">"*.txt"</span>), <span class="st">"test.tar.gz"</span>)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>unzip_file(f, <span class="st">"./"</span>)</span>
@@ -527,18 +541,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>[f.rm(force<span class="op">=</span><span class="va">True</span>) <span class="cf">for</span> f <span class="kw">in</span> P().Glob(<span class="st">"*.txt"</span>)]</span>
 <span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>P(<span class="st">"test.zip"</span>).rm(force<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Zipping <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> files to test.tar.gz<span style="color: #808000; text-decoration-color: #808000">...</span>                                                                                     <a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/3826617683.py:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3826617683.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/3826617683.py:8#zip_files:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">zip_files:8</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Zipping <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> files to test.tar.gz<span style="color: #808000; text-decoration-color: #808000">...</span>                                                                                     <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/3826617683.py:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3826617683.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/3826617683.py:8#zip_files:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">zip_files:8</span></a>
 </pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00&lt;00:00, 1836.39it/s]</code></pre>
+<pre><code>100%|██████████| 2/2 [00:00&lt;00:00, 649.78it/s]
+/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/3826617683.py:27: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+  f.extractall(dest)</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[07/02/24 14:04:09] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Zipping <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> files to test.zip<span style="color: #808000; text-decoration-color: #808000">...</span>                                                                                        <a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/3826617683.py:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3826617683.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/3826617683.py:8#zip_files:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">zip_files:8</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Zipping <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> files to test.zip<span style="color: #808000; text-decoration-color: #808000">...</span>                                                                                        <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/3826617683.py:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3826617683.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/3826617683.py:8#zip_files:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">zip_files:8</span></a>
 </pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00&lt;00:00, 851.46it/s]</code></pre>
+<pre><code>100%|██████████| 2/2 [00:00&lt;00:00, 2958.94it/s]</code></pre>
 </div>
 </div>
 <hr>
@@ -570,10 +586,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <pre><code> md5 (fname)</code></pre>
 </blockquote>
-<div id="cell-35" class="cell" data-tags="[]" data-execution_count="22">
+<div id="cell-36" class="cell" data-tags="[]" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>md5(<span class="st">"paths.ipynb"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
-<pre><code>'02ae3f36d5fd54fe83c9349376ada016'</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>'74eb392fa44e9293fb30ffed68c14112'</code></pre>
 </div>
 </div>
 <hr>
@@ -592,6 +608,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <hr>
 </section>
+<section id="path.read_file" class="level3">
+<h3 class="anchored" data-anchor-id="path.read_file">Path.read_file</h3>
+<blockquote class="blockquote">
+<pre><code> Path.read_file (**kwargs)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="readfile" class="level3">
+<h3 class="anchored" data-anchor-id="readfile">readfile</h3>
+<blockquote class="blockquote">
+<pre><code> readfile (*args, **kwargs)</code></pre>
+</blockquote>
+<hr>
+</section>
 <section id="path.read_lines" class="level3">
 <h3 class="anchored" data-anchor-id="path.read_lines">Path.read_lines</h3>
 <blockquote class="blockquote">
@@ -602,15 +632,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="readlines" class="level3">
 <h3 class="anchored" data-anchor-id="readlines">readlines</h3>
 <blockquote class="blockquote">
-<pre><code> readlines (fpath, silent=False, encoding=None)</code></pre>
+<pre><code> readlines (fpath, silent=False, encoding=None, _strip=True)</code></pre>
 </blockquote>
-<div id="cell-40" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>P(<span class="st">"paths.ipynb"</span>).read_lines()[:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-43" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>P(<span class="st">"paths.ipynb"</span>).read_lines()[:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> loaded <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1396</span> lines                                                                                                    <a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/276455267.py:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">276455267.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/276455267.py:13#read_lines:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">read_lines:13</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> loaded <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1075</span> lines                                                                                                   <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/2901855681.py:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2901855681.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/2901855681.py:13#read_lines:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">read_lines:13</span></a>
 </pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div class="cell-output cell-output-display" data-execution_count="23">
 <pre><code>['{',
  '"cells": [',
  '{',
@@ -630,10 +660,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <pre><code> tree (directory='./', filelimit=50, to=None)</code></pre>
 </blockquote>
-<div id="cell-42" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>P(<span class="st">"../"</span>).tree</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-45" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>P(<span class="st">"../"</span>).tree</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>/Users/apple/Code/Personal/torch_snippets
+<pre><code>/Users/yeshwanth/Code/Personal/torch_snippets
  ── LICENSE
  ── LICENSE.txt
  ── MANIFEST
@@ -641,10 +671,131 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  ── Makefile
  ── README.md
  ── Screenshot 2022-09-08 at 4.40.18 PM.png
+ ── __module_timing__.py.lprof
  ── _proc
+ &nbsp;&nbsp;  ── AttrDict.ipynb
  &nbsp;&nbsp;  ── _quarto.yml
+ &nbsp;&nbsp;  ── adapters.ipynb
+ &nbsp;&nbsp;  ── bokeh_plotting.ipynb
+ &nbsp;&nbsp;  ── bounding_boxes.ipynb
+ &nbsp;&nbsp;  ── capsule.ipynb
+ &nbsp;&nbsp;  ── charts.ipynb
+ &nbsp;&nbsp;  ── config.ipynb
+ &nbsp;&nbsp;  ── decorators.ipynb
+ &nbsp;&nbsp;  ── docs
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── AttrDict.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── adapters.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── bokeh_plotting.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── bounding_boxes.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── bounding_boxes_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-6-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-7-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-8-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-9-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── capsule.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── capsule_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-6-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── charts.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── charts_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-7-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── config.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── decorators.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── imgaug_loader.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── imgaug_loader_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-3-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-10.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-12.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-14.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-16.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-18.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-20.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-22.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-4.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-6.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-8.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-6-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-7-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-8-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── index.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── inspector.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── interactive_show.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── jupyter_notebook.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── load_defautls.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── logging.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── markups.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── misc.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── paths.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── pdf.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── registry.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── report.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── report_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-3-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── robots.txt
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── search.json
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── show.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── show_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-2-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-3-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-4-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-4-output-4.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-4-output-6.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-8-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-9-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── site_libs
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap-icons.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap-icons.woff
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap.min.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── clipboard
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── clipboard.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── anchor.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── popper.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-syntax-highlighting.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── tippy.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── tippy.umd.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-nav
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── headroom.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-nav.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-search
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── autocomplete.umd.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── fuse.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── quarto-search.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── sitemap.xml
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── sklegos.html
+ &nbsp;&nbsp;  ── imgaug_loader.ipynb
+ &nbsp;&nbsp;  ── index.ipynb
+ &nbsp;&nbsp;  ── inspector.ipynb
+ &nbsp;&nbsp;  ── interactive_show.ipynb
+ &nbsp;&nbsp;  ── jupyter_notebook.ipynb
+ &nbsp;&nbsp;  ── load_defautls.ipynb
+ &nbsp;&nbsp;  ── logging.ipynb
+ &nbsp;&nbsp;  ── markups.ipynb
+ &nbsp;&nbsp;  ── misc.ipynb
  &nbsp;&nbsp;  ── nbdev.yml
+ &nbsp;&nbsp;  ── paths.ipynb
+ &nbsp;&nbsp;  ── pdf.ipynb
+ &nbsp;&nbsp;  ── registry.ipynb
+ &nbsp;&nbsp;  ── report.ipynb
+ &nbsp;&nbsp;  ── show.ipynb
  &nbsp;&nbsp;  ── sidebar.yml
+ &nbsp;&nbsp;  ── sklegos.ipynb
+ &nbsp;&nbsp;  ── test.txt
+ &nbsp;&nbsp;  ── test1.txt
+ &nbsp;&nbsp;  ── test2.txt
+ &nbsp;&nbsp;  ── tmp.csv
+ &nbsp;&nbsp;  ── tmp.txt
  ── assets
  &nbsp;&nbsp;  ── Preamble.csv
  &nbsp;&nbsp;  ── Preamble.png
@@ -659,12 +810,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  &nbsp;&nbsp;  ── lib
  &nbsp;&nbsp;      ── torch_snippets
  &nbsp;&nbsp;          ── __init__.py
+ &nbsp;&nbsp;          ── __module_timing__.py
  &nbsp;&nbsp;          ── _modidx.py
  &nbsp;&nbsp;          ── _nbdev.py
  &nbsp;&nbsp;          ── adapters.py
  &nbsp;&nbsp;          ── bb_utils.py
  &nbsp;&nbsp;          ── bokeh_loader.py
  &nbsp;&nbsp;          ── charts.py
+ &nbsp;&nbsp;          ── cli.py
  &nbsp;&nbsp;          ── dates.py
  &nbsp;&nbsp;          ── decorators.py
  &nbsp;&nbsp;          ── fastcores.py
@@ -682,12 +835,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  &nbsp;&nbsp;          ── paths.py
  &nbsp;&nbsp;          ── pdf_loader.py
  &nbsp;&nbsp;          ── registry.py
+ &nbsp;&nbsp;          ── s3_loader.py
  &nbsp;&nbsp;          ── scp.py
  &nbsp;&nbsp;          ── sklegos.py
  &nbsp;&nbsp;          ── text_utils.py
  &nbsp;&nbsp;          ── thinc_parser
  &nbsp;&nbsp;          &nbsp;&nbsp;  ── __init__.py
  &nbsp;&nbsp;          &nbsp;&nbsp;  ── parser.py
+ &nbsp;&nbsp;          ── tmp.py
  &nbsp;&nbsp;          ── torch_loader.py
  &nbsp;&nbsp;          ── trainer
  &nbsp;&nbsp;          &nbsp;&nbsp;  ── __init__.py
@@ -696,15 +851,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  &nbsp;&nbsp;          &nbsp;&nbsp;  ── hooks.py
  &nbsp;&nbsp;          &nbsp;&nbsp;  ── neural_graph.py
  &nbsp;&nbsp;          ── video.py
+ &nbsp;&nbsp;          ── zen.py
  ── changelog.md
  ── conda
  &nbsp;&nbsp;  ── torch_snippets
  &nbsp;&nbsp;      ── meta.yaml
+ ── debug
+ &nbsp;&nbsp;  ── profile_time.txt
+ &nbsp;&nbsp;  ── profile_time_202408241027.txt
  ── dist
- &nbsp;&nbsp;  ── torch_snippets-0.535-py3-none-any.whl
- &nbsp;&nbsp;  ── torch_snippets-0.535.tar.gz
+ &nbsp;&nbsp;  ── torch_snippets-0.6.0-py3-none-any.whl
+ &nbsp;&nbsp;  ── torch_snippets-0.6.0.tar.gz
  ── docker-compose.yml
  ── docs
+ &nbsp;&nbsp;  ── AttrDict.html
  &nbsp;&nbsp;  ── adapters.html
  &nbsp;&nbsp;  ── bokeh_plotting.html
  &nbsp;&nbsp;  ── bounding_boxes.html
@@ -719,6 +879,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-2.png
  &nbsp;&nbsp;  ── charts.html
+ &nbsp;&nbsp;  ── charts_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-7-output-1.png
  &nbsp;&nbsp;  ── config.html
  &nbsp;&nbsp;  ── decorators.html
  &nbsp;&nbsp;  ── imgaug_loader.html
@@ -820,7 +983,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  &nbsp;&nbsp;  ── sidebar.yml
  &nbsp;&nbsp;  ── sklegos.ipynb
  &nbsp;&nbsp;  ── tmp.csv
- ── quarto-macos.pkg
  ── requirements.txt
  ── scripts.ipynb
  ── settings.ini
@@ -830,12 +992,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  ── tmp.ini
  ── torch_snippets
  &nbsp;&nbsp;  ── __init__.py
+ &nbsp;&nbsp;  ── __module_timing__.py
+ &nbsp;&nbsp;  ── __pycache__
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── __init__.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── __module_timing__.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── bb_utils.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── bokeh_loader.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── charts.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── cli.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── dates.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── decorators.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── icecream.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── inspector.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── ipython.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── load_defaults.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── loader.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── logger.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── markup.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── markup2.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── misc.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── paths.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── pdf_loader.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── registry.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── s3_loader.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── torch_loader.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── zen.cpython-312.pyc
  &nbsp;&nbsp;  ── _modidx.py
  &nbsp;&nbsp;  ── _nbdev.py
  &nbsp;&nbsp;  ── adapters.py
  &nbsp;&nbsp;  ── bb_utils.py
  &nbsp;&nbsp;  ── bokeh_loader.py
  &nbsp;&nbsp;  ── charts.py
+ &nbsp;&nbsp;  ── cli.py
  &nbsp;&nbsp;  ── dates.py
  &nbsp;&nbsp;  ── decorators.py
  &nbsp;&nbsp;  ── fastcores.py
@@ -853,38 +1041,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  &nbsp;&nbsp;  ── paths.py
  &nbsp;&nbsp;  ── pdf_loader.py
  &nbsp;&nbsp;  ── registry.py
+ &nbsp;&nbsp;  ── s3_loader.py
  &nbsp;&nbsp;  ── scp.py
  &nbsp;&nbsp;  ── sklegos.py
  &nbsp;&nbsp;  ── text_utils.py
  &nbsp;&nbsp;  ── thinc_parser
  &nbsp;&nbsp;  &nbsp;&nbsp;  ── __init__.py
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── __pycache__
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── __init__.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── parser.cpython-312.pyc
  &nbsp;&nbsp;  &nbsp;&nbsp;  ── parser.py
  &nbsp;&nbsp;  ── tmp.py
  &nbsp;&nbsp;  ── torch_loader.py
  &nbsp;&nbsp;  ── trainer
  &nbsp;&nbsp;  &nbsp;&nbsp;  ── __init__.py
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── __pycache__
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── __init__.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── capsule.cpython-312.pyc
  &nbsp;&nbsp;  &nbsp;&nbsp;  ── capsule.py
  &nbsp;&nbsp;  &nbsp;&nbsp;  ── config.py
  &nbsp;&nbsp;  &nbsp;&nbsp;  ── hooks.py
  &nbsp;&nbsp;  &nbsp;&nbsp;  ── neural_graph.py
  &nbsp;&nbsp;  ── video.py
+ &nbsp;&nbsp;  ── zen.py
  ── torch_snippets.egg-info
      ── PKG-INFO
      ── SOURCES.txt
      ── dependency_links.txt
+     ── entry_points.txt
      ── not-zip-safe
      ── requires.txt
      ── top_level.txt
 
-36 directories, 206 files
+61 directories, 348 files
 </code></pre>
-</div>
-</div>
-<div id="cell-43" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> P()</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>x.decorators.sz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="27">
-<pre><code>'13 KB'</code></pre>
 </div>
 </div>
 <hr>
@@ -903,7 +1093,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> folder_structure_to_dict (path)</code></pre>
 </blockquote>
 <p><em>Recursively constructs a nested dictionary that represents the folder structure.</em></p>
-<div id="cell-46" class="cell" data-tags="[]" data-execution_count="29">
+<div id="cell-48" class="cell" data-tags="[]" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> P(<span class="st">"tmp.txt"</span>)</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>x.touch()</span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>x.write_lines([i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>)], mode<span class="op">=</span><span class="st">"w"</span>)</span>
@@ -913,11 +1103,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>x.rm(confirm_prompt<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> loaded <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1000</span> lines                                                                                                    <a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/276455267.py:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">276455267.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/276455267.py:13#read_lines:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">read_lines:13</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[08/24/24 11:12:13] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> loaded <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1000</span> lines                                                                                                   <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/2901855681.py:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2901855681.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/2901855681.py:13#read_lines:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">read_lines:13</span></a>
 </pre>
 </div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span> KB                                                                                                                   <a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/1033976698.py:6" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1033976698.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/1033976698.py:6#<module>:6" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:6</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span> KB                                                                                                                   <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1033976698.py:6" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1033976698.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1033976698.py:6#<module>:6" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:6</span></a>
 </pre>
 </div>
 </div>
@@ -938,14 +1128,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
            ≈{fsize} @ "{fpath}" in {dumptime:.2e} seconds')</code></pre>
 </blockquote>
 <p><em>Dump a python object as a dill file (better replacement to pickle)</em></p>
-<div id="cell-49" class="cell" data-tags="[]" data-execution_count="32">
+<div id="cell-51" class="cell" data-tags="[]" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> P(<span class="st">"test.tmp"</span>)</span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>dumpdill([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], p)</span>
 <span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> loaddill(p)</span>
 <span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>p.rm(confirm_prompt<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> y <span class="op">==</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Dumped object of size ≈<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> KB @ <span style="color: #008000; text-decoration-color: #008000">"test.tmp"</span> in <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2.55e-04</span> seconds                                                            <a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/554288780.py:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">554288780.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/rj/v_x4x97x5mzcnq5b34yr6k900000gn/T/ipykernel_38032/554288780.py:2#<module>:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:2</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Dumped object of size ≈<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> KB @ <span style="color: #008000; text-decoration-color: #008000">"test.tmp"</span> in <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">4.11e-04</span> seconds                                                            <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/554288780.py:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">554288780.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/554288780.py:2#<module>:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:2</span></a>
 </pre>
 </div>
 </div>
