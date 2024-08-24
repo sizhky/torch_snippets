@@ -2,94 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sizhky.github.io/torch_snippets/imgaug_loader.html</loc>
-    <lastmod>2024-08-24T07:28:18.276Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.485Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/bokeh_plotting.html</loc>
-    <lastmod>2024-08-24T07:28:18.538Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.699Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/logging.html</loc>
-    <lastmod>2024-08-24T07:28:18.784Z</lastmod>
+    <lastmod>2024-08-24T17:13:26.819Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/report.html</loc>
-    <lastmod>2024-08-24T07:28:18.177Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.390Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/registry.html</loc>
-    <lastmod>2024-08-24T07:28:18.079Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.362Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/config.html</loc>
-    <lastmod>2024-08-24T07:28:18.717Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.945Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/paths.html</loc>
-    <lastmod>2024-08-24T07:28:18.208Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.410Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/pdf.html</loc>
-    <lastmod>2024-08-24T07:28:18.162Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.332Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/bounding_boxes.html</loc>
-    <lastmod>2024-08-24T07:28:18.158Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.378Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/load_defautls.html</loc>
-    <lastmod>2024-08-24T07:28:18.015Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.354Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/attrdict.html</loc>
-    <lastmod>2024-08-24T17:05:02.153Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.072Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/decorators.html</loc>
-    <lastmod>2024-08-24T07:28:19.093Z</lastmod>
+    <lastmod>2024-08-24T17:13:26.322Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/markups.html</loc>
-    <lastmod>2024-08-24T07:28:18.153Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.369Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/interactive_show.html</loc>
-    <lastmod>2024-08-24T07:28:18.569Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.713Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/sklegos.html</loc>
-    <lastmod>2024-08-24T07:28:18.844Z</lastmod>
+    <lastmod>2024-08-24T17:13:26.290Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/show.html</loc>
-    <lastmod>2024-08-24T07:28:17.951Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.127Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/charts.html</loc>
-    <lastmod>2024-08-24T07:28:19.007Z</lastmod>
+    <lastmod>2024-08-24T17:13:26.175Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/jupyter_notebook.html</loc>
-    <lastmod>2024-08-24T07:28:18.211Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.390Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/misc.html</loc>
-    <lastmod>2024-08-24T07:28:19.344Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.779Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/adapters.html</loc>
-    <lastmod>2024-08-24T07:28:18.197Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.758Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/capsule.html</loc>
-    <lastmod>2024-08-24T07:28:19.186Z</lastmod>
+    <lastmod>2024-08-24T17:13:26.402Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/inspector.html</loc>
-    <lastmod>2024-08-24T07:28:18.218Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.429Z</lastmod>
   </url>
   <url>
     <loc>https://sizhky.github.io/torch_snippets/index.html</loc>
-    <lastmod>2024-08-24T07:28:18.245Z</lastmod>
+    <lastmod>2024-08-24T17:13:25.451Z</lastmod>
   </url>
 </urlset>
