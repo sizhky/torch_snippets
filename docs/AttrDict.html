@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>attrdict – torch_snippets</title>
+<title>AttrDict / AD – torch_snippets</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,9 +106,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="torch_snippets">
+<meta property="og:title" content="AttrDict / AD – torch_snippets">
+<meta property="og:description" content="One line functions for common tasks">
 <meta property="og:site_name" content="torch_snippets">
-<meta name="twitter:title" content="torch_snippets">
+<meta name="twitter:title" content="AttrDict / AD – torch_snippets">
+<meta name="twitter:description" content="One line functions for common tasks">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -133,7 +135,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./AttrDict.html">AttrDict.html</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./attrdict.html">AttrDict / AD</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -153,8 +155,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./AttrDict.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">AttrDict.html</span></a>
+  <a href="./attrdict.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">AttrDict / AD</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -288,323 +290,894 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basic-invocations" id="toc-basic-invocations" class="nav-link active" data-scroll-target="#basic-invocations">Basic Invocations</a>
+  <ul class="collapse">
+  <li><a href="#just-replace-dict-with-ad" id="toc-just-replace-dict-with-ad" class="nav-link" data-scroll-target="#just-replace-dict-with-ad">Just replace <code>dict</code> with <code>AD</code></a></li>
+  <li><a href="#ad-supports-args" id="toc-ad-supports-args" class="nav-link" data-scroll-target="#ad-supports-args">AD supports args</a></li>
+  </ul></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#keys" id="toc-keys" class="nav-link" data-scroll-target="#keys"><code>.keys</code></a></li>
+  <li><a href="#values" id="toc-values" class="nav-link" data-scroll-target="#values"><code>.values</code></a></li>
+  <li><a href="#items" id="toc-items" class="nav-link" data-scroll-target="#items"><code>.items</code></a></li>
+  <li><a href="#use-.dict-to-create-a-vanilla-dict" id="toc-use-.dict-to-create-a-vanilla-dict" class="nav-link" data-scroll-target="#use-.dict-to-create-a-vanilla-dict">Use <code>.dict</code> to Create a Vanilla Dict</a></li>
+  <li><a href="#ad-from-vanilla-dict-another-basic-invocation" id="toc-ad-from-vanilla-dict-another-basic-invocation" class="nav-link" data-scroll-target="#ad-from-vanilla-dict-another-basic-invocation"><code>AD</code> From Vanilla Dict (Another Basic Invocation)</a></li>
+  <li><a href="#accessing-a-key" id="toc-accessing-a-key" class="nav-link" data-scroll-target="#accessing-a-key"><code>.</code> Accessing a key</a></li>
+  <li><a href="#in-searching-for-keys" id="toc-in-searching-for-keys" class="nav-link" data-scroll-target="#in-searching-for-keys"><code>in</code> Searching for keys</a></li>
+  <li><a href="#find_address-find-if-a-key-exists-and-return-where-it-is-i.e.-the-address-of-the-key" id="toc-find_address-find-if-a-key-exists-and-return-where-it-is-i.e.-the-address-of-the-key" class="nav-link" data-scroll-target="#find_address-find-if-a-key-exists-and-return-where-it-is-i.e.-the-address-of-the-key"><code>.find_address</code> Find if a key exists and return where it is, i.e., the address of the key</a></li>
+  <li><a href="#fetch-fetch-all-the-addresses" id="toc-fetch-fetch-all-the-addresses" class="nav-link" data-scroll-target="#fetch-fetch-all-the-addresses"><code>.fetch</code> fetch all the addresses</a></li>
+  <li><a href="#fetch2-fetches-all-the-addresses-while-preserving-the-key-hierarchy" id="toc-fetch2-fetches-all-the-addresses-while-preserving-the-key-hierarchy" class="nav-link" data-scroll-target="#fetch2-fetches-all-the-addresses-while-preserving-the-key-hierarchy"><code>.fetch2</code> fetches all the addresses while preserving the key hierarchy</a></li>
+  <li><a href="#fetch2-can-also-directly-fetch-all-the-keys-at-once-by-first-finding-all-addresses-and-then-fetching-all-of-them" id="toc-fetch2-can-also-directly-fetch-all-the-keys-at-once-by-first-finding-all-addresses-and-then-fetching-all-of-them" class="nav-link" data-scroll-target="#fetch2-can-also-directly-fetch-all-the-keys-at-once-by-first-finding-all-addresses-and-then-fetching-all-of-them"><code>.fetch2</code> can also directly fetch all the keys at once (by first finding all addresses and then fetching all of them)</a></li>
+  <li><a href="#slice-make-a-dictionary-out-of-all-keys-present-anywhere-in-the-dictionary" id="toc-slice-make-a-dictionary-out-of-all-keys-present-anywhere-in-the-dictionary" class="nav-link" data-scroll-target="#slice-make-a-dictionary-out-of-all-keys-present-anywhere-in-the-dictionary"><code>.slice</code> make a dictionary out of all keys present anywhere in the dictionary</a></li>
+  <li><a href="#get" id="toc-get" class="nav-link" data-scroll-target="#get"><code>.get</code></a></li>
+  <li><a href="#set" id="toc-set" class="nav-link" data-scroll-target="#set"><code>.set</code></a></li>
+  <li><a href="#map-map-a-function-on-all-leaf-nodes" id="toc-map-map-a-function-on-all-leaf-nodes" class="nav-link" data-scroll-target="#map-map-a-function-on-all-leaf-nodes"><code>.map</code> Map a function on all leaf nodes</a></li>
+  <li><a href="#trymap-map-a-function-on-all-leaf-nodes-and-preserve-the-leaf-as-it-is-if-the-function-fails" id="toc-trymap-map-a-function-on-all-leaf-nodes-and-preserve-the-leaf-as-it-is-if-the-function-fails" class="nav-link" data-scroll-target="#trymap-map-a-function-on-all-leaf-nodes-and-preserve-the-leaf-as-it-is-if-the-function-fails"><code>.trymap</code> Map a function on all leaf nodes and preserve the leaf as it is, if the function fails</a></li>
+  <li><a href="#drop-drop-a-key-even-if-it-is-present-somewhere-nested" id="toc-drop-drop-a-key-even-if-it-is-present-somewhere-nested" class="nav-link" data-scroll-target="#drop-drop-a-key-even-if-it-is-present-somewhere-nested"><code>.drop</code> Drop a key, even if it is present somewhere nested</a></li>
+  <li><a href="#update" id="toc-update" class="nav-link" data-scroll-target="#update"><code>.update</code></a></li>
+  <li><a href="#flatten-will-flatten-all-the-nests-into-a-single-level" id="toc-flatten-will-flatten-all-the-nests-into-a-single-level" class="nav-link" data-scroll-target="#flatten-will-flatten-all-the-nests-into-a-single-level"><code>.flatten</code> will flatten all the nests into a single level</a></li>
+  <li><a href="#flatten_and_make_dataframe-is-self-explanatory" id="toc-flatten_and_make_dataframe-is-self-explanatory" class="nav-link" data-scroll-target="#flatten_and_make_dataframe-is-self-explanatory"><code>.flatten_and_make_dataframe</code> is self explanatory</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">AttrDict / AD</h1>
+</div>
 
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
 
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<div id="ddaaf5c2-91fb-4b9a-b978-72a1b85d2c1b" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_snippets.loader <span class="im">import</span> L</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[07/01/24 11:12:47] </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> Unable to load torch and dependent libraries from torch-snippets.                                                        <a href="file:///Users/apple/Code/Personal/torch_snippets/torch_snippets/loader.py:108" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">loader.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/apple/Code/Personal/torch_snippets/torch_snippets/loader.py:108#<module>:108" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:108</span></a>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         Functionalities might be limited. pip install lovely-tensors in case there are torch related errors                      <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
-</pre>
+<div id="744a2942-0c6a-4295-920f-15e388fb1b42" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_snippets <span class="im">import</span> AD</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="basic-invocations" class="level2">
+<h2 class="anchored" data-anchor-id="basic-invocations">Basic Invocations</h2>
+<section id="just-replace-dict-with-ad" class="level3">
+<h3 class="anchored" data-anchor-id="just-replace-dict-with-ad">Just replace <code>dict</code> with <code>AD</code></h3>
+<p>AD is simply a dictionary, so you can create one in the same way you would create any dictionary.</p>
+<div id="0155f0e7-ec2a-423e-b981-047962fed61e" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> AD(x<span class="op">=</span><span class="st">'1'</span>, y<span class="op">=</span><span class="fl">2.0</span>, z<span class="op">=</span><span class="dv">3</span><span class="op">+</span><span class="ot">5j</span>, k<span class="op">=</span>AD(l<span class="op">=</span>{<span class="st">'you'</span>:<span class="st">'can'</span>,<span class="st">'nest'</span>:<span class="st">'dictionaries'</span>}, m<span class="op">=</span><span class="dv">2</span>, n<span class="op">=</span><span class="dv">3</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+```↯ AttrDict ↯
+x - 1 (🏷️ str)
+y - 2.0 (🏷️ float)
+z - (3+5j) (🏷️ complex)
+k
+  l
+    you - can (🏷️ str)
+    nest - dictionaries (🏷️ str)
+  m - 2 (🏷️ int)
+  n - 3 (🏷️ int)
+
+```
+</code></pre>
 </div>
 </div>
-<div id="999f8148-49df-4c56-8c8c-d672c221a0b1" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AD(<span class="bu">object</span>):</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    forbidden <span class="op">=</span> <span class="bu">set</span>(<span class="st">":,'</span><span class="ch">\"</span><span class="st">}{."</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, <span class="op">*</span>args, given_input_to_ad<span class="op">=</span><span class="va">None</span>, <span class="op">**</span>kwargs):</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        given_input_to_ad <span class="op">=</span> {} <span class="cf">if</span> given_input_to_ad <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> given_input_to_ad</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(args) <span class="op">==</span> <span class="dv">1</span> <span class="kw">and</span> <span class="bu">isinstance</span>(args[<span class="dv">0</span>], (Mapping, AttrDict)):</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            given_input_to_ad <span class="op">=</span> args[<span class="dv">0</span>]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            args <span class="op">=</span> {}</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            _args <span class="op">=</span> <span class="bu">dict</span>(ic.io(<span class="op">*</span>args)) <span class="cf">if</span> <span class="bu">len</span>(args) <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> {}</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            args <span class="op">=</span> {}</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> k, v <span class="kw">in</span> _args.items():</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">any</span>(c <span class="kw">in</span> <span class="va">self</span>.forbidden <span class="cf">for</span> c <span class="kw">in</span> k):</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">assert</span> <span class="bu">isinstance</span>(</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                        v, (<span class="bu">dict</span>, AttrDict)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                    ), <span class="ss">f"Input `</span><span class="sc">{</span>v<span class="sc">}</span><span class="ss">` can't be a list"</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                    given_input_to_ad <span class="op">=</span> {<span class="op">**</span>v, <span class="op">**</span>given_input_to_ad}</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                <span class="cf">else</span>:</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                    args <span class="op">=</span> {<span class="op">**</span>{k: v}, <span class="op">**</span>args}</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        given_input_to_ad <span class="op">=</span> {<span class="op">**</span>kwargs, <span class="op">**</span>given_input_to_ad, <span class="op">**</span>args}</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name, value <span class="kw">in</span> given_input_to_ad.items():</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>            <span class="bu">setattr</span>(<span class="va">self</span>, <span class="bu">str</span>(name), <span class="va">self</span>._wrap(value))</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> items(<span class="va">self</span>):</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.__dict__.items()</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> keys(<span class="va">self</span>):</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.__dict__.keys()</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> values(<span class="va">self</span>):</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.__dict__.values()</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> __json__(<span class="va">self</span>):</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.to_dict()</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _wrap(<span class="va">self</span>, value):</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(value, (L, <span class="bu">tuple</span>, <span class="bu">list</span>, <span class="bu">set</span>, <span class="bu">frozenset</span>)):</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>            value <span class="op">=</span> <span class="bu">type</span>(value)([<span class="va">self</span>._wrap(v) <span class="cf">for</span> v <span class="kw">in</span> value])</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(value, (<span class="bu">list</span>, L)):</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>                value <span class="op">=</span> L(value)</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> value</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>                AttrDict(given_input_to_ad<span class="op">=</span>value) <span class="cf">if</span> <span class="bu">isinstance</span>(value, <span class="bu">dict</span>) <span class="cf">else</span> value</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">__getitem__</span> <span class="op">=</span> <span class="kw">lambda</span> <span class="va">self</span>, x: (</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        AttrDict({_x: <span class="va">self</span>[_x] <span class="cf">for</span> _x <span class="kw">in</span> x})</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(x, (<span class="bu">list</span>, L))</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="bu">getattr</span>(<span class="va">self</span>, <span class="bu">str</span>(x))</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">__setitem__</span> <span class="op">=</span> <span class="kw">lambda</span> <span class="va">self</span>, k, v: <span class="bu">setattr</span>(<span class="va">self</span>, <span class="bu">str</span>(k), <span class="va">self</span>._wrap(v))</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update(<span class="va">self</span>, <span class="bu">dict</span>):</span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> k, v <span class="kw">in</span> <span class="bu">dict</span>.items():</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>[k] <span class="op">=</span> v</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get(<span class="va">self</span>, key, default<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> <span class="bu">str</span>(key)</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>[key] <span class="cf">if</span> key <span class="kw">in</span> <span class="va">self</span> <span class="cf">else</span> default</span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__iter__</span>(<span class="va">self</span>):</span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">iter</span>(<span class="va">self</span>.keys())</span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):</span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>.keys())</span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="ch">\n</span><span class="ss">```↯ AttrDict ↯</span><span class="ch">\n</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>summary()<span class="sc">}</span><span class="ch">\n</span><span class="ss">```</span><span class="ch">\n</span><span class="ss">"</span></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__dir__</span>(<span class="va">self</span>):</span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.__dict__.keys()</span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__contains__</span>(<span class="va">self</span>, key):</span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> <span class="bu">str</span>(key)</span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="st">"."</span> <span class="kw">not</span> <span class="kw">in</span> key:</span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> key <span class="kw">in</span> <span class="va">self</span>.__dict__.keys()</span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>            d <span class="op">=</span> <span class="va">self</span></span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> _k <span class="kw">in</span> key.split(<span class="st">"."</span>):</span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>                <span class="cf">try</span>:</span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>                    d <span class="op">=</span> d[_k]</span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>                <span class="cf">except</span> <span class="pp">AttributeError</span>:</span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> <span class="va">False</span></span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
-<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__delitem__</span>(<span class="va">self</span>, key):</span>
-<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> <span class="bu">str</span>(key)</span>
-<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>        <span class="kw">del</span> <span class="va">self</span>.__dict__[key]</span>
-<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="bu">map</span>(<span class="va">self</span>, func):</span>
-<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">dir</span>(<span class="va">self</span>):</span>
-<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>            v <span class="op">=</span> <span class="va">self</span>[k]</span>
-<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(v, AttrDict):</span>
-<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>                v.<span class="bu">map</span>(func)</span>
-<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="bu">isinstance</span>(v, (L, <span class="bu">tuple</span>, <span class="bu">list</span>, <span class="bu">set</span>, <span class="bu">frozenset</span>)):</span>
-<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>                v <span class="op">=</span> [_v.<span class="bu">map</span>(func) <span class="cf">if</span> <span class="bu">isinstance</span>(_v, AttrDict) <span class="cf">else</span> func(_v) <span class="cf">for</span> _v <span class="kw">in</span> v]</span>
-<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
-<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>                v <span class="op">=</span> func(v)</span>
-<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>[k] <span class="op">=</span> v</span>
-<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> drop(<span class="va">self</span>, key):</span>
-<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> key <span class="kw">in</span> <span class="va">self</span>:</span>
-<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>            <span class="kw">del</span> <span class="va">self</span>[key]</span>
-<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">dir</span>(<span class="va">self</span>):</span>
-<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>            v <span class="op">=</span> <span class="va">self</span>[k]</span>
-<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(v, AttrDict):</span>
-<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>                v.drop(key)</span>
-<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(v, (L, <span class="bu">tuple</span>, <span class="bu">list</span>, <span class="bu">set</span>, <span class="bu">frozenset</span>)):</span>
-<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>                v <span class="op">=</span> [_v.drop(key) <span class="cf">for</span> _v <span class="kw">in</span> v <span class="cf">if</span> <span class="bu">isinstance</span>(_v, AttrDict)]</span>
-<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> to_dict(<span class="va">self</span>):</span>
-<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> {}</span>
-<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> k <span class="kw">in</span> <span class="va">self</span>.__dict__.keys():  <span class="co"># can't use dir here</span></span>
-<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>            v <span class="op">=</span> <span class="va">self</span>[k]</span>
-<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(v, AttrDict):</span>
-<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>                v <span class="op">=</span> v.to_dict()</span>
-<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(v, (L, <span class="bu">tuple</span>, <span class="bu">list</span>, <span class="bu">set</span>, <span class="bu">frozenset</span>)):</span>
-<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>                v <span class="op">=</span> [_v.to_dict() <span class="cf">if</span> <span class="bu">isinstance</span>(_v, AttrDict) <span class="cf">else</span> _v <span class="cf">for</span> _v <span class="kw">in</span> v]</span>
-<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>            d[k] <span class="op">=</span> v</span>
-<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> d</span>
-<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>    <span class="bu">dict</span> <span class="op">=</span> to_dict</span>
-<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> pretty(<span class="va">self</span>, print_with_logger<span class="op">=</span><span class="va">False</span>, <span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
-<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>        pretty_json(</span>
-<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.to_dict(), print_with_logger<span class="op">=</span>print_with_logger, <span class="op">*</span>args, <span class="op">**</span>kwargs</span>
-<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):</span>
-<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> AttrDict(given_input_to_ad<span class="op">=</span>other).to_dict() <span class="op">==</span> <span class="va">self</span>.to_dict()</span>
-<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> find_address(<span class="va">self</span>, key, current_path<span class="op">=</span><span class="st">""</span>):</span>
-<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>        addresses <span class="op">=</span> []</span>
-<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> k <span class="kw">in</span> <span class="va">self</span>.keys():</span>
-<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> current_path:</span>
-<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>                new_path <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>current_path<span class="sc">}</span><span class="ss">.</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
-<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a>                new_path <span class="op">=</span> k</span>
-<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> k <span class="op">==</span> key:</span>
-<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>                addresses.append(new_path)</span>
-<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(<span class="va">self</span>[k], AttrDict):</span>
-<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a>                addresses.extend(<span class="va">self</span>[k].find_address(key, new_path))</span>
-<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="bu">isinstance</span>(<span class="va">self</span>[k], (L, <span class="bu">tuple</span>, <span class="bu">list</span>, <span class="bu">set</span>, <span class="bu">frozenset</span>)):</span>
-<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="va">self</span>[k]):</span>
-<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> <span class="bu">isinstance</span>(item, AttrDict):</span>
-<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>                        addresses.extend(item.find_address(key, <span class="ss">f"</span><span class="sc">{</span>new_path<span class="sc">}</span><span class="ss">.</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>))</span>
-<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> addresses</span>
-<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> summary(<span class="va">self</span>, current_path<span class="op">=</span><span class="st">""</span>, depth<span class="op">=</span><span class="dv">0</span>, sep<span class="op">=</span><span class="st">"  "</span>, max_items<span class="op">=</span><span class="dv">10</span>):</span>
-<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a>        max_items <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">"AD_MAX_ITEMS"</span>, max_items))</span>
-<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a>        sep <span class="op">=</span> os.environ.get(<span class="st">"AD_SEP"</span>, sep)</span>
-<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> format_path(path, key):</span>
-<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>path<span class="sc">}</span><span class="ss">.</span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">"</span> <span class="cf">if</span> path <span class="cf">else</span> key</span>
-<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> format_item(key, item, path, depth, sep):</span>
-<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a>            <span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a>            <span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
-<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a>                <span class="im">import</span> torch</span>
-<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
-<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-169"><a href="#cb2-169" aria-hidden="true" tabindex="-1"></a>                <span class="kw">class</span> Torch:</span>
-<span id="cb2-170"><a href="#cb2-170" aria-hidden="true" tabindex="-1"></a>                    Tensor <span class="op">=</span> <span class="bu">type</span>(<span class="va">None</span>)</span>
-<span id="cb2-171"><a href="#cb2-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-172"><a href="#cb2-172" aria-hidden="true" tabindex="-1"></a>                torch <span class="op">=</span> Torch()</span>
-<span id="cb2-173"><a href="#cb2-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-174"><a href="#cb2-174" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(item, (pd.DataFrame,)):</span>
-<span id="cb2-175"><a href="#cb2-175" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>sep <span class="op">*</span> depth<span class="sc">}{</span>key<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span><span class="bu">type</span>(item)<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss"> - shape </span><span class="sc">{</span>item<span class="sc">.</span>shape<span class="sc">}</span><span class="ss"> - columns </span><span class="sc">{</span>item<span class="sc">.</span>columns<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>hash_pandas_dataframe(item)<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
-<span id="cb2-176"><a href="#cb2-176" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(item, AttrDict) <span class="kw">or</span> <span class="bu">hasattr</span>(item, <span class="st">"keys"</span>):</span>
-<span id="cb2-177"><a href="#cb2-177" aria-hidden="true" tabindex="-1"></a>                item <span class="op">=</span> AttrDict(<span class="op">**</span>item)</span>
-<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>sep<span class="op">*</span>depth<span class="sc">}{</span>key<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">+</span> item.summary(path, depth <span class="op">+</span> <span class="dv">1</span>, sep)</span>
-<span id="cb2-179"><a href="#cb2-179" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="bu">isinstance</span>(item, (<span class="bu">list</span>, <span class="bu">tuple</span>, <span class="bu">set</span>, <span class="bu">frozenset</span>, L)):</span>
-<span id="cb2-180"><a href="#cb2-180" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> summarize_collection(key, item, path, depth <span class="op">+</span> <span class="dv">1</span>, sep)</span>
-<span id="cb2-181"><a href="#cb2-181" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="bu">isinstance</span>(item, (torch.Tensor, np.ndarray)):</span>
-<span id="cb2-182"><a href="#cb2-182" aria-hidden="true" tabindex="-1"></a>                is_np <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb2-183"><a href="#cb2-183" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">isinstance</span>(item, np.ndarray):</span>
-<span id="cb2-184"><a href="#cb2-184" aria-hidden="true" tabindex="-1"></a>                    is_np <span class="op">=</span> <span class="va">True</span></span>
-<span id="cb2-185"><a href="#cb2-185" aria-hidden="true" tabindex="-1"></a>                    item <span class="op">=</span> torch.tensor(item)</span>
-<span id="cb2-186"><a href="#cb2-186" aria-hidden="true" tabindex="-1"></a>                is_np <span class="op">=</span> <span class="st">"🔦"</span> <span class="cf">if</span> <span class="kw">not</span> is_np <span class="cf">else</span> <span class="st">"np."</span></span>
-<span id="cb2-187"><a href="#cb2-187" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>sep <span class="op">*</span> depth<span class="sc">}{</span>key<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>is_np<span class="sc">}{</span>item<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>hash_tensor(item)<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
-<span id="cb2-188"><a href="#cb2-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-189"><a href="#cb2-189" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
-<span id="cb2-190"><a href="#cb2-190" aria-hidden="true" tabindex="-1"></a>                is_multiline <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb2-191"><a href="#cb2-191" aria-hidden="true" tabindex="-1"></a>                ogitem <span class="op">=</span> item</span>
-<span id="cb2-192"><a href="#cb2-192" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">isinstance</span>(item, (<span class="bu">str</span>, P)):</span>
-<span id="cb2-193"><a href="#cb2-193" aria-hidden="true" tabindex="-1"></a>                    item <span class="op">=</span> <span class="bu">str</span>(item)</span>
-<span id="cb2-194"><a href="#cb2-194" aria-hidden="true" tabindex="-1"></a>                    is_multiline <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="kw">in</span> item</span>
-<span id="cb2-195"><a href="#cb2-195" aria-hidden="true" tabindex="-1"></a>                    _sep <span class="op">=</span> <span class="st">" ...</span><span class="ch">\n</span><span class="st">...</span><span class="ch">\n</span><span class="st">...</span><span class="ch">\n</span><span class="st">...</span><span class="ch">\n</span><span class="st">... "</span> <span class="cf">if</span> is_multiline <span class="cf">else</span> <span class="st">"........."</span></span>
-<span id="cb2-196"><a href="#cb2-196" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> <span class="bu">len</span>(item) <span class="op">&gt;</span> <span class="dv">100</span>:</span>
-<span id="cb2-197"><a href="#cb2-197" aria-hidden="true" tabindex="-1"></a>                        item <span class="op">=</span> item[:<span class="dv">35</span>] <span class="op">+</span> _sep <span class="op">+</span> item[<span class="op">-</span><span class="dv">35</span>:]</span>
-<span id="cb2-198"><a href="#cb2-198" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> is_multiline:</span>
-<span id="cb2-199"><a href="#cb2-199" aria-hidden="true" tabindex="-1"></a>                        _item <span class="op">=</span> item.split(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb2-200"><a href="#cb2-200" aria-hidden="true" tabindex="-1"></a>                        _item <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join([<span class="ss">f"</span><span class="sc">{</span>sep<span class="op">*</span>(depth<span class="op">+</span><span class="dv">1</span>)<span class="sc">}{</span>l<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> l <span class="kw">in</span> _item])</span>
-<span id="cb2-201"><a href="#cb2-201" aria-hidden="true" tabindex="-1"></a>                        item <span class="op">=</span> <span class="ss">f"↓</span><span class="ch">\n</span><span class="sc">{</span>sep<span class="op">*</span>(depth<span class="op">+</span><span class="dv">1</span>)<span class="sc">}</span><span class="ss">```</span><span class="ch">\n</span><span class="sc">{</span>_item<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span>sep<span class="op">*</span>(depth<span class="op">+</span><span class="dv">1</span>)<span class="sc">}</span><span class="ss">```"</span></span>
-<span id="cb2-202"><a href="#cb2-202" aria-hidden="true" tabindex="-1"></a>                multiline <span class="op">=</span> <span class="st">""</span> <span class="cf">if</span> <span class="kw">not</span> is_multiline <span class="cf">else</span> <span class="st">"Multiline "</span></span>
-<span id="cb2-203"><a href="#cb2-203" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>sep <span class="op">*</span> depth<span class="sc">}{</span>key<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>item<span class="sc">}</span><span class="ss"> (🏷️ </span><span class="sc">{</span>multiline<span class="sc">}{</span><span class="bu">type</span>(ogitem)<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">)</span><span class="ch">\n</span><span class="ss">"</span></span>
-<span id="cb2-204"><a href="#cb2-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-205"><a href="#cb2-205" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> summarize_collection(key, collection, path, d, s):</span>
-<span id="cb2-206"><a href="#cb2-206" aria-hidden="true" tabindex="-1"></a>            summary_str <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>s <span class="op">*</span> (d <span class="op">-</span> <span class="dv">1</span>)<span class="sc">}{</span>key<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
-<span id="cb2-207"><a href="#cb2-207" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> i, item <span class="kw">in</span> <span class="bu">enumerate</span>(collection):</span>
-<span id="cb2-208"><a href="#cb2-208" aria-hidden="true" tabindex="-1"></a>                item_path <span class="op">=</span> format_path(path, i)</span>
-<span id="cb2-209"><a href="#cb2-209" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> i <span class="op">&lt;</span> max_items:</span>
-<span id="cb2-210"><a href="#cb2-210" aria-hidden="true" tabindex="-1"></a>                    summary_str <span class="op">+=</span> format_item(i, item, item_path, d, s)</span>
-<span id="cb2-211"><a href="#cb2-211" aria-hidden="true" tabindex="-1"></a>                <span class="cf">else</span>:</span>
-<span id="cb2-212"><a href="#cb2-212" aria-hidden="true" tabindex="-1"></a>                    summary_str <span class="op">+=</span> (</span>
-<span id="cb2-213"><a href="#cb2-213" aria-hidden="true" tabindex="-1"></a>                        <span class="ss">f"</span><span class="sc">{</span>s<span class="op">*</span>d<span class="sc">}</span><span class="ss">... </span><span class="sc">{</span><span class="bu">len</span>(collection) <span class="op">-</span> max_items<span class="sc">}</span><span class="ss"> more items ...</span><span class="ch">\n</span><span class="ss">"</span></span>
-<span id="cb2-214"><a href="#cb2-214" aria-hidden="true" tabindex="-1"></a>                    )</span>
-<span id="cb2-215"><a href="#cb2-215" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">break</span></span>
-<span id="cb2-216"><a href="#cb2-216" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> summary_str</span>
-<span id="cb2-217"><a href="#cb2-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-218"><a href="#cb2-218" aria-hidden="true" tabindex="-1"></a>        summary_str <span class="op">=</span> <span class="st">""</span></span>
-<span id="cb2-219"><a href="#cb2-219" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> ix, key <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="va">self</span>.keys()):</span>
-<span id="cb2-220"><a href="#cb2-220" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> ix <span class="op">&gt;=</span> max_items:</span>
-<span id="cb2-221"><a href="#cb2-221" aria-hidden="true" tabindex="-1"></a>                summary_str <span class="op">+=</span> (</span>
-<span id="cb2-222"><a href="#cb2-222" aria-hidden="true" tabindex="-1"></a>                    <span class="ss">f"</span><span class="sc">{</span>sep<span class="op">*</span>depth<span class="sc">}</span><span class="ss"> ... </span><span class="sc">{</span><span class="bu">len</span>(<span class="va">self</span>.keys()) <span class="op">-</span> max_items<span class="sc">}</span><span class="ss"> more keys ...</span><span class="ch">\n</span><span class="ss">"</span></span>
-<span id="cb2-223"><a href="#cb2-223" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb2-224"><a href="#cb2-224" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span></span>
-<span id="cb2-225"><a href="#cb2-225" aria-hidden="true" tabindex="-1"></a>            new_path <span class="op">=</span> format_path(current_path, key)</span>
-<span id="cb2-226"><a href="#cb2-226" aria-hidden="true" tabindex="-1"></a>            summary_str <span class="op">+=</span> format_item(key, <span class="va">self</span>[key], new_path, depth, sep)</span>
-<span id="cb2-227"><a href="#cb2-227" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> summary_str</span>
-<span id="cb2-228"><a href="#cb2-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-229"><a href="#cb2-229" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> print_summary(<span class="va">self</span>, <span class="op">**</span>kwargs):</span>
-<span id="cb2-230"><a href="#cb2-230" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> builtins <span class="im">import</span> <span class="bu">print</span></span>
-<span id="cb2-231"><a href="#cb2-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-232"><a href="#cb2-232" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="va">self</span>.summary(<span class="op">**</span>kwargs))</span>
-<span id="cb2-233"><a href="#cb2-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-234"><a href="#cb2-234" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> write_summary(<span class="va">self</span>, to, <span class="op">**</span>kwargs):</span>
-<span id="cb2-235"><a href="#cb2-235" aria-hidden="true" tabindex="-1"></a>        writelines(<span class="va">self</span>.summary(<span class="op">**</span>kwargs).split(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>), to)</span>
-<span id="cb2-236"><a href="#cb2-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-237"><a href="#cb2-237" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fetch(<span class="va">self</span>, addr):</span>
-<span id="cb2-238"><a href="#cb2-238" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(addr, (<span class="bu">list</span>, L)):</span>
-<span id="cb2-239"><a href="#cb2-239" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> L([<span class="va">self</span>.fetch(_addr) <span class="cf">for</span> _addr <span class="kw">in</span> addr])</span>
-<span id="cb2-240"><a href="#cb2-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-241"><a href="#cb2-241" aria-hidden="true" tabindex="-1"></a>        o <span class="op">=</span> <span class="va">self</span></span>
-<span id="cb2-242"><a href="#cb2-242" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> p <span class="kw">in</span> addr.split(<span class="st">"."</span>):</span>
-<span id="cb2-243"><a href="#cb2-243" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
-<span id="cb2-244"><a href="#cb2-244" aria-hidden="true" tabindex="-1"></a>                o <span class="op">=</span> o[<span class="bu">int</span>(p)]</span>
-<span id="cb2-245"><a href="#cb2-245" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span>:</span>
-<span id="cb2-246"><a href="#cb2-246" aria-hidden="true" tabindex="-1"></a>                o <span class="op">=</span> o[p]</span>
-<span id="cb2-247"><a href="#cb2-247" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> o</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="dbf433a4-1533-4b30-be25-7ab442f37853" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> AD(x<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-File <span class="ansi-green-fg">~/miniconda3/miniconda3/envs/ts/lib/python3.10/site-packages/IPython/core/formatters.py:708</span>, in <span class="ansi-cyan-fg">PlainTextFormatter.__call__</span><span class="ansi-blue-fg">(self, obj)</span>
-<span class="ansi-green-fg ansi-bold">    701</span> stream <span style="color:rgb(98,98,98)">=</span> StringIO()
-<span class="ansi-green-fg ansi-bold">    702</span> printer <span style="color:rgb(98,98,98)">=</span> pretty<span style="color:rgb(98,98,98)">.</span>RepresentationPrinter(stream, <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>verbose,
-<span class="ansi-green-fg ansi-bold">    703</span>     <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>max_width, <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>newline,
-<span class="ansi-green-fg ansi-bold">    704</span>     max_seq_length<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>max_seq_length,
-<span class="ansi-green-fg ansi-bold">    705</span>     singleton_pprinters<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>singleton_printers,
-<span class="ansi-green-fg ansi-bold">    706</span>     type_pprinters<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>type_printers,
-<span class="ansi-green-fg ansi-bold">    707</span>     deferred_pprinters<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>deferred_printers)
-<span class="ansi-green-fg">--&gt; 708</span> <span class="ansi-yellow-bg">printer</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">pretty</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">obj</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg ansi-bold">    709</span> printer<span style="color:rgb(98,98,98)">.</span>flush()
-<span class="ansi-green-fg ansi-bold">    710</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> stream<span style="color:rgb(98,98,98)">.</span>getvalue()
+</section>
+<section id="ad-supports-args" class="level3">
+<h3 class="anchored" data-anchor-id="ad-supports-args">AD supports args</h3>
+<p><strong>AD(x,y,z) == AD(x=x, y=y, z=z)</strong><br>
+If you want to create a dictionary from variables, there’s a good chance that the key you’d want to assign to that variable is the same as your variable name. AttrDict introspects the args intelligently (<u>thanks to icecream module</u>) and assigns the variable itself as the key name</p>
+<div id="e719712e-3e83-453e-8210-da521e5c04fc" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x,y,z<span class="op">=</span><span class="st">'1'</span>,<span class="fl">2.0</span>,<span class="dv">3</span><span class="op">+</span><span class="ot">5j</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>l,m,n<span class="op">=</span>{<span class="st">'y'</span>:{<span class="st">'c'</span>:{<span class="st">'n'</span>:<span class="st">'d'</span>,<span class="st">'greet'</span>:<span class="st">'hello'</span>,<span class="st">'o'</span>:[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,{<span class="st">'m'</span>:{<span class="st">'n'</span>:[<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>]}}]}}},<span class="dv">2</span>,<span class="dv">3</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> AD(l,m,n)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> AD(x,y,z,k)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+```↯ AttrDict ↯
+x - 1 (🏷️ str)
+y - 2.0 (🏷️ float)
+z - (3+5j) (🏷️ complex)
+k
+  l
+    y
+      c
+        n - d (🏷️ str)
+        greet - hello (🏷️ str)
+        o[]
+          0 - 1 (🏷️ int)
+          1 - 2 (🏷️ int)
+          2 - 3 (🏷️ int)
+          3
+            m
+              n[]
+                0 - 4 (🏷️ int)
+                1 - 5 (🏷️ int)
+                2 - 6 (🏷️ int)
+  m - 2 (🏷️ int)
+  n - 3 (🏷️ int)
 
-File <span class="ansi-green-fg">~/miniconda3/miniconda3/envs/ts/lib/python3.10/site-packages/IPython/lib/pretty.py:410</span>, in <span class="ansi-cyan-fg">RepresentationPrinter.pretty</span><span class="ansi-blue-fg">(self, obj)</span>
-<span class="ansi-green-fg ansi-bold">    407</span>                         <span style="font-weight:bold;color:rgb(0,135,0)">return</span> meth(obj, <span style="color:rgb(0,135,0)">self</span>, cycle)
-<span class="ansi-green-fg ansi-bold">    408</span>                 <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">cls</span> <span style="font-weight:bold;color:rgb(175,0,255)">is</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> <span style="color:rgb(0,135,0)">object</span> \
-<span class="ansi-green-fg ansi-bold">    409</span>                         <span style="font-weight:bold;color:rgb(175,0,255)">and</span> <span style="color:rgb(0,135,0)">callable</span>(<span style="color:rgb(0,135,0)">cls</span><span style="color:rgb(98,98,98)">.</span><span style="color:rgb(0,0,135)">__dict__</span><span style="color:rgb(98,98,98)">.</span>get(<span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">__repr__</span><span style="color:rgb(175,0,0)">'</span>)):
-<span class="ansi-green-fg">--&gt; 410</span>                     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">_repr_pprint</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">obj</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">cycle</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg ansi-bold">    412</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> _default_pprint(obj, <span style="color:rgb(0,135,0)">self</span>, cycle)
-<span class="ansi-green-fg ansi-bold">    413</span> <span style="font-weight:bold;color:rgb(0,135,0)">finally</span>:
-
-File <span class="ansi-green-fg">~/miniconda3/miniconda3/envs/ts/lib/python3.10/site-packages/IPython/lib/pretty.py:778</span>, in <span class="ansi-cyan-fg">_repr_pprint</span><span class="ansi-blue-fg">(obj, p, cycle)</span>
-<span class="ansi-green-fg ansi-bold">    776</span> <span style="font-style:italic;color:rgb(175,0,0)">"""A pprint that just redirects to the normal repr function."""</span>
-<span class="ansi-green-fg ansi-bold">    777</span> <span style="font-style:italic;color:rgb(95,135,135)"># Find newlines and replace them with p.break_()</span>
-<span class="ansi-green-fg">--&gt; 778</span> output <span style="color:rgb(98,98,98)">=</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">repr</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">obj</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg ansi-bold">    779</span> lines <span style="color:rgb(98,98,98)">=</span> output<span style="color:rgb(98,98,98)">.</span>splitlines()
-<span class="ansi-green-fg ansi-bold">    780</span> <span style="font-weight:bold;color:rgb(0,135,0)">with</span> p<span style="color:rgb(98,98,98)">.</span>group():
-
-Cell <span class="ansi-green-fg">In[8], line 69</span>, in <span class="ansi-cyan-fg">AD.__repr__</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-fg ansi-bold">     68</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span> <span style="color:rgb(0,0,255)">__repr__</span>(<span style="color:rgb(0,135,0)">self</span>):
-<span class="ansi-green-fg">---&gt; 69</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(175,0,0)">f</span><span style="color:rgb(175,0,0)">"</span><span style="font-weight:bold;color:rgb(175,95,0)">\n</span><span style="color:rgb(175,0,0)">```↯ AttrDict ↯</span><span style="font-weight:bold;color:rgb(175,95,0)">\n</span><span style="font-weight:bold;color:rgb(175,95,135)">{</span><span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>summary()<span style="font-weight:bold;color:rgb(175,95,135)">}</span><span style="font-weight:bold;color:rgb(175,95,0)">\n</span><span style="color:rgb(175,0,0)">```</span><span style="font-weight:bold;color:rgb(175,95,0)">\n</span><span style="color:rgb(175,0,0)">"</span>
-
-Cell <span class="ansi-green-fg">In[8], line 154</span>, in <span class="ansi-cyan-fg">AD.summary</span><span class="ansi-blue-fg">(self, current_path, depth, sep, max_items)</span>
-<span class="ansi-green-fg ansi-bold">    153</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span> <span style="color:rgb(0,0,255)">summary</span>(<span style="color:rgb(0,135,0)">self</span>, current_path<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">"</span>, depth<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(98,98,98)">0</span>, sep<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">  </span><span style="color:rgb(175,0,0)">"</span>, max_items<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(98,98,98)">10</span>):
-<span class="ansi-green-fg">--&gt; 154</span>     max_items <span style="color:rgb(98,98,98)">=</span> <span style="color:rgb(0,135,0)">int</span>(<span class="ansi-yellow-bg">os</span><span style="color:rgb(98,98,98)">.</span>environ<span style="color:rgb(98,98,98)">.</span>get(<span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">AD_MAX_ITEMS</span><span style="color:rgb(175,0,0)">"</span>, max_items))
-<span class="ansi-green-fg ansi-bold">    155</span>     sep <span style="color:rgb(98,98,98)">=</span> os<span style="color:rgb(98,98,98)">.</span>environ<span style="color:rgb(98,98,98)">.</span>get(<span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">AD_SEP</span><span style="color:rgb(175,0,0)">"</span>, sep)
-<span class="ansi-green-fg ansi-bold">    157</span>     <span style="font-weight:bold;color:rgb(0,135,0)">def</span> <span style="color:rgb(0,0,255)">format_path</span>(path, key):
-
-<span class="ansi-red-fg">NameError</span>: name 'os' is not defined</pre>
+```
+</code></pre>
 </div>
 </div>
+<p>Don’t worry if you want to control the key names, you can still give your own kwargs, or even mix it up with both args and kwargs</p>
+<div id="087c15f8-70b6-4c62-9007-f3fc962d5ab8" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> AD(l,m,n)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> AD(x,y,zed<span class="op">=</span>z,kay<span class="op">=</span>k)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+```↯ AttrDict ↯
+x - 1 (🏷️ str)
+y - 2.0 (🏷️ float)
+zed - (3+5j) (🏷️ complex)
+kay
+  l
+    y
+      c
+        n - d (🏷️ str)
+        greet - hello (🏷️ str)
+        o[]
+          0 - 1 (🏷️ int)
+          1 - 2 (🏷️ int)
+          2 - 3 (🏷️ int)
+          3
+            m
+              n[]
+                0 - 4 (🏷️ int)
+                1 - 5 (🏷️ int)
+                2 - 6 (🏷️ int)
+  m - 2 (🏷️ int)
+  n - 3 (🏷️ int)
+
+```
+</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<p>Since AD is an extension of a dictionary, all the dictionary methods such as <code>.keys()</code>, <code>.values()</code>, <code>.items()</code> work exactly as expected</p>
+<section id="keys" class="level3">
+<h3 class="anchored" data-anchor-id="keys"><code>.keys</code></h3>
+<div id="f9683941-11e9-42b4-ba83-9e5222b6c12a" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ad.keys()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>dict_keys(['x', 'y', 'zed', 'kay'])</code></pre>
+</div>
+</div>
+</section>
+<section id="values" class="level3">
+<h3 class="anchored" data-anchor-id="values"><code>.values</code></h3>
+<div id="8b68bacc-9f53-4f2a-91d2-a98c31dc9598" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ad.values()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>dict_values(['1', 2.0, (3+5j), 
+```↯ AttrDict ↯
+l
+  y
+    c
+      n - d (🏷️ str)
+      greet - hello (🏷️ str)
+      o[]
+        0 - 1 (🏷️ int)
+        1 - 2 (🏷️ int)
+        2 - 3 (🏷️ int)
+        3
+          m
+            n[]
+              0 - 4 (🏷️ int)
+              1 - 5 (🏷️ int)
+              2 - 6 (🏷️ int)
+m - 2 (🏷️ int)
+n - 3 (🏷️ int)
+
+```
+])</code></pre>
+</div>
+</div>
+</section>
+<section id="items" class="level3">
+<h3 class="anchored" data-anchor-id="items"><code>.items</code></h3>
+<div id="0137a618-b152-4b65-9101-98927a9a07b6" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ad.items()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>dict_items([('x', '1'), ('y', 2.0), ('zed', (3+5j)), ('kay', 
+```↯ AttrDict ↯
+l
+  y
+    c
+      n - d (🏷️ str)
+      greet - hello (🏷️ str)
+      o[]
+        0 - 1 (🏷️ int)
+        1 - 2 (🏷️ int)
+        2 - 3 (🏷️ int)
+        3
+          m
+            n[]
+              0 - 4 (🏷️ int)
+              1 - 5 (🏷️ int)
+              2 - 6 (🏷️ int)
+m - 2 (🏷️ int)
+n - 3 (🏷️ int)
+
+```
+)])</code></pre>
+</div>
+</div>
+</section>
+<section id="use-.dict-to-create-a-vanilla-dict" class="level3">
+<h3 class="anchored" data-anchor-id="use-.dict-to-create-a-vanilla-dict">Use <code>.dict</code> to Create a Vanilla Dict</h3>
+<div id="b0578c63-8004-4031-9f8e-a15639e39ea8" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> ad.<span class="bu">dict</span>()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>d</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>{'x': '1',
+ 'y': 2.0,
+ 'zed': (3+5j),
+ 'kay': {'l': {'y': {'c': {'n': 'd',
+     'greet': 'hello',
+     'o': [1, 2, 3, {'m': {'n': [4, 5, 6]}}]}}},
+  'm': 2,
+  'n': 3}}</code></pre>
+</div>
+</div>
+</section>
+<section id="ad-from-vanilla-dict-another-basic-invocation" class="level3">
+<h3 class="anchored" data-anchor-id="ad-from-vanilla-dict-another-basic-invocation"><code>AD</code> From Vanilla Dict (Another Basic Invocation)</h3>
+<div id="23984488-1b71-407f-8cb6-5703326b69bd" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> AD(d)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>
+```↯ AttrDict ↯
+x - 1 (🏷️ str)
+y - 2.0 (🏷️ float)
+zed - (3+5j) (🏷️ complex)
+kay
+  l
+    y
+      c
+        n - d (🏷️ str)
+        greet - hello (🏷️ str)
+        o[]
+          0 - 1 (🏷️ int)
+          1 - 2 (🏷️ int)
+          2 - 3 (🏷️ int)
+          3
+            m
+              n[]
+                0 - 4 (🏷️ int)
+                1 - 5 (🏷️ int)
+                2 - 6 (🏷️ int)
+  m - 2 (🏷️ int)
+  n - 3 (🏷️ int)
+
+```</code></pre>
+</div>
+</div>
+</section>
+<section id="accessing-a-key" class="level3">
+<h3 class="anchored" data-anchor-id="accessing-a-key"><code>.</code> Accessing a key</h3>
+<p>As the name of the class suggests, keys can be accessed as if they are attributes</p>
+<div id="b486216f-c3da-48cc-8c72-861660a9d530" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> ad.x <span class="op">==</span> d[<span class="st">'x'</span>]</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> ad.kay.l.y.c.n <span class="op">==</span> d[<span class="st">'kay'</span>][<span class="st">'l'</span>][<span class="st">'y'</span>][<span class="st">'c'</span>][<span class="st">'n'</span>]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> ad.kay.l.y.c.o[<span class="dv">3</span>].m.n <span class="op">==</span> d[<span class="st">'kay'</span>][<span class="st">'l'</span>][<span class="st">'y'</span>][<span class="st">'c'</span>][<span class="st">'o'</span>][<span class="dv">3</span>][<span class="st">'m'</span>][<span class="st">'n'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="in-searching-for-keys" class="level3">
+<h3 class="anchored" data-anchor-id="in-searching-for-keys"><code>in</code> Searching for keys</h3>
+<p>Highlevel keys are anyway accessable just like, in a normal dictionary</p>
+<div id="1bc8a17d-b3d0-4a24-a73e-6c77a5bc97b2" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">'zed'</span> <span class="kw">in</span> ad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>you can check for presence/absence of nested keys by joining them with a ‘.’</p>
+<div id="c93cf93b-e7aa-4e0f-b4e9-41a074fb5497" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">'kay.l.y.c.n'</span> <span class="kw">in</span> ad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="find_address-find-if-a-key-exists-and-return-where-it-is-i.e.-the-address-of-the-key" class="level3">
+<h3 class="anchored" data-anchor-id="find_address-find-if-a-key-exists-and-return-where-it-is-i.e.-the-address-of-the-key"><code>.find_address</code> Find if a key exists and return where it is, i.e., the address of the key</h3>
+<p>The method always returns a list of addresses</p>
+<div id="22f396c1-3d88-49f0-851a-460ea7342280" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ad.find_address(<span class="st">'c'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>['kay.l.y.c']</code></pre>
+</div>
+</div>
+<div id="aae24e45-e6ea-487c-b77d-d7f9826d51ae" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ad.find_address(<span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>['kay.l.y.c.n', 'kay.l.y.c.o.3.m.n', 'kay.n']</code></pre>
+</div>
+</div>
+<div id="3586cd79-205a-4419-ae92-327040a02b54" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ad.find_address(<span class="st">'hello'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>[]</code></pre>
+</div>
+</div>
+</section>
+<section id="fetch-fetch-all-the-addresses" class="level3">
+<h3 class="anchored" data-anchor-id="fetch-fetch-all-the-addresses"><code>.fetch</code> fetch all the addresses</h3>
+<div id="0e2056ba-0156-466e-a722-0b32b8a99af3" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>ad.fetch(ad.find_address(<span class="st">'n'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>(#3) ['d',[4, 5, 6],3]</code></pre>
+</div>
+</div>
+<div id="fb136534-b931-4076-b8b6-6143754f159c" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ad.fetch([<span class="st">'kay.l.y.c.n'</span>, <span class="st">'kay.l.y.c.o.3.m.n'</span>, <span class="st">'kay.n'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>(#3) ['d',[4, 5, 6],3]</code></pre>
+</div>
+</div>
+</section>
+<section id="fetch2-fetches-all-the-addresses-while-preserving-the-key-hierarchy" class="level3">
+<h3 class="anchored" data-anchor-id="fetch2-fetches-all-the-addresses-while-preserving-the-key-hierarchy"><code>.fetch2</code> fetches all the addresses while preserving the key hierarchy</h3>
+<div id="05d70a49-9b33-4985-a6df-19eddd61c9b7" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ad.fetch2(addrs<span class="op">=</span>[<span class="st">'kay.l.y.c.n'</span>, <span class="st">'kay.l.y.c.o.3.m.n'</span>, <span class="st">'kay.n'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>
+```↯ AttrDict ↯
+kay
+  l
+    y
+      c
+        n - d (🏷️ str)
+        o
+          3
+            m
+              n[]
+                0 - 4 (🏷️ int)
+                1 - 5 (🏷️ int)
+                2 - 6 (🏷️ int)
+  n - 3 (🏷️ int)
+
+```</code></pre>
+</div>
+</div>
+</section>
+<section id="fetch2-can-also-directly-fetch-all-the-keys-at-once-by-first-finding-all-addresses-and-then-fetching-all-of-them" class="level3">
+<h3 class="anchored" data-anchor-id="fetch2-can-also-directly-fetch-all-the-keys-at-once-by-first-finding-all-addresses-and-then-fetching-all-of-them"><code>.fetch2</code> can also directly fetch all the keys at once (by first finding all addresses and then fetching all of them)</h3>
+<div id="57253705-433e-4baf-a900-49bbcaa782fe" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ad.fetch2(key<span class="op">=</span><span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>
+```↯ AttrDict ↯
+kay
+  l
+    y
+      c
+        n - d (🏷️ str)
+        o
+          3
+            m
+              n[]
+                0 - 4 (🏷️ int)
+                1 - 5 (🏷️ int)
+                2 - 6 (🏷️ int)
+  n - 3 (🏷️ int)
+
+```</code></pre>
+</div>
+</div>
+</section>
+<section id="slice-make-a-dictionary-out-of-all-keys-present-anywhere-in-the-dictionary" class="level3">
+<h3 class="anchored" data-anchor-id="slice-make-a-dictionary-out-of-all-keys-present-anywhere-in-the-dictionary"><code>.slice</code> make a dictionary out of all keys present anywhere in the dictionary</h3>
+<div id="04d67bbf-f233-441d-848b-8d3c85d76c89" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ad.<span class="bu">slice</span>(<span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>
+```↯ AttrDict ↯
+kay.l.y.c.n - d (🏷️ str)
+kay.l.y.c.o.3.m.n[]
+  0 - 4 (🏷️ int)
+  1 - 5 (🏷️ int)
+  2 - 6 (🏷️ int)
+kay.n - 3 (🏷️ int)
+
+```</code></pre>
+</div>
+</div>
+</section>
+<section id="get" class="level3">
+<h3 class="anchored" data-anchor-id="get"><code>.get</code></h3>
+<p>Get works as usual but can also work with nested keys</p>
+<div id="8ead8d36-f3bc-4751-95bd-407dd72295d8" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>ad.get(<span class="st">'x'</span>,<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>'1'</code></pre>
+</div>
+</div>
+<div id="cc5bca90-431b-4cf7-83f7-63bdfeb3cd40" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>ad.get(<span class="st">'yolo'</span>,<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>10</code></pre>
+</div>
+</div>
+<div id="005d0001-38ff-47e3-8247-a51c5bea6248" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>ad.get(<span class="st">'kay.l.y.c'</span>,<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>
+```↯ AttrDict ↯
+n - d (🏷️ str)
+greet - hello (🏷️ str)
+o[]
+  0 - 1 (🏷️ int)
+  1 - 2 (🏷️ int)
+  2 - 3 (🏷️ int)
+  3
+    m
+      n[]
+        0 - 4 (🏷️ int)
+        1 - 5 (🏷️ int)
+        2 - 6 (🏷️ int)
+
+```</code></pre>
+</div>
+</div>
+<div id="5e70f76b-8231-41cc-8d94-d72196840092" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>ad.get(<span class="st">'kay.l.y.hello'</span>,<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>20</code></pre>
+</div>
+</div>
+</section>
+<section id="set" class="level3">
+<h3 class="anchored" data-anchor-id="set"><code>.set</code></h3>
+<p>Will also work similarly as get</p>
+<div id="d4fc4ec4-1a30-48f8-91a4-39edc4795ec3" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>ad.<span class="bu">set</span>(<span class="st">'bee.sea.dee'</span>, <span class="st">'e'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="f40cea91-02cb-426c-8560-367ba50aae77" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>ad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<pre><code>
+```↯ AttrDict ↯
+x - 1 (🏷️ str)
+y - 2.0 (🏷️ float)
+zed - (3+5j) (🏷️ complex)
+kay
+  l
+    y
+      c
+        n - d (🏷️ str)
+        greet - hello (🏷️ str)
+        o[]
+          0 - 1 (🏷️ int)
+          1 - 2 (🏷️ int)
+          2 - 3 (🏷️ int)
+          3
+            m
+              n[]
+                0 - 4 (🏷️ int)
+                1 - 5 (🏷️ int)
+                2 - 6 (🏷️ int)
+  m - 2 (🏷️ int)
+  n - 3 (🏷️ int)
+bee
+  sea
+    dee - e (🏷️ str)
+
+```</code></pre>
+</div>
+</div>
+</section>
+<section id="map-map-a-function-on-all-leaf-nodes" class="level3">
+<h3 class="anchored" data-anchor-id="map-map-a-function-on-all-leaf-nodes"><code>.map</code> Map a function on all leaf nodes</h3>
+<div id="9648004b-9c3c-4e95-be6e-ec9a7e076deb" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_snippets <span class="im">import</span> h4</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> into_two(x): <span class="cf">return</span> <span class="dv">2</span><span class="op">*</span>x</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>ad2 <span class="op">=</span> ad.<span class="bu">map</span>(into_two)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>h4(<span class="st">"Original"</span>)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ad)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>h4(<span class="st">"New"</span>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ad2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="original" class="level4 cell-output cell-output-display cell-output-markdown">
+<h4 class="anchored" data-anchor-id="original">Original</h4>
+</section>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+```↯ AttrDict ↯
+x - 1 (🏷️ str)
+y - 2.0 (🏷️ float)
+zed - (3+5j) (🏷️ complex)
+kay
+  l
+    y
+      c
+        n - d (🏷️ str)
+        greet - hello (🏷️ str)
+        o[]
+          0 - 1 (🏷️ int)
+          1 - 2 (🏷️ int)
+          2 - 3 (🏷️ int)
+          3
+            m
+              n[]
+                0 - 4 (🏷️ int)
+                1 - 5 (🏷️ int)
+                2 - 6 (🏷️ int)
+  m - 2 (🏷️ int)
+  n - 3 (🏷️ int)
+bee
+  sea
+    dee - e (🏷️ str)
+
+```
+</code></pre>
+</div>
+<section id="new" class="level4 cell-output cell-output-display cell-output-markdown">
+<h4 class="anchored" data-anchor-id="new">New</h4>
+</section>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+```↯ AttrDict ↯
+x - 11 (🏷️ str)
+y - 4.0 (🏷️ float)
+zed - (6+10j) (🏷️ complex)
+kay
+  l
+    y
+      c
+        n - dd (🏷️ str)
+        greet - hellohello (🏷️ str)
+        o[]
+          0 - 2 (🏷️ int)
+          1 - 4 (🏷️ int)
+          2 - 6 (🏷️ int)
+          3
+            m
+              n[]
+                0 - 8 (🏷️ int)
+                1 - 10 (🏷️ int)
+                2 - 12 (🏷️ int)
+  m - 4 (🏷️ int)
+  n - 6 (🏷️ int)
+bee
+  sea
+    dee - ee (🏷️ str)
+
+```
+</code></pre>
+</div>
+</div>
+</section>
+<section id="trymap-map-a-function-on-all-leaf-nodes-and-preserve-the-leaf-as-it-is-if-the-function-fails" class="level3">
+<h3 class="anchored" data-anchor-id="trymap-map-a-function-on-all-leaf-nodes-and-preserve-the-leaf-as-it-is-if-the-function-fails"><code>.trymap</code> Map a function on all leaf nodes and preserve the leaf as it is, if the function fails</h3>
+<div id="c7ae74c1-035a-4901-85db-8b52cc49605a" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plus_one(x): <span class="cf">return</span> x<span class="op">+</span><span class="dv">1000</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>ad2 <span class="op">=</span> ad.trymap(plus_one)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ad2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+```↯ AttrDict ↯
+x - 1 (🏷️ str)
+y - 1002.0 (🏷️ float)
+zed - (1003+5j) (🏷️ complex)
+kay
+  l
+    y
+      c
+        n - d (🏷️ str)
+        greet - hello (🏷️ str)
+        o[]
+          0 - 1001 (🏷️ int)
+          1 - 1002 (🏷️ int)
+          2 - 1003 (🏷️ int)
+          3
+            m
+              n[]
+                0 - 1004 (🏷️ int)
+                1 - 1005 (🏷️ int)
+                2 - 1006 (🏷️ int)
+  m - 1002 (🏷️ int)
+  n - 1003 (🏷️ int)
+bee
+  sea
+    dee - e (🏷️ str)
+
+```
+</code></pre>
+</div>
+</div>
+</section>
+<section id="drop-drop-a-key-even-if-it-is-present-somewhere-nested" class="level3">
+<h3 class="anchored" data-anchor-id="drop-drop-a-key-even-if-it-is-present-somewhere-nested"><code>.drop</code> Drop a key, even if it is present somewhere nested</h3>
+<div id="e9514edb-d9c7-4bb5-81a7-8dc8dc8e8607" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>ad.find_address(<span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre><code>['kay.l.y.c.n', 'kay.l.y.c.o.3.m.n', 'kay.n']</code></pre>
+</div>
+</div>
+<div id="c1151ffa-1ab7-4d69-8979-1799c3e3fd53" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> copy <span class="im">import</span> deepcopy</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>ad2 <span class="op">=</span> deepcopy(ad)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>ad2.drop(<span class="st">'n'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="a02e1b52-5d25-45d7-97c4-73e41aad42ff" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>ad2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre><code>
+```↯ AttrDict ↯
+x - 1 (🏷️ str)
+y - 2.0 (🏷️ float)
+zed - (3+5j) (🏷️ complex)
+kay
+  l
+    y
+      c
+        greet - hello (🏷️ str)
+        o[]
+          0 - 1 (🏷️ int)
+          1 - 2 (🏷️ int)
+          2 - 3 (🏷️ int)
+          3
+            m
+  m - 2 (🏷️ int)
+bee
+  sea
+    dee - e (🏷️ str)
+
+```</code></pre>
+</div>
+</div>
+</section>
+<section id="update" class="level3">
+<h3 class="anchored" data-anchor-id="update"><code>.update</code></h3>
+<div id="c349ceda-df96-407e-b4f3-cee613ff6101" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>ad2.update({<span class="st">'y'</span>: <span class="st">'γ'</span>, <span class="st">'greek'</span>: {<span class="st">'alpha'</span>:<span class="st">'α'</span>, <span class="st">'beta'</span>: <span class="st">'β'</span>, <span class="st">'gamma'</span>: [<span class="dv">1</span>,<span class="dv">2</span>,{<span class="st">'theta'</span>: <span class="st">'θ'</span>}]}})</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>ad2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<pre><code>
+```↯ AttrDict ↯
+x - 1 (🏷️ str)
+y - γ (🏷️ str)
+zed - (3+5j) (🏷️ complex)
+kay
+  l
+    y
+      c
+        greet - hello (🏷️ str)
+        o[]
+          0 - 1 (🏷️ int)
+          1 - 2 (🏷️ int)
+          2 - 3 (🏷️ int)
+          3
+            m
+  m - 2 (🏷️ int)
+bee
+  sea
+    dee - e (🏷️ str)
+greek
+  alpha - α (🏷️ str)
+  beta - β (🏷️ str)
+  gamma[]
+    0 - 1 (🏷️ int)
+    1 - 2 (🏷️ int)
+    2
+      theta - θ (🏷️ str)
+
+```</code></pre>
+</div>
+</div>
+</section>
+<section id="flatten-will-flatten-all-the-nests-into-a-single-level" class="level3">
+<h3 class="anchored" data-anchor-id="flatten-will-flatten-all-the-nests-into-a-single-level"><code>.flatten</code> will flatten all the nests into a single level</h3>
+<div id="903393fa-58ee-4a9e-b3ac-b93f567154a4" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>ad2.flatten()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre><code>
+```↯ AttrDict ↯
+x - 1 (🏷️ str)
+y - γ (🏷️ str)
+zed - (3+5j) (🏷️ complex)
+kay.l.y.c.greet - hello (🏷️ str)
+kay.l.y.c.o.0 - 1 (🏷️ int)
+kay.l.y.c.o.1 - 2 (🏷️ int)
+kay.l.y.c.o.2 - 3 (🏷️ int)
+kay.m - 2 (🏷️ int)
+bee.sea.dee - e (🏷️ str)
+greek.alpha - α (🏷️ str)
+ ... 4 more keys ...
+
+```</code></pre>
+</div>
+</div>
+</section>
+<section id="flatten_and_make_dataframe-is-self-explanatory" class="level3">
+<h3 class="anchored" data-anchor-id="flatten_and_make_dataframe-is-self-explanatory"><code>.flatten_and_make_dataframe</code> is self explanatory</h3>
+<div id="612cc6d9-9039-4683-ba10-be0ab2585f36" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>ad2.flatten_and_make_dataframe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">0</th>
+<th data-quarto-table-cell-role="th">1</th>
+<th data-quarto-table-cell-role="th">2</th>
+<th data-quarto-table-cell-role="th">3</th>
+<th data-quarto-table-cell-role="th">4</th>
+<th data-quarto-table-cell-role="th">5</th>
+<th data-quarto-table-cell-role="th">6</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>x</td>
+<td>1</td>
+<td>None</td>
+<td>None</td>
+<td>None</td>
+<td>None</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>y</td>
+<td>γ</td>
+<td>None</td>
+<td>None</td>
+<td>None</td>
+<td>None</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>zed</td>
+<td>(3+5j)</td>
+<td>None</td>
+<td>None</td>
+<td>None</td>
+<td>None</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>kay</td>
+<td>l</td>
+<td>y</td>
+<td>c</td>
+<td>greet</td>
+<td>hello</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>kay</td>
+<td>l</td>
+<td>y</td>
+<td>c</td>
+<td>o</td>
+<td>0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>kay</td>
+<td>l</td>
+<td>y</td>
+<td>c</td>
+<td>o</td>
+<td>1</td>
+<td>2.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>kay</td>
+<td>l</td>
+<td>y</td>
+<td>c</td>
+<td>o</td>
+<td>2</td>
+<td>3.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>kay</td>
+<td>m</td>
+<td>2</td>
+<td>None</td>
+<td>None</td>
+<td>None</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>bee</td>
+<td>sea</td>
+<td>dee</td>
+<td>e</td>
+<td>None</td>
+<td>None</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>greek</td>
+<td>alpha</td>
+<td>α</td>
+<td>None</td>
+<td>None</td>
+<td>None</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>greek</td>
+<td>beta</td>
+<td>β</td>
+<td>None</td>
+<td>None</td>
+<td>None</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11</td>
+<td>greek</td>
+<td>gamma</td>
+<td>0</td>
+<td>1</td>
+<td>None</td>
+<td>None</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>greek</td>
+<td>gamma</td>
+<td>1</td>
+<td>2</td>
+<td>None</td>
+<td>None</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13</td>
+<td>greek</td>
+<td>gamma</td>
+<td>2</td>
+<td>theta</td>
+<td>θ</td>
+<td>None</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
 </div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1032,4 +1605,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
