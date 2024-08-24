@@ -1,9 +1,0 @@
-project:
-  output-dir: docs
-
-website:
-  title: "torch_snippets"
-  site-url: "https://sizhky.github.io/torch_snippets/"
-  description: "One line functions for common tasks"
-  repo-branch: master
-  repo-url: "https://github.com/sizhky/torch_snippets/tree/master/"
