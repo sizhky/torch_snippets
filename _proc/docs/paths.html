@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.53">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>paths – torch_snippets</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="torch_snippets">
+<meta property="og:description" content="One line functions for common tasks">
+<meta property="og:site_name" content="torch_snippets">
+<meta name="twitter:title" content="torch_snippets">
+<meta name="twitter:description" content="One line functions for common tasks">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">torch_snippets</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./paths.html">Paths</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Utilities for simple needs</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./AttrDict.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AttrDict.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adapters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adapters</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bokeh_plotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bokeh Plots</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bounding_boxes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bounding Box</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./capsule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Capsule (Tutorial)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./charts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Altair and Other Charts</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./config.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">config.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./decorators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Decorator Utilites</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./imgaug_loader.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imgaug</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./inspector.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inspect</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./interactive_show.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">interactive_show.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./load_defautls.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">File Exists</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rich Logging and printing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./markups.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Markups</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./misc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Miscellaneous</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./paths.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Paths</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pdf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PDF</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./registry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Registry</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Report</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./show.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Show</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sklegos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SK-Legos</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#paths" id="toc-paths" class="nav-link active" data-scroll-target="#paths">Paths</a>
+  <ul class="collapse">
+  <li><a href="#path.rm" id="toc-path.rm" class="nav-link" data-scroll-target="#path.rm">Path.rm</a></li>
+  <li><a href="#remove_file" id="toc-remove_file" class="nav-link" data-scroll-target="#remove_file">remove_file</a></li>
+  <li><a href="#path.cp" id="toc-path.cp" class="nav-link" data-scroll-target="#path.cp">Path.cp</a></li>
+  <li><a href="#path.mv" id="toc-path.mv" class="nav-link" data-scroll-target="#path.mv">Path.mv</a></li>
+  <li><a href="#path.sample" id="toc-path.sample" class="nav-link" data-scroll-target="#path.sample">Path.sample</a></li>
+  <li><a href="#extn" id="toc-extn" class="nav-link" data-scroll-target="#extn">extn</a></li>
+  <li><a href="#path.extn" id="toc-path.extn" class="nav-link" data-scroll-target="#path.extn">Path.extn</a></li>
+  <li><a href="#path.sz" id="toc-path.sz" class="nav-link" data-scroll-target="#path.sz">Path.sz</a></li>
+  <li><a href="#path.size" id="toc-path.size" class="nav-link" data-scroll-target="#path.size">Path.size</a></li>
+  <li><a href="#path.rmtree" id="toc-path.rmtree" class="nav-link" data-scroll-target="#path.rmtree">Path.rmtree</a></li>
+  <li><a href="#list_zip" id="toc-list_zip" class="nav-link" data-scroll-target="#list_zip">list_zip</a></li>
+  <li><a href="#unzip_file" id="toc-unzip_file" class="nav-link" data-scroll-target="#unzip_file">unzip_file</a></li>
+  <li><a href="#zip_files" id="toc-zip_files" class="nav-link" data-scroll-target="#zip_files">zip_files</a></li>
+  <li><a href="#folder_summary" id="toc-folder_summary" class="nav-link" data-scroll-target="#folder_summary">folder_summary</a></li>
+  <li><a href="#common_items" id="toc-common_items" class="nav-link" data-scroll-target="#common_items">common_items</a></li>
+  <li><a href="#remove_duplicates" id="toc-remove_duplicates" class="nav-link" data-scroll-target="#remove_duplicates">remove_duplicates</a></li>
+  <li><a href="#md5" id="toc-md5" class="nav-link" data-scroll-target="#md5">md5</a></li>
+  <li><a href="#path.write_lines" id="toc-path.write_lines" class="nav-link" data-scroll-target="#path.write_lines">Path.write_lines</a></li>
+  <li><a href="#writelines" id="toc-writelines" class="nav-link" data-scroll-target="#writelines">writelines</a></li>
+  <li><a href="#path.read_file" id="toc-path.read_file" class="nav-link" data-scroll-target="#path.read_file">Path.read_file</a></li>
+  <li><a href="#readfile" id="toc-readfile" class="nav-link" data-scroll-target="#readfile">readfile</a></li>
+  <li><a href="#path.read_lines" id="toc-path.read_lines" class="nav-link" data-scroll-target="#path.read_lines">Path.read_lines</a></li>
+  <li><a href="#readlines" id="toc-readlines" class="nav-link" data-scroll-target="#readlines">readlines</a></li>
+  <li><a href="#tree" id="toc-tree" class="nav-link" data-scroll-target="#tree">tree</a></li>
+  <li><a href="#folder_structure_to_json" id="toc-folder_structure_to_json" class="nav-link" data-scroll-target="#folder_structure_to_json">folder_structure_to_json</a></li>
+  <li><a href="#folder_structure_to_dict" id="toc-folder_structure_to_dict" class="nav-link" data-scroll-target="#folder_structure_to_dict">folder_structure_to_dict</a></li>
+  <li><a href="#loaddill" id="toc-loaddill" class="nav-link" data-scroll-target="#loaddill">loaddill</a></li>
+  <li><a href="#dumpdill" id="toc-dumpdill" class="nav-link" data-scroll-target="#dumpdill">dumpdill</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="paths" class="level1">
+<h1>Paths</h1>
+<p>Utilities to manipulate Paths</p>
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div id="cell-2" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(P().ls())</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(P().resolve())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[» _quarto.yml, » decorators.ipynb, » markups.ipynb, » sidebar.yml, » AttrDict.ipynb, » interactive_show.ipynb, » load_defautls.ipynb, » sklegos.ipynb, » bounding_boxes.ipynb, » show.ipynb, » pdf.ipynb, » charts.ipynb, » paths.ipynb, » nbdev.yml, » tmp.csv, » jupyter_notebook.ipynb, » config.ipynb, » misc.ipynb, » registry.ipynb, » adapters.ipynb, » report.ipynb, » .ipynb_checkpoints, » capsule.ipynb, » logging.ipynb, » inspector.ipynb, » bokeh_plotting.ipynb, » index.ipynb, » imgaug_loader.ipynb]
+/Users/yeshwanth/Code/Personal/torch_snippets/nbs</code></pre>
+</div>
+</div>
+<div id="cell-3" class="cell" data-scrolled="true" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !touch tmp.txt tmp.csv</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># # x = P()</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># x.tmp__csv, x.tmp__txt, x.misc</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-4" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>rm tmp.txt tmp.misc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>rm: tmp.txt: No such file or directory
+rm: tmp.misc: No such file or directory</code></pre>
+</div>
+</div>
+<hr>
+<section id="path.rm" class="level3">
+<h3 class="anchored" data-anchor-id="path.rm">Path.rm</h3>
+<blockquote class="blockquote">
+<pre><code> Path.rm (confirm_prompt='Are you sure you want to delete `{self}`?
+          [y/N]', silent=True, missing_ok=True, force=False,
+          dry_run=False)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="remove_file" class="level3">
+<h3 class="anchored" data-anchor-id="remove_file">remove_file</h3>
+<blockquote class="blockquote">
+<pre><code> remove_file (dry_run)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="path.cp" class="level3">
+<h3 class="anchored" data-anchor-id="path.cp">Path.cp</h3>
+<blockquote class="blockquote">
+<pre><code> Path.cp (to)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="path.mv" class="level3">
+<h3 class="anchored" data-anchor-id="path.mv">Path.mv</h3>
+<blockquote class="blockquote">
+<pre><code> Path.mv (to)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="path.sample" class="level3">
+<h3 class="anchored" data-anchor-id="path.sample">Path.sample</h3>
+<blockquote class="blockquote">
+<pre><code> Path.sample (pattern='*')</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="extn" class="level3">
+<h3 class="anchored" data-anchor-id="extn">extn</h3>
+<blockquote class="blockquote">
+<pre><code> extn (fpath)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="path.extn" class="level3">
+<h3 class="anchored" data-anchor-id="path.extn">Path.extn</h3>
+<blockquote class="blockquote">
+<pre><code> Path.extn ()</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="path.sz" class="level3">
+<h3 class="anchored" data-anchor-id="path.sz">Path.sz</h3>
+<blockquote class="blockquote">
+<pre><code> Path.sz ()</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="path.size" class="level3">
+<h3 class="anchored" data-anchor-id="path.size">Path.size</h3>
+<blockquote class="blockquote">
+<pre><code> Path.size ()</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="path.rmtree" class="level3">
+<h3 class="anchored" data-anchor-id="path.rmtree">Path.rmtree</h3>
+<blockquote class="blockquote">
+<pre><code> Path.rmtree (prompt='Really remove `{self}` and its contents? [y/n] ',
+              force=False)</code></pre>
+</blockquote>
+<div id="cell-15" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> P(<span class="st">"test.txt"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>p.touch()</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>logger.info(p.size())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[08/24/24 11:12:12] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> KB                                                                                                                   <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1417366103.py:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1417366103.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1417366103.py:3#<module>:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:3</span></a>
+</pre>
+</div>
+</div>
+<p>Path objects can be moved and copied</p>
+<div id="cell-17" class="cell" data-tags="[]" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> p.mv(<span class="st">"test1.txt"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> p.cp(<span class="st">"test2.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Path objects have a <code>size</code>, <code>extn</code> (extension) and <code>parent</code> attributes</p>
+<div id="cell-19" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">isinstance</span>(q, P)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> q.size() <span class="op">==</span> <span class="st">"0 KB"</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">str</span>(p) <span class="op">==</span> <span class="st">"test1.txt"</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> p.extn <span class="op">==</span> <span class="st">"txt"</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> p.parent <span class="op">==</span> P()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>They can be deleted with/without a prompt</p>
+<div id="cell-21" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>p.rm(force<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>q.rm(confirm_prompt<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Folders can be globbed with a default of everything</p>
+<div id="cell-23" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> P(<span class="st">"../torch_snippets"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> P().ls() <span class="op">==</span> P().Glob()</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>p.Glob(<span class="st">"*.py"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>(#34) [» ../torch_snippets/misc.py,» ../torch_snippets/load_defaults.py,» ../torch_snippets/text_utils.py,» ../torch_snippets/_nbdev.py,» ../torch_snippets/paths.py,» ../torch_snippets/charts.py,» ../torch_snippets/pdf_loader.py,» ../torch_snippets/interactive_show.py,» ../torch_snippets/registry.py,» ../torch_snippets/markup2.py,» ../torch_snippets/_modidx.py,» ../torch_snippets/inspector.py,» ../torch_snippets/__init__.py,» ../torch_snippets/tmp.py,» ../torch_snippets/torch_loader.py,» ../torch_snippets/logger.py,» ../torch_snippets/markup.py,» ../torch_snippets/fastcores.py,» ../torch_snippets/sklegos.py,» ../torch_snippets/cli.py...]</code></pre>
+</div>
+</div>
+<p>You can sample a random file from the directory</p>
+<div id="cell-25" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> p.sample(<span class="st">"*.py"</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>Info(<span class="ss">f"Sample file: `</span><span class="sc">{</span>q<span class="sc">}</span><span class="ss">`"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>Info(<span class="ss">f"Sample file size: `</span><span class="sc">{</span>q<span class="sc">.</span>size()<span class="sc">}</span><span class="ss">`"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Sample file: `..<span style="color: #800080; text-decoration-color: #800080">/torch_snippets/</span><span style="color: #ff00ff; text-decoration-color: #ff00ff">logger.py</span>`                                                                             <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1725593160.py:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1725593160.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1725593160.py:2#<module>:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:2</span></a>
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Sample file size: `<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">9</span> KB`                                                                                               <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1725593160.py:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1725593160.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1725593160.py:3#<module>:3" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:3</span></a>
+</pre>
+</div>
+</div>
+<div id="cell-26" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    p.size()</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    logger.warning(e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> `..<span style="color: #800080; text-decoration-color: #800080">/</span><span style="color: #ff00ff; text-decoration-color: #ff00ff">torch_snippets</span>` is a directory                                                                                     <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1980994904.py:4" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1980994904.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1980994904.py:4#<module>:4" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:4</span></a>
+</pre>
+</div>
+</div>
+<div id="cell-27" class="cell" data-tags="[]" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> P(<span class="st">"test.txt"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>p.touch()</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> isdir(p) <span class="op">==</span> <span class="va">False</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> fname(p) <span class="op">==</span> <span class="st">"test.txt"</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> parent(p) <span class="op">==</span> P()</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> stem(p) <span class="op">==</span> <span class="st">"test"</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> extn(p) <span class="op">==</span> <span class="st">"txt"</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(find(<span class="st">"capsule"</span>, Glob(<span class="st">"./"</span>)))</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>p.rm(confirm_prompt<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>capsule.ipynb</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="list_zip" class="level3">
+<h3 class="anchored" data-anchor-id="list_zip">list_zip</h3>
+<blockquote class="blockquote">
+<pre><code> list_zip (file)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="unzip_file" class="level3">
+<h3 class="anchored" data-anchor-id="unzip_file">unzip_file</h3>
+<blockquote class="blockquote">
+<pre><code> unzip_file (file, dest)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="zip_files" class="level3">
+<h3 class="anchored" data-anchor-id="zip_files">zip_files</h3>
+<blockquote class="blockquote">
+<pre><code> zip_files (list_of_files, dest)</code></pre>
+</blockquote>
+<div id="cell-31" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>touch test1.txt test2.txt</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> zip_files(P().Glob(<span class="st">"*.txt"</span>), <span class="st">"test.tar.gz"</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>unzip_file(f, <span class="st">"./"</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>[f.rm(force<span class="op">=</span><span class="va">True</span>) <span class="cf">for</span> f <span class="kw">in</span> P().Glob(<span class="st">"*.txt"</span>)]</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>P(<span class="st">"test.tar.gz"</span>).rm(force<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>touch test1.txt test2.txt</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> zip_files(P().Glob(<span class="st">"*.txt"</span>), <span class="st">"test.zip"</span>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>unzip_file(f, <span class="st">"./"</span>)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>[f.rm(force<span class="op">=</span><span class="va">True</span>) <span class="cf">for</span> f <span class="kw">in</span> P().Glob(<span class="st">"*.txt"</span>)]</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>P(<span class="st">"test.zip"</span>).rm(force<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Zipping <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> files to test.tar.gz<span style="color: #808000; text-decoration-color: #808000">...</span>                                                                                     <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/3826617683.py:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3826617683.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/3826617683.py:8#zip_files:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">zip_files:8</span></a>
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 2/2 [00:00&lt;00:00, 649.78it/s]
+/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/3826617683.py:27: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+  f.extractall(dest)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Zipping <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> files to test.zip<span style="color: #808000; text-decoration-color: #808000">...</span>                                                                                        <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/3826617683.py:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3826617683.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/3826617683.py:8#zip_files:8" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">zip_files:8</span></a>
+</pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 2/2 [00:00&lt;00:00, 2958.94it/s]</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="folder_summary" class="level3">
+<h3 class="anchored" data-anchor-id="folder_summary">folder_summary</h3>
+<blockquote class="blockquote">
+<pre><code> folder_summary (thing)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="common_items" class="level3">
+<h3 class="anchored" data-anchor-id="common_items">common_items</h3>
+<blockquote class="blockquote">
+<pre><code> common_items (*fldrs, verbose=True)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="remove_duplicates" class="level3">
+<h3 class="anchored" data-anchor-id="remove_duplicates">remove_duplicates</h3>
+<blockquote class="blockquote">
+<pre><code> remove_duplicates (files)</code></pre>
+</blockquote>
+<p><em>Check a list of files and remove duplicates based on their checksum</em></p>
+<hr>
+</section>
+<section id="md5" class="level3">
+<h3 class="anchored" data-anchor-id="md5">md5</h3>
+<blockquote class="blockquote">
+<pre><code> md5 (fname)</code></pre>
+</blockquote>
+<div id="cell-36" class="cell" data-tags="[]" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>md5(<span class="st">"paths.ipynb"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>'74eb392fa44e9293fb30ffed68c14112'</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="path.write_lines" class="level3">
+<h3 class="anchored" data-anchor-id="path.write_lines">Path.write_lines</h3>
+<blockquote class="blockquote">
+<pre><code> Path.write_lines (lines, mode)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="writelines" class="level3">
+<h3 class="anchored" data-anchor-id="writelines">writelines</h3>
+<blockquote class="blockquote">
+<pre><code> writelines (lines, file, mode)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="path.read_file" class="level3">
+<h3 class="anchored" data-anchor-id="path.read_file">Path.read_file</h3>
+<blockquote class="blockquote">
+<pre><code> Path.read_file (**kwargs)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="readfile" class="level3">
+<h3 class="anchored" data-anchor-id="readfile">readfile</h3>
+<blockquote class="blockquote">
+<pre><code> readfile (*args, **kwargs)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="path.read_lines" class="level3">
+<h3 class="anchored" data-anchor-id="path.read_lines">Path.read_lines</h3>
+<blockquote class="blockquote">
+<pre><code> Path.read_lines (silent=False, encoding=None)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="readlines" class="level3">
+<h3 class="anchored" data-anchor-id="readlines">readlines</h3>
+<blockquote class="blockquote">
+<pre><code> readlines (fpath, silent=False, encoding=None, _strip=True)</code></pre>
+</blockquote>
+<div id="cell-43" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>P(<span class="st">"paths.ipynb"</span>).read_lines()[:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> loaded <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1075</span> lines                                                                                                   <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/2901855681.py:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2901855681.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/2901855681.py:13#read_lines:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">read_lines:13</span></a>
+</pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>['{',
+ '"cells": [',
+ '{',
+ '"cell_type": "raw",',
+ '"metadata": {},',
+ '"source": [',
+ '"# Paths\\n",',
+ '"Utilities to manipulate Paths\\n",',
+ '"---\\n",',
+ '"{}\\n",']</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="tree" class="level3">
+<h3 class="anchored" data-anchor-id="tree">tree</h3>
+<blockquote class="blockquote">
+<pre><code> tree (directory='./', filelimit=50, to=None)</code></pre>
+</blockquote>
+<div id="cell-45" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>P(<span class="st">"../"</span>).tree</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>/Users/yeshwanth/Code/Personal/torch_snippets
+ ── LICENSE
+ ── LICENSE.txt
+ ── MANIFEST
+ ── MANIFEST.in
+ ── Makefile
+ ── README.md
+ ── Screenshot 2022-09-08 at 4.40.18 PM.png
+ ── __module_timing__.py.lprof
+ ── _proc
+ &nbsp;&nbsp;  ── AttrDict.ipynb
+ &nbsp;&nbsp;  ── _quarto.yml
+ &nbsp;&nbsp;  ── adapters.ipynb
+ &nbsp;&nbsp;  ── bokeh_plotting.ipynb
+ &nbsp;&nbsp;  ── bounding_boxes.ipynb
+ &nbsp;&nbsp;  ── capsule.ipynb
+ &nbsp;&nbsp;  ── charts.ipynb
+ &nbsp;&nbsp;  ── config.ipynb
+ &nbsp;&nbsp;  ── decorators.ipynb
+ &nbsp;&nbsp;  ── docs
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── AttrDict.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── adapters.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── bokeh_plotting.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── bounding_boxes.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── bounding_boxes_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-6-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-7-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-8-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-9-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── capsule.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── capsule_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-6-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── charts.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── charts_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-7-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── config.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── decorators.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── imgaug_loader.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── imgaug_loader_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-3-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-10.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-12.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-14.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-16.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-18.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-20.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-22.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-4.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-6.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-8.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-6-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-7-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-8-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── index.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── inspector.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── interactive_show.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── jupyter_notebook.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── load_defautls.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── logging.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── markups.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── misc.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── paths.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── pdf.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── registry.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── report.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── report_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-3-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── robots.txt
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── search.json
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── show.html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── show_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-2-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-3-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-4-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-4-output-4.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-4-output-6.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-8-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-9-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── site_libs
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap-icons.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap-icons.woff
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap.min.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── clipboard
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── clipboard.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── anchor.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── popper.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-syntax-highlighting.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── tippy.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── tippy.umd.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-nav
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── headroom.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-nav.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-search
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── autocomplete.umd.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── fuse.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;      ── quarto-search.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── sitemap.xml
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── sklegos.html
+ &nbsp;&nbsp;  ── imgaug_loader.ipynb
+ &nbsp;&nbsp;  ── index.ipynb
+ &nbsp;&nbsp;  ── inspector.ipynb
+ &nbsp;&nbsp;  ── interactive_show.ipynb
+ &nbsp;&nbsp;  ── jupyter_notebook.ipynb
+ &nbsp;&nbsp;  ── load_defautls.ipynb
+ &nbsp;&nbsp;  ── logging.ipynb
+ &nbsp;&nbsp;  ── markups.ipynb
+ &nbsp;&nbsp;  ── misc.ipynb
+ &nbsp;&nbsp;  ── nbdev.yml
+ &nbsp;&nbsp;  ── paths.ipynb
+ &nbsp;&nbsp;  ── pdf.ipynb
+ &nbsp;&nbsp;  ── registry.ipynb
+ &nbsp;&nbsp;  ── report.ipynb
+ &nbsp;&nbsp;  ── show.ipynb
+ &nbsp;&nbsp;  ── sidebar.yml
+ &nbsp;&nbsp;  ── sklegos.ipynb
+ &nbsp;&nbsp;  ── test.txt
+ &nbsp;&nbsp;  ── test1.txt
+ &nbsp;&nbsp;  ── test2.txt
+ &nbsp;&nbsp;  ── tmp.csv
+ &nbsp;&nbsp;  ── tmp.txt
+ ── assets
+ &nbsp;&nbsp;  ── Preamble.csv
+ &nbsp;&nbsp;  ── Preamble.png
+ &nbsp;&nbsp;  ── avgs0.png
+ &nbsp;&nbsp;  ── avgs1.png
+ &nbsp;&nbsp;  ── demo.gif
+ ── backups
+ &nbsp;&nbsp;  ── testing
+ &nbsp;&nbsp;      ── 0000.html
+ ── build
+ &nbsp;&nbsp;  ── bdist.macosx-11.1-arm64
+ &nbsp;&nbsp;  ── lib
+ &nbsp;&nbsp;      ── torch_snippets
+ &nbsp;&nbsp;          ── __init__.py
+ &nbsp;&nbsp;          ── __module_timing__.py
+ &nbsp;&nbsp;          ── _modidx.py
+ &nbsp;&nbsp;          ── _nbdev.py
+ &nbsp;&nbsp;          ── adapters.py
+ &nbsp;&nbsp;          ── bb_utils.py
+ &nbsp;&nbsp;          ── bokeh_loader.py
+ &nbsp;&nbsp;          ── charts.py
+ &nbsp;&nbsp;          ── cli.py
+ &nbsp;&nbsp;          ── dates.py
+ &nbsp;&nbsp;          ── decorators.py
+ &nbsp;&nbsp;          ── fastcores.py
+ &nbsp;&nbsp;          ── icecream.py
+ &nbsp;&nbsp;          ── imgaug_loader.py
+ &nbsp;&nbsp;          ── inspector.py
+ &nbsp;&nbsp;          ── interactive_show.py
+ &nbsp;&nbsp;          ── ipython.py
+ &nbsp;&nbsp;          ── load_defaults.py
+ &nbsp;&nbsp;          ── loader.py
+ &nbsp;&nbsp;          ── logger.py
+ &nbsp;&nbsp;          ── markup.py
+ &nbsp;&nbsp;          ── markup2.py
+ &nbsp;&nbsp;          ── misc.py
+ &nbsp;&nbsp;          ── paths.py
+ &nbsp;&nbsp;          ── pdf_loader.py
+ &nbsp;&nbsp;          ── registry.py
+ &nbsp;&nbsp;          ── s3_loader.py
+ &nbsp;&nbsp;          ── scp.py
+ &nbsp;&nbsp;          ── sklegos.py
+ &nbsp;&nbsp;          ── text_utils.py
+ &nbsp;&nbsp;          ── thinc_parser
+ &nbsp;&nbsp;          &nbsp;&nbsp;  ── __init__.py
+ &nbsp;&nbsp;          &nbsp;&nbsp;  ── parser.py
+ &nbsp;&nbsp;          ── tmp.py
+ &nbsp;&nbsp;          ── torch_loader.py
+ &nbsp;&nbsp;          ── trainer
+ &nbsp;&nbsp;          &nbsp;&nbsp;  ── __init__.py
+ &nbsp;&nbsp;          &nbsp;&nbsp;  ── capsule.py
+ &nbsp;&nbsp;          &nbsp;&nbsp;  ── config.py
+ &nbsp;&nbsp;          &nbsp;&nbsp;  ── hooks.py
+ &nbsp;&nbsp;          &nbsp;&nbsp;  ── neural_graph.py
+ &nbsp;&nbsp;          ── video.py
+ &nbsp;&nbsp;          ── zen.py
+ ── changelog.md
+ ── conda
+ &nbsp;&nbsp;  ── torch_snippets
+ &nbsp;&nbsp;      ── meta.yaml
+ ── debug
+ &nbsp;&nbsp;  ── profile_time.txt
+ &nbsp;&nbsp;  ── profile_time_202408241027.txt
+ ── dist
+ &nbsp;&nbsp;  ── torch_snippets-0.6.0-py3-none-any.whl
+ &nbsp;&nbsp;  ── torch_snippets-0.6.0.tar.gz
+ ── docker-compose.yml
+ ── docs
+ &nbsp;&nbsp;  ── AttrDict.html
+ &nbsp;&nbsp;  ── adapters.html
+ &nbsp;&nbsp;  ── bokeh_plotting.html
+ &nbsp;&nbsp;  ── bounding_boxes.html
+ &nbsp;&nbsp;  ── bounding_boxes_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-6-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-7-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-8-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-9-output-1.png
+ &nbsp;&nbsp;  ── capsule.html
+ &nbsp;&nbsp;  ── capsule_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-2.png
+ &nbsp;&nbsp;  ── charts.html
+ &nbsp;&nbsp;  ── charts_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-7-output-1.png
+ &nbsp;&nbsp;  ── config.html
+ &nbsp;&nbsp;  ── decorators.html
+ &nbsp;&nbsp;  ── imgaug_loader.html
+ &nbsp;&nbsp;  ── imgaug_loader_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-3-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-10.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-12.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-14.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-16.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-18.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-20.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-22.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-4.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-6.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-8.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-6-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-7-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-8-output-2.png
+ &nbsp;&nbsp;  ── index.html
+ &nbsp;&nbsp;  ── inspector.html
+ &nbsp;&nbsp;  ── interactive_show.html
+ &nbsp;&nbsp;  ── jupyter_notebook.html
+ &nbsp;&nbsp;  ── load_defautls.html
+ &nbsp;&nbsp;  ── logging.html
+ &nbsp;&nbsp;  ── markups.html
+ &nbsp;&nbsp;  ── misc.html
+ &nbsp;&nbsp;  ── paths.html
+ &nbsp;&nbsp;  ── pdf.html
+ &nbsp;&nbsp;  ── registry.html
+ &nbsp;&nbsp;  ── report.html
+ &nbsp;&nbsp;  ── report_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-3-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-1.png
+ &nbsp;&nbsp;  ── robots.txt
+ &nbsp;&nbsp;  ── search.json
+ &nbsp;&nbsp;  ── show.html
+ &nbsp;&nbsp;  ── show_files
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── figure-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-2-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-3-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-4-output-2.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-4-output-4.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-4-output-6.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-5-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-8-output-1.png
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── cell-9-output-1.png
+ &nbsp;&nbsp;  ── site_libs
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap-icons.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap-icons.woff
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap.min.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── bootstrap.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── clipboard
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── clipboard.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-html
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── anchor.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── popper.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-syntax-highlighting.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── tippy.css
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── tippy.umd.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-nav
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── headroom.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-nav.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── quarto-search
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── autocomplete.umd.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── fuse.min.js
+ &nbsp;&nbsp;  &nbsp;&nbsp;      ── quarto-search.js
+ &nbsp;&nbsp;  ── sitemap.xml
+ &nbsp;&nbsp;  ── sklegos.html
+ ── nbs
+ &nbsp;&nbsp;  ── AttrDict.ipynb
+ &nbsp;&nbsp;  ── _quarto.yml
+ &nbsp;&nbsp;  ── adapters.ipynb
+ &nbsp;&nbsp;  ── bokeh_plotting.ipynb
+ &nbsp;&nbsp;  ── bounding_boxes.ipynb
+ &nbsp;&nbsp;  ── capsule.ipynb
+ &nbsp;&nbsp;  ── charts.ipynb
+ &nbsp;&nbsp;  ── config.ipynb
+ &nbsp;&nbsp;  ── decorators.ipynb
+ &nbsp;&nbsp;  ── imgaug_loader.ipynb
+ &nbsp;&nbsp;  ── index.ipynb
+ &nbsp;&nbsp;  ── inspector.ipynb
+ &nbsp;&nbsp;  ── interactive_show.ipynb
+ &nbsp;&nbsp;  ── jupyter_notebook.ipynb
+ &nbsp;&nbsp;  ── load_defautls.ipynb
+ &nbsp;&nbsp;  ── logging.ipynb
+ &nbsp;&nbsp;  ── markups.ipynb
+ &nbsp;&nbsp;  ── misc.ipynb
+ &nbsp;&nbsp;  ── nbdev.yml
+ &nbsp;&nbsp;  ── paths.ipynb
+ &nbsp;&nbsp;  ── pdf.ipynb
+ &nbsp;&nbsp;  ── registry.ipynb
+ &nbsp;&nbsp;  ── report.ipynb
+ &nbsp;&nbsp;  ── show.ipynb
+ &nbsp;&nbsp;  ── sidebar.yml
+ &nbsp;&nbsp;  ── sklegos.ipynb
+ &nbsp;&nbsp;  ── tmp.csv
+ ── requirements.txt
+ ── scripts.ipynb
+ ── settings.ini
+ ── setup.cfg
+ ── setup.py
+ ── testing.ipynb
+ ── tmp.ini
+ ── torch_snippets
+ &nbsp;&nbsp;  ── __init__.py
+ &nbsp;&nbsp;  ── __module_timing__.py
+ &nbsp;&nbsp;  ── __pycache__
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── __init__.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── __module_timing__.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── bb_utils.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── bokeh_loader.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── charts.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── cli.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── dates.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── decorators.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── icecream.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── inspector.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── ipython.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── load_defaults.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── loader.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── logger.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── markup.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── markup2.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── misc.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── paths.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── pdf_loader.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── registry.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── s3_loader.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── torch_loader.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── zen.cpython-312.pyc
+ &nbsp;&nbsp;  ── _modidx.py
+ &nbsp;&nbsp;  ── _nbdev.py
+ &nbsp;&nbsp;  ── adapters.py
+ &nbsp;&nbsp;  ── bb_utils.py
+ &nbsp;&nbsp;  ── bokeh_loader.py
+ &nbsp;&nbsp;  ── charts.py
+ &nbsp;&nbsp;  ── cli.py
+ &nbsp;&nbsp;  ── dates.py
+ &nbsp;&nbsp;  ── decorators.py
+ &nbsp;&nbsp;  ── fastcores.py
+ &nbsp;&nbsp;  ── icecream.py
+ &nbsp;&nbsp;  ── imgaug_loader.py
+ &nbsp;&nbsp;  ── inspector.py
+ &nbsp;&nbsp;  ── interactive_show.py
+ &nbsp;&nbsp;  ── ipython.py
+ &nbsp;&nbsp;  ── load_defaults.py
+ &nbsp;&nbsp;  ── loader.py
+ &nbsp;&nbsp;  ── logger.py
+ &nbsp;&nbsp;  ── markup.py
+ &nbsp;&nbsp;  ── markup2.py
+ &nbsp;&nbsp;  ── misc.py
+ &nbsp;&nbsp;  ── paths.py
+ &nbsp;&nbsp;  ── pdf_loader.py
+ &nbsp;&nbsp;  ── registry.py
+ &nbsp;&nbsp;  ── s3_loader.py
+ &nbsp;&nbsp;  ── scp.py
+ &nbsp;&nbsp;  ── sklegos.py
+ &nbsp;&nbsp;  ── text_utils.py
+ &nbsp;&nbsp;  ── thinc_parser
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── __init__.py
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── __pycache__
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── __init__.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── parser.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── parser.py
+ &nbsp;&nbsp;  ── tmp.py
+ &nbsp;&nbsp;  ── torch_loader.py
+ &nbsp;&nbsp;  ── trainer
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── __init__.py
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── __pycache__
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── __init__.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  ── capsule.cpython-312.pyc
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── capsule.py
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── config.py
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── hooks.py
+ &nbsp;&nbsp;  &nbsp;&nbsp;  ── neural_graph.py
+ &nbsp;&nbsp;  ── video.py
+ &nbsp;&nbsp;  ── zen.py
+ ── torch_snippets.egg-info
+     ── PKG-INFO
+     ── SOURCES.txt
+     ── dependency_links.txt
+     ── entry_points.txt
+     ── not-zip-safe
+     ── requires.txt
+     ── top_level.txt
+
+61 directories, 348 files
+</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="folder_structure_to_json" class="level3">
+<h3 class="anchored" data-anchor-id="folder_structure_to_json">folder_structure_to_json</h3>
+<blockquote class="blockquote">
+<pre><code> folder_structure_to_json (path, output_file=None)</code></pre>
+</blockquote>
+<p><em>Creates a JSON file representing the folder structure of the given directory.</em></p>
+<hr>
+</section>
+<section id="folder_structure_to_dict" class="level3">
+<h3 class="anchored" data-anchor-id="folder_structure_to_dict">folder_structure_to_dict</h3>
+<blockquote class="blockquote">
+<pre><code> folder_structure_to_dict (path)</code></pre>
+</blockquote>
+<p><em>Recursively constructs a nested dictionary that represents the folder structure.</em></p>
+<div id="cell-48" class="cell" data-tags="[]" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> P(<span class="st">"tmp.txt"</span>)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>x.touch()</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>x.write_lines([i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>)], mode<span class="op">=</span><span class="st">"w"</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>lines <span class="op">=</span> x.read_lines()</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> lines <span class="op">==</span> [<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>)]</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>logger.info(x.size())</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>x.rm(confirm_prompt<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[08/24/24 11:12:13] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> loaded <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1000</span> lines                                                                                                   <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/2901855681.py:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2901855681.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/2901855681.py:13#read_lines:13" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">read_lines:13</span></a>
+</pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span> KB                                                                                                                   <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1033976698.py:6" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">1033976698.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/1033976698.py:6#<module>:6" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:6</span></a>
+</pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="loaddill" class="level3">
+<h3 class="anchored" data-anchor-id="loaddill">loaddill</h3>
+<blockquote class="blockquote">
+<pre><code> loaddill (fpath)</code></pre>
+</blockquote>
+<p><em>Load a python object from a dill file</em></p>
+<hr>
+</section>
+<section id="dumpdill" class="level3">
+<h3 class="anchored" data-anchor-id="dumpdill">dumpdill</h3>
+<blockquote class="blockquote">
+<pre><code> dumpdill (obj, fpath, silent=False, message='Dumped object of size
+           ≈{fsize} @ "{fpath}" in {dumptime:.2e} seconds')</code></pre>
+</blockquote>
+<p><em>Dump a python object as a dill file (better replacement to pickle)</em></p>
+<div id="cell-51" class="cell" data-tags="[]" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> P(<span class="st">"test.tmp"</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>dumpdill([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], p)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> loaddill(p)</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>p.rm(confirm_prompt<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> y <span class="op">==</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> Dumped object of size ≈<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> KB @ <span style="color: #008000; text-decoration-color: #008000">"test.tmp"</span> in <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">4.11e-04</span> seconds                                                            <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/554288780.py:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">554288780.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_40147/554288780.py:2#<module>:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:2</span></a>
+</pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/sizhky\.github\.io\/torch_snippets\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
