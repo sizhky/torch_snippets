@@ -1,4 +1,10 @@
 # Changelog
+#### 0.544
+🎉 Quality of life improvements in logging
+🎉 Add support for `dataclass` in `AD`
+🎉 DeepDiff integrated into `AD`. Now you can call x.diff(y) where x is `AD` and y is `AD`able
+🎉 `AD.d` (no brackets, d is a property) to convert the object to dictionary
+
 #### 0.540
 ✨ Made all imports lazy for a faster import experience
 

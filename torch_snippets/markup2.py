@@ -27,10 +27,11 @@ import os
 from collections.abc import Mapping
 from json import JSONEncoder
 from typing import Union, List
-
+from dataclasses import is_dataclass, asdict
 import jsonlines
 import xmltodict
 import yaml
+from deepdiff import DeepDiff
 
 from .icecream import ic
 from .loader import BB, L, np, pd
@@ -47,7 +48,7 @@ def _default(self, obj):
     if isinstance(obj, P):
         return str(obj)
     if isinstance(obj, AD):
-        return obj.to_dict()
+        return obj.dict()
     if isinstance(obj, (set, L)):
         return list(obj)
     try:
@@ -114,9 +115,9 @@ def hash_pandas_dataframe(input):
         return "ID:#<uncomputable>"
 
 
-def is_attrdict_like(input):
-    o = isinstance(input, (Mapping, AttrDict)) or all(
-        [hasattr(input, k) for k in ["keys", "values", "items"]]
+def is_attrdict_like(_input):
+    o = isinstance(_input, (Mapping, AttrDict)) or all(
+        [hasattr(_input, k) for k in ["keys", "values", "items"]]
     )
     return o
 
@@ -217,7 +218,7 @@ class AttrDict(object):
         return self.__dict__.values()
 
     def __json__(self):
-        return self.to_dict()
+        return self.dict()
 
     def _wrap(self, value):
         if isinstance(value, (L, tuple, list, set, frozenset)):
@@ -333,26 +334,24 @@ class AttrDict(object):
             if isinstance(v, (L, tuple, list, set, frozenset)):
                 v = [_v.drop(key) for _v in v if isinstance(_v, AttrDict)]
 
-    def to_dict(self):
+    def dict(self):
         d = {}
         for k in self.__dict__.keys():  # can't use dir here
             v = self[k]
             if isinstance(v, AttrDict):
-                v = v.to_dict()
+                v = v.dict()
             if isinstance(v, (L, tuple, list, set, frozenset)):
-                v = [_v.to_dict() if isinstance(_v, AttrDict) else _v for _v in v]
+                v = type(v)([_v.dict() if isinstance(_v, AttrDict) else _v for _v in v])
             d[k] = v
         return d
 
-    dict = to_dict
+    dict = dict
 
     def pretty(self, print_with_logger=False, *args, **kwargs):
-        pretty_json(
-            self.to_dict(), print_with_logger=print_with_logger, *args, **kwargs
-        )
+        pretty_json(self.dict(), print_with_logger=print_with_logger, *args, **kwargs)
 
     def __eq__(self, other):
-        return AttrDict(given_input_to_ad=other).to_dict() == self.to_dict()
+        return AttrDict(given_input_to_ad=other).dict() == self.dict()
 
     def find_address(self, key, current_path=""):
         addresses = []
@@ -396,11 +395,24 @@ class AttrDict(object):
 
                 torch = Torch()
 
+            if is_dataclass(item):
+                _type = type(item).__name__
+                item = AD(asdict(item))
+                info = f"(🏷️ {_type}:dataclass)"
+            else:
+                info = None
+
             if isinstance(item, (pd.DataFrame,)):
                 return f"{sep * depth}{key} - {type(item).__name__} - shape {item.shape} - columns {item.columns} - {hash_pandas_dataframe(item)}\n"
-            if isinstance(item, AttrDict) or hasattr(item, "keys"):
-                item = AttrDict(**item)
-                return f"{sep*depth}{key}\n" + item.summary(path, depth + 1, sep)
+            if is_attrdict_like(item):
+                try:
+                    item = AttrDict(**item)
+                    _info = "" if info is None else info
+                    return f"{sep*depth}{key}{_info}\n" + item.summary(
+                        path, depth + 1, sep
+                    )
+                except:
+                    return ""
             elif isinstance(item, (list, tuple, set, frozenset, L)):
                 return summarize_collection(key, item, path, depth + 1, sep)
             elif isinstance(item, (torch.Tensor, np.ndarray)):
@@ -577,9 +589,16 @@ class AttrDict(object):
         df = pd.DataFrame([(*k.split("."), v) for k, v in self.flatten().items()])
         return df
 
+    def diff(self, other):
+        return AD(DeepDiff(self.dict(), AD(other).dict()))
+
+    @property
+    def d(self):
+        return self.dict()
+
 
 AD = AttrDict
-AD.dict = AD.to_dict
+AD.to_dict = AD.dict
 
 
 def pretty_json(
@@ -676,7 +695,7 @@ def write_xml(data: Union[AttrDict, dict], file_path: Union[str, P]):
     makedir(parent(file_path))
     "convert a dictionary to xml"
     with open(file_path, "w") as xml_file:
-        data = data.to_dict() if isinstance(data, AttrDict) else data
+        data = data.dict() if isinstance(data, AttrDict) else data
         assert isinstance(data, dict), "Function only supports dicts for now"
         data = xmltodict.unparse(data, pretty=True)
         xml_file.write(data)
@@ -717,7 +736,7 @@ if __name__ == "__main__":
     d2 = {"c": 2}
     d3 = {"c": 3}
     l = [1, 2, 3]
-    assert AD(l, {"c": 100}, d1, d2, d3, d1={"c": 10}, d2={"c": 20}).to_dict() == {
+    assert AD(l, {"c": 100}, d1, d2, d3, d1={"c": 10}, d2={"c": 20}).dict() == {
         "l": [1, 2, 3],
         "d1": {"c": 1},
         "d2": {"c": 2},
@@ -727,7 +746,7 @@ if __name__ == "__main__":
 
     a = 20
     b = 30
-    assert AD(a, b).to_dict() == {"a": 20, "b": 30}
+    assert AD(a, b).dict() == {"a": 20, "b": 30}
 
     p = 10
     q = {"a": 1}
@@ -735,5 +754,5 @@ if __name__ == "__main__":
     assert AD(p, {"a": 1}) == {"p": 10, "a": 1}
 
     x = {"a": 1, "b": 2, "c": 3}
-    assert AD(x).to_dict() == {"x": {"a": 1, "b": 2, "c": 3}}
-    assert AD(**x).to_dict() == {"a": 1, "b": 2, "c": 3}
+    assert AD(x).dict() == {"x": {"a": 1, "b": 2, "c": 3}}
+    assert AD(**x).dict() == {"a": 1, "b": 2, "c": 3}

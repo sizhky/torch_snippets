@@ -5,7 +5,7 @@ __all__ = ['Timer', 'track2', 'summarize_input', 'timeit', 'io', 'tryy']
 
 # %% ../nbs/misc.ipynb 2
 import time
-from .logger import Debug, Excep, debug_mode, Info, Trace
+from .logger import Debug, Warn, debug_mode, Info, Trace
 from .markup2 import AD
 from functools import wraps
 from fastcore.basics import ifnone
@@ -75,7 +75,7 @@ def track2(iterable, *, total=None):
         if info is not None:
             yield  # Just to ensure the send operation stops
 
-# %% ../nbs/misc.ipynb 11
+# %% ../nbs/misc.ipynb 10
 def summarize_input(args, kwargs, outputs=None):
     o = AD(args, kwargs)
     if outputs is not None:
@@ -95,9 +95,9 @@ def timeit(func):
 
 def io(func=None, *, level="debug"):
     logfuncs = {
-        "debug": lambda i: Debug(i, depth=1),
-        "info": lambda i: Info(i, depth=1),
-        "trace": lambda i: Trace(i, depth=1),
+        "debug": lambda i: Debug(i, depth=2),
+        "info": lambda i: Info(i, depth=2),
+        "trace": lambda i: Trace(i, depth=2),
     }
     try:
         logfunc = logfuncs[level.lower()]
@@ -106,8 +106,18 @@ def io(func=None, *, level="debug"):
 
     def decorator(func):
         def inner(*args, **kwargs):
+            if level == "trace":
+                try:
+                    from pysnooper import snoop
+                except ModuleNotFoundError:
+                    raise ModuleNotFoundError(
+                        "`pip install pysnooper` if you want to trace the function line by line"
+                    )
+                _func = snoop()(func)
+            else:
+                _func = func
             s = time.time()
-            o = func(*args, **kwargs)
+            o = _func(*args, **kwargs)
             info = f"""
 {time.time() - s:.2f} seconds to execute `{func.__name__}`
 {summarize_input(args=args, kwargs=kwargs, outputs=o)}
@@ -118,9 +128,10 @@ def io(func=None, *, level="debug"):
         return inner
 
     if func is None:
-        return decorator
+        o = decorator
     else:
-        return decorator(func)
+        o = decorator(func)
+    return o
 
 # %% ../nbs/misc.ipynb 19
 def tryy(
@@ -141,16 +152,23 @@ def tryy(
             try:
                 return f(*args, **kwargs)
             except Exception as e:
-                if not print_traceback:
-                    tb = f"{type(e).__name__}: {str(e)}"
-                else:
-                    import traceback
-
-                    tb = traceback.format_exc()
                 if not silence_errors:
-                    Excep(
-                        f"Error for `{f.__name__}` with \n{summarize_input(args, kwargs)}\n{tb}"
-                    )
+                    if not print_traceback:
+                        tb = f"{type(e).__name__}: {str(e)}"
+                        Warn(
+                            f"Error for `{f.__name__}` with \n{summarize_input(args, kwargs)}\n{tb}",
+                            is_exception=False,
+                        )
+                    else:
+                        import traceback
+
+                        tb = traceback.format_exc()
+                        Warn(
+                            f"Error for `{f.__name__}` with \n{summarize_input(args, kwargs)}\n{tb}",
+                            is_exception=True,
+                        )
+                else:
+                    tb = None
                 if store_errors is not None:
                     error_store.append(
                         AD(

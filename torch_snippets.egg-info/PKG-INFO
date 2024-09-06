@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: torch_snippets
-Version: 0.541
+Version: 0.544
 Summary: One line functions for common tasks
 Home-page: https://github.com/sizhky/torch_snippets/tree/master/
 Author: Yeshwanth Reddy
@@ -20,9 +20,7 @@ License-File: LICENSE.txt
 Requires-Dist: fastcore
 Requires-Dist: matplotlib
 Requires-Dist: Pillow
-Requires-Dist: altair
 Requires-Dist: dill
-Requires-Dist: ipython
 Requires-Dist: loguru
 Requires-Dist: numpy
 Requires-Dist: pandas
@@ -40,16 +38,27 @@ Requires-Dist: jsonlines
 Requires-Dist: imgaug>=0.4.0
 Requires-Dist: xmltodict
 Requires-Dist: fuzzywuzzy
-Requires-Dist: scikit-learn
 Requires-Dist: nltk
 Requires-Dist: python-Levenshtein
 Requires-Dist: pre-commit
-Requires-Dist: pymupdf
-Requires-Dist: nbconvert
-Requires-Dist: nbformat
 Requires-Dist: icecream
 Requires-Dist: mergedeep
+Requires-Dist: deepdiff
 Requires-Dist: typer
+Provides-Extra: torch
+Requires-Dist: torch; extra == "torch"
+Requires-Dist: torchvision; extra == "torch"
+Requires-Dist: lovely_tensors; extra == "torch"
+Provides-Extra: altair
+Requires-Dist: altair; extra == "altair"
+Provides-Extra: bokeh
+Requires-Dist: bokeh; extra == "bokeh"
+Provides-Extra: pdf
+Requires-Dist: pymupdf; extra == "pdf"
+Provides-Extra: jupyter
+Requires-Dist: nbconvert; extra == "jupyter"
+Requires-Dist: nbformat; extra == "jupyter"
+Requires-Dist: ipython; extra == "jupyter"
 
 # Utilities for simple needs
 

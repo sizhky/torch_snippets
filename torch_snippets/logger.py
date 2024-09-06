@@ -76,7 +76,13 @@ def render(
     return log_renderable
 
 
-def reset_logger(level="INFO", console_width=172, silent=True, disable_stdout=False):
+def reset_logger(
+    level="INFO",
+    console_width=172,
+    silent=True,
+    disable_stdout=False,
+    show_locals=False,
+):
     if level is not None:
         [logger.remove() for _ in range(100)]
         if not disable_stdout:
@@ -86,10 +92,11 @@ def reset_logger(level="INFO", console_width=172, silent=True, disable_stdout=Fa
                         "sink": RichHandler(
                             rich_tracebacks=True,
                             console=console,
-                            tracebacks_show_locals=False,
+                            tracebacks_show_locals=show_locals,
                         ),
                         "format": "<level>{message}</level>",
                         "backtrace": False,
+                        "diagnose": False,
                         "level": level.upper(),
                     }
                 ],
@@ -102,7 +109,9 @@ def reset_logger(level="INFO", console_width=172, silent=True, disable_stdout=Fa
             except:
                 ...
     if not silent:
-        logger.info(f"reset logger's console width to {width} and level to {level}!")
+        logger.info(
+            f"reset logger's console width to {console_width} and level to {level}!"
+        )
 
 
 reset_logger_width = lambda width: reset_logger(width=width)
@@ -120,12 +129,13 @@ Debug = lambda *x, depth=0: logger.opt(depth=depth + 1).log(
 Info = lambda *x, depth=0: logger.opt(depth=depth + 1).log(
     "INFO", x[0] if len(x) == 1 else "; ".join([str(i) for i in x])
 )
-Warn = lambda *x, depth=0: logger.opt(depth=depth + 1).log(
-    "WARNING", x[0] if len(x) == 1 else "; ".join([str(i) for i in x])
-)
-Excep = lambda *x, depth=0: logger.opt(exception=True, depth=depth + 1).log(
-    "ERROR", x[0] if len(x) == 1 else "; ".join([str(i) for i in x])
-)
+Warn = lambda *x, depth=0, is_exception=False: logger.opt(
+    depth=depth + 1, exception=is_exception
+).log("WARNING", x[0] if len(x) == 1 else "; ".join([str(i) for i in x]))
+
+Excep = lambda *x, depth=0, print_stack_trace=True: logger.opt(
+    exception=print_stack_trace, depth=depth + 1
+).log("ERROR", x[0] if len(x) == 1 else "; ".join([str(i) for i in x]))
 
 # %% ../nbs/logging.ipynb 15
 def get_logger_level():
@@ -178,7 +188,7 @@ def logger_mode(level):
         return _logger_mode_context(level) if not callable(level) else decorator
 
 
-def in_logger_mode(level:str) -> bool:
+def in_logger_mode(level: str) -> bool:
     """
     return's T/F, checking if logger is in a specific mode or not
     """
@@ -230,12 +240,12 @@ frames = [
 
 @contextmanager
 def notify_waiting(message, spinner="clock"):
-    """Use a with context to let the user know that something is happening with a 
+    """Use a with context to let the user know that something is happening with a
     dynamic spinner
     """
     random.shuffle(frames)
     SPINNERS["guess_the_movie"] = {"interval": 3000, "frames": frames}
-    Trace(f'Available Spinners: {SPINNERS.keys()}\n\nUsing: {spinner}')
+    Trace(f"Available Spinners: {SPINNERS.keys()}\n\nUsing: {spinner}")
 
     status = console.status(f"[red]\n{message:10}", spinner=spinner)
     with status as _:

@@ -1,6 +1,6 @@
 from pkg_resources import parse_version
 from configparser import ConfigParser
-import setuptools
+import setuptools, json
 
 assert parse_version(setuptools.__version__) >= parse_version("36.2")
 
@@ -38,6 +38,8 @@ py_versions = (
 )
 
 requirements = cfg.get("requirements", "").split()
+additional_requirements = cfg.get("additional_requirements")
+additional_requirements = json.loads(additional_requirements)
 lic = licenses[cfg["license"]]
 min_python = cfg["min_python"]
 
@@ -58,6 +60,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     install_requires=requirements,
+    extras_require=additional_requirements,
     dependency_links=cfg.get("dep_links", "").split(),
     python_requires=">=" + cfg["min_python"],
     long_description=open("README.md").read(),

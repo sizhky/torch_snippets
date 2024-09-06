@@ -1,4 +1,4 @@
-__version__ = "0.541"
+__version__ = "0.544"
 from .logger import *
 from .loader import *
 from .paths import *
@@ -18,35 +18,62 @@ from .zen import *
 
 
 def init_torch():
-    from .torch_loader import (
-        torch,
-        th,
-        torchvision,
-        T,
-        transforms,
-        nn,
-        np,
-        F,
-        Dataset,
-        DataLoader,
-        optim,
-        Report,
-        Reshape,
-        Permute,
-        device,
-        save_torch_model_weights_from,
-        load_torch_model_weights_to,
-        detach,
-        cat_with_padding,
-    )
-
     try:
+        from .torch_loader import (
+            torch,
+            th,
+            torchvision,
+            T,
+            transforms,
+            nn,
+            np,
+            F,
+            Dataset,
+            DataLoader,
+            optim,
+            Report,
+            Reshape,
+            Permute,
+            device,
+            save_torch_model_weights_from,
+            load_torch_model_weights_to,
+            detach,
+            cat_with_padding,
+        )
+
         import lovely_tensors
 
         lovely_tensors.monkey_patch()
     except ModuleNotFoundError:
         raise ModuleNotFoundError(
-            "Unable to import `lovely-tensors`. `pip install lovely-tensors` for a prettier experience"
+            "Unable to install torch dependencies. Please install them using `pip install torch-snippets[torch]`"
         )
 
-    globals().update(locals())
+    import builtins
+
+    # Define a dictionary mapping names to imported objects
+    modules = {
+        "torch": torch,
+        "th": th,
+        "torchvision": torchvision,
+        "T": T,
+        "transforms": transforms,
+        "nn": nn,
+        "np": np,
+        "F": F,
+        "Dataset": Dataset,
+        "DataLoader": DataLoader,
+        "optim": optim,
+        "Report": Report,
+        "Reshape": Reshape,
+        "Permute": Permute,
+        "device": device,
+        "save_torch_model_weights_from": save_torch_model_weights_from,
+        "load_torch_model_weights_to": load_torch_model_weights_to,
+        "detach": detach,
+        "cat_with_padding": cat_with_padding,
+    }
+
+    # Use a loop to set attributes in builtins
+    for name, module in modules.items():
+        setattr(builtins, name, module)
