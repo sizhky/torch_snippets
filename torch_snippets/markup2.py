@@ -429,17 +429,27 @@ class AttrDict(object):
             else:
                 is_multiline = False
                 ogitem = item
+                item = str(item)
                 if isinstance(item, (str, P)):
                     item = str(item)
                     is_multiline = "\n" in item
-                    _sep = " ...\n...\n...\n...\n... " if is_multiline else "........."
-                    if len(item) > 100:
-                        item = item[:35] + _sep + item[-35:]
+                    if not os.environ.get("AD_SHOW_FULL_STRINGS", False):
+                        _sep = (
+                            " ...\n...\n...\n...\n... " if is_multiline else "........."
+                        )
+                        if len(item) > 100:
+                            item = item[:35] + _sep + item[-35:]
+                    else:
+                        _sep = ""
                     if is_multiline:
                         _item = item.split("\n")
                         _item = "\n".join([f"{sep*(depth+1)}{l}" for l in _item])
                         item = f"↓\n{sep*(depth+1)}```\n{_item}\n{sep*(depth+1)}```"
-                multiline = "" if not is_multiline else "Multiline "
+                multiline = (
+                    ""
+                    if not (is_multiline and isinstance(ogitem, str))
+                    else "Multiline "
+                )
                 return f"{sep * depth}{key} - {item} (🏷️ {multiline}{type(ogitem).__name__})\n"
 
         def summarize_collection(key, collection, path, d, s):
@@ -704,8 +714,8 @@ def write_xml(data: Union[AttrDict, dict], file_path: Union[str, P]):
 def decompose(i):
     print(
         AD(
-            {k: getattr(i, k) for k in dir(i) if not k.startswith("_")},
             type=str(type(i)),
+            **{k: getattr(i, k) for k in dir(i) if not k.startswith("_")},
         )
     )
 

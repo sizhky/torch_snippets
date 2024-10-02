@@ -20,6 +20,7 @@ website:
       - misc.ipynb
       - paths.ipynb
       - pdf.ipynb
+      - profiler.ipynb
       - registry.ipynb
       - report.ipynb
       - show.ipynb

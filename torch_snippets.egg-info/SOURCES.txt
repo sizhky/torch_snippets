@@ -30,6 +30,7 @@ torch_snippets/markup2.py
 torch_snippets/misc.py
 torch_snippets/paths.py
 torch_snippets/pdf_loader.py
+torch_snippets/profiler.py
 torch_snippets/registry.py
 torch_snippets/s3_loader.py
 torch_snippets/scp.py

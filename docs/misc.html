@@ -263,6 +263,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./profiler.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Profiler</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./registry.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Registry</span></a>
   </div>
@@ -341,8 +347,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>()</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        info <span class="op">=</span> <span class="ss">f"My Info: </span><span class="sc">{</span>i<span class="op">*</span><span class="fl">3.122</span><span class="sc">}</span><span class="ss">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>26/50 (0.32s - 0.30s remaining - 80.54 iters/s)          
-My Info: 78.05  50/50 (0.61s - 0.00s remaining - 81.87 iters/s)          </code></pre>
+<pre><code>26/50 (0.32s - 0.30s remaining - 80.72 iters/s)          
+My Info: 78.05  50/50 (0.62s - 0.00s remaining - 80.88 iters/s)          </code></pre>
 </div>
 </div>
 </section>
@@ -361,8 +367,8 @@ My Info: 78.05  50/50 (0.61s - 0.00s remaining - 81.87 iters/s)          </code>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">&gt;=</span> N <span class="op">//</span> <span class="dv">2</span>:</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        tracker.send(info)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>25/50 (0.31s - 0.31s remaining - 81.57 iters/s)          
-My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.00 iters/s)          </code></pre>
+<pre><code>25/50 (0.30s - 0.30s remaining - 83.74 iters/s)          
+My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.91 iters/s)          </code></pre>
 </div>
 </div>
 <p>Warning! NEVER RUN <code>tracker.send(None)</code> as this will skip variables silently</p>
@@ -377,7 +383,7 @@ My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.00 iters/s)          </code>
 <section id="print-execution-time" class="level2">
 <h2 class="anchored" data-anchor-id="print-execution-time">Print execution time</h2>
 <p><code>@timeit</code> decorates and prints time taken to execute a function as an info log</p>
-<div id="cell-9" class="cell" data-execution_count="9">
+<div id="cell-9" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">@timeit</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> foo(a, b<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> b <span class="kw">is</span> <span class="va">None</span>:</span>
@@ -386,18 +392,18 @@ My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.00 iters/s)          </code>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="dv">2</span>)</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> a <span class="op">+</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-10" class="cell" data-execution_count="10">
+<div id="cell-10" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>foo(<span class="dv">10</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>foo(<span class="dv">10</span>, b<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/07/24 00:36:22] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.00</span> seconds to execute `foo`                                                                                            <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/3546464892.py:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3546464892.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/3546464892.py:16#inner:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:16</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/08/24 21:15:23] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.00</span> seconds to execute `foo`                                                                                            <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/3546464892.py:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3546464892.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/3546464892.py:16#inner:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:16</span></a>
 </pre>
 </div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/07/24 00:36:24] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2.01</span> seconds to execute `foo`                                                                                            <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/3546464892.py:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3546464892.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/3546464892.py:16#inner:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:16</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/08/24 21:15:25] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2.01</span> seconds to execute `foo`                                                                                            <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/3546464892.py:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3546464892.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/3546464892.py:16#inner:16" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:16</span></a>
 </pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>30</code></pre>
 </div>
 </div>
@@ -405,7 +411,7 @@ My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.00 iters/s)          </code>
 <section id="print-io" class="level2">
 <h2 class="anchored" data-anchor-id="print-io">Print IO</h2>
 <p><code>@io</code> will decorate to show inputs and outputs (along with time taken to execute) as a debug log</p>
-<div id="cell-12" class="cell" data-execution_count="11">
+<div id="cell-12" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="at">@io</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> foo(a, b<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> b <span class="kw">is</span> <span class="va">None</span>:</span>
@@ -419,7 +425,7 @@ My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.00 iters/s)          </code>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    foo(<span class="dv">10</span>)</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    foo(<span class="dv">10</span>, b<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/07/24 00:36:25] </span><span style="color: #7fbf7f; text-decoration-color: #7fbf7f">DEBUG   </span>                                                                                                                       <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/3679299354.py:11" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3679299354.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/3679299354.py:11#<module>:11" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:11</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/08/24 21:15:26] </span><span style="color: #7fbf7f; text-decoration-color: #7fbf7f">DEBUG   </span>                                                                                                                       <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/3679299354.py:11" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3679299354.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/3679299354.py:11#<module>:11" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:11</span></a>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.00</span> seconds to execute `foo`                                                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">args</span><span style="font-weight: bold">()</span>                                                                                                                <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                      <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
@@ -430,7 +436,7 @@ My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.00 iters/s)          </code>
 </pre>
 </div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/07/24 00:36:27] </span><span style="color: #7fbf7f; text-decoration-color: #7fbf7f">DEBUG   </span>                                                                                                                       <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/3679299354.py:12" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3679299354.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/3679299354.py:12#<module>:12" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:12</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/08/24 21:15:28] </span><span style="color: #7fbf7f; text-decoration-color: #7fbf7f">DEBUG   </span>                                                                                                                       <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/3679299354.py:12" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">3679299354.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/3679299354.py:12#<module>:12" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:12</span></a>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2.01</span> seconds to execute `foo`                                                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">args</span><span style="font-weight: bold">()</span>                                                                                                                <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                      <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                         </span>
@@ -443,19 +449,76 @@ My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.00 iters/s)          </code>
 </div>
 </div>
 <p><code>@io</code> can be forced to print as log/trace if needed</p>
+<div id="cell-14" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="at">@io</span>(level<span class="op">=</span><span class="st">"trace"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> foo(a, b<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> b <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> a <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="dv">2</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> a <span class="op">+</span> b</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> trace_mode():</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    foo(<span class="dv">10</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> time</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">1</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    foo(<span class="dv">10</span>, b<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[10/02/24 18:38:57] TRACE                                                                                                         d=87126;file://&lt;ipython-input-1-57a17d8aa123&gt;:11\&lt;ipython-input-1-57a17d8aa123&gt;;;\:d=156948;file://&lt;ipython-input-1-57a17d8aa123&gt;:11#&lt;module&gt;:11\&lt;module&gt;:11;;\
+                             0.00 seconds to execute `foo`                                                                                                                  
+                             args()                                                                                                                                         
+                               0 - 10 (🏷️ int)                                                                                                                               
+                             kwargs                                                                                                                                         
+                             outputs - 11 (🏷️ int)                                                                                                                           
+                                                                                                                                                                            
+                                                                                                                                                                            
+[10/02/24 18:39:00] TRACE                                                                                                         d=636125;file://&lt;ipython-input-1-57a17d8aa123&gt;:15\&lt;ipython-input-1-57a17d8aa123&gt;;;\:d=988312;file://&lt;ipython-input-1-57a17d8aa123&gt;:15#&lt;module&gt;:15\&lt;module&gt;:15;;\
+                             2.00 seconds to execute `foo`                                                                                                                  
+                             args()                                                                                                                                         
+                               0 - 10 (🏷️ int)                                                                                                                               
+                             kwargs                                                                                                                                         
+                               b - 20 (🏷️ int)                                                                                                                               
+                             outputs - 30 (🏷️ int)                                                                                                                           
+                                                                                                                                                                            
+                                                                                                                                                                            </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Source path:... &lt;ipython-input-1-57a17d8aa123&gt;
+Starting var:.. a = 10
+Starting var:.. b = None
+18:38:57.286088 call         1 SOURCE IS UNAVAILABLE
+18:38:57.286204 line         3 SOURCE IS UNAVAILABLE
+18:38:57.286225 line         4 SOURCE IS UNAVAILABLE
+18:38:57.286239 return       4 SOURCE IS UNAVAILABLE
+Return value:.. 11
+Elapsed time: 00:00:00.000390
+Source path:... &lt;ipython-input-1-57a17d8aa123&gt;
+Starting var:.. a = 10
+Starting var:.. b = 20
+18:38:58.307768 call         1 SOURCE IS UNAVAILABLE
+18:38:58.307885 line         3 SOURCE IS UNAVAILABLE
+18:38:58.307915 line         6 SOURCE IS UNAVAILABLE
+18:39:00.308346 line         7 SOURCE IS UNAVAILABLE
+18:39:00.308487 return       7 SOURCE IS UNAVAILABLE
+Return value:.. 30
+Elapsed time: 00:00:02.001016</code></pre>
+</div>
+</div>
 </section>
 <section id="try-catch-with-a-single-line" class="level2">
 <h2 class="anchored" data-anchor-id="try-catch-with-a-single-line">Try Catch with a single line</h2>
 <div id="cell-16" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> x <span class="kw">is</span> <span class="va">None</span>  <span class="co"># tryy returns None by default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> x <span class="kw">is</span> <span class="va">None</span>  <span class="co"># tryy returns None by default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/07/24 00:36:27] </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> Error for `do` with                                                                                                      <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/2770652618.py:26" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2770652618.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/2770652618.py:26#inner:26" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:26</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[09/08/24 21:15:31] </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> Error for `do` with                                                                                                      <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/2770652618.py:26" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2770652618.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/2770652618.py:26#inner:26" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:26</span></a>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">args</span><span style="font-weight: bold">()</span>                                                                                                                   <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
@@ -468,14 +531,14 @@ My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.00 iters/s)          </code>
 </div>
 <p>Use your own default on failure</p>
 <div id="cell-18" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(output_to_return_on_fail<span class="op">=</span><span class="st">"😔"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(output_to_return_on_fail<span class="op">=</span><span class="st">"😔"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> Error for `do` with                                                                                                      <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/2770652618.py:26" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2770652618.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/2770652618.py:26#inner:26" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:26</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> Error for `do` with                                                                                                      <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/2770652618.py:26" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2770652618.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/2770652618.py:26#inner:26" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:26</span></a>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">args</span><span style="font-weight: bold">()</span>                                                                                                                   <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
@@ -491,14 +554,14 @@ My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.00 iters/s)          </code>
 </div>
 <p>Optionally print the full stacktrace if needed</p>
 <div id="cell-20" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(print_traceback<span class="op">=</span><span class="va">True</span>, output_to_return_on_fail<span class="op">=</span><span class="st">"😔"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(print_traceback<span class="op">=</span><span class="va">True</span>, output_to_return_on_fail<span class="op">=</span><span class="st">"😔"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> Error for `do` with                                                                                                      <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/2770652618.py:34" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2770652618.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/2770652618.py:34#inner:34" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:34</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span><span style="color: #bf7f7f; text-decoration-color: #bf7f7f">WARNING </span> Error for `do` with                                                                                                      <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/2770652618.py:34" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">2770652618.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/2770652618.py:34#inner:34" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">inner:34</span></a>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">args</span><span style="font-weight: bold">()</span>                                                                                                                   <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">2</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                          <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
@@ -506,18 +569,18 @@ My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.00 iters/s)          </code>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           c - <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">10</span> <span style="font-weight: bold">(</span>🏷️ int<span style="font-weight: bold">)</span>                                                                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                                                                                  <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         Traceback <span style="font-weight: bold">(</span>most recent call last<span style="font-weight: bold">)</span>:                                                                                       <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           File <span style="color: #008000; text-decoration-color: #008000">"/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/2770652618.py"</span>, line <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">21</span>, in inner               <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           File <span style="color: #008000; text-decoration-color: #008000">"/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/2770652618.py"</span>, line <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">21</span>, in inner               <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             return <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">f</span><span style="font-weight: bold">(</span>*args, **kwargs<span style="font-weight: bold">)</span>                                                                                            <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                    ^^^^^^^^^^^^^^^^^^                                                                                            <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           File <span style="color: #008000; text-decoration-color: #008000">"/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/580638143.py"</span>, line <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span>, in do                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           File <span style="color: #008000; text-decoration-color: #008000">"/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/580638143.py"</span>, line <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span>, in do                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             return <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> <span style="color: #800080; text-decoration-color: #800080">/</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>                                                                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                    ~~^~~                                                                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         ZeroDivisionError: division by zero                                                                                      <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                                                                                  <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         Traceback <span style="font-weight: bold">(</span>most recent call last<span style="font-weight: bold">)</span>:                                                                                       <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           File <span style="color: #008000; text-decoration-color: #008000">"/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/2770652618.py"</span>, line <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">21</span>, in inner               <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           File <span style="color: #008000; text-decoration-color: #008000">"/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/2770652618.py"</span>, line <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">21</span>, in inner               <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             return <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">f</span><span style="font-weight: bold">(</span>*args, **kwargs<span style="font-weight: bold">)</span>                                                                                            <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
-<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           File <span style="color: #008000; text-decoration-color: #008000">"/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_17549/580638143.py"</span>, line <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span>, in do                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
+<span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>           File <span style="color: #008000; text-decoration-color: #008000">"/var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_19659/580638143.py"</span>, line <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">3</span>, in do                    <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>             return <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1</span> <span style="color: #800080; text-decoration-color: #800080">/</span> <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span>                                                                                                         <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>         ZeroDivisionError: division by zero                                                                                      <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
 <span style="color: #7fbfbf; text-decoration-color: #7fbfbf">                    </span>                                                                                                                                  <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                      </span>
@@ -550,35 +613,35 @@ My Info: 152.98 50/50 (0.60s - 0.00s remaining - 83.00 iters/s)          </code>
 </div>
 <p>You can also silence the errors completely</p>
 <div id="cell-22" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(silence_errors<span class="op">=</span><span class="va">True</span>, output_to_return_on_fail<span class="op">=</span><span class="st">"😔"</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(silence_errors<span class="op">=</span><span class="va">True</span>, output_to_return_on_fail<span class="op">=</span><span class="st">"😔"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>do(<span class="dv">1</span>, <span class="dv">2</span>, c<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>'😔'</code></pre>
 </div>
 </div>
 <p>You can collect all your errors in a list</p>
 <div id="cell-24" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> []</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(silence_errors<span class="op">=</span><span class="va">True</span>, store_errors<span class="op">=</span>errors)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> random.randint(<span class="dv">0</span>, <span class="dv">100</span>) <span class="op">&lt;</span> <span class="dv">50</span>:</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"🤔"</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    do(<span class="dv">1</span>, random.randint(<span class="dv">0</span>, <span class="dv">10</span>), c<span class="op">=</span>random.randint(<span class="dv">0</span>, <span class="dv">100</span>))</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(errors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> []</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(silence_errors<span class="op">=</span><span class="va">True</span>, store_errors<span class="op">=</span>errors)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> random.randint(<span class="dv">0</span>, <span class="dv">100</span>) <span class="op">&lt;</span> <span class="dv">50</span>:</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"🤔"</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    do(<span class="dv">1</span>, random.randint(<span class="dv">0</span>, <span class="dv">10</span>), c<span class="op">=</span>random.randint(<span class="dv">0</span>, <span class="dv">100</span>))</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(errors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[
 ```↯ AttrDict ↯
@@ -586,6 +649,18 @@ func - do (🏷️ str)
 args()
   0 - 1 (🏷️ int)
   1 - 6 (🏷️ int)
+kwargs
+  c - 23 (🏷️ int)
+tb - None (🏷️ NoneType)
+err_type - NotImplementedError (🏷️ str)
+
+```
+, 
+```↯ AttrDict ↯
+func - do (🏷️ str)
+args()
+  0 - 1 (🏷️ int)
+  1 - 9 (🏷️ int)
 kwargs
   c - 100 (🏷️ int)
 tb - None (🏷️ NoneType)
@@ -597,33 +672,21 @@ err_type - NotImplementedError (🏷️ str)
 func - do (🏷️ str)
 args()
   0 - 1 (🏷️ int)
+  1 - 6 (🏷️ int)
+kwargs
+  c - 60 (🏷️ int)
+tb - None (🏷️ NoneType)
+err_type - ZeroDivisionError (🏷️ str)
+
+```
+, 
+```↯ AttrDict ↯
+func - do (🏷️ str)
+args()
+  0 - 1 (🏷️ int)
   1 - 2 (🏷️ int)
 kwargs
-  c - 55 (🏷️ int)
-tb - None (🏷️ NoneType)
-err_type - NotImplementedError (🏷️ str)
-
-```
-, 
-```↯ AttrDict ↯
-func - do (🏷️ str)
-args()
-  0 - 1 (🏷️ int)
-  1 - 0 (🏷️ int)
-kwargs
-  c - 24 (🏷️ int)
-tb - None (🏷️ NoneType)
-err_type - NotImplementedError (🏷️ str)
-
-```
-, 
-```↯ AttrDict ↯
-func - do (🏷️ str)
-args()
-  0 - 1 (🏷️ int)
-  1 - 8 (🏷️ int)
-kwargs
-  c - 95 (🏷️ int)
+  c - 32 (🏷️ int)
 tb - None (🏷️ NoneType)
 err_type - NotImplementedError (🏷️ str)
 
@@ -634,23 +697,23 @@ err_type - NotImplementedError (🏷️ str)
 <p>There’s onlly one usecase where you would want to send in a list by yourself - when you want to append your errors to an existing list. The sensible default is to always store the errors, especially because this is a debugging tool.</p>
 <p>Just access all the errors in a dataframe like so</p>
 <div id="cell-26" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">10</span>)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(silence_errors<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> c <span class="op">&lt;</span> <span class="dv">50</span>:</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"🤔"</span>)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    do(<span class="dv">1</span>, random.randint(<span class="dv">0</span>, <span class="dv">10</span>), c<span class="op">=</span>random.randint(<span class="dv">0</span>, <span class="dv">100</span>))</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>do.error_summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">10</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="at">@tryy</span>(silence_errors<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> do(a, b, c):</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> c <span class="op">&lt;</span> <span class="dv">50</span>:</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">0</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"🤔"</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    do(<span class="dv">1</span>, random.randint(<span class="dv">0</span>, <span class="dv">10</span>), c<span class="op">=</span>random.randint(<span class="dv">0</span>, <span class="dv">100</span>))</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>do.error_summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
@@ -707,7 +770,7 @@ err_type - NotImplementedError (🏷️ str)
 </div>
 <p>and the actual list of errors like so</p>
 <div id="cell-28" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>do.error_store</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>do.error_store</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>[
  ```↯ AttrDict ↯
@@ -761,76 +824,15 @@ err_type - NotImplementedError (🏷️ str)
 </div>
 <p>Finally, you want to run the function (without try) to reproduce the error and actually start debugging. Just use the <code>.F</code> attribute to access the original function that you created</p>
 <div id="cell-30" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ix <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> do.error_store[ix]</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>do.F(<span class="op">*</span>data.args, <span class="op">**</span>data.kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ZeroDivisionError</span>                         Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[20], line 3</span>
-<span class="ansi-green-fg ansi-bold">      1</span> ix <span style="color:rgb(98,98,98)">=</span> <span style="color:rgb(98,98,98)">2</span>
-<span class="ansi-green-fg ansi-bold">      2</span> data <span style="color:rgb(98,98,98)">=</span> do<span style="color:rgb(98,98,98)">.</span>error_store[ix]
-<span class="ansi-green-fg">----&gt; 3</span> <span class="ansi-yellow-bg">do</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">F</span><span class="ansi-yellow-bg">(</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">data</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">data</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
-
-Cell <span class="ansi-green-fg">In[18], line 9</span>, in <span class="ansi-cyan-fg">do</span><span class="ansi-blue-fg">(a, b, c)</span>
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="color:rgb(175,0,255)">@tryy</span>(silence_errors<span style="color:rgb(98,98,98)">=</span><span style="font-weight:bold;color:rgb(0,135,0)">True</span>)
-<span class="ansi-green-fg ansi-bold">      7</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span> <span style="color:rgb(0,0,255)">do</span>(a, b, c):
-<span class="ansi-green-fg ansi-bold">      8</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> c <span style="color:rgb(98,98,98)">&lt;</span> <span style="color:rgb(98,98,98)">50</span>:
-<span class="ansi-green-fg">----&gt; 9</span>         <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(98,98,98)" class="ansi-yellow-bg">1</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">/</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">0</span>
-<span class="ansi-green-fg ansi-bold">     10</span>     <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg ansi-bold">     11</span>         <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">NotImplementedError</span>(<span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">🤔</span><span style="color:rgb(175,0,0)">"</span>)
-
-<span class="ansi-red-fg">ZeroDivisionError</span>: division by zero</pre>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ix <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> do.error_store[ix]</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    do.F(<span class="op">*</span>data.args, <span class="op">**</span>data.kwargs)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"ERROR: "</span>, e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ERROR:  division by zero</code></pre>
 </div>
-</div>
-</div>
-<div id="cell-31" class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> deco(decorator):</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">@wraps</span>(decorator)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> wrapper(<span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> real_decorator(func):</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">@wraps</span>(func)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>            <span class="kw">def</span> inner_wrapper(<span class="op">*</span>fargs, <span class="op">**</span>fkwargs):</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> decorator(func, <span class="op">*</span>fargs, <span class="op">**</span>fkwargs)</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> inner_wrapper</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(args) <span class="op">==</span> <span class="dv">1</span> <span class="kw">and</span> <span class="bu">callable</span>(args[<span class="dv">0</span>]) <span class="kw">and</span> <span class="kw">not</span> kwargs:</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Case when B is used without arguments</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> real_decorator(args[<span class="dv">0</span>])</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Case when B is used with arguments</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>            <span class="kw">def</span> custom_decorator(func):</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> decorator(func, <span class="op">**</span>kwargs)</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> custom_decorator</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> wrapper</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-32" class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="at">@deco</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> B(func, <span class="op">*</span>args, deco_param<span class="op">=</span><span class="st">"default"</span>, <span class="op">**</span>kwargs):</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"B"</span>, deco_param, <span class="bu">print</span>(<span class="st">"args"</span>, <span class="op">*</span>args, <span class="st">"kwargs"</span>, <span class="op">**</span>kwargs))</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> func(<span class="op">*</span>args, <span class="op">**</span>kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-33" class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="at">@B</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> C(a, b, c):</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"C"</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> (b <span class="op">*</span> c)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>C(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-34" class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="at">@B</span>(deco_param<span class="op">=</span><span class="st">"new_param"</span>)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> C(a, b, c):</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> (b <span class="op">*</span> c)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Testing</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(C(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))  <span class="co"># Outputs 'new_param' then the result 7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 

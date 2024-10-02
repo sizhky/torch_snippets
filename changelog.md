@@ -1,9 +1,18 @@
 # Changelog
+#### 0.546
+🎉 Add profiler
+
+#### 0.545
+🎉 environment variable `AD_SHOW_FULL_STRINGS` can be set to non-empty to show full strings in summary
+🎉 better integration for unknown datatypes in `AD.summary`
+
 #### 0.544
 🎉 Quality of life improvements in logging
 🎉 Add support for `dataclass` in `AD`
 🎉 DeepDiff integrated into `AD`. Now you can call x.diff(y) where x is `AD` and y is `AD`able
 🎉 `AD.d` (no brackets, d is a property) to convert the object to dictionary
+✨ `read_json` can also do json.loads if input is not a file path
+✨ `json` is loaded by default on import *
 
 #### 0.540
 ✨ Made all imports lazy for a faster import experience

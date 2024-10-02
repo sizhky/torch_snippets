@@ -5,7 +5,7 @@ __all__ = ['Timer', 'track2', 'summarize_input', 'timeit', 'io', 'tryy']
 
 # %% ../nbs/misc.ipynb 2
 import time
-from .logger import Debug, Warn, debug_mode, Info, Trace
+from .logger import Debug, Warn, debug_mode, Info, Trace, trace_mode
 from .markup2 import AD
 from functools import wraps
 from fastcore.basics import ifnone
@@ -133,7 +133,7 @@ def io(func=None, *, level="debug"):
         o = decorator(func)
     return o
 
-# %% ../nbs/misc.ipynb 19
+# %% ../nbs/misc.ipynb 18
 def tryy(
     func=None,
     *,

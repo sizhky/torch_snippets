@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>adapters – torch_snippets</title>
+<title>Profiler – torch_snippets</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -69,10 +103,10 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="torch_snippets">
+<meta property="og:title" content="Profiler – torch_snippets">
 <meta property="og:description" content="One line functions for common tasks">
 <meta property="og:site_name" content="torch_snippets">
-<meta name="twitter:title" content="torch_snippets">
+<meta name="twitter:title" content="Profiler – torch_snippets">
 <meta name="twitter:description" content="One line functions for common tasks">
 <meta name="twitter:card" content="summary">
 </head>
@@ -98,7 +132,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./adapters.html">Adapters</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./profiler.html">Profiler</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -118,7 +152,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./adapters.html" class="sidebar-item-text sidebar-link active">
+  <a href="./adapters.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Adapters</span></a>
   </div>
 </li>
@@ -226,7 +260,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./profiler.html" class="sidebar-item-text sidebar-link">
+  <a href="./profiler.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Profiler</span></a>
   </div>
 </li>
@@ -264,170 +298,98 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#adapters" id="toc-adapters" class="nav-link active" data-scroll-target="#adapters">Adapters</a>
-  <ul class="collapse">
-  <li><a href="#file_2_bytes" id="toc-file_2_bytes" class="nav-link" data-scroll-target="#file_2_bytes">file_2_bytes</a></li>
-  <li><a href="#bytes_2_file" id="toc-bytes_2_file" class="nav-link" data-scroll-target="#bytes_2_file">bytes_2_file</a></li>
-  <li><a href="#b64_2_file" id="toc-b64_2_file" class="nav-link" data-scroll-target="#b64_2_file">b64_2_file</a></li>
-  <li><a href="#b64_2_np" id="toc-b64_2_np" class="nav-link" data-scroll-target="#b64_2_np">b64_2_np</a></li>
-  <li><a href="#np_2_b64" id="toc-np_2_b64" class="nav-link" data-scroll-target="#np_2_b64">np_2_b64</a></li>
-  <li><a href="#cvat_2_csvs" id="toc-cvat_2_csvs" class="nav-link" data-scroll-target="#cvat_2_csvs">cvat_2_csvs</a></li>
-  <li><a href="#csvs_2_cvat" id="toc-csvs_2_cvat" class="nav-link" data-scroll-target="#csvs_2_cvat">csvs_2_cvat</a></li>
-  <li><a href="#yolo_2_df" id="toc-yolo_2_df" class="nav-link" data-scroll-target="#yolo_2_df">yolo_2_df</a></li>
-  <li><a href="#df_2_yolo" id="toc-df_2_yolo" class="nav-link" data-scroll-target="#df_2_yolo">df_2_yolo</a></li>
-  </ul></li>
+  <li><a href="#time-profiler" id="toc-time-profiler" class="nav-link active" data-scroll-target="#time-profiler">Time Profiler</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Profiler</h1>
+</div>
 
 
 
-<section id="adapters" class="level1">
-<h1>Adapters</h1>
-<p>To convert data from/to various formats</p>
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<hr>
-<section id="file_2_bytes" class="level3">
-<h3 class="anchored" data-anchor-id="file_2_bytes">file_2_bytes</h3>
-<blockquote class="blockquote">
-<pre><code> file_2_bytes (fpath)</code></pre>
-</blockquote>
-<hr>
-</section>
-<section id="bytes_2_file" class="level3">
-<h3 class="anchored" data-anchor-id="bytes_2_file">bytes_2_file</h3>
-<blockquote class="blockquote">
-<pre><code> bytes_2_file (input:bytes, fpath:Union[str,pathlib.Path],
-               silent:bool=False)</code></pre>
-</blockquote>
-<p><em>Save bytes <code>input</code> at given <code>fpath</code></em></p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>input</td>
-<td>bytes</td>
-<td></td>
-<td>bytes</td>
-</tr>
-<tr class="even">
-<td>fpath</td>
-<td>Union</td>
-<td></td>
-<td>Place where you want to save the file</td>
-</tr>
-<tr class="odd">
-<td>silent</td>
-<td>bool</td>
-<td>False</td>
-<td></td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>None</strong></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="b64_2_file" class="level3">
-<h3 class="anchored" data-anchor-id="b64_2_file">b64_2_file</h3>
-<blockquote class="blockquote">
-<pre><code> b64_2_file (input:str, fpath:Union[str,pathlib.Path])</code></pre>
-</blockquote>
-<p><em>Save a file encoded as a base64 <code>input</code> at given <code>fpath</code></em></p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>input</td>
-<td>str</td>
-<td>base64 encoded string</td>
-</tr>
-<tr class="even">
-<td>fpath</td>
-<td>Union</td>
-<td>Place where you want to save the file</td>
-</tr>
-<tr class="odd">
-<td><strong>Returns</strong></td>
-<td><strong>None</strong></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="b64_2_np" class="level3">
-<h3 class="anchored" data-anchor-id="b64_2_np">b64_2_np</h3>
-<blockquote class="blockquote">
-<pre><code> b64_2_np (input:str)</code></pre>
-</blockquote>
-<p>*Converts a base64 encoded image to a NumPy array.</p>
-<p>Args: input (str): The base64 encoded image.</p>
-<p>Returns: np.ndarray: The NumPy array representation of the image in RGB format.*</p>
-<hr>
-</section>
-<section id="np_2_b64" class="level3">
-<h3 class="anchored" data-anchor-id="np_2_b64">np_2_b64</h3>
-<blockquote class="blockquote">
-<pre><code> np_2_b64 (image:numpy.ndarray)</code></pre>
-</blockquote>
-<p><em>Convert a numpy image to base64 string</em></p>
-<hr>
-</section>
-<section id="cvat_2_csvs" class="level3">
-<h3 class="anchored" data-anchor-id="cvat_2_csvs">cvat_2_csvs</h3>
-<blockquote class="blockquote">
-<pre><code> cvat_2_csvs (xmlfile, csvs_folder)</code></pre>
-</blockquote>
-<p>*Convert CVAT XML annotations to CSV files.</p>
-<p>Args: xmlfile (str): Path to the CVAT XML file. csvs_folder (str): Path to the folder where the CSV files will be saved.</p>
-<p>Returns: None*</p>
-<hr>
-</section>
-<section id="csvs_2_cvat" class="level3">
-<h3 class="anchored" data-anchor-id="csvs_2_cvat">csvs_2_cvat</h3>
-<blockquote class="blockquote">
-<pre><code> csvs_2_cvat (images_folder, csvs_folder, xml_output_file, items=None,
-              parquet=False, relative_df=True, default_label='Background',
-              extension='jpg')</code></pre>
-</blockquote>
-<p>*Convert CSV annotations to CVAT XML format.</p>
-<p>Args: images_folder (str): Path to the folder containing the images. csvs_folder (str): Path to the folder containing the CSV annotations. xml_output_file (str): Path to the output XML file. items (list, optional): List of items to process. If None, all items will be processed. Defaults to None. parquet (bool, optional): Whether the annotations are stored in Parquet format. Defaults to False. relative_df (bool, optional): Whether the bounding box coordinates in the CSV are relative to the image size. Defaults to True. default_label (str, optional): Default label for the bounding boxes. Defaults to “Background”. extension (str, optional): Image file extension. Defaults to “jpg”.</p>
-<p>Returns: None*</p>
-<hr>
-</section>
-<section id="yolo_2_df" class="level3">
-<h3 class="anchored" data-anchor-id="yolo_2_df">yolo_2_df</h3>
-<blockquote class="blockquote">
-<pre><code> yolo_2_df (yolo, h, w, id2class, class_column)</code></pre>
-</blockquote>
-<hr>
-</section>
-<section id="df_2_yolo" class="level3">
-<h3 class="anchored" data-anchor-id="df_2_yolo">df_2_yolo</h3>
-<blockquote class="blockquote">
-<pre><code> df_2_yolo (df, h, w, class2id, class_column)</code></pre>
-</blockquote>
+<section id="time-profiler" class="level2">
+<h2 class="anchored" data-anchor-id="time-profiler">Time Profiler</h2>
+<p>The time profiler decorator measures the execution time of a function, including any sub-functions that the main function calls. It allows users to specify a file name or complete file path to store the profiling results. The output includes the total time taken by the function, which can be useful for understanding performance bottlenecks in the code. By applying this decorator to any function, developers can easily track its runtime and optimize accordingly.</p>
+<div id="5c9b2770-b018-4ee5-a6bb-2126ccccb591" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inner_function_1():</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simulating some work by counting</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">500000</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        total <span class="op">+=</span> i</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inner_function_2():</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simulating some different work, like squaring numbers</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000000</span>):</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        total <span class="op">+=</span> i <span class="op">*</span> i</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="at">@time_profiler</span>(<span class="st">'outer_function_profile.txt'</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> outer_function():</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    result_1 <span class="op">=</span> inner_function_1()</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Result from inner_function_1: </span><span class="sc">{</span>result_1<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    result_2 <span class="op">=</span> inner_function_2()</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Result from inner_function_2: </span><span class="sc">{</span>result_2<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the outer function</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>outer_function()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Result from inner_function_1: 124999750000
+Result from inner_function_2: 333333283333335000000</code></pre>
+</div>
+</div>
+<section id="outer_function_profile.txt" class="level4">
+<h4 class="anchored" data-anchor-id="outer_function_profile.txt">outer_function_profile.txt</h4>
+<pre><code>         67 function calls in 1.362 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    1.362    1.362 /tmp/ipykernel_156766/1515566242.py:15(outer_function)
+        1    1.303    1.303    1.303    1.303 /tmp/ipykernel_156766/1515566242.py:8(inner_function_2)
+        1    0.058    0.058    0.058    0.058 /tmp/ipykernel_156766/1515566242.py:1(inner_function_1)
+        2    0.000    0.000    0.001    0.000 {built-in method builtins.print}
+        4    0.000    0.000    0.001    0.000 /home/user/miniconda3/lib/python3.11/site-packages/ipykernel/iostream.py:655(write)
+        4    0.000    0.000    0.000    0.000 /home/user/miniconda3/lib/python3.11/site-packages/ipykernel/iostream.py:577(_schedule_flush)
+        2    0.000    0.000    0.000    0.000 /home/user/miniconda3/lib/python3.11/site-packages/ipykernel/iostream.py:259(schedule)
+        2    0.000    0.000    0.000    0.000 /home/user/miniconda3/lib/python3.11/site-packages/zmq/sugar/socket.py:621(send)
+        2    0.000    0.000    0.000    0.000 /home/user/miniconda3/lib/python3.11/threading.py:1185(is_alive)
+        4    0.000    0.000    0.000    0.000 /home/user/miniconda3/lib/python3.11/site-packages/ipykernel/iostream.py:505(parent_header)
+        4    0.000    0.000    0.000    0.000 /home/user/miniconda3/lib/python3.11/site-packages/ipykernel/iostream.py:550(_is_master_process)
+        2    0.000    0.000    0.000    0.000 /home/user/miniconda3/lib/python3.11/threading.py:1118(_wait_for_tstate_lock)
+        2    0.000    0.000    0.000    0.000 /home/user/miniconda3/lib/python3.11/site-packages/ipykernel/iostream.py:138(_event_pipe)
+        2    0.000    0.000    0.000    0.000 {method 'acquire' of '_thread.lock' objects}
+        4    0.000    0.000    0.000    0.000 {built-in method posix.getpid}
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        4    0.000    0.000    0.000    0.000 {method 'get' of '_contextvars.ContextVar' objects}
+        4    0.000    0.000    0.000    0.000 {method '__exit__' of '_thread.RLock' objects}
+        4    0.000    0.000    0.000    0.000 {method 'write' of '_io.StringIO' objects}
+        2    0.000    0.000    0.000    0.000 /home/user/miniconda3/lib/python3.11/threading.py:568(is_set)
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        4    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+        1    0.000    0.000    0.000    0.000 /home/user/miniconda3/lib/python3.11/site-packages/dateutil/tz/tz.py:74(utcoffset)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        2    0.000    0.000    0.000    0.000 {method 'append' of 'collections.deque' objects}</code></pre>
 
 
 </section>
