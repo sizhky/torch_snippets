@@ -8,8 +8,8 @@
 from torch_snippets import *
 ```
 
-    CPU times: user 263 ms, sys: 53.9 ms, total: 317 ms
-    Wall time: 407 ms
+    CPU times: user 1.57 s, sys: 1.59 s, total: 3.16 s
+    Wall time: 731 ms
 
 Below we are trying to extract the `__all__` list from all Python files
 of the torch_snippets directory.  
@@ -179,6 +179,8 @@ print_all_lists_in_directory(directory_path)
     ```↯ AttrDict ↯
     items[]
       0 - PDF (🏷️ str)
+      1 - dump_pdf_images (🏷️ str)
+      2 - preview_pdf (🏷️ str)
 
     ```
 
@@ -313,22 +315,23 @@ print_all_lists_in_directory(directory_path)
     ```↯ AttrDict ↯
     items[]
       0 - AttrDict (🏷️ str)
-      1 - Config (🏷️ str)
-      2 - isnamedtupleinstance (🏷️ str)
-      3 - unpack (🏷️ str)
-      4 - hash_tensor (🏷️ str)
-      5 - hash_pandas_dataframe (🏷️ str)
-      6 - AttrDictDeprecated (🏷️ str)
-      7 - decompose (🏷️ str)
-      8 - pretty_json (🏷️ str)
-      9 - read_json (🏷️ str)
-      10 - write_json (🏷️ str)
-      11 - write_jsonl (🏷️ str)
-      12 - read_jsonl (🏷️ str)
-      13 - read_yaml (🏷️ str)
-      14 - write_yaml (🏷️ str)
-      15 - read_xml (🏷️ str)
-      16 - write_xml (🏷️ str)
+      1 - json (🏷️ str)
+      2 - Config (🏷️ str)
+      3 - isnamedtupleinstance (🏷️ str)
+      4 - unpack (🏷️ str)
+      5 - hash_tensor (🏷️ str)
+      6 - hash_pandas_dataframe (🏷️ str)
+      7 - AttrDictDeprecated (🏷️ str)
+      8 - decompose (🏷️ str)
+      9 - pretty_json (🏷️ str)
+      10 - read_json (🏷️ str)
+      11 - write_json (🏷️ str)
+      12 - write_jsonl (🏷️ str)
+      13 - read_jsonl (🏷️ str)
+      14 - read_yaml (🏷️ str)
+      15 - write_yaml (🏷️ str)
+      16 - read_xml (🏷️ str)
+      17 - write_xml (🏷️ str)
 
     ```
 
@@ -483,6 +486,15 @@ print_all_lists_in_directory(directory_path)
       1 - ALL_DATE_FORMATS (🏷️ str)
       2 - are_dates_equal (🏷️ str)
       3 - today (🏷️ str)
+
+    ```
+
+## profiler
+
+
+    ```↯ AttrDict ↯
+    items[]
+      0 - time_profiler (🏷️ str)
 
     ```
 

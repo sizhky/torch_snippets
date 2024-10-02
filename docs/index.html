@@ -323,8 +323,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Time it</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_snippets <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>CPU times: user 263 ms, sys: 53.9 ms, total: 317 ms
-Wall time: 407 ms</code></pre>
+<pre><code>CPU times: user 1.57 s, sys: 1.59 s, total: 3.16 s
+Wall time: 731 ms</code></pre>
 </div>
 </div>
 <p>Below we are trying to extract the <code>__all__</code> list from all Python files of the torch_snippets directory.<br>
@@ -372,13 +372,13 @@ Through the code, you can already see some of the elements of torch-snippets in 
 <span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>                    AD({<span class="st">"items"</span>: all_list})</span>
 <span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>                )  <span class="co"># AD is an intelligent dictionary that can display itself nicely</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-5" class="cell" data-execution_count="7">
+<div id="cell-5" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(P().resolve())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>/Users/yeshwanth/Code/Personal/torch_snippets/nbs</code></pre>
 </div>
 </div>
-<div id="cell-6" class="cell" data-execution_count="6">
+<div id="cell-6" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the directory containing the Python files</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>directory_path <span class="op">=</span> <span class="st">"../torch_snippets"</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>print_all_lists_in_directory(directory_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -506,6 +506,8 @@ items[]
 ```↯ AttrDict ↯
 items[]
   0 - PDF (🏷️ str)
+  1 - dump_pdf_images (🏷️ str)
+  2 - preview_pdf (🏷️ str)
 
 ```
 </code></pre>
@@ -661,22 +663,23 @@ items[]
 ```↯ AttrDict ↯
 items[]
   0 - AttrDict (🏷️ str)
-  1 - Config (🏷️ str)
-  2 - isnamedtupleinstance (🏷️ str)
-  3 - unpack (🏷️ str)
-  4 - hash_tensor (🏷️ str)
-  5 - hash_pandas_dataframe (🏷️ str)
-  6 - AttrDictDeprecated (🏷️ str)
-  7 - decompose (🏷️ str)
-  8 - pretty_json (🏷️ str)
-  9 - read_json (🏷️ str)
-  10 - write_json (🏷️ str)
-  11 - write_jsonl (🏷️ str)
-  12 - read_jsonl (🏷️ str)
-  13 - read_yaml (🏷️ str)
-  14 - write_yaml (🏷️ str)
-  15 - read_xml (🏷️ str)
-  16 - write_xml (🏷️ str)
+  1 - json (🏷️ str)
+  2 - Config (🏷️ str)
+  3 - isnamedtupleinstance (🏷️ str)
+  4 - unpack (🏷️ str)
+  5 - hash_tensor (🏷️ str)
+  6 - hash_pandas_dataframe (🏷️ str)
+  7 - AttrDictDeprecated (🏷️ str)
+  8 - decompose (🏷️ str)
+  9 - pretty_json (🏷️ str)
+  10 - read_json (🏷️ str)
+  11 - write_json (🏷️ str)
+  12 - write_jsonl (🏷️ str)
+  13 - read_jsonl (🏷️ str)
+  14 - read_yaml (🏷️ str)
+  15 - write_yaml (🏷️ str)
+  16 - read_xml (🏷️ str)
+  17 - write_xml (🏷️ str)
 
 ```
 </code></pre>
@@ -847,6 +850,18 @@ items[]
   1 - ALL_DATE_FORMATS (🏷️ str)
   2 - are_dates_equal (🏷️ str)
   3 - today (🏷️ str)
+
+```
+</code></pre>
+</div>
+<section id="profiler" class="level2 cell-output cell-output-display cell-output-markdown">
+<h2 class="anchored" data-anchor-id="profiler">profiler</h2>
+</section>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+```↯ AttrDict ↯
+items[]
+  0 - time_profiler (🏷️ str)
 
 ```
 </code></pre>
