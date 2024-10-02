@@ -9,6 +9,7 @@ numpy
 pandas
 setuptools
 tqdm
+CProfileV
 
 # opencv_python_headless
 # pytorch_lightning
