@@ -1,0 +1,17 @@
+Pillow
+altair
+dill
+fastcore
+ipython
+loguru
+matplotlib
+numpy
+pandas
+setuptools
+tqdm
+CProfileV
+
+# opencv_python_headless
+# pytorch_lightning
+# torch
+# torchvision

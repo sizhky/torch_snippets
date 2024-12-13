@@ -23,5 +23,6 @@ website:
       - profiler.ipynb
       - registry.ipynb
       - report.ipynb
+      - s3_loader2.ipynb
       - show.ipynb
       - sklegos.ipynb

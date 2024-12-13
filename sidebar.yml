@@ -1,0 +1,32 @@
+website:
+  sidebar:
+    contents:
+      - scripts.ipynb
+      - testing.ipynb
+      - section: nbs
+        contents:
+          - nbs/adapters.ipynb
+          - nbs/attrdict.ipynb
+          - nbs/bokeh_plotting.ipynb
+          - nbs/bounding_boxes.ipynb
+          - nbs/capsule.ipynb
+          - nbs/charts.ipynb
+          - nbs/config.ipynb
+          - nbs/decorators.ipynb
+          - nbs/imgaug_loader.ipynb
+          - nbs/inspector.ipynb
+          - nbs/interactive_show.ipynb
+          - nbs/jupyter_notebook.ipynb
+          - nbs/load_defautls.ipynb
+          - nbs/logging.ipynb
+          - nbs/markups.ipynb
+          - nbs/misc.ipynb
+          - nbs/paths.ipynb
+          - nbs/pdf.ipynb
+          - nbs/profiler.ipynb
+          - nbs/registry.ipynb
+          - nbs/report.ipynb
+          - nbs/s3_loader2.ipynb
+          - nbs/show.ipynb
+          - nbs/sklegos.ipynb
+        href: nbs/index.ipynb
