@@ -1,4 +1,11 @@
 # Changelog
+#### 0.550
+
+
+#### 0.549
+🐛 bug fix in `choose`
+🎉 Any method with `__show__` will act as a shortcut for the `show` function
+
 #### 0.548
 ✨ `current_file_dir` is a new function that return's the directory where the file exists
 🐛 `choose` can optionally be silent (useful in funcs like `rand`)

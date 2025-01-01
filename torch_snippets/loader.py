@@ -183,7 +183,7 @@ def choose(List, n=1, verbose=True):
     if n == 1:
         o = List[randint(len(List))]
     else:
-        o = L([choose(List) for _ in range(n)])
+        o = L([choose(List, verbose=verbose) for _ in range(n)])
     if verbose:
         Info(f"Chose `{o}` from input")
     return o
@@ -209,7 +209,7 @@ def choose(i: pd.DataFrame, n=1):
     return o
 
 
-rand = lambda n=6: "".join(
+rand = lambda n=6: "".join(  # noqa: E731
     choose(
         list("1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"),
         n=n,
@@ -218,7 +218,7 @@ rand = lambda n=6: "".join(
 )
 
 
-randint = lambda high: np.random.randint(high)
+randint = lambda high: np.random.randint(high)  # noqa: E731 F811
 randint = np.random.randint
 
 
@@ -229,8 +229,8 @@ def Tqdm(x, total=None, desc=None):
 
 from tqdm import trange
 
-old_now = lambda: str(datetime.datetime.now())[:-10].replace(" ", "_")
-now = lambda: f"{datetime.datetime.now():%Y%m%d-%H%M}"
+old_now = lambda: str(datetime.datetime.now())[:-10].replace(" ", "_")  # noqa: E731
+now = lambda: f"{datetime.datetime.now():%Y%m%d-%H%M}"  # noqa: E731
 
 
 def read(fname, mode=1):
@@ -385,6 +385,9 @@ def show(
     from IPython.display import display, display_html
 
     init_plt()
+    if hasattr(img, "__show__"):
+        img.__show__(**kwargs)
+        return
 
     try:
         if isinstance(img, (str, Path)):

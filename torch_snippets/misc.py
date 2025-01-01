@@ -86,7 +86,7 @@ def track2(iterable, *, total=None, info_prefix=None):
     timer = Timer(total)
     for item in iterable:
         info = yield item
-        _info = f"{info_prefix} {info}" if info is not None else info_prefix
+        _info = f"{info_prefix} {info}" if info_prefix else info
         timer(info=_info)
         if info is not None:
             yield  # Just to ensure the send operation stops
