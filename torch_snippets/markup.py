@@ -422,6 +422,9 @@ json = json
 def read_json(fpath):
     import json
 
+    if isinstance(fpath, P):
+        assert fpath.exists(), f"{fpath} does not exist"
+
     if os.path.exists(fpath):
         with open(fpath, "r") as f:
             o = json.load(f)

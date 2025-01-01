@@ -1,4 +1,14 @@
 # Changelog
+#### 0.548
+✨ `current_file_dir` is a new function that return's the directory where the file exists
+🐛 `choose` can optionally be silent (useful in funcs like `rand`)
+🎉 `ll` method in `P`
+🐛 `tryy` will Warn instead of print during an exception
+✨ `track2` can take optional info to display
+
+#### 0.547
+🐛 fixed a bug where timer was asserting N > 0 instead of N>=0
+
 #### 0.546
 ✨ `printfile` will act like `cat` for linux
 ✨ `choose` will let you know what was chosen

@@ -18,7 +18,7 @@ class Timer:
         "assumes this timer is called exactly N times or less"
         self.tok = self.start = time.time()
         self.N = N
-        assert N is None or N > 0, "N should be None or a positive integer"
+        assert N is None or N >= 0, "N should be None or a non-negative integer"
         self.ix = 0
         self.smooth = smooth
         self.mode = mode
@@ -76,17 +76,20 @@ class Timer:
         self.tok = tik
 
 
-def track2(iterable, *, total=None):
+def track2(iterable, *, total=None, info_prefix=None):
+    info_prefix = ifnone(info_prefix, "")
     try:
         total = ifnone(total, len(iterable))
-    except:
-        ...
+    except Exception as e:
+        Warn(f"Unable to get length of iterable: {e}")
     timer = Timer(total)
     for item in iterable:
         info = yield item
-        timer(info=info)
+        _info = f"{info_prefix} {info}" if info is not None else info_prefix
+        timer(info=_info)
         if info is not None:
             yield  # Just to ensure the send operation stops
+
 
 # %% ../nbs/misc.ipynb 10
 def summarize_input(args, kwargs, outputs=None):
@@ -169,12 +172,12 @@ def tryy(
                 if not silence_errors:
                     if not print_traceback:
                         tb = f"{type(e).__name__}: {str(e)}"
-                        print(f"Error for `{f.__name__}`: {tb}")
+                        Warn(f"Error for `{f.__name__}`: {tb}")
                     else:
                         import traceback
 
                         tb = traceback.format_exc()
-                        print(f"Error for `{f.__name__}`:\n{tb}")
+                        Warn(f"Error for `{f.__name__}`:\n{tb}")
                 else:
                     tb = None
                 if store_errors is not None:

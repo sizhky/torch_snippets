@@ -1,4 +1,9 @@
 # Changelog
+#### 0.548
+
+#### 0.547
+🐛 fixed a bug where timer was asserting N > 0 instead of N>=0
+
 #### 0.546
 ✨ `printfile` will act like `cat` for linux
 ✨ `choose` will let you know what was chosen

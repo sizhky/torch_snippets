@@ -179,12 +179,13 @@ nunique = lambda l: len(set(l))
 
 
 @typedispatch
-def choose(List, n=1):
+def choose(List, n=1, verbose=True):
     if n == 1:
         o = List[randint(len(List))]
     else:
         o = L([choose(List) for _ in range(n)])
-    Info(f"Chose `{o}` from input")
+    if verbose:
+        Info(f"Chose `{o}` from input")
     return o
 
 
@@ -209,7 +210,7 @@ def choose(i: pd.DataFrame, n=1):
 
 
 rand = lambda n=6: "".join(
-    choose(list("1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), n=n)
+    choose(list("1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), n=n, verbose=False)
 )
 
 

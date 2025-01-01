@@ -156,6 +156,11 @@ P.__og_dir__ = P.__dir__
 
 
 @patch_to(P)
+def ll(self):
+    print("\n".join([i.__repr__() for i in self.ls()]))
+
+
+@patch_to(P)
 def __dir__(self):
     if self.isfile:
         return self.__og_dir__()
@@ -252,9 +257,9 @@ def isdir(fpath):
     return os.path.isdir(fpath)
 
 
-def current_file_dir():
-    """This is not current working directory but the directory of the file where this function is called"""
-    return P(__file__).parent
+def current_file_dir(fpath):
+    """This is not current working directory but the directory of the file where this function is being called"""
+    return P(fpath).parent
 
 
 @input_to_str

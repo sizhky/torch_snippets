@@ -181,9 +181,11 @@ nunique = lambda l: len(set(l))
 @typedispatch
 def choose(List, n=1):
     if n == 1:
-        return List[randint(len(List))]
+        o = List[randint(len(List))]
     else:
-        return L([choose(List) for _ in range(n)])
+        o = L([choose(List) for _ in range(n)])
+    Info(f"Chose `{o}` from input")
+    return o
 
 
 @typedispatch

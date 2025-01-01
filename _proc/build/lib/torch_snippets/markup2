@@ -490,6 +490,8 @@ class AttrDict(object):
     def write_summary(self, to, **kwargs):
         writelines(self.summary(sep="\t", **kwargs).split("\n"), to, mode="w")
 
+    write = write_summary
+
     def fetch(self, addr):
         if isinstance(addr, (list, L)):
             return L([self.fetch(_addr) for _addr in addr])
