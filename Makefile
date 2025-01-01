@@ -42,6 +42,7 @@ profile-time:
 end2end:
 	nbdev_export
 	black .
+	make pypi
 	git add .
 	git commit -m "$(msg)"
 	git push
