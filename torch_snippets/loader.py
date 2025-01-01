@@ -210,7 +210,11 @@ def choose(i: pd.DataFrame, n=1):
 
 
 rand = lambda n=6: "".join(
-    choose(list("1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"), n=n, verbose=False)
+    choose(
+        list("1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"),
+        n=n,
+        verbose=False,
+    )
 )
 
 
