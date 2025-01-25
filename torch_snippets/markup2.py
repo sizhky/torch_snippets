@@ -16,6 +16,7 @@ __all__ = [
     "write_yaml",
     "read_xml",
     "write_xml",
+    "basic_ad_repr",
 ]
 
 import hashlib
@@ -324,7 +325,11 @@ class AttrDict(object):
     def trymap(self, func):
         return self.map(func, _try=True)
 
-    def drop(self, key):
+    def drop(self, key, inplace=True):
+        if not inplace:
+            d = deepcopy(self)
+            d.drop(key)
+            return d
         if key in self:
             del self[key]
         for k in dir(self):
@@ -354,6 +359,8 @@ class AttrDict(object):
         return AttrDict(given_input_to_ad=other).dict() == self.dict()
 
     def find_address(self, key, current_path=""):
+        if isinstance(key, (list, L)):
+            return L([a for _key in key for a in self.find_address(_key, current_path)])
         addresses = []
         for k in self.keys():
             if current_path:
@@ -547,6 +554,11 @@ class AttrDict(object):
                 o.set(k, ad[k])
         return o
 
+    def __or__(self, other):
+        if isinstance(other, dict):
+            other = AD(**other)
+        return self.merge_addersses([self.flatten(), other.flatten()])
+
     def flatten(self):
         """Flatten the AD into a single level AD with keys as dot combined keys"""
         o = AttrDict()
@@ -720,6 +732,26 @@ def decompose(i):
             **{k: getattr(i, k) for k in dir(i) if not k.startswith("_")},
         )
     )
+
+
+def basic_ad_repr(flds=None):
+    "Minimal `__repr__` inspired from fastcore"
+    import re
+
+    if isinstance(flds, str):
+        flds = re.split(", *", flds)
+    flds = list(flds or [])
+
+    def _f(self):
+        m = str(type(self).__module__) + "."
+        if m == "__main__.":
+            m = ""
+        res = f"{m}{type(self).__name__}"
+        fs = flds if flds else [o for o in vars(self) if not o.startswith("_")]
+        sig = AD({o: getattr(self, o) for o in fs}).summary(depth=1)
+        return f"{res}(\n{sig})"
+
+    return _f
 
 
 # %% ../nbs/markups.ipynb 13

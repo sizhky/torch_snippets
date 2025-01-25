@@ -639,6 +639,10 @@ d = {
                 "markups.html#attrdict.__len__",
                 "torch_snippets/markup2.py",
             ),
+            "torch_snippets.markup2.AttrDict.__or__": (
+                "markups.html#attrdict.__or__",
+                "torch_snippets/markup2.py",
+            ),
             "torch_snippets.markup2.AttrDict.__repr__": (
                 "markups.html#attrdict.__repr__",
                 "torch_snippets/markup2.py",
@@ -747,6 +751,10 @@ d = {
                 "markups.html#_default",
                 "torch_snippets/markup2.py",
             ),
+            "torch_snippets.markup2.basic_ad_repr": (
+                "markups.html#basic_ad_repr",
+                "torch_snippets/markup2.py",
+            ),
             "torch_snippets.markup2.decompose": (
                 "markups.html#decompose",
                 "torch_snippets/markup2.py",
@@ -816,6 +824,10 @@ d = {
             ),
             "torch_snippets.misc.Timer.__init__": (
                 "misc.html#timer.__init__",
+                "torch_snippets/misc.py",
+            ),
+            "torch_snippets.misc.cast_inputs": (
+                "misc.html#cast_inputs",
                 "torch_snippets/misc.py",
             ),
             "torch_snippets.misc.io": ("misc.html#io", "torch_snippets/misc.py"),

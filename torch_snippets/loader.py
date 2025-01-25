@@ -379,6 +379,7 @@ def show(
     interactive: bool = False,
     jitter: int = None,
     frame_count: int = 1,
+    font_path=None,
     **kwargs,
 ):
     "show an image"
@@ -386,11 +387,25 @@ def show(
 
     init_plt()
     if hasattr(img, "__show__"):
-        img.__show__(**kwargs)
+        import inspect
+
+        frame = inspect.currentframe()
+        args, _, _, values = inspect.getargvalues(frame)
+        all_args = {key: values[key] for key in args if key != "kwargs"}
+        all_args.update(kwargs)  # Include additional kwargs
+        img.__show__(**all_args)
         return
 
     try:
         if isinstance(img, (str, Path)):
+            if str(img).startswith("s3://"):
+                from .s3_loader import download_s3_file
+
+                f = "____".join(str(img).split("/"))
+                f = f"/tmp/{f}.jpeg"
+                if not os.path.exists(f):
+                    download_s3_file(img, f)
+                img = f
             img = read(str(img), 1)
         try:
             import torch
@@ -414,6 +429,8 @@ def show(
             if var_val is img and var_name != "_" and not var_name.strip("_").isdigit():
                 title = var_name
 
+    if isinstance(img, pd.Series):
+        img = img.to_frame()
     if isinstance(img, pd.DataFrame):
         df = img
         max_rows = kwargs.pop("max_rows", 30)
@@ -538,8 +555,21 @@ def show(
         assert len(texts) == len(bbs), "Expecting as many texts as bounding boxes"
         texts = list(map(str, texts))
         texts = ["*" if len(t.strip()) == 0 else t for t in texts]
+        if font_path is not None and os.path.exists(font_path):
+            from matplotlib import font_manager as fm
+
+            font_properties = fm.FontProperties(fname=font_path)
+        else:
+            font_properties = None
+
         [
-            puttext(ax, text.replace("$", "\$"), tuple(bbs[ix][:2]), size=text_sz)
+            puttext(
+                ax,
+                text.replace("$", "\$"),
+                tuple(bbs[ix][:2]),
+                size=text_sz,
+                font_properties=font_properties,
+            )
             for ix, text in enumerate(texts)
         ]
     if title:
@@ -583,11 +613,22 @@ def show(
         plt.show()
 
 
-def puttext(ax, string, org, size=15, color=(255, 0, 0), thickness=2):
+def puttext(
+    ax, string, org, size=15, color=(255, 0, 0), thickness=2, font_properties=None
+):
     init_plt()
     x, y = org
     va = "top" if y < 15 else "bottom"
-    text = ax.text(x, y, str(string), color="red", ha="left", va=va, size=size)
+    text = ax.text(
+        x,
+        y,
+        str(string),
+        color="red",
+        ha="left",
+        va=va,
+        size=size,
+        font_properties=font_properties,
+    )
     text.set_path_effects(
         [path_effects.Stroke(linewidth=3, foreground="white"), path_effects.Normal()]
     )

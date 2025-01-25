@@ -277,6 +277,11 @@ def rm(
         if (confirm_prompt and not force)
         else "y"
     )
+    if not self.exists() and missing_ok:
+        if not silent:
+            logger.info(f"{self} does not exist")
+        return
+
     if confirm.lower() == "y":
         if missing_ok:
             try:

@@ -40,6 +40,8 @@ profile-time:
 	python -m line_profiler -tm "__module_timing__.py.lprof" | tee debug/profile_time.txt
 
 end2end:
+	# fail if msg is not provided
+	@if [ -z "$(msg)" ]; then echo "msg is required"; exit 1; fi
 	nbdev_export
 	black .
 	make pypi

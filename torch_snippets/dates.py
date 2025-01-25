@@ -2,7 +2,15 @@ __all__ = ["make_uniform_date_format", "ALL_DATE_FORMATS", "are_dates_equal", "t
 
 from datetime import datetime
 from torch_snippets.loader import flatten, Debug
-from itertools import combinations_with_replacement
+from itertools import product
+
+seps = list(",.-/ ")
+seps = (
+    seps
+    + [f" {s} " for s in seps if s != " "]
+    + [f"{s} " for s in seps if s != " "]
+    + [f" {s}" for s in seps if s != " "]
+)
 
 x = flatten(
     [
@@ -13,7 +21,7 @@ x = flatten(
             "%b{s1}%d{s2}%Y".format(s1=s1, s2=s2),
             "%m{s1}%d{s2}%Y".format(s1=s1, s2=s2),
         ]
-        for s1, s2 in combinations_with_replacement(".-/ ", r=2)
+        for s1, s2 in product(seps, repeat=2)
     ]
 )
 x = x + [_x.replace("%b", "%B") for _x in x]
@@ -24,7 +32,7 @@ x = x + [_x.replace("%m", "%-m") for _x in x]
 ALL_DATE_FORMATS = x + ["%Y-%m-%d %H:%M:%S"]
 
 
-def make_uniform_date_format(value, target_fmt="%d.%m.%Y", mode="raise"):
+def make_uniform_date_format(value, target_fmt="%d.%m.%Y", mode="raise", debug=False):
     available_modes = ["raise", "return", "default"]
     if isinstance(value, datetime):
         return value.strftime(target_fmt)
@@ -32,6 +40,8 @@ def make_uniform_date_format(value, target_fmt="%d.%m.%Y", mode="raise"):
         try:
             output = datetime.strptime(value, fmt).strftime(target_fmt)
             # Debug(f"{value=}, {output=}, {fmt=}")
+            if debug:
+                return output, fmt
             return output
         except:
             ...

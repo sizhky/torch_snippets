@@ -1,17 +1,33 @@
 # Changelog
-#### 0.550
+#### 0.552
 
+
+#### 0.551
+✨ `basic_ad_repr` for any class, inspired from fastcore
+🎉 `tryy` can accept a callable for `output_to_return_on_fail` instead of the usual static variable
+🎉 `show` can directly show s3 paths!
+🎉 `show` will cast pandas series into a dataframe for a better preview
+🎉 `dates` will also consider separators such as '17 / 12 / 2025'
+🐛 `dates` was not checking all formats as expected
+🐛 `P.rm` will pass if the file does not exist and missing_ok is True
+🎉 `AD.fetch2` can now fetch multiple keys at once
+🎉 `AD.drop` can now return a full, fresh copy so that the orginal is still intact
+🎉 `AD` supports `|`
+
+#### 0.550
+✨ testing a new make target
+🐛 bug fix in track2
 
 #### 0.549
-🐛 bug fix in `choose`
 🎉 Any method with `__show__` will act as a shortcut for the `show` function
+🐛 bug fix in `choose`
 
 #### 0.548
 ✨ `current_file_dir` is a new function that return's the directory where the file exists
+✨ `ll` method in `P`
+🎉 `track2` can take optional info to display
 🐛 `choose` can optionally be silent (useful in funcs like `rand`)
-🎉 `ll` method in `P`
 🐛 `tryy` will Warn instead of print during an exception
-✨ `track2` can take optional info to display
 
 #### 0.547
 🐛 fixed a bug where timer was asserting N > 0 instead of N>=0
@@ -23,10 +39,10 @@
 ✨ `tryy` is pickleable (helps with multiprocessing)
 
 #### 0.546
-🎉 Add profiler
+✨ Add profiler
 
 #### 0.545
-🎉 environment variable `AD_SHOW_FULL_STRINGS` can be set to non-empty to show full strings in summary
+✨ environment variable `AD_SHOW_FULL_STRINGS` can be set to non-empty to show full strings in summary
 🎉 better integration for unknown datatypes in `AD.summary`
 
 #### 0.544
