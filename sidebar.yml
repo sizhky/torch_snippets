@@ -5,8 +5,8 @@ website:
       - testing.ipynb
       - section: nbs
         contents:
+          - nbs/AttrDict.ipynb
           - nbs/adapters.ipynb
-          - nbs/attrdict.ipynb
           - nbs/bokeh_plotting.ipynb
           - nbs/bounding_boxes.ipynb
           - nbs/capsule.ipynb

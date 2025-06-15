@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>scripts – torch_snippets</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9344fb9851b4da3cab95007ef9d770dc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="torch_snippets">
+<meta property="og:site_name" content="torch_snippets">
+<meta name="twitter:title" content="torch_snippets">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">torch_snippets</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Utilities for simple needs</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./attrdict.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AttrDict / AD</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adapters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adapters</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bokeh_plotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bokeh Plots</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bounding_boxes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bounding Box</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./capsule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Capsule (Tutorial)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./charts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Altair and Other Charts</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./config.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">config.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./decorators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Decorator Utilites</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./imgaug_loader.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imgaug</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./inspector.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inspect</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./interactive_show.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">interactive_show.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./load_defautls.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">File Exists</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rich Logging and printing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./markups.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Markups</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./misc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Miscellaneous</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./paths.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paths</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pdf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PDF</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./profiler.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Profiler</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./registry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Registry</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Report</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./s3_loader2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">List all Buckets</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./show.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Show</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sklegos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SK-Legos</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<div id="cell-0" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_snippets <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>VERSION <span class="op">=</span> find(<span class="st">"version"</span>, readlines(<span class="st">"settings.ini"</span>)).split(<span class="st">"="</span>)[<span class="dv">1</span>].strip()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>VERSION</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>» /Users/yeshwanth</code></pre>
+</div>
+</div>
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div id="cell-2" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !rm -rf _proc</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># !rm -rf docs</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nbdev</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># !nbdev_docs</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nbdev.quarto <span class="im">import</span> nbdev_docs</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>nbdev_docs(<span class="st">"./"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/yeshwanth/.venv/lib/python3.13/site-packages/nbdev/doclinks.py:20: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools&lt;81.
+  import pkg_resources,importlib</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">InterpolationMissingOptionError</span>           Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[3]</span><span class="ansi-green-fg">, line 8</span>
+<span class="ansi-green-fg">      5</span> <span style="font-style:italic;color:rgb(95,135,135)"># !nbdev_docs</span>
+<span class="ansi-green-fg">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg ansi-bold">nbdev</span><span class="ansi-blue-fg ansi-bold">.</span><span class="ansi-blue-fg ansi-bold">quarto</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> nbdev_docs
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">8</span> <span class="ansi-yellow-bg">nbdev_docs</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-fg ansi-yellow-bg">./</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/.venv/lib/python3.13/site-packages/fastcore/script.py:116</span>, in <span class="ansi-cyan-fg">call_parse.&lt;locals&gt;._f</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-fg">    113</span> <span style="color:rgb(175,0,255)">@wraps</span>(func)
+<span class="ansi-green-fg">    114</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">_f</span>(*args, **kwargs):
+<span class="ansi-green-fg">    115</span>     mod = inspect.getmodule(inspect.currentframe().f_back)
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">116</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> mod: <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">func</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    117</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> SCRIPT_INFO.func <span style="font-weight:bold;color:rgb(175,0,255)">and</span> mod.<span class="ansi-blue-fg">__name__</span>==<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">__main__</span><span class="ansi-yellow-fg">"</span>: SCRIPT_INFO.func = func.<span class="ansi-blue-fg">__name__</span>
+<span class="ansi-green-fg">    118</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">len</span>(sys.argv)&gt;<span class="ansi-green-fg">1</span> <span style="font-weight:bold;color:rgb(175,0,255)">and</span> sys.argv[<span class="ansi-green-fg">1</span>]==<span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">'</span>: sys.argv.pop(<span class="ansi-green-fg">1</span>)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/.venv/lib/python3.13/site-packages/nbdev/quarto.py:311</span>, in <span class="ansi-cyan-fg">nbdev_docs</span><span class="ansi-blue-fg">(path, n_workers, **kwargs)</span>
+<span class="ansi-green-fg">    304</span> <span style="color:rgb(175,0,255)">@call_parse</span>
+<span class="ansi-green-fg">    305</span> <span style="color:rgb(175,0,255)">@delegates</span>(_nbglob_docs)
+<span class="ansi-green-fg">    306</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">nbdev_docs</span>(
+<span class="ansi-green-fg">    307</span>     path:<span style="color:rgb(0,135,0)">str</span>=<span style="font-weight:bold;color:rgb(0,135,0)">None</span>, <span style="font-style:italic;color:rgb(95,135,135)"># Path to notebooks</span>
+<span class="ansi-green-fg">    308</span>     n_workers:<span style="color:rgb(0,135,0)">int</span>=defaults.cpus,  <span style="font-style:italic;color:rgb(95,135,135)"># Number of workers</span>
+<span class="ansi-green-fg">    309</span>     **kwargs):
+<span class="ansi-green-fg">    310</span>     <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Create Quarto docs and README.md</span><span class="ansi-yellow-fg">"</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">311</span>     cache,cfg,path = <span class="ansi-yellow-bg">_pre_docs</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">path</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">n_workers</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">n_workers</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    312</span>     nbdev_readme.__wrapped__(path=path, chk_time=<span style="font-weight:bold;color:rgb(0,135,0)">True</span>)
+<span class="ansi-green-fg">    313</span>     nbdev_contributing.__wrapped__(path=path, chk_time=<span style="font-weight:bold;color:rgb(0,135,0)">True</span>)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/.venv/lib/python3.13/site-packages/nbdev/quarto.py:203</span>, in <span class="ansi-cyan-fg">_pre_docs</span><span class="ansi-blue-fg">(path, n_workers, **kwargs)</span>
+<span class="ansi-green-fg">    201</span> path = Path(path) <span style="font-weight:bold;color:rgb(0,135,0)">if</span> path <span style="font-weight:bold;color:rgb(0,135,0)">else</span> cfg.nbs_path
+<span class="ansi-green-fg">    202</span> _ensure_quarto()
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">203</span> <span class="ansi-yellow-bg">refresh_quarto_yml</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    204</span> <span style="font-weight:bold;color:rgb(0,135,0)">import</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg ansi-bold">nbdev</span><span class="ansi-blue-fg ansi-bold">.</span><span class="ansi-blue-fg ansi-bold">doclinks</span>
+<span class="ansi-green-fg">    205</span> nbdev.doclinks._build_modidx()
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/.venv/lib/python3.13/site-packages/nbdev/quarto.py:183</span>, in <span class="ansi-cyan-fg">refresh_quarto_yml</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">    181</span> cfg = get_config()
+<span class="ansi-green-fg">    182</span> ny = cfg.nbs_path/<span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">nbdev.yml</span><span class="ansi-yellow-fg">'</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">183</span> vals = {k:<span class="ansi-yellow-bg">cfg</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">k</span><span class="ansi-yellow-bg">]</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> k <span style="font-weight:bold;color:rgb(175,0,255)">in</span> [<span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">title</span><span class="ansi-yellow-fg">'</span>, <span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">description</span><span class="ansi-yellow-fg">'</span>, <span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">branch</span><span class="ansi-yellow-fg">'</span>, <span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">git_url</span><span class="ansi-yellow-fg">'</span>, <span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">doc_host</span><span class="ansi-yellow-fg">'</span>, <span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">doc_baseurl</span><span class="ansi-yellow-fg">'</span>]}
+<span class="ansi-green-fg">    184</span> vals[<span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">doc_path</span><span class="ansi-yellow-fg">'</span>] = cfg.doc_path.name
+<span class="ansi-green-fg">    185</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">title</span><span class="ansi-yellow-fg">'</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> <span style="font-weight:bold;color:rgb(175,0,255)">in</span> vals: vals[<span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">title</span><span class="ansi-yellow-fg">'</span>] = vals[<span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">lib_name</span><span class="ansi-yellow-fg">'</span>]
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/.venv/lib/python3.13/site-packages/fastcore/foundation.py:281</span>, in <span class="ansi-cyan-fg">Config.__getitem__</span><span class="ansi-blue-fg">(self, k)</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">281</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">__getitem__</span>(<span style="color:rgb(0,135,0)">self</span>,k):   <span style="font-weight:bold;color:rgb(0,135,0)">return</span> stop(<span style="font-weight:bold;color:rgb(215,95,95)">IndexError</span>(k)) <span style="font-weight:bold;color:rgb(0,135,0)">if</span> k <span style="font-weight:bold;color:rgb(175,0,255)">not</span> <span style="font-weight:bold;color:rgb(175,0,255)">in</span> <span style="color:rgb(0,135,0)">self</span>.d <span style="font-weight:bold;color:rgb(0,135,0)">else</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">k</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/.venv/lib/python3.13/site-packages/fastcore/foundation.py:284</span>, in <span class="ansi-cyan-fg">Config.get</span><span class="ansi-blue-fg">(self, k, default)</span>
+<span class="ansi-green-fg">    283</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">get</span>(<span style="color:rgb(0,135,0)">self</span>,k,default=<span style="font-weight:bold;color:rgb(0,135,0)">None</span>):
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">284</span>     v = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">d</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">k</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">default</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    285</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> v <span style="font-weight:bold;color:rgb(175,0,255)">is</span> <span style="font-weight:bold;color:rgb(0,135,0)">None</span>: <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="font-weight:bold;color:rgb(0,135,0)">None</span>
+<span class="ansi-green-fg">    286</span>     typ = <span style="color:rgb(0,135,0)">self</span>.types.get(k, <span style="font-weight:bold;color:rgb(0,135,0)">None</span>)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/.local/share/uv/python/cpython-3.13.3-macos-aarch64-none/lib/python3.13/configparser.py:1325</span>, in <span class="ansi-cyan-fg">SectionProxy.get</span><span class="ansi-blue-fg">(self, option, fallback, raw, vars, _impl, **kwargs)</span>
+<span class="ansi-green-fg">   1323</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="font-weight:bold;color:rgb(175,0,255)">not</span> _impl:
+<span class="ansi-green-fg">   1324</span>     _impl = <span style="color:rgb(0,135,0)">self</span>._parser.get
+<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1325</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">_impl</span><span class="ansi-yellow-bg">(</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_name</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">option</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">raw</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">raw</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">vars</span><span class="ansi-yellow-bg">=</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">vars</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">   1326</span> <span class="ansi-yellow-bg">             </span><span class="ansi-yellow-bg">fallback</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">fallback</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/.local/share/uv/python/cpython-3.13.3-macos-aarch64-none/lib/python3.13/configparser.py:828</span>, in <span class="ansi-cyan-fg">RawConfigParser.get</span><span class="ansi-blue-fg">(self, section, option, raw, vars, fallback)</span>
+<span class="ansi-green-fg">    826</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> value
+<span class="ansi-green-fg">    827</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">828</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_interpolation</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">before_get</span><span class="ansi-yellow-bg">(</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">section</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">option</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">value</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    829</span> <span class="ansi-yellow-bg">                                          </span><span class="ansi-yellow-bg">d</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/.local/share/uv/python/cpython-3.13.3-macos-aarch64-none/lib/python3.13/configparser.py:415</span>, in <span class="ansi-cyan-fg">BasicInterpolation.before_get</span><span class="ansi-blue-fg">(self, parser, section, option, value, defaults)</span>
+<span class="ansi-green-fg">    413</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">before_get</span>(<span style="color:rgb(0,135,0)">self</span>, parser, section, option, value, defaults):
+<span class="ansi-green-fg">    414</span>     L = []
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">415</span>     <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_interpolate_some</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">parser</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">option</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">L</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">value</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">section</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">defaults</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-green-fg ansi-yellow-bg">1</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    416</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span class="ansi-yellow-fg">'</span><span class="ansi-yellow-fg">'</span>.join(L)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/.local/share/uv/python/cpython-3.13.3-macos-aarch64-none/lib/python3.13/configparser.py:457</span>, in <span class="ansi-cyan-fg">BasicInterpolation._interpolate_some</span><span class="ansi-blue-fg">(self, parser, option, accum, rest, section, map, depth)</span>
+<span class="ansi-green-fg">    454</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> InterpolationMissingOptionError(
+<span class="ansi-green-fg">    455</span>         option, section, rawval, var) <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">None</span>
+<span class="ansi-green-fg">    456</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">%</span><span class="ansi-yellow-fg">"</span> <span style="font-weight:bold;color:rgb(175,0,255)">in</span> v:
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">457</span>     <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_interpolate_some</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">parser</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">option</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">accum</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">v</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    458</span> <span class="ansi-yellow-bg">                           </span><span class="ansi-yellow-bg">section</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">map</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">depth</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">+</span><span class="ansi-yellow-bg"> </span><span class="ansi-green-fg ansi-yellow-bg">1</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    459</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">    460</span>     accum.append(v)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/.local/share/uv/python/cpython-3.13.3-macos-aarch64-none/lib/python3.13/configparser.py:454</span>, in <span class="ansi-cyan-fg">BasicInterpolation._interpolate_some</span><span class="ansi-blue-fg">(self, parser, option, accum, rest, section, map, depth)</span>
+<span class="ansi-green-fg">    452</span>     v = <span style="color:rgb(0,135,0)">map</span>[var]
+<span class="ansi-green-fg">    453</span> <span style="font-weight:bold;color:rgb(0,135,0)">except</span> <span style="font-weight:bold;color:rgb(215,95,95)">KeyError</span>:
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">454</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> InterpolationMissingOptionError(
+<span class="ansi-green-fg">    455</span>         option, section, rawval, var) <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">None</span>
+<span class="ansi-green-fg">    456</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">%</span><span class="ansi-yellow-fg">"</span> <span style="font-weight:bold;color:rgb(175,0,255)">in</span> v:
+<span class="ansi-green-fg">    457</span>     <span style="color:rgb(0,135,0)">self</span>._interpolate_some(parser, option, accum, v,
+<span class="ansi-green-fg">    458</span>                            section, <span style="color:rgb(0,135,0)">map</span>, depth + <span class="ansi-green-fg">1</span>)
+
+<span class="ansi-red-fg">InterpolationMissingOptionError</span>: Bad value substitution: option 'title' in section 'DEFAULT' contains an interpolation key 'repo' which is not a valid option name. Raw value: '%(lib_name)s'</pre>
+</div>
+</div>
+</div>
+<div id="cell-3" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>nbdev_export</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>nbdev_docs</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>nbdev_pypi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-4" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !nbdev_test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-5" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>nbdev_export</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>nbdev_pypi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>/Users/yeshwanth/Code/Personal/torch_snippets/setup.py:1: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  from pkg_resources import parse_version
+/opt/miniconda3/lib/python3.12/site-packages/setuptools/dist.py:476: SetuptoolsDeprecationWarning: Invalid dash-separated options
+!!
+
+        ********************************************************************************
+        Usage of dash-separated 'description-file' will not be supported in future
+        versions. Please use the underscore name 'description_file' instead.
+
+        This deprecation is overdue, please update your project and remove deprecated
+        calls to avoid build errors in the future.
+
+        See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+        ********************************************************************************
+
+!!
+  opt = self.warn_dash_deprecation(opt, section)
+running sdist
+running egg_info
+writing torch_snippets.egg-info/PKG-INFO
+writing dependency_links to torch_snippets.egg-info/dependency_links.txt
+writing entry points to torch_snippets.egg-info/entry_points.txt
+writing requirements to torch_snippets.egg-info/requires.txt
+writing top-level names to torch_snippets.egg-info/top_level.txt
+reading manifest file 'torch_snippets.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no files found matching 'CONTRIBUTING.md'
+warning: no previously-included files matching '__pycache__' found under directory '*'
+adding license file 'LICENSE'
+adding license file 'LICENSE.txt'
+writing manifest file 'torch_snippets.egg-info/SOURCES.txt'
+running check
+creating torch_snippets-0.545
+creating torch_snippets-0.545/torch_snippets
+creating torch_snippets-0.545/torch_snippets.egg-info
+creating torch_snippets-0.545/torch_snippets/thinc_parser
+creating torch_snippets-0.545/torch_snippets/trainer
+copying files to torch_snippets-0.545...
+copying LICENSE -&gt; torch_snippets-0.545
+copying LICENSE.txt -&gt; torch_snippets-0.545
+copying MANIFEST.in -&gt; torch_snippets-0.545
+copying README.md -&gt; torch_snippets-0.545
+copying settings.ini -&gt; torch_snippets-0.545
+copying setup.cfg -&gt; torch_snippets-0.545
+copying setup.py -&gt; torch_snippets-0.545
+copying torch_snippets/__init__.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/__module_timing__.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/_modidx.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/_nbdev.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/adapters.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/bb_utils.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/bokeh_loader.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/charts.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/cli.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/dates.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/decorators.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/fastcores.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/icecream.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/imgaug_loader.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/inspector.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/interactive_show.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/ipython.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/load_defaults.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/loader.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/logger.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/markup.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/markup2.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/misc.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/paths.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/pdf_loader.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/profiler.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/registry.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/s3_loader.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/scp.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/sklegos.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/text_utils.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/tmp.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/torch_loader.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/video.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets/zen.py -&gt; torch_snippets-0.545/torch_snippets
+copying torch_snippets.egg-info/PKG-INFO -&gt; torch_snippets-0.545/torch_snippets.egg-info
+copying torch_snippets.egg-info/SOURCES.txt -&gt; torch_snippets-0.545/torch_snippets.egg-info
+copying torch_snippets.egg-info/dependency_links.txt -&gt; torch_snippets-0.545/torch_snippets.egg-info
+copying torch_snippets.egg-info/entry_points.txt -&gt; torch_snippets-0.545/torch_snippets.egg-info
+copying torch_snippets.egg-info/not-zip-safe -&gt; torch_snippets-0.545/torch_snippets.egg-info
+copying torch_snippets.egg-info/requires.txt -&gt; torch_snippets-0.545/torch_snippets.egg-info
+copying torch_snippets.egg-info/top_level.txt -&gt; torch_snippets-0.545/torch_snippets.egg-info
+copying torch_snippets/thinc_parser/__init__.py -&gt; torch_snippets-0.545/torch_snippets/thinc_parser
+copying torch_snippets/thinc_parser/parser.py -&gt; torch_snippets-0.545/torch_snippets/thinc_parser
+copying torch_snippets/trainer/__init__.py -&gt; torch_snippets-0.545/torch_snippets/trainer
+copying torch_snippets/trainer/capsule.py -&gt; torch_snippets-0.545/torch_snippets/trainer
+copying torch_snippets/trainer/config.py -&gt; torch_snippets-0.545/torch_snippets/trainer
+copying torch_snippets/trainer/hooks.py -&gt; torch_snippets-0.545/torch_snippets/trainer
+copying torch_snippets/trainer/neural_graph.py -&gt; torch_snippets-0.545/torch_snippets/trainer
+copying torch_snippets.egg-info/SOURCES.txt -&gt; torch_snippets-0.545/torch_snippets.egg-info
+Writing torch_snippets-0.545/setup.cfg
+creating dist
+Creating tar archive
+removing 'torch_snippets-0.545' (and everything under it)
+running bdist_wheel
+running build
+running build_py
+creating build
+creating build/lib
+creating build/lib/torch_snippets
+copying torch_snippets/misc.py -&gt; build/lib/torch_snippets
+copying torch_snippets/load_defaults.py -&gt; build/lib/torch_snippets
+copying torch_snippets/text_utils.py -&gt; build/lib/torch_snippets
+copying torch_snippets/_nbdev.py -&gt; build/lib/torch_snippets
+copying torch_snippets/paths.py -&gt; build/lib/torch_snippets
+copying torch_snippets/charts.py -&gt; build/lib/torch_snippets
+copying torch_snippets/pdf_loader.py -&gt; build/lib/torch_snippets
+copying torch_snippets/interactive_show.py -&gt; build/lib/torch_snippets
+copying torch_snippets/registry.py -&gt; build/lib/torch_snippets
+copying torch_snippets/markup2.py -&gt; build/lib/torch_snippets
+copying torch_snippets/_modidx.py -&gt; build/lib/torch_snippets
+copying torch_snippets/inspector.py -&gt; build/lib/torch_snippets
+copying torch_snippets/__init__.py -&gt; build/lib/torch_snippets
+copying torch_snippets/tmp.py -&gt; build/lib/torch_snippets
+copying torch_snippets/torch_loader.py -&gt; build/lib/torch_snippets
+copying torch_snippets/logger.py -&gt; build/lib/torch_snippets
+copying torch_snippets/markup.py -&gt; build/lib/torch_snippets
+copying torch_snippets/fastcores.py -&gt; build/lib/torch_snippets
+copying torch_snippets/sklegos.py -&gt; build/lib/torch_snippets
+copying torch_snippets/cli.py -&gt; build/lib/torch_snippets
+copying torch_snippets/ipython.py -&gt; build/lib/torch_snippets
+copying torch_snippets/loader.py -&gt; build/lib/torch_snippets
+copying torch_snippets/s3_loader.py -&gt; build/lib/torch_snippets
+copying torch_snippets/imgaug_loader.py -&gt; build/lib/torch_snippets
+copying torch_snippets/zen.py -&gt; build/lib/torch_snippets
+copying torch_snippets/icecream.py -&gt; build/lib/torch_snippets
+copying torch_snippets/dates.py -&gt; build/lib/torch_snippets
+copying torch_snippets/profiler.py -&gt; build/lib/torch_snippets
+copying torch_snippets/bokeh_loader.py -&gt; build/lib/torch_snippets
+copying torch_snippets/video.py -&gt; build/lib/torch_snippets
+copying torch_snippets/scp.py -&gt; build/lib/torch_snippets
+copying torch_snippets/bb_utils.py -&gt; build/lib/torch_snippets
+copying torch_snippets/__module_timing__.py -&gt; build/lib/torch_snippets
+copying torch_snippets/adapters.py -&gt; build/lib/torch_snippets
+copying torch_snippets/decorators.py -&gt; build/lib/torch_snippets
+creating build/lib/torch_snippets/thinc_parser
+copying torch_snippets/thinc_parser/__init__.py -&gt; build/lib/torch_snippets/thinc_parser
+copying torch_snippets/thinc_parser/parser.py -&gt; build/lib/torch_snippets/thinc_parser
+creating build/lib/torch_snippets/trainer
+copying torch_snippets/trainer/neural_graph.py -&gt; build/lib/torch_snippets/trainer
+copying torch_snippets/trainer/hooks.py -&gt; build/lib/torch_snippets/trainer
+copying torch_snippets/trainer/capsule.py -&gt; build/lib/torch_snippets/trainer
+copying torch_snippets/trainer/config.py -&gt; build/lib/torch_snippets/trainer
+copying torch_snippets/trainer/__init__.py -&gt; build/lib/torch_snippets/trainer
+/opt/miniconda3/lib/python3.12/site-packages/setuptools/_distutils/cmd.py:66: SetuptoolsDeprecationWarning: setup.py install is deprecated.
+!!
+
+        ********************************************************************************
+        Please avoid running ``setup.py`` directly.
+        Instead, use pypa/build, pypa/installer or other
+        standards-based tools.
+
+        See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+        ********************************************************************************
+
+!!
+  self.initialize_options()
+installing to build/bdist.macosx-11.1-arm64/wheel
+running install
+running install_lib
+creating build/bdist.macosx-11.1-arm64
+creating build/bdist.macosx-11.1-arm64/wheel
+creating build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/misc.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/load_defaults.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/text_utils.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/_nbdev.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/paths.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/charts.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/pdf_loader.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/interactive_show.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/registry.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/markup2.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/_modidx.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/inspector.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/__init__.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/tmp.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/torch_loader.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/logger.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/markup.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/fastcores.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/sklegos.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/cli.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/ipython.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/loader.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/s3_loader.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/imgaug_loader.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/zen.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/icecream.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/dates.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/profiler.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+creating build/bdist.macosx-11.1-arm64/wheel/torch_snippets/thinc_parser
+copying build/lib/torch_snippets/thinc_parser/__init__.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets/thinc_parser
+copying build/lib/torch_snippets/thinc_parser/parser.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets/thinc_parser
+copying build/lib/torch_snippets/bokeh_loader.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/video.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/scp.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+creating build/bdist.macosx-11.1-arm64/wheel/torch_snippets/trainer
+copying build/lib/torch_snippets/trainer/neural_graph.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets/trainer
+copying build/lib/torch_snippets/trainer/hooks.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets/trainer
+copying build/lib/torch_snippets/trainer/capsule.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets/trainer
+copying build/lib/torch_snippets/trainer/config.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets/trainer
+copying build/lib/torch_snippets/trainer/__init__.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets/trainer
+copying build/lib/torch_snippets/bb_utils.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/__module_timing__.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/adapters.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+copying build/lib/torch_snippets/decorators.py -&gt; build/bdist.macosx-11.1-arm64/wheel/torch_snippets
+running install_egg_info
+Copying torch_snippets.egg-info to build/bdist.macosx-11.1-arm64/wheel/torch_snippets-0.545-py3.12.egg-info
+running install_scripts
+creating build/bdist.macosx-11.1-arm64/wheel/torch_snippets-0.545.dist-info/WHEEL
+creating 'dist/torch_snippets-0.545-py3-none-any.whl' and adding 'build/bdist.macosx-11.1-arm64/wheel' to it
+adding 'torch_snippets/__init__.py'
+adding 'torch_snippets/__module_timing__.py'
+adding 'torch_snippets/_modidx.py'
+adding 'torch_snippets/_nbdev.py'
+adding 'torch_snippets/adapters.py'
+adding 'torch_snippets/bb_utils.py'
+adding 'torch_snippets/bokeh_loader.py'
+adding 'torch_snippets/charts.py'
+adding 'torch_snippets/cli.py'
+adding 'torch_snippets/dates.py'
+adding 'torch_snippets/decorators.py'
+adding 'torch_snippets/fastcores.py'
+adding 'torch_snippets/icecream.py'
+adding 'torch_snippets/imgaug_loader.py'
+adding 'torch_snippets/inspector.py'
+adding 'torch_snippets/interactive_show.py'
+adding 'torch_snippets/ipython.py'
+adding 'torch_snippets/load_defaults.py'
+adding 'torch_snippets/loader.py'
+adding 'torch_snippets/logger.py'
+adding 'torch_snippets/markup.py'
+adding 'torch_snippets/markup2.py'
+adding 'torch_snippets/misc.py'
+adding 'torch_snippets/paths.py'
+adding 'torch_snippets/pdf_loader.py'
+adding 'torch_snippets/profiler.py'
+adding 'torch_snippets/registry.py'
+adding 'torch_snippets/s3_loader.py'
+adding 'torch_snippets/scp.py'
+adding 'torch_snippets/sklegos.py'
+adding 'torch_snippets/text_utils.py'
+adding 'torch_snippets/tmp.py'
+adding 'torch_snippets/torch_loader.py'
+adding 'torch_snippets/video.py'
+adding 'torch_snippets/zen.py'
+adding 'torch_snippets/thinc_parser/__init__.py'
+adding 'torch_snippets/thinc_parser/parser.py'
+adding 'torch_snippets/trainer/__init__.py'
+adding 'torch_snippets/trainer/capsule.py'
+adding 'torch_snippets/trainer/config.py'
+adding 'torch_snippets/trainer/hooks.py'
+adding 'torch_snippets/trainer/neural_graph.py'
+adding 'torch_snippets-0.545.dist-info/LICENSE'
+adding 'torch_snippets-0.545.dist-info/LICENSE.txt'
+adding 'torch_snippets-0.545.dist-info/METADATA'
+adding 'torch_snippets-0.545.dist-info/WHEEL'
+adding 'torch_snippets-0.545.dist-info/entry_points.txt'
+adding 'torch_snippets-0.545.dist-info/top_level.txt'
+adding 'torch_snippets-0.545.dist-info/RECORD'
+removing build/bdist.macosx-11.1-arm64/wheel
+Uploading distributions to https://upload.pypi.org/legacy/
+Uploading torch_snippets-0.545-py3-none-any.whl
+100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 125.8/125.8 kB • 00:01 • 158.0 MB/s
+WARNING  Error during upload. Retry with the --verbose option for more details. 
+ERROR    HTTPError: 400 Bad Request from https://upload.pypi.org/legacy/        
+         File already exists ('torch_snippets-0.545-py3-none-any.whl', with     
+         blake2_256 hash                                                        
+         '97db9be264982980d1d4d99a72a0d916ebcd547b529d3d1e39edc39c4255b7ff').   
+         See https://pypi.org/help/#file-name-reuse for more information.       </code></pre>
+</div>
+</div>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_snippets <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>VERSION <span class="op">=</span> find(<span class="st">"version"</span>, readlines(<span class="st">"settings.ini"</span>)).split(<span class="st">"="</span>)[<span class="dv">1</span>].strip()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git add .</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git commit <span class="op">-</span>m {VERSION}</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7fbfbf; text-decoration-color: #7fbfbf">[10/02/24 18:43:56] </span><span style="color: #bfbf7f; text-decoration-color: #bfbf7f">INFO    </span> loaded <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">27</span> lines                                                                                                         <a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_32208/678460756.py:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">678460756.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///var/folders/1_/71dqv9vx2750gmyz77q_f45w0000gn/T/ipykernel_32208/678460756.py:2#<module>:2" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">&lt;module&gt;:2</span></a>
+</pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[master bc99bbb] 0.545
+ 27 files changed, 446 insertions(+), 598 deletions(-)
+ create mode 100644 _proc/sidebar.yml.bak
+Enumerating objects: 63, done.
+Counting objects: 100% (63/63), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (32/32), done.
+Writing objects: 100% (32/32), 6.29 KiB | 6.29 MiB/s, done.
+Total 32 (delta 30), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (30/30), completed with 30 local objects.
+To ssh://github.com/sizhky/torch_snippets
+   532b946..bc99bbb  master -&gt; master</code></pre>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/sizhky\.github\.io\/torch_snippets\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

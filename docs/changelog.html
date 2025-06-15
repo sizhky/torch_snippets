@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>changelog – torch_snippets</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9344fb9851b4da3cab95007ef9d770dc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="torch_snippets">
+<meta property="og:site_name" content="torch_snippets">
+<meta name="twitter:title" content="torch_snippets">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">torch_snippets</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Utilities for simple needs</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./attrdict.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AttrDict / AD</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./adapters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adapters</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bokeh_plotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bokeh Plots</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bounding_boxes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bounding Box</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./capsule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Capsule (Tutorial)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./charts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Altair and Other Charts</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./config.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">config.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./decorators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Decorator Utilites</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./imgaug_loader.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imgaug</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./inspector.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inspect</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./interactive_show.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">interactive_show.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jupyter Notebooks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./load_defautls.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">File Exists</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rich Logging and printing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./markups.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Markups</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./misc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Miscellaneous</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./paths.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paths</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pdf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PDF</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./profiler.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Profiler</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./registry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Registry</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Report</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./s3_loader2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">List all Buckets</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./show.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Show</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sklegos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SK-Legos</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#changelog" id="toc-changelog" class="nav-link active" data-scroll-target="#changelog">Changelog</a>
+  <ul class="collapse">
+  <li><a href="#todo" id="toc-todo" class="nav-link" data-scroll-target="#todo">Todo</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="changelog" class="level1">
+<h1>Changelog</h1>
+<section id="section" class="level4">
+<h4 class="anchored" data-anchor-id="section">0.552</h4>
+</section>
+<section id="section-1" class="level4">
+<h4 class="anchored" data-anchor-id="section-1">0.551</h4>
+<p>✨ <code>basic_ad_repr</code> for any class, inspired from fastcore 🎉 <code>tryy</code> can accept a callable for <code>output_to_return_on_fail</code> instead of the usual static variable 🎉 <code>show</code> can directly show s3 paths! 🎉 <code>show</code> will cast pandas series into a dataframe for a better preview 🎉 <code>dates</code> will also consider separators such as ‘17 / 12 / 2025’ 🐛 <code>dates</code> was not checking all formats as expected 🐛 <code>P.rm</code> will pass if the file does not exist and missing_ok is True 🎉 <code>AD.fetch2</code> can now fetch multiple keys at once 🎉 <code>AD.drop</code> can now return a full, fresh copy so that the orginal is still intact 🎉 <code>AD</code> supports <code>|</code></p>
+</section>
+<section id="section-2" class="level4">
+<h4 class="anchored" data-anchor-id="section-2">0.550</h4>
+<p>✨ testing a new make target 🐛 bug fix in track2</p>
+</section>
+<section id="section-3" class="level4">
+<h4 class="anchored" data-anchor-id="section-3">0.549</h4>
+<p>🎉 Any method with <code>__show__</code> will act as a shortcut for the <code>show</code> function 🐛 bug fix in <code>choose</code></p>
+</section>
+<section id="section-4" class="level4">
+<h4 class="anchored" data-anchor-id="section-4">0.548</h4>
+<p>✨ <code>current_file_dir</code> is a new function that return’s the directory where the file exists ✨ <code>ll</code> method in <code>P</code> 🎉 <code>track2</code> can take optional info to display 🐛 <code>choose</code> can optionally be silent (useful in funcs like <code>rand</code>) 🐛 <code>tryy</code> will Warn instead of print during an exception</p>
+</section>
+<section id="section-5" class="level4">
+<h4 class="anchored" data-anchor-id="section-5">0.547</h4>
+<p>🐛 fixed a bug where timer was asserting N &gt; 0 instead of N&gt;=0</p>
+</section>
+<section id="section-6" class="level4">
+<h4 class="anchored" data-anchor-id="section-6">0.546</h4>
+<p>✨ <code>printfile</code> will act like <code>cat</code> for linux ✨ <code>choose</code> will let you know what was chosen ✨ <code>Timer</code> can accept <code>N=None</code> and it will simply time the current activities without any estimate ✨ <code>tryy</code> is pickleable (helps with multiprocessing)</p>
+</section>
+<section id="section-7" class="level4">
+<h4 class="anchored" data-anchor-id="section-7">0.546</h4>
+<p>✨ Add profiler</p>
+</section>
+<section id="section-8" class="level4">
+<h4 class="anchored" data-anchor-id="section-8">0.545</h4>
+<p>✨ environment variable <code>AD_SHOW_FULL_STRINGS</code> can be set to non-empty to show full strings in summary 🎉 better integration for unknown datatypes in <code>AD.summary</code></p>
+</section>
+<section id="section-9" class="level4">
+<h4 class="anchored" data-anchor-id="section-9">0.544</h4>
+<p>🎉 Quality of life improvements in logging 🎉 Add support for <code>dataclass</code> in <code>AD</code> 🎉 DeepDiff integrated into <code>AD</code>. Now you can call x.diff(y) where x is <code>AD</code> and y is <code>AD</code>able 🎉 <code>AD.d</code> (no brackets, d is a property) to convert the object to dictionary ✨ <code>read_json</code> can also do json.loads if input is not a file path ✨ <code>json</code> is loaded by default on import *</p>
+</section>
+<section id="section-10" class="level4">
+<h4 class="anchored" data-anchor-id="section-10">0.540</h4>
+<p>✨ Made all imports lazy for a faster import experience</p>
+</section>
+<section id="section-11" class="level4">
+<h4 class="anchored" data-anchor-id="section-11">0.539</h4>
+<p>✨ set <code>AD_SHOW_TAB_STOPS</code> env variable to anything to print with tab-stops (only recommended to see on REPL. Default is good for storing files) ✨ <code>crop_from_bb</code> has <code>padding</code> (px,py,pX,pY) 🐞 minor bugfix in <code>AD</code> 🎉 <code>AD</code> has a <code>fetch2</code> which preserves json structure while fetching all the leafs of the same name 🎉 <code>AD</code> has a <code>flatten</code> which flattens all nested jsons into flat dictionary with ‘.’ combined key names 🎉 <code>AD</code> has a <code>flatten_and_make_dataframe</code> which creates one column for each nesting ✨ <code>tryy</code> will store all its errors and can be accessed by calling <code>&lt;func&gt;.error_summary()</code> 🎉 torch snippets as a new cli function called <code>ts</code>, thanks to the wonderful <code>Typer</code>. Try <code>ts time</code> <code>ts zen-of python</code> <code>ts zen-of c++</code> <code>ts --help</code></p>
+</section>
+<section id="section-12" class="level4">
+<h4 class="anchored" data-anchor-id="section-12">0.538.1</h4>
+<p>✨ slightly better error printing in <code>tryy</code></p>
+</section>
+<section id="section-13" class="level4">
+<h4 class="anchored" data-anchor-id="section-13">0.538</h4>
+<p>🎉 <code>tryy</code> a new decorator to wrap try except with optional default return as well as print stack trace if need be ✨ <code>Timer</code> can given time-remaning approximation based on both instantaneous or average speed ✨ <code>logging_mode</code> functions can be used as both context managers and decorators ✨ better formatting for <code>now()</code> ✨ <code>show</code> auto generates a title if possible ✨ <code>show</code> function includes a <code>framecount</code> parameter to specify which frame of the stack it should search for the title. See its usage in <code>show_big_dataframe</code> ✨ <code>yolo_2_df</code> and <code>df_2_yolo</code> functions in adapters</p>
+</section>
+<section id="section-14" class="level4">
+<h4 class="anchored" data-anchor-id="section-14">0.537</h4>
+<p>✨ <code>AD</code> let’s you know if a collection is list, set or tuple ✨ NEW DEFAULT: use <code>info</code> column to show text else <code>text</code> 🐞 fix a bug where <code>P</code> misbehaves in <code>AD</code> when it doesn’t exist 🐞 fix a bug in <code>show</code> tables 🐞 <code>logger_mode</code> context will gracefully exit ✨ <code>to</code> is compatible with <code>transformers.BatchFeature</code> ⏮️ Revert back <code>P</code> as the code is incompatible with py312</p>
+</section>
+<section id="section-15" class="level4">
+<h4 class="anchored" data-anchor-id="section-15">0.536</h4>
+<p>🆕 <code>parse</code>ing a .ini file will add a <code>META</code> key by default which has <code>file</code> and <code>name</code> information. This header can be used in the file variables without creating META to begin with 🆕 <code>parse</code> will merge a base config if a <code>META.base</code> key is found. Works recursively on base files (base of base etc…) 🆕 <code>P</code> can tab complete existing file path name and access that file as an attribute 💡 Did you know parse can perform arithmetic? ✨ <code>registry</code> and <code>parse</code> are imported by default ✨ <code>jitter</code> can work on <code>pd.DataFrame</code> directly 🔨 <code>bbs2df</code> clips negative coordinates ✨ Using 🏷️ to denote data-type in <code>AD</code> 🐞 <code>AD2</code> is <code>AD</code> now 🐞 <code>AD</code> preserves dict order during serialization ✨ <code>warn_on_fail</code> decorator gives you a free try catch ✨ <code>show</code>ing a dataframe of the correct format inside and outside jupyter environments 🐞 <code>AD</code> has improved <code>get</code>, <code>update</code>, <code>map</code> and new <code>write_config</code>, <code>trymap</code> and <code>__json__</code> ✨ <code>P</code> has two new properties <code>.sz</code> for size of file and <code>.tree</code> to print the tree</p>
+</section>
+<section id="section-16" class="level4">
+<h4 class="anchored" data-anchor-id="section-16">0.535</h4>
+<p>🐞 <code>AD</code> hotfix</p>
+</section>
+<section id="section-17" class="level4">
+<h4 class="anchored" data-anchor-id="section-17">0.534</h4>
+<p>🎉 <code>store_scrap</code> is a new way to store on disk and show jupyter cell outputs in other notebooks.<br>
+Best for presenting complex analyses without worrying about running time-consuming notebooks 🎉 Add support for <code>P</code> in AD <code>summary</code> and <code>write_json</code> 🎉 <code>__json__</code> supports custom objects’ serializability 🎉 <code>write_json</code> is compatible with above feature 🎉 <code>AD_MAX_ITEMS</code> if given as -1 will change it to 1000 🐞 <code>iou</code> will parse input dataframes more gracefully 🐞 <code>AD</code> minor bug fix 🎉 <code>tree</code> has a better default 🎉 New functions <code>folder_structure_to_dict</code> and <code>folder_structure_to_json</code> in <code>paths</code> 🎉 Add <code>jitter</code> (int) argument to <code>show</code> so that bounding boxes can be a bit jittered 🎉 Add support for changing <code>spinner</code> in <code>notify_waiting</code> 🎉 <code>dumpdill</code> can print a custom message (see <code>store_scrap</code> in paths.py)</p>
+</section>
+<section id="section-18" class="level4">
+<h4 class="anchored" data-anchor-id="section-18">0.531</h4>
+<p>🎉 AD <code>__contains__</code> can do a nested <code>in</code> ‘x.y.z’ in AD(x={‘y’: {‘z’: 10}}) == True</p>
+</section>
+<section id="section-19" class="level4">
+<h4 class="anchored" data-anchor-id="section-19">0.530</h4>
+<p>☠️ Stop using rich’s print and revert back to builtin print 🐞 Decouple AD and torch 🎉 Add a new chart - spider / radar 🎉 Add scp client with download upload functionality</p>
+</section>
+<section id="section-20" class="level4">
+<h4 class="anchored" data-anchor-id="section-20">0.529</h4>
+<p>🧹 change code to remove future warnings in text_utils</p>
+</section>
+<section id="section-21" class="level4">
+<h4 class="anchored" data-anchor-id="section-21">0.528</h4>
+<p>🐞 AD string summary was buggy</p>
+</section>
+<section id="section-22" class="level4">
+<h4 class="anchored" data-anchor-id="section-22">0.524</h4>
+<p>🐞 all write modes are ‘a’ by default to avoid accidental overwriting 🧹 AD writes better string summary (support for multiline)</p>
+</section>
+<section id="section-23" class="level4">
+<h4 class="anchored" data-anchor-id="section-23">0.523</h4>
+<p>🧹 <code>print_module_ios_for</code> has better targeted functionality where you need to give submodules name 🎉 <code>clean_gpu_mem</code> and <code>get_latest_checkpoint</code> functions in torch_loader 🧹 <code>minor bugfix in AD</code></p>
+</section>
+<section id="section-24" class="level4">
+<h4 class="anchored" data-anchor-id="section-24">0.522</h4>
+<p>🐞 minor bugfix in <code>AD2</code> where data keyword misbehaves 🧹 <code>video</code> has better size functionality 🎉 <code>if all is given in print_ios_for_module, all modules are printed</code> 🎉 <code>AD2.dict</code> is an alias for <code>AD2.to_dict</code> 🎉 better <code>AD2.summary</code> for pandas dataframes and <code>AD2.summary</code> respects max_items for keys as well 🎉 new alias <code>pd.read_pqt</code> for <code>pd.read_parquet</code> 🐞 wrap <code>tree</code> into python</p>
+</section>
+<section id="section-25" class="level4">
+<h4 class="anchored" data-anchor-id="section-25">0.521</h4>
+<p>🐞 <code>read</code> loads color image by default 🧹 <code>video</code> utils are present in torch_snippets.video</p>
+</section>
+<section id="section-26" class="level4">
+<h4 class="anchored" data-anchor-id="section-26">0.520</h4>
+<p>🧹 Back to min python version 3.7</p>
+</section>
+<section id="section-27" class="level4">
+<h4 class="anchored" data-anchor-id="section-27">0.519</h4>
+<p>🎉 <code>print_folder_summary</code></p>
+</section>
+<section id="section-28" class="level4">
+<h4 class="anchored" data-anchor-id="section-28">0.518</h4>
+<p>🧹 import <code>AD</code> from markup2 by default 🎉 pandas dataframe summary in AD.summary</p>
+</section>
+<section id="section-29" class="level4">
+<h4 class="anchored" data-anchor-id="section-29">0.517</h4>
+<p>🐞 <code>print_shapes_hook</code> will gracefully fail</p>
+</section>
+<section id="section-30" class="level4">
+<h4 class="anchored" data-anchor-id="section-30">0.516</h4>
+<p>🐞 <code>attach</code> will add hook to the input module as well (not just the children)</p>
+</section>
+<section id="section-31" class="level4">
+<h4 class="anchored" data-anchor-id="section-31">0.514</h4>
+<p>🐞 minor change in <code>print_shapes_hook</code></p>
+</section>
+<section id="section-32" class="level4">
+<h4 class="anchored" data-anchor-id="section-32">0.513</h4>
+<p>🎉 print_module_io_for automates attaching and detaching hooks 🎉 AD2 avoids rich printing</p>
+</section>
+<section id="section-33" class="level4">
+<h4 class="anchored" data-anchor-id="section-33">0.512</h4>
+<p>🐞 <code>attach_hooks</code> will accept any custom hook</p>
+</section>
+<section id="section-34" class="level4">
+<h4 class="anchored" data-anchor-id="section-34">0.511</h4>
+<p>🎉 Make <code>markup2.AD.__repr__</code> the summary 🎉 Expose <code>markup2.AD</code> as <code>AD2</code> 🎉 Make <code>icecream</code> a requirement 🎉 Min python is 3.8</p>
+</section>
+<section id="section-35" class="level4">
+<h4 class="anchored" data-anchor-id="section-35">0.510</h4>
+<p>🎉 New IO hooks system in <code>torch_snippets.trainer.hooks</code> 🎉 Updated markup2.AD.summary and add print_summary methods</p>
+</section>
+<section id="section-36" class="level4">
+<h4 class="anchored" data-anchor-id="section-36">0.509</h4>
+<p>🎉 Experimental <code>AD</code> in torch_snippets.markup2 that infers variable names E.g. - <code>(p=10; AD(p) == {'p': 10})</code> 🐞 <code>isin</code> will not add +1 (useful for both absolute and relative boxes now) 🐞 <code>write_json</code> will support numpy, torch and AttrDict</p>
+</section>
+<section id="section-37" class="level4">
+<h4 class="anchored" data-anchor-id="section-37">0.508</h4>
+<p>🎉 add <code>find_address</code> to <code>AttrDict</code> that can return all path locations for a specific key 🎉 add <code>summary</code> to <code>AttrDict</code> that can give an outline of the dictionary 🎉 add <code>write_summary</code> to <code>AttrDict</code> that writes the summary to a textfile 🎉 <code>show</code> can now show bb colors <code>{"r": (255, 0, 0), "g": (0, 255, 0), "b": (0, 0, 255), "y": (255, 0, 255)}</code> if <code>df</code> has column called <code>color</code> 🎉 <code>AD</code> is an alias for <code>AttrDict</code> 🎉 <code>AD</code> can directly consume kwargs</p>
+</section>
+<section id="section-38" class="level4">
+<h4 class="anchored" data-anchor-id="section-38">0.507</h4>
+<p>🧹 import only important functins from <code>dates.py</code> 🎉 add <code>backup_all_notebooks</code> that backs up every notebook present in a specific folder 🎉 <code>reset_logger</code> can disable stdout logging if needed, using <code>disable_stdout=True</code> kwarg (False by default) <code>common_items</code> will take a list of folders and return common stems from the folders images will show a black border when grid is True</p>
+</section>
+<section id="section-39" class="level4">
+<h4 class="anchored" data-anchor-id="section-39">0.506</h4>
+<p>Info, Debug, Warn and Excep will format ouputs separated by a <code>;</code> when args are passed <code>notify_waiting</code> is a new function that letting you know some process is running for an unknown amount of time optional <code>delay</code> during <code>shutdown_current_notebook</code> Info, Debug, Warn and Excep will all have <code>X_mode</code> and <code>in_X_mode</code> functions much like in_debug_mode and debug_mode <code>__init__</code> will auto pull from logger now Better non-linear <code>Timer</code> (and <code>Report</code> and <code>track2</code>)</p>
+</section>
+<section id="section-40" class="level4">
+<h4 class="anchored" data-anchor-id="section-40">0.505</h4>
+<p>🧹 <code>Info</code>, <code>Debug</code>, <code>Warn</code> and <code>Excep</code> will accept args (instead of a single arg) 🧹 <code>show</code> will show h4 headers instead of h2 for dataframe titles</p>
+</section>
+<section id="section-41" class="level4">
+<h4 class="anchored" data-anchor-id="section-41">0.504</h4>
+<p>🧹 <code>phasify</code> loads by default 🧹 <code>show_big_dataframe</code> can show more rows 🎉 add a new submodule <code>trainer.hooks</code> 🧹 <code>show</code> delegated kwargs to <code>plt.imshow</code> for a better readme 🎉 <code>batchify</code> can batchify multiple containers at once 🎉 <code>cat_with_padding</code> new function in <code>torch_loader</code> 🧹 <code>L</code> is json compatible 🐞 <code>BB</code> will not decide if something is relative/absolute 🎉 <code>__contains__</code> for config 🎉 <code>to</code> works on <code>AttrDict</code> 👶🏼 <code>track2</code> is a better version of <code>track</code> uses corouties 👶🏼 <code>debug_mode</code> temporarily activates <code>DEBUG</code> mode on 👶🏼 <code>if in_debug_mode():</code> lets you know if <code>DEBUG</code> mode is on 🧹 <code>reset_logger</code> can accept lowercase levels also 🧹 <code>dumpdill</code> will return a Path after dumping</p>
+</section>
+<section id="section-42" class="level4">
+<h4 class="anchored" data-anchor-id="section-42">0.503</h4>
+<p>bugfix in <code>loader.show</code> add <code>today</code> function to dates add <code>are_equal_dates</code> to dates add dpi option to pdf</p>
+</section>
+<section id="section-43" class="level4">
+<h4 class="anchored" data-anchor-id="section-43">0.502</h4>
+<p>bugfix in attrdict.map</p>
+</section>
+<section id="section-44" class="level4">
+<h4 class="anchored" data-anchor-id="section-44">0.500</h4>
+<p>All notebooks are formatted with black <code>parse</code> can parse python expressions Add DeepLearningConfig class that can be used to load model hyperparameters Add GenericConfig class that can be used to load generic (such as training, evaluation) hyperparameters Add date utilities <code>patch_to</code>, <code>Timer</code>, <code>timeit</code>, <code>io</code> are loaded by default <code>lovely_tensors</code> is optional Add phasify function to loader</p>
+</section>
+<section id="section-45" class="level4">
+<h4 class="anchored" data-anchor-id="section-45">0.499.29</h4>
+<p>attrdict can deserialize “L”</p>
+</section>
+<section id="section-46" class="level4">
+<h4 class="anchored" data-anchor-id="section-46">0.499.28</h4>
+<ul>
+<li><code>show</code> can render a dataframe with a title</li>
+<li><code>show</code> can accept a csv file as input (no need to load it and send)</li>
+<li><code>backup_this_notebook</code> will back up as <code>backups/file/file__0000.html</code> instead of <code>backups/file/0000.html</code> for easier sharability</li>
+<li>module loads <code>decorators</code> by default (<code>io</code>, <code>timeit</code>, <code>check_kwargs_not_none</code>)</li>
+<li><code>ishow</code> is less opinionated</li>
+<li><code>shutdown_this_notebook</code> is a new function</li>
+</ul>
+</section>
+<section id="todo" class="level2">
+<h2 class="anchored" data-anchor-id="todo">Todo</h2>
+<p>override_previous_backup should not trigger when there’s no backup to begin with instead of showing markdown objects using display, directly show HTML objects so that the text is preserved on reopen h2 in Backup instead of h1</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/sizhky\.github\.io\/torch_snippets\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/sizhky/torch_snippets/tree/master/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

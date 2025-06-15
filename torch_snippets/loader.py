@@ -89,7 +89,8 @@ import pandas as pd
 import PIL
 import tqdm
 from fastcore.all import L, delegates, patch_to
-from fastcore.dispatch import typedispatch
+# from fastcore.dispatch import typedispatch
+from plum import dispatch as typedispatch
 from PIL import Image
 
 # from .bb_utils import *

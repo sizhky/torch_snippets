@@ -1,6 +1,6 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: torch_snippets
-Version: 0.552
+Version: 0.554
 Summary: One line functions for common tasks
 Home-page: https://github.com/sizhky/torch_snippets/tree/master/
 Author: Yeshwanth Reddy
@@ -17,6 +17,7 @@ Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
 License-File: LICENSE.txt
+Requires-Dist: plum-dispatch
 Requires-Dist: fastcore
 Requires-Dist: matplotlib
 Requires-Dist: Pillow
@@ -59,6 +60,19 @@ Provides-Extra: jupyter
 Requires-Dist: nbconvert; extra == "jupyter"
 Requires-Dist: nbformat; extra == "jupyter"
 Requires-Dist: ipython; extra == "jupyter"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
 
 # Utilities for simple needs
 
