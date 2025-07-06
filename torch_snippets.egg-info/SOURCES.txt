@@ -26,6 +26,7 @@ torch_snippets/ipython.py
 torch_snippets/load_defaults.py
 torch_snippets/loader.py
 torch_snippets/logger.py
+torch_snippets/markdown.py
 torch_snippets/markup.py
 torch_snippets/markup2.py
 torch_snippets/misc.py

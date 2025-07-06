@@ -1,0 +1,2 @@
+Create code in the folder torch_snippets/ and import the file as module into __init__.py
+Where possible, import the Typer's cli the object from cli.py and use it to expose the written code as a command line interface.
