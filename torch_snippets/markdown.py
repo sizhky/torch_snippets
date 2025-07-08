@@ -47,6 +47,8 @@ def create_markdown(input_path: str, output_path: str = Option(None, "-o", "--ou
     md = MarkItDown()
 
     if input_path.is_file():
+        if not output_path.is_dir():
+            output_path = output_path.parent
         result = convert_to_markdown(input_path, output_path, md)
         print(result)
         return
