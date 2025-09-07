@@ -1,4 +1,7 @@
-from markitdown import MarkItDown
+try:
+    from markitdown import MarkItDown
+except ImportError:
+    MarkItDown = None
 import os
 from typer import Option
 from .logger import Info
@@ -44,7 +47,10 @@ def create_markdown(input_path: str, output_path: str = Option(None, "-o", "--ou
     if not output_path.exists():
         output_path.mkdir(parents=True)
 
-    md = MarkItDown()
+    try:
+        md = MarkItDown()
+    except:
+        raise ImportError("Please install the 'markitdown' package to use this command. You can install it with 'pip install markitdown[all]'.")
 
     if input_path.is_file():
         if not output_path.is_dir():

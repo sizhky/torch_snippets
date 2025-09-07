@@ -50,6 +50,8 @@ torch_snippets.egg-info/entry_points.txt
 torch_snippets.egg-info/not-zip-safe
 torch_snippets.egg-info/requires.txt
 torch_snippets.egg-info/top_level.txt
+torch_snippets/fasthtml/__init__.py
+torch_snippets/fasthtml/chat.py
 torch_snippets/thinc_parser/__init__.py
 torch_snippets/thinc_parser/parser.py
 torch_snippets/trainer/__init__.py

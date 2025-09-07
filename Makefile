@@ -39,10 +39,13 @@ profile-time:
 	mkdir -p debug
 	python -m line_profiler -tm "__module_timing__.py.lprof" | tee debug/profile_time.txt
 
-end2end:
+e:
+	nbdev_export
+	
+e2e:
 	# fail if msg is not provided
 	@if [ -z "$(msg)" ]; then echo "msg is required"; exit 1; fi
-	nbdev_export
+	e
 	black .
 	make pypi
 	git add .

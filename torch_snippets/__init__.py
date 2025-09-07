@@ -1,4 +1,4 @@
-__version__ = "0.556"
+__version__ = "0.558"
 from .logger import *
 from .loader import *
 from .paths import *
@@ -17,12 +17,6 @@ from .dates import *
 from .s3_loader import *
 from .zen import *
 
-# Optional lazy-load safe placeholders for linters
-torch = nn = F = th = T = transforms = torchvision = np = Dataset = DataLoader = (
-    optim
-) = Report = Reshape = Permute = device = save_torch_model_weights_from = (
-    load_torch_model_weights_to
-) = detach = cat_with_padding = None
 
 def init_torch():
     try:
@@ -84,3 +78,9 @@ def init_torch():
     # Use a loop to set attributes in builtins
     for name, module in modules.items():
         setattr(builtins, name, module)
+
+
+try:
+    init_torch()
+except Exception:
+    ...
